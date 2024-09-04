@@ -28,6 +28,10 @@ public class Map_Manager : MonoBehaviour
         Use_Portal();
     }
 
+    private void Testing()
+    {
+        //Fucking Gitgub
+    }
     void Use_Portal() //포탈 사용 (W 키) (IsOnPortal = true 일 때) #깃허브용 임시 주석 추가#
     {
         if (Input.GetKeyDown(KeyCode.W))
