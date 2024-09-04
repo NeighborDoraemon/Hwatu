@@ -176,6 +176,11 @@ public class PlayerCharacterController : PlayerCharacterCardManager
             map_Manager.IsOnPortal = false;
         }
     }
+
+    private void Test()
+    {
+        // 제발 깃허브 제발
+    }
 }
 
 
