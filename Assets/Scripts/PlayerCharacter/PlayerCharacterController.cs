@@ -21,6 +21,9 @@ public class PlayerCharacterController : PlayerCharacterCardManager
     public Transform firePoint;
     public float projectileSpeed = 10.0f;
 
+    [SerializeField]
+    private Map_Manager map_Manager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -157,6 +160,20 @@ public class PlayerCharacterController : PlayerCharacterCardManager
         {
             //Debug.Log("아이템 감지");
             currentItem = other.gameObject;
+        }
+
+        if (other.gameObject.tag == "Portal" && map_Manager.IsOnPortal == false)
+        {
+            map_Manager.IsOnPortal = true;
+            map_Manager.Which_Portal = other.gameObject;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if(other.gameObject.tag == "Portal" && map_Manager.IsOnPortal == true)
+        {
+            map_Manager.IsOnPortal = false;
         }
     }
 }

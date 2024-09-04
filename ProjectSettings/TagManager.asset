@@ -8,6 +8,7 @@ TagManager:
   - Item
   - Card
   - Attack
+  - Portal
   layers:
   - Default
   - TransparentFX
