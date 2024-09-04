@@ -12,6 +12,10 @@ public class PlayerCharacterController : PlayerCharacterCardManager
 
     GameObject currentItem;
 
+
+    [SerializeField] // ¸Ê ¸Å´ÏÀú #±èÀ±Çõ
+    private Map_Manager map_Manager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -89,6 +93,22 @@ public class PlayerCharacterController : PlayerCharacterCardManager
         {
             //Debug.Log("¾ÆÀÌÅÛ °¨Áö");
             currentItem = other.gameObject;
+        }
+
+        if (other.gameObject.tag == "Portal" && map_Manager.IsOnPortal == false) // Æ÷Å» ÁøÀÔ °¨Áö #±èÀ±Çõ
+        {
+            Debug.Log("Get In Portal");
+            map_Manager.IsOnPortal = true;
+            map_Manager.Which_Portal = other.gameObject;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other) // Æ÷Å» ÅğÀå°¨Áö #±èÀ±Çõ
+    {
+        if (other.gameObject.tag == "Portal" && map_Manager.IsOnPortal == true)
+        {
+            map_Manager.IsOnPortal = false;
+            Debug.Log("Get Out Portal");
         }
     }
 }
