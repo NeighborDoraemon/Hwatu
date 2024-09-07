@@ -9,6 +9,7 @@ TagManager:
   - Card
   - Attack
   - Portal
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -18,8 +19,8 @@ TagManager:
   - UI
   - BackGround
   - Item
+  - Enemy
   - Character
-  - 
   - 
   - 
   - 
