@@ -188,6 +188,7 @@ public class PlayerCharacterController : PlayerCharacterCardManager
         {
             map_Manager.IsOnPortal = true;
             map_Manager.Which_Portal = other.gameObject;
+            map_Manager.v_Now_Portal = other.transform.position;
         }
     }
 
