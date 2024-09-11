@@ -238,8 +238,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1375957023
-  m_SortingLayer: 3
+  m_SortingLayerID: 1335113539
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0, g: 0.5125866, b: 1, a: 1}
@@ -458,8 +458,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1375957023
-  m_SortingLayer: 3
+  m_SortingLayerID: 1335113539
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0, g: 0.5125866, b: 1, a: 1}
@@ -1233,8 +1233,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1375957023
-  m_SortingLayer: 3
+  m_SortingLayerID: 1335113539
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0, g: 0.5125866, b: 1, a: 1}
@@ -2828,8 +2828,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1375957023
-  m_SortingLayer: 3
+  m_SortingLayerID: 1335113539
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0, g: 0.5125866, b: 1, a: 1}
@@ -3860,8 +3860,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1375957023
-  m_SortingLayer: 3
+  m_SortingLayerID: 1335113539
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0, g: 0.5125866, b: 1, a: 1}
@@ -6235,8 +6235,12 @@ PrefabInstance:
       objectReference: {fileID: 1354925989}
     - target: {fileID: 3136608252178593749, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
       propertyPath: attackCooldown
-      value: 1
+      value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 3136608252178593749, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
+      propertyPath: card_UIManager
+      value: 
+      objectReference: {fileID: 1354925989}
     - target: {fileID: 7421354220885094674, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.5
@@ -6276,6 +6280,10 @@ PrefabInstance:
     - target: {fileID: 7421354220885094674, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8434130835688464816, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -11,20 +11,24 @@ public class PlayerCharacterController : PlayerCharacterCardManager
     int jumpCount = 0; // 점프 횟수 카운팅 변수
     public int maxJumpCount = 2; // 최대 점프 횟수 카운팅 변수
 
-    public float teleportingDistance = 3.0f; // 순간이동 거리 변수
-    public float teleportingCoolTime = 3.0f; // 순간이동 쿨타임 변수
+    [Header("Player_Teleport")]
+    public float teleporting_Distance = 3.0f; // 순간이동 거리 변수
+    public float teleporting_CoolTime = 3.0f; // 순간이동 쿨타임 변수
     bool canTeleporting = true; // 순간이동 조건 확인 변수
 
-    GameObject currentItem; // 현재 아이템 확인 변수
+    GameObject current_Item; // 현재 아이템 확인 변수
 
+    [Header("Player_Long_Range_Attack")] // 원거리 공격 변수 관리
     public GameObject projectilePrefab;
     public Transform firePoint;
-    public float projectileSpeed = 10.0f;
+    public float projectileSpeed = 10.0f; // 총알 속도
 
+    [Header("Player_Short_Range_Attack")]
     public float attackRange = 0.5f; // 플레이어와 공격 범위 간 거리 설정 변수
     public float attackCooldown = 1.0f; // 근접 공격 쿨타임 변수
-    private float lastAttackTime = 0f; // 마지막 공격 시점 기록 변수
+    private float last_Attack_Time = 0f; // 마지막 공격 시점 기록 변수
 
+    [Header("Map_Manager")]
     [SerializeField]
     private Map_Manager map_Manager;
 
@@ -43,17 +47,12 @@ public class PlayerCharacterController : PlayerCharacterCardManager
 
         InterAction(); // 상호작용
 
-        LongRangeAttack(); // 공격
-        ShortRangeAttack();
+        Long_Range_Attack(); // 공격
+        Short_Range_Attack();
 
         if (!isCombDone) // 카드 조합 확인 조건
         {
-            CardCombination();
-        }
-
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            Debug.Log("디버그 로그 실험");
+            Card_Combination();
         }
     }
 
@@ -77,26 +76,31 @@ public class PlayerCharacterController : PlayerCharacterCardManager
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.AddForce(new Vector2(0, jumpPower), ForceMode2D.Impulse);
             jumpCount++;
-            //Debug.Log("점프");
         }
     }
 
     void InterAction() // 플레이어 캐릭터 상호작용
     {
-        if (Input.GetKeyDown(KeyCode.E) && currentItem != null)
+        if (Input.GetKeyDown(KeyCode.E) && current_Item != null)
         {
-            
-            if(currentItem.tag == "Card" && cardCount < cardInventory.Length)
+            //Debug.Log("해당 아이템과 상호작용 : " + current_Item.name);
+
+            if(current_Item.tag == "Card")
             {
-                Debug.Log("카드 습득");
-                AddCard(currentItem);
-                currentItem.SetActive(false);
+                //Debug.Log("해당 카드 획득 시도 : " + current_Item.name);
+
+                if (cardCount < card_Inventory.Length || cardCount == card_Inventory.Length)
+                {
+                    Debug.Log("카드 습득");
+                    AddCard(current_Item);
+                    current_Item.SetActive(false);
+                }
             }
-            else if (currentItem.tag == "Item")
+            else if (current_Item.tag == "Item")
             {
 
             }
-            currentItem = null;
+            current_Item = null;
         }
     }
 
@@ -106,30 +110,30 @@ public class PlayerCharacterController : PlayerCharacterCardManager
         {
             if (movement.x < 0)
             {
-                transform.Translate(Vector2.left * teleportingDistance);
+                transform.Translate(Vector2.left * teleporting_Distance);
             }
             else
             {
-                transform.Translate(Vector2.right * teleportingDistance);
+                transform.Translate(Vector2.right * teleporting_Distance);
             }
             canTeleporting = false;
         }
 
         if (!canTeleporting)
         {
-            teleportingCoolTime -= Time.deltaTime;
-            if (teleportingCoolTime <= 0.0f)
+            teleporting_CoolTime -= Time.deltaTime;
+            if (teleporting_CoolTime <= 0.0f)
             {
-                teleportingCoolTime = 3.0f;
+                teleporting_CoolTime = 3.0f;
                 canTeleporting = true;
                 Debug.Log("순간이동 가능");
             }
         }
     }
 
-    void ShortRangeAttack()
+    void Short_Range_Attack()
     {
-        if (Time.time >= lastAttackTime + attackCooldown)
+        if (Time.time >= last_Attack_Time + attackCooldown)
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
@@ -140,8 +144,6 @@ public class PlayerCharacterController : PlayerCharacterCardManager
 
                 Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(boxCenter, boxSize, 0, enemyLayer); // 적 레이어 설정
 
-                //Debug.Log("공격 중");
-
                 // 감지된 적에게 데미지 처리
                 foreach (Collider2D enemy in hitEnemies)
                 {
@@ -150,16 +152,12 @@ public class PlayerCharacterController : PlayerCharacterCardManager
                     enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
                 }
 
-                lastAttackTime = Time.time; // 마지막 공격 시간 현재 시간으로 갱신
+                last_Attack_Time = Time.time; // 마지막 공격 시간 현재 시간으로 갱신
             }
-        }
-        else
-        {
-            //Debug.Log("공격 쿨타임");
         }
     }
 
-    void LongRangeAttack() // 원거리 공격 함수
+    void Long_Range_Attack() // 원거리 공격 함수
     {
         if (Input.GetKeyDown(KeyCode.S))
         {
@@ -196,8 +194,7 @@ public class PlayerCharacterController : PlayerCharacterCardManager
     {
         if (other.gameObject.tag == "Item" || other.gameObject.tag == "Card")
         {
-            //Debug.Log("아이템 감지");
-            currentItem = other.gameObject;
+            current_Item = other.gameObject;
         }
     }
 
@@ -210,8 +207,7 @@ public class PlayerCharacterController : PlayerCharacterCardManager
 
         if (other.gameObject.tag == "Item" || other.gameObject.tag == "Card")
         {
-            //Debug.Log("아이템 감지");
-            currentItem = null;
+            current_Item = null;
         }
     }
 
