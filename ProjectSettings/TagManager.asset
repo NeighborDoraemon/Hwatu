@@ -10,6 +10,7 @@ TagManager:
   - Attack
   - Portal
   - Enemy
+  - Chest
   layers:
   - Default
   - TransparentFX
@@ -18,10 +19,10 @@ TagManager:
   - Water
   - UI
   - BackGround
+  - Chest
   - Item
   - Enemy
   - Character
-  - 
   - 
   - 
   - 

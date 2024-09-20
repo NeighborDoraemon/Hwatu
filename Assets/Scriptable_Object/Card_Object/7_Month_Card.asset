@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a0b0b29da754f142bc8542d731d2c4c, type: 3}
-  m_Name: '!_Month_Card'
+  m_Name: 7_Month_Card
   m_EditorClassIdentifier: 
-  Month: 1
+  Month: 7
   sprites:
-  - {fileID: 21300000, guid: ad4df2e85d325a04695e952cd48ec8ab, type: 3}
-  - {fileID: 21300000, guid: 0f1fb2b6557531a46a5762ca63754f14, type: 3}
+  - {fileID: 21300000, guid: 7e89ef3ab23414e43a959d38d217fc04, type: 3}
+  - {fileID: 21300000, guid: acf61e490a5e5074a926fa89fe4f2c53, type: 3}

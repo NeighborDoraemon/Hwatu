@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 7421354220885094674}
   - component: {fileID: 8434130835688464816}
-  - component: {fileID: 3136608252178593749}
   - component: {fileID: 3124059131931867968}
   - component: {fileID: 4076679307762721750}
   - component: {fileID: 2132338641781483899}
-  m_Layer: 9
+  - component: {fileID: 3136608252178593749}
+  m_Layer: 10
   m_Name: PlayerCharacter
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1375957023
   m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 4723107735738678597, guid: 0bd97e23f8b532a4f8969605a3b00a4e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -90,35 +90,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3136608252178593749
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2826957800242690262}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f760e980f6fac4b4b943bc9dcda615de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementSpeed: 5
-  jumpPower: 5
-  health: 100
-  attackDamage: 25
-  cardUIManager: {fileID: 0}
-  cardInventory:
-  - {fileID: 0}
-  - {fileID: 0}
-  maxJumpCount: 2
-  teleportingDistance: 3
-  teleportingCoolTime: 3
-  projectilePrefab: {fileID: 4150010414422937313, guid: f0b0b59cd52bfc042b9814c335d2fbde, type: 3}
-  firePoint: {fileID: 5462922738750165385}
-  projectileSpeed: 10
-  attackRange: 0.4
-  attackCooldown: 5
-  map_Manager: {fileID: 0}
 --- !u!50 &3124059131931867968
 Rigidbody2D:
   serializedVersion: 4
@@ -216,6 +187,37 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.4
+--- !u!114 &3136608252178593749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2826957800242690262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f760e980f6fac4b4b943bc9dcda615de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSpeed: 5
+  jumpPower: 5
+  health: 100
+  attackDamage: 25
+  card_UIManager: {fileID: 0}
+  card_Value: {fileID: 0}
+  sprite_Renderer: {fileID: 0}
+  card_Inventory:
+  - {fileID: 0}
+  - {fileID: 0}
+  maxJumpCount: 2
+  teleporting_Distance: 3
+  teleporting_CoolTime: 3
+  projectilePrefab: {fileID: 4150010414422937313, guid: f0b0b59cd52bfc042b9814c335d2fbde, type: 3}
+  firePoint: {fileID: 5462922738750165385}
+  projectileSpeed: 10
+  attackRange: 0.4
+  attackCooldown: 0.1
+  map_Manager: {fileID: 0}
 --- !u!1 &2991408550391871391
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,7 +229,7 @@ GameObject:
   - component: {fileID: 8240871130775810756}
   - component: {fileID: 1220152267481929480}
   - component: {fileID: 5963973931555732991}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -317,7 +319,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5462922738750165385}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: firePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
