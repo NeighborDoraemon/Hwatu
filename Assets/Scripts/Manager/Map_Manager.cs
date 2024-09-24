@@ -23,6 +23,9 @@ public class Map_Manager : MonoBehaviour
 
     private List<Map_Value> ScObj_Not_Used_Map_Value = new List<Map_Value>();
 
+
+    private int i_room_Num = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,12 +42,18 @@ public class Map_Manager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
-            if (IsOnPortal)
+            if (IsOnPortal && Enemy_Generator.Is_Room_Clear == true && ScObj_Not_Used_Map_Value.Count != 0) //맵 클리어시에만 이동 가능하도록 변경
             {
                 Check_Portals();
 
                 Obj_Player.transform.position = v_Next_SpawnPoint;
-                //E_Spawner.Is_Next_Spawn = true;
+
+                //방 번호 전달
+                Enemy_Generator.i_Room_Number = i_room_Num;
+                //방 이동시 클리어 초기화
+                Enemy_Generator.Is_Room_Clear = false;
+                //스폰 시작 트리거
+                Enemy_Generator.Is_Next_Spawn = true;
             }
         }
     }
@@ -53,7 +62,7 @@ public class Map_Manager : MonoBehaviour
     {
         int Randoms;
 
-        Reset_PortalList();
+        //Reset_PortalList();
 
 
         if (v_Next_SpawnPoint == new Vector3(0.0f, 0.0f, 0.0f))
@@ -61,7 +70,12 @@ public class Map_Manager : MonoBehaviour
             Randoms = Random.Range(0, ScObj_Not_Used_Map_Value.Count);
             v_Next_SpawnPoint = ScObj_Not_Used_Map_Value[Randoms].v_Map_Spawnpoint;
 
+            //이동한 맵의 번호를 적 생성 스크립트에 전달하기 위함
+            i_room_Num = ScObj_Not_Used_Map_Value[Randoms].i_Map_Counter;
+
             ScObj_Not_Used_Map_Value.RemoveAt(Randoms);
+
+            //i_room_Num = ScObj_Not_Used_Map_Value[Randoms].i_Map_Counter;
         }
 
         if (v_Next_SpawnPoint == v_Now_Portal)
@@ -71,10 +85,15 @@ public class Map_Manager : MonoBehaviour
                 Randoms = Random.Range(0, ScObj_Not_Used_Map_Value.Count);
 
                 v_Next_SpawnPoint = ScObj_Not_Used_Map_Value[Randoms].v_Map_Spawnpoint;
+
+                //이동한 맵의 번호를 적 생성 스크립트에 전달하기 위함
+                i_room_Num = ScObj_Not_Used_Map_Value[Randoms].i_Map_Counter;
+
                 ScObj_Not_Used_Map_Value.RemoveAt(Randoms);
 
                 //Obj_NextPortal = Obj_Portals[Randoms];
 
+                //i_room_Num = ScObj_Not_Used_Map_Value[Randoms].i_Map_Counter;
             }
         }
     }
@@ -90,5 +109,6 @@ public class Map_Manager : MonoBehaviour
             }
             Debug.Log("List Reset");
         }
+        ScObj_Not_Used_Map_Value.RemoveAt(0);
     }
 }

@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour
 
     void Die() // 적 사망 처리 함수
     {
-        e_Generator.i_Enemy_Count--; //남은 적의 수 계산용
+        Enemy_Generator.i_Enemy_Count--; //남은 적의 수 계산용
 
         Debug.Log("적 사망");
         Destroy(gameObject);
