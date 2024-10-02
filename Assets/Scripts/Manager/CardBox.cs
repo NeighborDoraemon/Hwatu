@@ -4,54 +4,26 @@ using UnityEngine;
 
 public class CardBox : MonoBehaviour
 {
-    public Transform[] spawnPoints; // 스폰 포인트 2개
-    public Card_Spawner card_Spawner; // 카드 스포너
-    public int numberOfCardsToSpawn = 2; // 카드 소환 개수
+    public Transform[] spawnPoints; // 카드 소환 위치
 
-    private bool isPlayerNearby = false; // 플레이어가 상자 근처에 있는지 체크
+    public int number_Of_Cards_To_Spawn = 2; // 카드 소환 갯수
 
-    void Update()
+    public void Request_Spawn_Cards() // 카드 소환 요청 함수
     {
-        // 플레이어가 상자 근처에 있고, 액션 키 (예: E)를 눌렀을 때
-        if (isPlayerNearby && Input.GetKeyDown(KeyCode.E))
+        if (Card_Spawner.instance == null)
         {
-            SpawnCards();
-        }
-    }
-
-    // 카드 스폰 함수
-    public void SpawnCards()
-    {
-        // 카드 소환
-        for (int i = 0; i < numberOfCardsToSpawn; i++)
-        {
-            if (i < spawnPoints.Length)
-            {
-                Vector2 spawnPosition = spawnPoints[i].position; // 스폰 포인트 위치 확인
-
-                int randomCardIndex = Random.Range(0, card_Spawner.card_Values.Length); // 스크립터블 카드 오브젝트에서 랜덤 선택
-                card_Spawner.Spawn_Card(spawnPosition, randomCardIndex); // 카드 소환
-            }
+            Debug.LogError("Card Box에서 Card_Spawner 인스턴스 실종");
+            return;
         }
 
-        Debug.Log("카드 소환 완료");
-    }
+        int spawnCount = Mathf.Min(number_Of_Cards_To_Spawn, spawnPoints.Length); // 둘 중 더 작은 수로 스폰카운트 반환
 
-    // 플레이어가 상자에 가까이 왔을 때
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
+        for (int i = 0; i < spawnCount; i++)
         {
-            isPlayerNearby = true; // 상자 근처에 있는 상태로 변경
+            Vector2 spawnPos = spawnPoints[i].position;
+            Card_Spawner.instance.Spawn_Cards(spawnPos); // 카드 스포너의 카드 소환 함수 호출
         }
-    }
 
-    // 플레이어가 상자에서 멀어졌을 때
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            isPlayerNearby = false; // 상자에서 벗어남
-        }
+        Destroy(gameObject);
     }
 }

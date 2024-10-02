@@ -6,7 +6,9 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
 {
     [Header("Card_Manager")]
     public Card_UI_Manager card_UI_Manager; // 화투 UI 매니저 변수
+    [HideInInspector]
     public Card_Value card_Value; // 카드 스크립터블 오브젝트
+    [HideInInspector]
     public SpriteRenderer sprite_Renderer;
 
     public GameObject[] card_Inventory = new GameObject[2]; // 화투 오브젝트 저장 공간 배열
@@ -28,13 +30,19 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
         {
             if (card_Inventory[0] != null) // 기존 화투 삭제함으로써 메모리 관리
             {
+                Card cardComponent = card_Inventory[0].GetComponent<Card>();
+                if (cardComponent != null && cardComponent.selected_Sprite != null)
+                {
+                    Card_Spawner.instance.Remove_Used_Sprite(cardComponent.selected_Sprite); // 카드 수집 시 수집된 카드의 스프라이트 해쉬에 저장
+                }
+
                 Destroy(card_Inventory[0]);
             }
 
             card_Inventory[0] = card_Inventory[1];
             card_Inventory[1] = card;
 
-            Debug.Log("카드 교체");
+            //Debug.Log("카드 교체");
         }
         else
         {
@@ -45,6 +53,18 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
 
         UpdateCardUI();
         Card_Combination();
+
+        // 카드 수집 후 필드에 남아있는 카드 삭제
+        if (Card_Spawner.instance != null)
+        {
+            Sprite collected_Sprite = card.GetComponent<SpriteRenderer>().sprite;
+
+            Card_Spawner.instance.Destroy_All_Cards(card);
+            Card_Spawner.instance.Remove_From_Spawned_Cards(card);
+
+            card.SetActive(false);
+        }
+        else { Debug.LogWarning("Card Manager에서 Card Spawner 인스턴스 실종"); }
     }
 
     void UpdateCardUI() // 화투 UI 스프라이트 업데이트 함수
@@ -84,10 +104,10 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
             Card_Value card_1 = card_Inventory[0].GetComponent<Card>().cardValue;
             Card_Value card_2 = card_Inventory[1].GetComponent<Card>().cardValue;
 
-            //if (card_1.isGwang && card_2.isGwang) // 추후 광 검사 코드를 제작할 예정입니다.
-            //{
-            //    Debug.Log("광 조합");
-            //}
+            if (card_1.Month == 11 && card_2.Month == 11) // 추후 광 검사 코드를 제작할 예정입니다.
+            {
+                Debug.Log("광 조합");
+            }
             if (card_1.Month == card_2.Month) // 서로 같은 달인지 확인
             {
                 switch (card_1.Month)

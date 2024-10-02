@@ -15,4 +15,3 @@ MonoBehaviour:
   Month: 8
   sprites:
   - {fileID: 21300000, guid: 7bb2ee67a20486f4ab5bc7133c909ba7, type: 3}
-  - {fileID: 21300000, guid: 8e7150a4ac1478441b9e137891d05291, type: 3}

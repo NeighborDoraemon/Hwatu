@@ -5,4 +5,5 @@ using UnityEngine;
 public class Card : MonoBehaviour
 {
     public Card_Value cardValue;
+    public Sprite selected_Sprite;
 }

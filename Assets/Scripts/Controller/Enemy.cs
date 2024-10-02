@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -8,12 +9,11 @@ public class Enemy : MonoBehaviour
 
     public int health = 100; // 적 체력 변수
 
-
     private void Start()
     {
         e_Generator = FindObjectOfType<Enemy_Generator>();
     }
-
+    
     public void TakeDamage(int damage)
     {
         health -= damage;

@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 노트북 고쳤어요!
-// 키보드도 하나 샀어요!
 
 [CreateAssetMenu(fileName = "NewMap_Values", menuName = "Maps/Value")]
 public class Map_Value : ScriptableObject
