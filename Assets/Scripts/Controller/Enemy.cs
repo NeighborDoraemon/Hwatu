@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -8,12 +9,11 @@ public class Enemy : MonoBehaviour
 
     public int health = 100; // 적 체력 변수
 
-
     private void Start()
     {
         e_Generator = FindObjectOfType<Enemy_Generator>();
     }
-
+    
     public void TakeDamage(int damage)
     {
         health -= damage;
@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour
 
     void Die() // 적 사망 처리 함수
     {
-        e_Generator.i_Enemy_Count--; //남은 적의 수 계산용
+        Enemy_Generator.i_Enemy_Count--; //남은 적의 수 계산용
 
         Debug.Log("적 사망");
         Destroy(gameObject);

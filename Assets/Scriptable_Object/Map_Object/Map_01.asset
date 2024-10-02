@@ -16,8 +16,18 @@ MonoBehaviour:
   v_Map_Spawnpoint: {x: 18, y: -1.4, z: 0}
   v_min_Map_Vector: {x: 0, y: 0, z: 0}
   v_Max_Map_Vector: {x: 0, y: 0, z: 0}
-  v_Enemy_Spawn_Points_01: []
-  v_Enemy_Spawn_Points_02: []
-  v_Enemy_Spawn_Points_03: []
+  v_Enemy_Spawn_Points_01:
+  - {x: 20, y: -1.4, z: 0}
+  - {x: 23, y: -1.4, z: 0}
+  - {x: 25, y: -1.4, z: 0}
+  v_Enemy_Spawn_Points_02:
+  - {x: 24, y: -1.4, z: 0}
+  - {x: 24, y: 0.1, z: 0}
+  - {x: 22, y: 0.1, z: 0}
+  v_Enemy_Spawn_Points_03:
+  - {x: 22, y: 2.1, z: 0}
+  - {x: 21, y: -1.4, z: 0}
+  - {x: 24, y: -1.4, z: 0}
+  - {x: 24, y: 0.1, z: 0}
   Next_To_Kill: 0
   Clear_and_Next: 0
