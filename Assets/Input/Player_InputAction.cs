@@ -93,7 +93,7 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
             ],
             ""bindings"": [
                 {
-                    ""name"": ""2D Vector"",
+                    ""name"": ""Side Move"",
                     ""id"": ""ec2e687f-ef77-41f8-8697-39a62fd82fac"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
@@ -102,17 +102,6 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""0148971f-5c53-467e-ab80-0cee5e92a7aa"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""left"",
@@ -203,6 +192,12 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Menu"",
+            ""id"": ""ae00a073-3f96-4574-bb6c-53fa7fcdc2ea"",
+            ""actions"": [],
+            ""bindings"": []
         }
     ],
     ""controlSchemes"": []
@@ -216,6 +211,8 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         m_Player_Skill = m_Player.FindAction("Skill", throwIfNotFound: true);
         m_Player_InterAction = m_Player.FindAction("InterAction", throwIfNotFound: true);
         m_Player_SpawnChest = m_Player.FindAction("SpawnChest", throwIfNotFound: true);
+        // Menu
+        m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -367,6 +364,44 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // Menu
+    private readonly InputActionMap m_Menu;
+    private List<IMenuActions> m_MenuActionsCallbackInterfaces = new List<IMenuActions>();
+    public struct MenuActions
+    {
+        private @Player_InputActions m_Wrapper;
+        public MenuActions(@Player_InputActions wrapper) { m_Wrapper = wrapper; }
+        public InputActionMap Get() { return m_Wrapper.m_Menu; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MenuActions set) { return set.Get(); }
+        public void AddCallbacks(IMenuActions instance)
+        {
+            if (instance == null || m_Wrapper.m_MenuActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_MenuActionsCallbackInterfaces.Add(instance);
+        }
+
+        private void UnregisterCallbacks(IMenuActions instance)
+        {
+        }
+
+        public void RemoveCallbacks(IMenuActions instance)
+        {
+            if (m_Wrapper.m_MenuActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IMenuActions instance)
+        {
+            foreach (var item in m_Wrapper.m_MenuActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_MenuActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public MenuActions @Menu => new MenuActions(this);
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -376,5 +411,8 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         void OnSkill(InputAction.CallbackContext context);
         void OnInterAction(InputAction.CallbackContext context);
         void OnSpawnChest(InputAction.CallbackContext context);
+    }
+    public interface IMenuActions
+    {
     }
 }

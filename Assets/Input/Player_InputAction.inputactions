@@ -71,7 +71,7 @@
             ],
             "bindings": [
                 {
-                    "name": "2D Vector",
+                    "name": "Side Move",
                     "id": "ec2e687f-ef77-41f8-8697-39a62fd82fac",
                     "path": "2DVector",
                     "interactions": "",
@@ -80,17 +80,6 @@
                     "action": "Move",
                     "isComposite": true,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "down",
-                    "id": "0148971f-5c53-467e-ab80-0cee5e92a7aa",
-                    "path": "<Keyboard>/downArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 },
                 {
                     "name": "left",
@@ -181,6 +170,12 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Menu",
+            "id": "ae00a073-3f96-4574-bb6c-53fa7fcdc2ea",
+            "actions": [],
+            "bindings": []
         }
     ],
     "controlSchemes": []
