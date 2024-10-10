@@ -89,6 +89,15 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Inventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""16ba3961-9ab2-418e-94a0-d5ad21fa1992"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -201,6 +210,17 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""SpawnChest"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""44062545-e103-4eca-90d6-636910edda51"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -216,6 +236,7 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         m_Player_Skill = m_Player.FindAction("Skill", throwIfNotFound: true);
         m_Player_InterAction = m_Player.FindAction("InterAction", throwIfNotFound: true);
         m_Player_SpawnChest = m_Player.FindAction("SpawnChest", throwIfNotFound: true);
+        m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -284,6 +305,7 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Skill;
     private readonly InputAction m_Player_InterAction;
     private readonly InputAction m_Player_SpawnChest;
+    private readonly InputAction m_Player_Inventory;
     public struct PlayerActions
     {
         private @Player_InputActions m_Wrapper;
@@ -295,6 +317,7 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         public InputAction @Skill => m_Wrapper.m_Player_Skill;
         public InputAction @InterAction => m_Wrapper.m_Player_InterAction;
         public InputAction @SpawnChest => m_Wrapper.m_Player_SpawnChest;
+        public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -325,6 +348,9 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
             @SpawnChest.started += instance.OnSpawnChest;
             @SpawnChest.performed += instance.OnSpawnChest;
             @SpawnChest.canceled += instance.OnSpawnChest;
+            @Inventory.started += instance.OnInventory;
+            @Inventory.performed += instance.OnInventory;
+            @Inventory.canceled += instance.OnInventory;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -350,6 +376,9 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
             @SpawnChest.started -= instance.OnSpawnChest;
             @SpawnChest.performed -= instance.OnSpawnChest;
             @SpawnChest.canceled -= instance.OnSpawnChest;
+            @Inventory.started -= instance.OnInventory;
+            @Inventory.performed -= instance.OnInventory;
+            @Inventory.canceled -= instance.OnInventory;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -376,5 +405,6 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         void OnSkill(InputAction.CallbackContext context);
         void OnInterAction(InputAction.CallbackContext context);
         void OnSpawnChest(InputAction.CallbackContext context);
+        void OnInventory(InputAction.CallbackContext context);
     }
 }

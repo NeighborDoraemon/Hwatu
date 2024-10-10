@@ -29,5 +29,6 @@ MonoBehaviour:
   - {x: 4.5, y: -1.35, z: 0}
   - {x: -1.5, y: -1.35, z: 0}
   - {x: -3.5, y: -1.35, z: 0}
+  v_CardBox_SpawnPoint: {x: 2, y: -1.35, z: 0}
   Next_To_Kill: 0
   Clear_and_Next: 0

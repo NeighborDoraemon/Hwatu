@@ -7,6 +7,8 @@ public class Enemy_Generator : MonoBehaviour
     [SerializeField]
     private GameObject Enemy_Prefab;
     [SerializeField]
+    private GameObject CardBox_Prefab;
+    [SerializeField]
     private Map_Value[] ScObj_Map;
 
 
@@ -83,6 +85,10 @@ public class Enemy_Generator : MonoBehaviour
 
                         Wave_Count = 1;
                         Is_Room_Clear = true;
+
+                        Vector3 cardBox_SpawnPoint = ScObj_Map[i_Room_Number].v_CardBox_SpawnPoint;
+                        Instantiate(CardBox_Prefab, cardBox_SpawnPoint, Quaternion.identity);
+
                         break;
                     }
             }

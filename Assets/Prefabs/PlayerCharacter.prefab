@@ -204,34 +204,36 @@ MonoBehaviour:
   movementSpeed: 5
   jumpPower: 5
   health: 100
-  attackDamage: 25
+  attackDamage: 100
+  attackRange: 0.4
+  comboTime: 0.5
+  attack_Cooldown: 1
+  last_Attack_Time: 0
+  last_ComboAttck_Time: 0
+  isAttacking: 0
+  cur_AttackCount: 0
+  max_AttackCount: 0
+  hitCollider_x: 0.5
+  hitCollider_y: 0.4
+  arrowPrefab: {fileID: 4150010414422937313, guid: f0b0b59cd52bfc042b9814c335d2fbde, type: 3}
+  firePoint: {fileID: 5462922738750165385}
+  arrowSpeed: 10
+  skill_Cooldown: 1
+  last_Skill_Time: 0
   card_UI_Manager: {fileID: 0}
   card_Value: {fileID: 0}
   sprite_Renderer: {fileID: 0}
   card_Inventory:
   - {fileID: 0}
   - {fileID: 0}
-  maxJumpCount: 2
+  maxJumpCount: 1
   teleporting_Distance: 3
-  teleporting_CoolTime: 3
-  projectilePrefab: {fileID: 4150010414422937313, guid: f0b0b59cd52bfc042b9814c335d2fbde, type: 3}
-  firePoint: {fileID: 5462922738750165385}
-  projectileSpeed: 10
-  skillCooldown: 1
-  lastSkillTime: 0
-  attackRange: 0.4
-  comboTime: 0.5
-  attackCooldown: 0.5
-  hitCollider_x: 0.5
-  hitCollider_y: 0.4
+  teleporting_CoolTime: 1
   chestPrefab: {fileID: 939207004396396238, guid: 1c8cb64843e5c5346999c41c800924ef, type: 3}
   spawnPoint: {fileID: 7421354220885094674}
   map_Manager: {fileID: 0}
-  groundCheck: {fileID: 7421354220885094674}
-  gorundCheck_Radius: 0.3
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
+  animator: {fileID: 0}
+  isGrounded: 0
 --- !u!95 &1742070725938111941
 Animator:
   serializedVersion: 5
