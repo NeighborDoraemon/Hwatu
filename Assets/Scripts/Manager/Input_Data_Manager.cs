@@ -11,6 +11,8 @@ public enum Key_Enum { Left = 0, Right = 1, Jump = 2, Teleport = 3, Attack = 4, 
 
 public class Input_Data_Manager : MonoBehaviour
 {
+    private Player_InputActions inputActions;
+
     [Header("Lists")]
     [SerializeField] private List<InputActionReference> Player_Input_List = new List<InputActionReference>();
     [SerializeField] private List<Text> Input_Text = new List<Text>();
@@ -18,6 +20,7 @@ public class Input_Data_Manager : MonoBehaviour
 
     [Header("Key Change")]
     [SerializeField] private PlayerInput player_Input;
+    [SerializeField] private PlayerCharacter_Controller player_Con;
 
     private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
 

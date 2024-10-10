@@ -3445,6 +3445,7 @@ MonoBehaviour:
   - {fileID: 801728523}
   - {fileID: 323783472}
   player_Input: {fileID: 1703342912}
+  player_Con: {fileID: 0}
   Main_Can: {fileID: 206126145}
   Option_Can: {fileID: 616524313}
 --- !u!4 &1703342914

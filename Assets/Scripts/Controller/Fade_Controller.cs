@@ -46,6 +46,13 @@ public class Fade_Controller : MonoBehaviour
         Invoke("Scene_Move", Fade_Time);
     }
 
+    public void Scene_Reload_Fade()
+    {
+        Fade_Canvas.gameObject.SetActive(true);
+        StartCoroutine(Fade(false));
+        Invoke("Scene_Reload", Fade_Time);
+    }
+
     private IEnumerator Fade(bool In_or_Out)
     {
         Fade_Image.gameObject.SetActive(true);
@@ -100,6 +107,18 @@ public class Fade_Controller : MonoBehaviour
         else if (SceneManager.GetActiveScene().name == "MainScene")
         {
             SceneManager.LoadScene("Start_Scene");
+        }
+    }
+
+    private void Scene_Reload()
+    {
+        if (SceneManager.GetActiveScene().name == "Start_Scene")
+        {
+            SceneManager.LoadScene("Start_Scene");
+        }
+        else if (SceneManager.GetActiveScene().name == "MainScene")
+        {
+            SceneManager.LoadScene("MainScene");
         }
     }
 

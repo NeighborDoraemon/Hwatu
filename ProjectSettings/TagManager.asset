@@ -11,6 +11,9 @@ TagManager:
   - Portal
   - Enemy
   - Chest
+  - Walls
+  - OneWayPlatform
+  - NPC
   layers:
   - Default
   - TransparentFX
@@ -23,7 +26,7 @@ TagManager:
   - Item
   - Enemy
   - Character
-  - 
+  - Walls
   - 
   - 
   - 

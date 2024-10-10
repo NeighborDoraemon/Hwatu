@@ -18,7 +18,7 @@ public class Enemy_Generator : MonoBehaviour
     [HideInInspector]
     public static int i_Room_Number = 0;
 
-    private int Wave_Count = 1;
+    private int Wave_Count = 4;
     [HideInInspector]
     public static int i_Enemy_Count = 0;
 
@@ -91,9 +91,10 @@ public class Enemy_Generator : MonoBehaviour
 
     protected void Check_Need_Spawn() //적 전부 파괴 시 다음Wave로 올리고 스폰을 True로 변경
     { 
-        if (i_Enemy_Count == 0 && Is_Room_Clear == false)
+        if (i_Enemy_Count <= 0 && Is_Room_Clear == false)
         {
             //Debug.Log("Enemy All Died");
+            i_Enemy_Count = 0;
             Wave_Count++;
             Is_Next_Spawn = true;
         }

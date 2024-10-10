@@ -35,12 +35,12 @@ public class Map_Manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Use_Portal();
+        //Use_Portal();
     }
 
-    private void Use_Portal()
+    public void Use_Portal()
     {
-        if (Input.GetKeyDown(KeyCode.W))
+        //if (Input.GetKeyDown(KeyCode.W))
         {
             if (IsOnPortal && Enemy_Generator.Is_Room_Clear == true && ScObj_Not_Used_Map_Value.Count != 0) //맵 클리어시에만 이동 가능하도록 변경
             {
@@ -107,8 +107,8 @@ public class Map_Manager : MonoBehaviour
                 ScObj_Not_Used_Map_Value.Add(Map_Dataes[i]);
                 //Debug.Log(ScObj_Not_Used_Map_Value[i]);
             }
-            Debug.Log("List Reset");
+            //Debug.Log("List Reset");
         }
-        ScObj_Not_Used_Map_Value.RemoveAt(0);
+        //ScObj_Not_Used_Map_Value.RemoveAt(0);
     }
 }

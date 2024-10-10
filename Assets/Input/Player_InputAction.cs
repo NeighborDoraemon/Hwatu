@@ -89,6 +89,24 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DownJump"",
+                    ""type"": ""Button"",
+                    ""id"": ""b120472f-3709-4e41-829d-c295a72a67d3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Game_Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""807241ba-1172-4f3f-8525-02e76598c311"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -190,6 +208,28 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""SpawnChest"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d9a6087c-b7a9-4348-86b4-3b2e631b076c"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DownJump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b87d5a3f-56ce-49a0-9d5e-6de3a8c6cbf7"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Game_Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -211,6 +251,8 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         m_Player_Skill = m_Player.FindAction("Skill", throwIfNotFound: true);
         m_Player_InterAction = m_Player.FindAction("InterAction", throwIfNotFound: true);
         m_Player_SpawnChest = m_Player.FindAction("SpawnChest", throwIfNotFound: true);
+        m_Player_DownJump = m_Player.FindAction("DownJump", throwIfNotFound: true);
+        m_Player_Game_Pause = m_Player.FindAction("Game_Pause", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
     }
@@ -281,6 +323,8 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Skill;
     private readonly InputAction m_Player_InterAction;
     private readonly InputAction m_Player_SpawnChest;
+    private readonly InputAction m_Player_DownJump;
+    private readonly InputAction m_Player_Game_Pause;
     public struct PlayerActions
     {
         private @Player_InputActions m_Wrapper;
@@ -292,6 +336,8 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         public InputAction @Skill => m_Wrapper.m_Player_Skill;
         public InputAction @InterAction => m_Wrapper.m_Player_InterAction;
         public InputAction @SpawnChest => m_Wrapper.m_Player_SpawnChest;
+        public InputAction @DownJump => m_Wrapper.m_Player_DownJump;
+        public InputAction @Game_Pause => m_Wrapper.m_Player_Game_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -322,6 +368,12 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
             @SpawnChest.started += instance.OnSpawnChest;
             @SpawnChest.performed += instance.OnSpawnChest;
             @SpawnChest.canceled += instance.OnSpawnChest;
+            @DownJump.started += instance.OnDownJump;
+            @DownJump.performed += instance.OnDownJump;
+            @DownJump.canceled += instance.OnDownJump;
+            @Game_Pause.started += instance.OnGame_Pause;
+            @Game_Pause.performed += instance.OnGame_Pause;
+            @Game_Pause.canceled += instance.OnGame_Pause;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -347,6 +399,12 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
             @SpawnChest.started -= instance.OnSpawnChest;
             @SpawnChest.performed -= instance.OnSpawnChest;
             @SpawnChest.canceled -= instance.OnSpawnChest;
+            @DownJump.started -= instance.OnDownJump;
+            @DownJump.performed -= instance.OnDownJump;
+            @DownJump.canceled -= instance.OnDownJump;
+            @Game_Pause.started -= instance.OnGame_Pause;
+            @Game_Pause.performed -= instance.OnGame_Pause;
+            @Game_Pause.canceled -= instance.OnGame_Pause;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -411,6 +469,8 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         void OnSkill(InputAction.CallbackContext context);
         void OnInterAction(InputAction.CallbackContext context);
         void OnSpawnChest(InputAction.CallbackContext context);
+        void OnDownJump(InputAction.CallbackContext context);
+        void OnGame_Pause(InputAction.CallbackContext context);
     }
     public interface IMenuActions
     {
