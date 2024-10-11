@@ -27,9 +27,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     [Header("Map_Manager")]
     [SerializeField]
     private Map_Manager map_Manager;
-
-    [HideInInspector]
-    public Animator animator;
     [HideInInspector]
     public bool isGrounded;
 
@@ -55,7 +52,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         inputActions.Player.SpawnChest.performed += ctx => Spawn_Chest();
 
-        attack_Strategy = new Base_Attack_Strategy(this);
+        Set_Weapon(0);
     }
     private void OnEnable()
     {
@@ -226,7 +223,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (isAttacking)
         {
-            if (Time.time - last_ComboAttck_Time > comboTime)
+            if (Time.time - last_ComboAttack_Time > comboTime)
             {
                 isAttacking = false;
                 cur_AttackCount = 0;
@@ -246,9 +243,12 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public void ResetAttack() // 애니메이션 호출용 이벤트 함수
     {
-        isAttacking = false;
-        cur_AttackCount = 0;
-        Debug.Log("공격 리셋");
+        if (cur_AttackCount >= max_AttackCount)
+        {
+            isAttacking = false;
+            cur_AttackCount = 0;
+            last_Attack_Time = Time.time;
+        }
     }
     public void ResetCombo() // 애니메이션 호출용 이벤트 함수
     {

@@ -7,124 +7,61 @@ public interface IAttack_Strategy
     void Attack();
     void Skill();
 }
-public class Base_Attack_Strategy : IAttack_Strategy // ¸ÁÅë ¹«±â
+
+public class Weapon_Attack_Strategy : IAttack_Strategy
 {
     private PlayerCharacter_Controller player;
+    private Weapon_Data weapon_Data;
 
-    public Base_Attack_Strategy(PlayerCharacter_Controller player)
+    public Weapon_Attack_Strategy(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         this.player = player;
-        player.Set_AttackCooldown(1f);
-        player.Set_Max_AttackCount(1);
-        player.animator.SetLayerWeight(1, 1);
-        player.animator.SetLayerWeight(2, 0);
+        this.weapon_Data = weapon_Data;
+
+        player.animator.runtimeAnimatorController = weapon_Data.overrideController;
+
+        player.attack_Cooldown = weapon_Data.attackCooldown;
+        player.max_AttackCount = weapon_Data.max_Attack_Count;
+        player.skill_Cooldown = weapon_Data.skillCooldown;
+
     }
 
-    public void Attack()
+    public void Attack() 
     {
         if (!player.isGrounded) return;
 
         if (Time.time >= player.last_Attack_Time + player.attack_Cooldown)
         {
-            player.animator.SetTrigger("Attack_1");
-            player.isAttacking = true;
-            player.cur_AttackCount++;
-            player.last_ComboAttck_Time = Time.time;
-            player.last_Attack_Time = Time.time;
-        }
-    }
-
-    public void Skill()
-    {
-        if (Time.time >= player.last_Skill_Time + player.skill_Cooldown)
-        {
-            player.animator.SetTrigger("Skill");
-
-            player.last_Skill_Time = Time.time;
-        }
-    }
-}
-public class Base_Two_Attack_Strategy : IAttack_Strategy // ²ý ¹«±â
-{
-    private PlayerCharacter_Controller player;
-
-    public Base_Two_Attack_Strategy(PlayerCharacter_Controller player)
-    {
-        this.player = player;
-        player.Set_AttackCooldown(2f);
-        player.Set_Max_AttackCount(2);
-        player.animator.SetLayerWeight(1, 1);
-        player.animator.SetLayerWeight(2, 0);
-    }
-    public void Attack()
-    {
-        if (!player.isGrounded) return;
-
-        if (Time.time >= player.last_Attack_Time + player.attack_Cooldown)
-        {
-            player.animator.SetTrigger("Attack_1");
-            player.isAttacking = true;
-            player.cur_AttackCount++;
-            player.last_ComboAttck_Time = Time.time;
-            player.last_Attack_Time = Time.time;
-        }
-        else if (player.isAttacking && player.cur_AttackCount == 1 && Time.time - player.last_ComboAttck_Time <= player.comboTime)
-        {
-            player.animator.SetTrigger("Attack_2");
-            player.isAttacking = true;
-            player.cur_AttackCount++;
-            player.last_ComboAttck_Time = Time.time;
-        }
-    }
-
-    public void Skill()
-    {
-        if (Time.time >= player.last_Skill_Time + player.skill_Cooldown)
-        {
-            player.animator.SetTrigger("Skill");
-
-            player.last_Skill_Time = Time.time;
-        }
-
-    }
-}
-
-public class Base_Three_Attack_Strategy : IAttack_Strategy // °©¿À ¹«±â
-{
-    private PlayerCharacter_Controller player;
-
-    public Base_Three_Attack_Strategy(PlayerCharacter_Controller player)
-    {
-        this.player = player;
-        player.Set_AttackCooldown(2.5f);
-        player.Set_Max_AttackCount(3);
-        player.animator.SetLayerWeight(1, 1);
-        player.animator.SetLayerWeight(2, 0);
-    }
-
-    public void Attack()
-    {
-        if (!player.isGrounded) return;
-
-        if (Time.time >= player.last_Attack_Time + player.attack_Cooldown)
-        {
-            player.animator.SetTrigger("Attack_1");
+            player.animator.SetTrigger(weapon_Data.attack_Trigger);
             player.isAttacking = true;
             player.cur_AttackCount = 1;
-            player.last_ComboAttck_Time = Time.time;
+            player.last_ComboAttack_Time = Time.time;
             player.last_Attack_Time = Time.time;
         }
-        else if (player.isAttacking && player.cur_AttackCount == 1 && Time.time - player.last_ComboAttck_Time <= player.comboTime)
+        else if (player.isAttacking && player.cur_AttackCount < weapon_Data.max_Attack_Count
+            && Time.time - player.last_ComboAttack_Time <= player.comboTime && player.cur_AttackCount == 1)
         {
-            player.animator.SetTrigger("Attack_2");
+            player.animator.SetTrigger($"Attack_{player.cur_AttackCount + 1}");
             player.cur_AttackCount++;
-            player.last_ComboAttck_Time = Time.time;
+            player.last_ComboAttack_Time += Time.time;
+            player.last_Attack_Time = Time.time;
         }
-        else if (player.isAttacking && player.cur_AttackCount == 2 && Time.time - player.last_ComboAttck_Time <= player.comboTime)
+        else if (player.isAttacking && player.cur_AttackCount < weapon_Data.max_Attack_Count
+            && Time.time - player.last_ComboAttack_Time <- player.comboTime && player.cur_AttackCount == 2)
         {
-            player.animator.SetTrigger("Attack_3");
+            player.animator.SetTrigger($"Attack_{player.cur_AttackCount + 1}");
             player.cur_AttackCount++;
-            player.last_ComboAttck_Time = Time.time;
+            player.last_ComboAttack_Time += Time.time;
+            player.last_Attack_Time = Time.time;
+        }
+        else
+        {
+            if (player.isAttacking && player.cur_AttackCount >= weapon_Data.max_Attack_Count)
+            {
+                player.isAttacking = false;
+                player.cur_AttackCount = 0;
+                player.last_Attack_Time = Time.time;
+            }
         }
     }
 
@@ -132,39 +69,8 @@ public class Base_Three_Attack_Strategy : IAttack_Strategy // °©¿À ¹«±â
     {
         if (Time.time >= player.last_Skill_Time + player.skill_Cooldown)
         {
-            player.animator.SetTrigger("Skill");
-
+            player.animator.SetTrigger(weapon_Data.skill_Trigger);
             player.last_Skill_Time = Time.time;
         }
-
-    }
-}
-public class Three_Eight_Attack_Strategy : IAttack_Strategy
-{
-    private PlayerCharacter_Controller player;
-
-    public Three_Eight_Attack_Strategy(PlayerCharacter_Controller player)
-    {
-        this.player = player;
-        player.Set_AttackCooldown(1f);
-        player.Set_Max_AttackCount(1);
-        player.animator.SetLayerWeight(1, 0);
-        player.animator.SetLayerWeight(2, 1);
-    }
-
-    public void Attack()
-    {
-        if (!player.isGrounded) return;
-
-        if (Time.time >= player.last_Attack_Time + player.attack_Cooldown)
-        {
-            player.animator.SetTrigger("Attack_1");
-
-            player.last_Attack_Time = Time.time;
-        }
-    }
-    public void Skill()
-    {
-
     }
 }

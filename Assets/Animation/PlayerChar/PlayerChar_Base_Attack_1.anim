@@ -87,22 +87,22 @@ AnimationClip:
   m_Events:
   - time: 0.33333334
     functionName: Check_Enemies_Collider
-    data: 10,10
-    objectReferenceParameter: {fileID: 11500000, guid: f760e980f6fac4b4b943bc9dcda615de, type: 3}
+    data: 0.5,0.5
+    objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.5
     functionName: ResetAttack
     data: 
-    objectReferenceParameter: {fileID: 11500000, guid: f760e980f6fac4b4b943bc9dcda615de, type: 3}
+    objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.5
     functionName: ResetCombo
     data: 
-    objectReferenceParameter: {fileID: 11500000, guid: f760e980f6fac4b4b943bc9dcda615de, type: 3}
+    objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

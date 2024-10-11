@@ -14,7 +14,7 @@ public class SanSam_Effect : ItemEffect
         {
             player.health = player.max_Health;
         }
-        Debug.Log("체력이 회복되었습니다.");
+        //Debug.Log("체력이 회복되었습니다.");
     }
 
     public override void RemoveEffect(PlayerCharacter_Controller player)

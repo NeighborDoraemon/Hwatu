@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PlayerChar_Base_Attack_2
+  m_Name: PlayerChar_1_DD_Attack
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,17 +21,17 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 7441861488978599509, guid: aec5070f5cb24b24e9fbdf06b0d1faf8, type: 3}
+      value: {fileID: 6934013284892070054, guid: c50b517797d93614aac4ca58aaf97355, type: 3}
     - time: 0.083333336
-      value: {fileID: 8288915215451595207, guid: aec5070f5cb24b24e9fbdf06b0d1faf8, type: 3}
+      value: {fileID: -7957278214813060823, guid: c50b517797d93614aac4ca58aaf97355, type: 3}
     - time: 0.16666667
-      value: {fileID: 4668938655123782945, guid: aec5070f5cb24b24e9fbdf06b0d1faf8, type: 3}
+      value: {fileID: 6934013284892070054, guid: c50b517797d93614aac4ca58aaf97355, type: 3}
     - time: 0.25
-      value: {fileID: 5683539909772271658, guid: aec5070f5cb24b24e9fbdf06b0d1faf8, type: 3}
+      value: {fileID: 4976274401295337057, guid: c50b517797d93614aac4ca58aaf97355, type: 3}
     - time: 0.33333334
-      value: {fileID: 5764228812365489207, guid: aec5070f5cb24b24e9fbdf06b0d1faf8, type: 3}
+      value: {fileID: -5639509438907974925, guid: c50b517797d93614aac4ca58aaf97355, type: 3}
     - time: 0.41666666
-      value: {fileID: -1191510351576865934, guid: aec5070f5cb24b24e9fbdf06b0d1faf8, type: 3}
+      value: {fileID: 6934013284892070054, guid: c50b517797d93614aac4ca58aaf97355, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -54,12 +54,12 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 7441861488978599509, guid: aec5070f5cb24b24e9fbdf06b0d1faf8, type: 3}
-    - {fileID: 8288915215451595207, guid: aec5070f5cb24b24e9fbdf06b0d1faf8, type: 3}
-    - {fileID: 4668938655123782945, guid: aec5070f5cb24b24e9fbdf06b0d1faf8, type: 3}
-    - {fileID: 5683539909772271658, guid: aec5070f5cb24b24e9fbdf06b0d1faf8, type: 3}
-    - {fileID: 5764228812365489207, guid: aec5070f5cb24b24e9fbdf06b0d1faf8, type: 3}
-    - {fileID: -1191510351576865934, guid: aec5070f5cb24b24e9fbdf06b0d1faf8, type: 3}
+    - {fileID: 6934013284892070054, guid: c50b517797d93614aac4ca58aaf97355, type: 3}
+    - {fileID: -7957278214813060823, guid: c50b517797d93614aac4ca58aaf97355, type: 3}
+    - {fileID: 6934013284892070054, guid: c50b517797d93614aac4ca58aaf97355, type: 3}
+    - {fileID: 4976274401295337057, guid: c50b517797d93614aac4ca58aaf97355, type: 3}
+    - {fileID: -5639509438907974925, guid: c50b517797d93614aac4ca58aaf97355, type: 3}
+    - {fileID: 6934013284892070054, guid: c50b517797d93614aac4ca58aaf97355, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
@@ -87,7 +87,7 @@ AnimationClip:
   m_Events:
   - time: 0.33333334
     functionName: Check_Enemies_Collider
-    data: 0.5,0.5
+    data: 1,0.5
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

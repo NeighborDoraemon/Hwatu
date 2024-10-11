@@ -10,7 +10,7 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
     public void AddItem(Item newItem)
     {
         player_Inventory.Add(newItem);  // 아이템 추가
-        Debug.Log($"{newItem.itemName} 인벤토리에 추가됨.");
+        //Debug.Log($"{newItem.itemName} 인벤토리에 추가됨.");
 
         // 효과 적용
         newItem.ApplyEffect(this.GetComponent<PlayerCharacter_Controller>());
@@ -20,6 +20,6 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
     public void RemoveItem(Item item)
     {
         player_Inventory.Remove(item);  // 인벤토리에서 아이템 제거
-        Debug.Log($"{item.itemName} 인벤토리에서 제거됨.");
+        //Debug.Log($"{item.itemName} 인벤토리에서 제거됨.");
     }
 }
