@@ -18,6 +18,8 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
 
     protected bool isCombDone = false; // 화투 조합이 이루어졌는지 체크하는 변수
 
+    [HideInInspector] public bool is_Start_Spawn = true; // 시작 지급인지 확인하는 변수 (윤혁)
+
     public void AddCard(GameObject card) // 화투 저장 함수
     {
         isCombDone = false;
@@ -45,13 +47,18 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
             card_Inventory[cardCount] = card;
             cardCount++;
             Debug.Log("카드 추가" + card.name);
+
+            if (cardCount == card_Inventory.Length) // 첫 획득 시 카드가 완전히 사라지지 않도록 1회성 방지 (윤혁, 임시)
+            {
+                is_Start_Spawn = false;
+            }
         }
 
         UpdateCardUI();
         Card_Combination();
 
         // 카드 수집 후 필드에 남아있는 카드 삭제
-        if (Object_Manager.instance != null)
+        if (Object_Manager.instance != null && !is_Start_Spawn)
         {
             Sprite collected_Sprite = card.GetComponent<SpriteRenderer>().sprite;
 

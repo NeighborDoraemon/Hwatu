@@ -25,6 +25,9 @@ public class Enemy_Generator : MonoBehaviour
     public static int i_Enemy_Count = 0;
 
 
+    private bool is_Now_Started = false;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -54,6 +57,7 @@ public class Enemy_Generator : MonoBehaviour
                             Instantiate(Enemy_Prefab, v_Spawns, Quaternion.identity);
                             i_Enemy_Count++;
                         }
+                        is_Now_Started = true;
                         Is_Next_Spawn = false;
                         break;
                     }
@@ -85,10 +89,11 @@ public class Enemy_Generator : MonoBehaviour
 
                         Wave_Count = 1;
                         Is_Room_Clear = true;
-
-                        Vector3 cardBox_SpawnPoint = ScObj_Map[i_Room_Number].v_CardBox_SpawnPoint;
-                        Instantiate(CardBox_Prefab, cardBox_SpawnPoint, Quaternion.identity);
-
+                        if(is_Now_Started) // 게임 시작 시 바로 스폰되는걸 방지
+                        {
+                            Vector3 cardBox_SpawnPoint = ScObj_Map[i_Room_Number].v_CardBox_SpawnPoint;
+                            Instantiate(CardBox_Prefab, cardBox_SpawnPoint, Quaternion.identity);
+                        }
                         break;
                     }
             }
