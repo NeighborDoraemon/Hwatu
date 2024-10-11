@@ -103,9 +103,15 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
                     ""name"": ""Game_Pause"",
                     ""type"": ""Button"",
                     ""id"": ""807241ba-1172-4f3f-8525-02e76598c311"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Inventory"",
                     ""type"": ""Button"",
-                    ""id"": ""16ba3961-9ab2-418e-94a0-d5ad21fa1992"",
+                    ""id"": ""7592c333-04fc-4c13-8e46-05039ec065e2"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -231,7 +237,12 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Game_Pause"",
-                    ""id"": ""44062545-e103-4eca-90d6-636910edda51"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ac13b261-d39c-4df7-bba7-8d0279e07c9f"",
                     ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -262,9 +273,9 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         m_Player_SpawnChest = m_Player.FindAction("SpawnChest", throwIfNotFound: true);
         m_Player_DownJump = m_Player.FindAction("DownJump", throwIfNotFound: true);
         m_Player_Game_Pause = m_Player.FindAction("Game_Pause", throwIfNotFound: true);
+        m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
-        m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -489,9 +500,9 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         void OnSpawnChest(InputAction.CallbackContext context);
         void OnDownJump(InputAction.CallbackContext context);
         void OnGame_Pause(InputAction.CallbackContext context);
+        void OnInventory(InputAction.CallbackContext context);
     }
     public interface IMenuActions
     {
-        void OnInventory(InputAction.CallbackContext context);
     }
 }

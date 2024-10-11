@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Object_Manager : MonoBehaviour
+public class Second_Object_Manager : MonoBehaviour
 {
-    public static Object_Manager instance { get; private set; } // ½Ì±ÛÅæ
+    public static Second_Object_Manager instance { get; private set; } // ½Ì±ÛÅæ
 
     public GameObject card_Prefab;
     public Card_Value[] card_Values;
@@ -25,7 +25,7 @@ public class Object_Manager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        
+
         instance = this;
         DontDestroyOnLoad(gameObject);
     }
@@ -89,7 +89,7 @@ public class Object_Manager : MonoBehaviour
 
     public void Destroy_All_Cards(GameObject card_To_Keep = null) // ÇöÀç ¼ÒÈ¯µÈ Ä«µå »èÁ¦ ÇÔ¼ö
     {
-        for (int i = current_Spawned_Card.Count -1; i >= 0; i--)
+        for (int i = current_Spawned_Card.Count - 1; i >= 0; i--)
         {
             GameObject card = current_Spawned_Card[i];
             if (card != null && card != card_To_Keep)

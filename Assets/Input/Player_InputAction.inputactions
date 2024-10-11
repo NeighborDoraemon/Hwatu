@@ -81,9 +81,15 @@
                     "name": "Game_Pause",
                     "type": "Button",
                     "id": "807241ba-1172-4f3f-8525-02e76598c311",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Inventory",
                     "type": "Button",
-                    "id": "16ba3961-9ab2-418e-94a0-d5ad21fa1992",
+                    "id": "7592c333-04fc-4c13-8e46-05039ec065e2",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -209,7 +215,12 @@
                     "processors": "",
                     "groups": "",
                     "action": "Game_Pause",
-                    "id": "44062545-e103-4eca-90d6-636910edda51",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ac13b261-d39c-4df7-bba7-8d0279e07c9f",
                     "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",

@@ -28,8 +28,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     [SerializeField] private SpriteRenderer player_render;
 
     [Header("텔레포트")]
-    public float teleporting_Distance = 3.0f; // 순간이동 거리 변수
-    public float teleporting_CoolTime = 3.0f; // 순간이동 쿨타임 변수
     bool canTeleporting = true; // 순간이동 조건 확인 변수
 
     [Header("상자 소환")]
@@ -61,26 +59,13 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 
-        //inputActions = new Player_InputActions();
-
-        //inputActions.Player.Move.performed += ctx => movement = ctx.ReadValue<Vector2>();
-        //inputActions.Player.Move.canceled += ctx => movement = Vector2.zero;
-
-        //inputActions.Player.Jump.performed += ctx => Jump();
-
+        inputActions = new Player_InputActions();
+        
         //inputActions.Player.Teleportation.performed += ctx => Teleportation();
 
-        //inputActions.Player.Attack.performed += ctx => Short_Range_Attack();
-
-        //inputActions.Player.Skill.performed += ctx => Skill_Attack();
-        inputActions.Player.Teleportation.performed += ctx => Teleportation();
-
-        inputActions.Player.Attack.performed += ctx => Perform_Attack();
+        //inputActions.Player.Attack.performed += ctx => Perform_Attack();
 
         //inputActions.Player.InterAction.performed += ctx => InterAction();
-
-        //inputActions.Player.SpawnChest.performed += ctx => Spawn_Chest();
-        inputActions.Player.InterAction.performed += ctx => InterAction();
 
         inputActions.Player.SpawnChest.performed += ctx => Spawn_Chest();
 
@@ -238,7 +223,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 else if (current_Item.tag == "Chest")
                 {
                     Debug.Log("상자와 상호작용");
-                    CardBox chest = current_Item.GetComponent<CardBox>();
+                    Spawn_Box chest = current_Item.GetComponent<Spawn_Box>();
                     if (chest != null)
                     {
                         chest.Request_Spawn_Cards();
@@ -329,17 +314,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 }
                 canTeleporting = false;
             }
-
-            if (!canTeleporting)
-            {
-                teleporting_CoolTime -= Time.deltaTime;
-                if (teleporting_CoolTime <= 0.0f)
-                {
-                    teleporting_CoolTime = 3.0f;
-                    canTeleporting = true;
-                    Debug.Log("순간이동 가능");
-                }
-            }
         }
     }
 
@@ -401,8 +375,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
         {
+            Debug.Log("Attack Call");
             if (max_AttackCount > cur_AttackCount)
             {
+                Debug.Log("Attack Start");
                 attack_Strategy.Attack();
             }
             else
@@ -554,12 +530,24 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             isGrounded = true;
         }
+        else if (other.gameObject.CompareTag("OneWayPlatform"))
+        {
+            isGrounded = true;
+            current_Platform = other.gameObject;
+        }
     }
+
+
     private void OnCollisionExit2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Platform"))
         {
             isGrounded = false;
+        }
+        else if (other.gameObject.CompareTag("OneWayPlatform"))
+        {
+            isGrounded = false;
+            current_Platform = null;
         }
     }
 
@@ -606,24 +594,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("OneWayPlatform"))
-        {
-            current_Platform = collision.gameObject;
-
-            jumpCount = 0;
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("OneWayPlatform"))
-        {
-            current_Platform = null;
-        }
-    }
-
     private void OnDrawGizmosSelected() // 디버그용 공격 범위 그리기
     {
         Vector2 boxSize = new Vector2(hitCollider_x, hitCollider_y);
@@ -637,7 +607,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         Debug.Log("플레이어 데미지 계산");
         health = health - Damage;
-        Player_Health_Bar.fillAmount = (float)health / Max_Health;
+        Player_Health_Bar.fillAmount = (float)health / max_Health;
         Debug.Log("계산 완료");
 
         if (health <= 0)

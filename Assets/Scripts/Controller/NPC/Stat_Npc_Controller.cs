@@ -31,7 +31,7 @@ public class Stat_Npc_Controller : MonoBehaviour
     public void Btn_Health_Up()
     {
         player_Con.health += 10;
-        player_Con.Max_Health += 10;
+        player_Con.max_Health += 10;
     }
 
     public void Btn_Attack_Up()
