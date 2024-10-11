@@ -19,6 +19,9 @@ public class Map_Value : ScriptableObject
     public List<Vector3> v_Enemy_Spawn_Points_02;
     public List<Vector3> v_Enemy_Spawn_Points_03;
 
+    [Header("CardBox Spawn Point")]
+    public Vector3 v_CardBox_SpawnPoint;
+
     [Header("About Spawn")]
     public bool Next_To_Kill;
 

@@ -103,6 +103,9 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
                     ""name"": ""Game_Pause"",
                     ""type"": ""Button"",
                     ""id"": ""807241ba-1172-4f3f-8525-02e76598c311"",
+                    ""name"": ""Inventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""16ba3961-9ab2-418e-94a0-d5ad21fa1992"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -228,6 +231,12 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Game_Pause"",
+                    ""id"": ""44062545-e103-4eca-90d6-636910edda51"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Inventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -255,6 +264,7 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         m_Player_Game_Pause = m_Player.FindAction("Game_Pause", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
+        m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -325,6 +335,7 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_SpawnChest;
     private readonly InputAction m_Player_DownJump;
     private readonly InputAction m_Player_Game_Pause;
+    private readonly InputAction m_Player_Inventory;
     public struct PlayerActions
     {
         private @Player_InputActions m_Wrapper;
@@ -338,6 +349,7 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         public InputAction @SpawnChest => m_Wrapper.m_Player_SpawnChest;
         public InputAction @DownJump => m_Wrapper.m_Player_DownJump;
         public InputAction @Game_Pause => m_Wrapper.m_Player_Game_Pause;
+        public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -374,6 +386,9 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
             @Game_Pause.started += instance.OnGame_Pause;
             @Game_Pause.performed += instance.OnGame_Pause;
             @Game_Pause.canceled += instance.OnGame_Pause;
+            @Inventory.started += instance.OnInventory;
+            @Inventory.performed += instance.OnInventory;
+            @Inventory.canceled += instance.OnInventory;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -405,6 +420,9 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
             @Game_Pause.started -= instance.OnGame_Pause;
             @Game_Pause.performed -= instance.OnGame_Pause;
             @Game_Pause.canceled -= instance.OnGame_Pause;
+            @Inventory.started -= instance.OnInventory;
+            @Inventory.performed -= instance.OnInventory;
+            @Inventory.canceled -= instance.OnInventory;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -474,5 +492,6 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
     }
     public interface IMenuActions
     {
+        void OnInventory(InputAction.CallbackContext context);
     }
 }
