@@ -78,7 +78,7 @@ public class Map_Manager : MonoBehaviour
             //i_room_Num = ScObj_Not_Used_Map_Value[Randoms].i_Map_Counter;
         }
 
-        if (v_Next_SpawnPoint == v_Now_Portal)
+        //if (v_Next_SpawnPoint == v_Now_Portal)
         {
             //while (Obj_NextPortal.name == Which_Portal.name /*|| Check_Use_Portal(Obj_NextPortal)*/)
             {

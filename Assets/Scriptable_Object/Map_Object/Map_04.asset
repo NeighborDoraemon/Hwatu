@@ -18,7 +18,7 @@ MonoBehaviour:
   v_Max_Map_Vector: {x: 0, y: 0, z: 0}
   v_Enemy_Spawn_Points_01:
   - {x: 40, y: 20.9, z: 0}
-  - {x: 37, y: 19.8, z: 0}
+  - {x: 38.5, y: 19.8, z: 0}
   - {x: 42, y: 22.25, z: 0}
   - {x: 44, y: 18.55, z: 0}
   - {x: 43, y: 18.55, z: 0}

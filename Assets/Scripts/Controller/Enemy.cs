@@ -50,6 +50,7 @@ public class Enemy : MonoBehaviour
     private bool is_Dead = false;
 
 
+
     private void Start()
     {
         e_Generator = FindObjectOfType<Enemy_Generator>();
