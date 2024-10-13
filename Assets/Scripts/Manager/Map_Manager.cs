@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 //¸Ê ÀÌµ¿ ÃÑ°ý ¸Å´ÏÀú #±èÀ±Çõ
 public class Map_Manager : MonoBehaviour
@@ -30,6 +31,25 @@ public class Map_Manager : MonoBehaviour
     void Start()
     {
         Reset_PortalList();
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Reset_PortalList();
+        i_room_Num = 0;
+        ScObj_Not_Used_Map_Value = new List<Map_Value>();
+
+        IsOnPortal = false;
     }
 
     // Update is called once per frame
