@@ -243,18 +243,28 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 else if (current_Item.tag == "Item")
                 {
                     // 아이템과 상호작용
+                    Debug.Log("아이템 사용 시도");
                     Item item = current_Item.GetComponent<Item_Prefab>().itemData;  // 아이템 데이터 가져오기 (현재 아이템의 ScriptableObject)
 
                     if (item != null)
                     {
-                        // 플레이어의 인벤토리에 아이템 추가
-                        AddItem(item);
+                        Debug.Log($"아이템 적용 {item.name}");
+                        if (item.isConsumable)
+                        {
+                            PlayerCharacter_Controller player = this.GetComponent<PlayerCharacter_Controller>();
+                            if (player != null) 
+                            {
+                                item.ApplyEffect(player);
+                                Debug.Log($"아이템 효과 적용");
+                            }
+                            Destroy(current_Item);
+                        }
+                        else
+                        {
+                            AddItem(item);
 
-                        // 아이템의 효과 적용
-                        item.ApplyEffect(this);
-
-                        // 아이템을 씬에서 삭제
-                        Destroy(current_Item);
+                            Destroy(current_Item);
+                        }
                     }
                     else
                     {

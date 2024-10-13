@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5734b905198b4d44991fc94ccf165ab, type: 3}
   m_Name: SanSam_Effect
   m_EditorClassIdentifier: 
-  heal_Amount: 50
+  heal_Amount: -50
