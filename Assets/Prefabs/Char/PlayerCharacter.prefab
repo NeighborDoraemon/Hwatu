@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 3124059131931867968}
   - component: {fileID: 4076679307762721750}
   - component: {fileID: 2132338641781483899}
-  - component: {fileID: 3136608252178593749}
   - component: {fileID: 1742070725938111941}
   - component: {fileID: 5751039594149124802}
+  - component: {fileID: 5418104219592675981}
   m_Layer: 10
   m_Name: PlayerCharacter
   m_TagString: Player
@@ -33,7 +33,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.86, y: -1.03, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8240871130775810756}
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayerID: -1375957023
   m_SortingLayer: 3
   m_SortingOrder: 1
-  m_Sprite: {fileID: 4723107735738678597, guid: 0bd97e23f8b532a4f8969605a3b00a4e, type: 3}
+  m_Sprite: {fileID: 1183158610, guid: 431269a28ed78c34ea524cd96b07c69e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -151,8 +151,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.00094005466, y: 0.0056936145}
-  m_Size: {x: 0.23722357, y: 0.47331583}
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.5, y: 1}
   m_Direction: 0
 --- !u!58 &2132338641781483899
 CircleCollider2D:
@@ -189,51 +189,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.4
---- !u!114 &3136608252178593749
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2826957800242690262}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f760e980f6fac4b4b943bc9dcda615de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementSpeed: 5
-  jumpPower: 5
-  health: 100
-  attackDamage: 100
-  attackRange: 0.4
-  comboTime: 0.5
-  attack_Cooldown: 1
-  last_Attack_Time: 0
-  last_ComboAttck_Time: 0
-  isAttacking: 0
-  cur_AttackCount: 0
-  max_AttackCount: 0
-  hitCollider_x: 0.5
-  hitCollider_y: 0.4
-  arrowPrefab: {fileID: 4150010414422937313, guid: f0b0b59cd52bfc042b9814c335d2fbde, type: 3}
-  firePoint: {fileID: 5462922738750165385}
-  arrowSpeed: 10
-  skill_Cooldown: 1
-  last_Skill_Time: 0
-  card_UI_Manager: {fileID: 0}
-  card_Value: {fileID: 0}
-  sprite_Renderer: {fileID: 0}
-  card_Inventory:
-  - {fileID: 0}
-  - {fileID: 0}
-  maxJumpCount: 1
-  teleporting_Distance: 3
-  teleporting_CoolTime: 1
-  chestPrefab: {fileID: 939207004396396238, guid: 1c8cb64843e5c5346999c41c800924ef, type: 3}
-  spawnPoint: {fileID: 7421354220885094674}
-  map_Manager: {fileID: 0}
-  animator: {fileID: 0}
-  isGrounded: 0
 --- !u!95 &1742070725938111941
 Animator:
   serializedVersion: 5
@@ -268,7 +223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: dbda95714428f6d408cac5e76e009d04, type: 3}
-  m_NotificationBehavior: 0
+  m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -279,12 +234,202 @@ MonoBehaviour:
   m_ControlsChangedEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_ActionEvents: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5418104219592675981}
+        m_TargetAssemblyTypeName: PlayerCharacter_Controller, Assembly-CSharp
+        m_MethodName: Input_Move
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 55cc5e39-a384-45e1-bce6-9b4173acef3f
+    m_ActionName: Player/Move[/Keyboard/leftArrow,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5418104219592675981}
+        m_TargetAssemblyTypeName: PlayerCharacter_Controller, Assembly-CSharp
+        m_MethodName: Input_Jump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: e6b370d4-de23-4d77-b3c1-c9b8f83a2da8
+    m_ActionName: Player/Jump[/Keyboard/x]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5418104219592675981}
+        m_TargetAssemblyTypeName: PlayerCharacter_Controller, Assembly-CSharp
+        m_MethodName: Input_Teleportation
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f4dba388-2964-4bc2-8283-4a0ff62ad4bb
+    m_ActionName: Player/Teleportation[/Keyboard/shift]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5418104219592675981}
+        m_TargetAssemblyTypeName: PlayerCharacter_Controller, Assembly-CSharp
+        m_MethodName: Input_Perform_Attack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 48f73118-29a1-4fdb-b8f4-d113f3f1c2fc
+    m_ActionName: Player/Attack[/Keyboard/z]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5418104219592675981}
+        m_TargetAssemblyTypeName: PlayerCharacter_Controller, Assembly-CSharp
+        m_MethodName: Input_Skill_Attack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c65615cf-54a8-4906-87ac-151d8d01c937
+    m_ActionName: Player/Skill[/Keyboard/a]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5418104219592675981}
+        m_TargetAssemblyTypeName: PlayerCharacter_Controller, Assembly-CSharp
+        m_MethodName: Input_Interaction
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 223d2a50-d662-413b-bb98-15ae7c703861
+    m_ActionName: Player/InterAction[/Keyboard/f]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b7047090-46c1-4fba-bf0a-4faf14b6f1ba
+    m_ActionName: Player/SpawnChest[/Keyboard/p]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5418104219592675981}
+        m_TargetAssemblyTypeName: PlayerCharacter_Controller, Assembly-CSharp
+        m_MethodName: Input_Down_Jump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: b120472f-3709-4e41-829d-c295a72a67d3
+    m_ActionName: Player/DownJump[/Keyboard/downArrow,/Keyboard/x]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5418104219592675981}
+        m_TargetAssemblyTypeName: PlayerCharacter_Controller, Assembly-CSharp
+        m_MethodName: Input_Game_Stop
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 807241ba-1172-4f3f-8525-02e76598c311
+    m_ActionName: Player/Game_Pause[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7592c333-04fc-4c13-8e46-05039ec065e2
+    m_ActionName: Player/Inventory[/Keyboard/tab]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 1220152267481929480}
+--- !u!114 &5418104219592675981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2826957800242690262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eb8770a78580584c9febdda84915a36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapon_Manager: {fileID: 0}
+  animator: {fileID: 0}
+  movementSpeed: 5
+  jumpPower: 5
+  max_Health: 100
+  health: 100
+  attackDamage: 25
+  attackRange: 0.5
+  comboTime: 0.5
+  attack_Cooldown: 1
+  last_Attack_Time: 0
+  last_ComboAttack_Time: 0
+  isAttacking: 0
+  cur_AttackCount: 0
+  max_AttackCount: 0
+  hitCollider_x: 0.2
+  hitCollider_y: 0.4
+  firePoint: {fileID: 5462922738750165385}
+  arrowSpeed: 10
+  skill_Cooldown: 1
+  last_Skill_Time: 0
+  teleporting_Distance: 3
+  teleporting_CoolTime: 3
+  reduced_Attack_Cooldown: 0
+  card_UI_Manager: {fileID: 0}
+  card_Value: {fileID: 0}
+  sprite_Renderer: {fileID: 0}
+  card_Inventory:
+  - {fileID: 0}
+  - {fileID: 0}
+  is_Start_Spawn: 1
+  player_Inventory: []
+  inventoryPanel: {fileID: 0}
+  maxJumpCount: 2
+  Player_Health_Bar: {fileID: 0}
+  pause_Manager: {fileID: 0}
+  player_render: {fileID: 8434130835688464816}
+  chestPrefab: {fileID: 939207004396396238, guid: b0cb8abd034624a47ba1914858bd75b8, type: 3}
+  spawnPoint: {fileID: 7421354220885094674}
+  map_Manager: {fileID: 0}
+  isGrounded: 0
+  player_Collider: {fileID: 4076679307762721750}
 --- !u!1 &2991408550391871391
 GameObject:
   m_ObjectHideFlags: 0

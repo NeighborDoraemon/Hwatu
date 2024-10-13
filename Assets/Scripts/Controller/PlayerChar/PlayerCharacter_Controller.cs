@@ -147,12 +147,12 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (movement.x < 0)
         {
-            transform.localScale = new Vector3(-1f, 1f, 1f);
+            transform.localScale = new Vector3(-0.7f, 0.7f, 1f);
             
         }
         else if (movement.x > 0)
         {
-            transform.localScale = new Vector3(1f, 1f, 1f);
+            transform.localScale = new Vector3(0.7f, 0.7f, 1f);
         }
 
         movement.Normalize();
