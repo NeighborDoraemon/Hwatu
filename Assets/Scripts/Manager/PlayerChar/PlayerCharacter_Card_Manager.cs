@@ -124,7 +124,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                 else if ((card_1.Month == 13 && card_2.Month == 18)
                     || (card_1.Month == 18 && card_2.Month == 13))
                 {
-                    Set_Weapon(3);
+                    Set_Weapon(6);
                     Debug.Log("3 8 ±¤¶¯");
                 }
                 isCombDone = true;
@@ -186,13 +186,13 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                     }
                     else
                     {
-                        Set_Weapon(1);
+                        Set_Weapon(2);
                         Debug.Log((card_1.Month + card_2.Month) % 10 + "²ý");
                     }
                 }
                 else if (card_1.Month + card_2.Month == 9)
                 {
-                    Set_Weapon(2);
+                    Set_Weapon(3);
                     Debug.Log("°©¿À");
                 }
                 else
@@ -220,7 +220,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                     }
                     else
                     {
-                        Set_Weapon(0);
+                        Set_Weapon(1);
                         Debug.Log("¸ÁÅë");
                     }
                 }

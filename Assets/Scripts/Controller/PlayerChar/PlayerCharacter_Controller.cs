@@ -5,8 +5,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using Unity.VisualScripting;
-using UnityEngine.InputSystem;
 
 public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 {
