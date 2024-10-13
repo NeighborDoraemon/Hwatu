@@ -17257,6 +17257,22 @@ PrefabInstance:
       propertyPath: Player_Health_Bar
       value: 
       objectReference: {fileID: 420545958}
+    - target: {fileID: 4076679307762721750, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
+      propertyPath: m_Size.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076679307762721750, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076679307762721750, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
+      propertyPath: m_Offset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076679307762721750, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
+      propertyPath: m_Offset.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5751039594149124802, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
       propertyPath: m_NotificationBehavior
       value: 2
