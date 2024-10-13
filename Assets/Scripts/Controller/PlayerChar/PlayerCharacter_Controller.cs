@@ -205,8 +205,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             Debug.Log("상호작용 호출");
             if (is_Npc_Contack && Now_Contact_Npc != null)
             {
-                if(Now_Contact_Npc.gameObject.name == "Start_Npc")
+                if(Now_Contact_Npc.gameObject.name == "Stat_Npc")
                 {
+                    Debug.Log("Start_Npc");
                     Now_Contact_Npc.GetComponent<Stat_Npc_Controller>().UI_Start();
                 }
                 else if(Now_Contact_Npc.gameObject.name == "Start_Card_Npc")
@@ -601,7 +602,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         if(other.gameObject.tag == "NPC")
         {
             is_Npc_Contack = false;
-            if (Now_Contact_Npc.gameObject.name == "Start_Npc")
+            if (Now_Contact_Npc.gameObject.name == "Stat_Npc")
             { 
                 Now_Contact_Npc.GetComponent<Stat_Npc_Controller>().Btn_Exit(); 
             } //NPC 추가되면 바뀌어야 함 / 아니면 현재 NPC코드를 부모로 두고 파생시켜서 호출해도 됨

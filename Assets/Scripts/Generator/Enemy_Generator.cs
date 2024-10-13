@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Enemy_Generator : MonoBehaviour
 {
@@ -31,6 +32,31 @@ public class Enemy_Generator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Is_Next_Spawn = false;
+        i_Enemy_Count = 0;
+        i_Room_Number = 0;
+
+        Is_Next_Spawn = true;
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("Enemy_Generator Reloaded");
+        Is_Next_Spawn = false;
+        Is_Room_Clear = false;
+        i_Enemy_Count = 0;
+        i_Room_Number = 0;
+
         Is_Next_Spawn = true;
     }
 
