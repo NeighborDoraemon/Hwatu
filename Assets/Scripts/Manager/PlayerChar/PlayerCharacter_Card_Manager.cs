@@ -57,13 +57,14 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
         UpdateCardUI();
         Card_Combination();
 
-        // 카드 수집 후 필드에 남아있는 카드 삭제
+        //카드 수집 후 필드에 남아있는 카드 삭제
         if (Object_Manager.instance != null && !is_Start_Spawn)
         {
             Sprite collected_Sprite = card.GetComponent<SpriteRenderer>().sprite;
 
             Object_Manager.instance.Destroy_All_Cards(card);
             Object_Manager.instance.Remove_From_Spawned_Cards(card);
+            Object_Manager.instance.Destroy_All_Items();
 
             card.SetActive(false);
         }

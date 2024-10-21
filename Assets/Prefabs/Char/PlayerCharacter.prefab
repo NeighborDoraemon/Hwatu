@@ -395,7 +395,7 @@ MonoBehaviour:
   max_Health: 100
   health: 100
   attackDamage: 25
-  attackRange: 0.5
+  attackRange: 0.4
   comboTime: 0.5
   attack_Cooldown: 1
   last_Attack_Time: 0
@@ -425,10 +425,11 @@ MonoBehaviour:
   Player_Health_Bar: {fileID: 0}
   pause_Manager: {fileID: 0}
   player_render: {fileID: 8434130835688464816}
-  chestPrefab: {fileID: 939207004396396238, guid: b0cb8abd034624a47ba1914858bd75b8, type: 3}
+  chestPrefab: {fileID: 939207004396396238, guid: 24e05632e72d6ba48a45d86a62edfa62, type: 3}
   spawnPoint: {fileID: 7421354220885094674}
   map_Manager: {fileID: 0}
   isGrounded: 0
+  canAttack: 1
   player_Collider: {fileID: 4076679307762721750}
 --- !u!1 &2991408550391871391
 GameObject:

@@ -45,9 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponList:
+  - {fileID: 11400000, guid: 986d21117bffab64f8ff705662312a5a, type: 2}
   - {fileID: 11400000, guid: 3e871d48ac7865440b2c5d58883a3ed7, type: 2}
   - {fileID: 11400000, guid: fd93508e4d7658645b10bac805ef0ffd, type: 2}
   - {fileID: 11400000, guid: 761304d51a3de434ead4f037796495ec, type: 2}
-  - {fileID: 11400000, guid: 34776b1bfb34460468d0e819a4bde7d5, type: 2}
   - {fileID: 11400000, guid: dd160a348f7a60247a7df98c475912b4, type: 2}
   - {fileID: 11400000, guid: 2469f0861dfd41b46b4d282a511d7085, type: 2}
+  - {fileID: 11400000, guid: 34776b1bfb34460468d0e819a4bde7d5, type: 2}
