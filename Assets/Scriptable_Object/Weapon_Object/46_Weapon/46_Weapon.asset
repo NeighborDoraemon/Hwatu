@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 46_Weapon
   m_EditorClassIdentifier: 
   weapon_Name: "\uB2F9\uD30C"
-  attack_Power: 0
+  attack_Power: 50
   attackCooldown: 0.7
   max_Attack_Count: 1
   skillCooldown: 5
