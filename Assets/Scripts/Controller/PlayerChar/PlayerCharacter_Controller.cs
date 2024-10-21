@@ -333,6 +333,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 {
                     transform.Translate(Vector2.right * teleporting_Distance);
                 }
+                animator.SetTrigger("Teleport");
                 canTeleporting = false;
             }
         }
