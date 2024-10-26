@@ -16,6 +16,7 @@ public class Object_Manager : MonoBehaviour
     public ItemDatabase item_Database;
     public GameObject itemPrefab;
 
+    private List<GameObject> spawned_Item_Instances = new List<GameObject>();
     private List<Item> spawnedItems = new List<Item>();
 
     private void Awake()
@@ -148,6 +149,7 @@ public class Object_Manager : MonoBehaviour
         {
             spawnedItems.Add(randomItem);
         }
+        spawned_Item_Instances.Add(itemInstance);
     }
 
     private Item Get_Random_Item()
@@ -170,5 +172,30 @@ public class Object_Manager : MonoBehaviour
     public void Reset_Spawned_Items()
     {
         spawnedItems.Clear();
+    }
+
+    public void Destroy_All_Cards_And_Items()
+    {
+        foreach (GameObject card in FindObjectsOfType<GameObject>())
+        {
+            if (card.CompareTag("Card") && card.activeSelf)
+            {
+                Destroy(card);
+            }
+        }
+
+        foreach (GameObject item in FindObjectsOfType<GameObject>())
+        {
+            if (item.CompareTag("Item") && item.activeSelf) 
+                Destroy(item);
+        }
+    }
+    public void Destroy_All_Items()
+    {
+        foreach (GameObject item in FindObjectsOfType<GameObject>())
+        {
+            if (item.CompareTag("Item") && item.activeSelf)
+                Destroy(item);
+        }
     }
 }

@@ -8,6 +8,10 @@ using UnityEngine.InputSystem;
 
 public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 {
+    private PlayerCharacter_Stat_Manager stat_Manager;
+    private PlayerCharacter_Card_Manager card_Manager;
+    private PlayerChar_Inventory_Manager inventory_Manager;
+
     private Player_InputActions inputActions;
     [SerializeField]
     private GameObject inventoryPanel;
@@ -35,9 +39,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     [Header("Map_Manager")]
     [SerializeField]
     private Map_Manager map_Manager;
+
     [HideInInspector]
     public bool isGrounded;
-
+    [HideInInspector]
+    public bool canAttack = true;
 
     //platform & Collider
     private GameObject current_Platform;
@@ -56,6 +62,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        stat_Manager = GetComponent<PlayerCharacter_Stat_Manager>();
+        card_Manager = GetComponent<PlayerCharacter_Card_Manager>();
+        inventory_Manager = GetComponent<PlayerChar_Inventory_Manager>();
 
         inputActions = new Player_InputActions();
         
@@ -67,7 +76,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         inputActions.Player.SpawnChest.performed += ctx => Spawn_Chest();
 
-        Set_Weapon(0);
+        Set_Weapon(0);        
     }
     private void OnEnable()
     {
@@ -81,17 +90,14 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         inputActions.Player.Inventory.canceled -= OnInventory_Released;
         inputActions.Player.Disable();
     }
-    //private void OnEnable()
-    //{
-    //    inputActions.Player.Enable();
-    //}
-    //private void OnDisable()
-    //{
-    //    inputActions.Player.Disable();
-    //}
 
     private void Start()
     {
+        if (cur_Weapon_Data != null)
+        {
+
+        }
+
         if (inventoryPanel != null)
         {
             inventoryPanel.SetActive(false);
@@ -124,7 +130,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         animator.SetBool("isMove", isMoving);
 
         animator.SetBool("isGrounded", isGrounded);
-        if (isGrounded && rb.velocity.y <= 0.1f)
+        if (isGrounded && rb.velocity.y == 0)
         {
             jumpCount = 0;
         }
@@ -172,7 +178,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             }
             else
             {
-                if (isAttacking) return;
+                //if (isAttacking) return;
 
                 if (jumpCount < maxJumpCount)
                 {
@@ -184,25 +190,13 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
     }
 
-    void Jump() // 캐릭터 y좌표 점프
-    {
-        if (isAttacking) return; 
-
-        if (jumpCount < maxJumpCount)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, 0);
-            rb.AddForce(new Vector2(0, jumpPower), ForceMode2D.Impulse);
-            jumpCount++;
-        }
-    }
-
     public void Input_Interaction(InputAction.CallbackContext ctx)
     {
         if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
         {
             map_Manager.Use_Portal();
 
-            Debug.Log("상호작용 호출");
+            //Debug.Log("상호작용 호출");
             if (is_Npc_Contack && Now_Contact_Npc != null)
             {
                 if(Now_Contact_Npc.gameObject.name == "Stat_Npc")
@@ -219,7 +213,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
             if (current_Item != null)
             {
-                Debug.Log("아이템 확인");
+                //Debug.Log("아이템 확인");
                 if (current_Item.tag == "Card")
                 {
                     if(cardCount == 0) // 시작 첫 카드 획득 시 획득한 카드 꺼지도록 하기 (윤혁 임시)
@@ -236,9 +230,14 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 {
                     Debug.Log("상자와 상호작용");
                     Spawn_Box chest = current_Item.GetComponent<Spawn_Box>();
+                    Card_Spawn_Box debug_Chest = current_Item.GetComponent<Card_Spawn_Box>();
                     if (chest != null)
                     {
                         chest.Request_Spawn_Cards();
+                    }
+                    else if (debug_Chest != null)
+                    {
+                        debug_Chest.Request_Spawn_Cards();
                     }
                 }
                 else if (current_Item.tag == "Item")
@@ -251,11 +250,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                     {
                         Debug.Log($"아이템 적용 {item.name}");
                         if (item.isConsumable)
-                        {
-                            PlayerCharacter_Controller player = this.GetComponent<PlayerCharacter_Controller>();
-                            if (player != null) 
+                        {                            
+                            if (this != null) 
                             {
-                                item.ApplyEffect(player);
+                                item.ApplyEffect(this);
                                 Debug.Log($"아이템 효과 적용");
                             }
                             Destroy(current_Item);
@@ -271,54 +269,55 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                     {
                         Debug.LogWarning("아이템 데이터를 찾을 수 없습니다.");
                     }
+                    Object_Manager.instance.Destroy_All_Cards_And_Items();
                 }
                 current_Item = null;
             }
         }
     }
 
-    void InterAction() // 플레이어 캐릭터 상호작용
-    {
-        if (current_Item != null)
-        {
-            if (current_Item.tag == "Card")
-            {
-                if (cardCount < card_Inventory.Length || cardCount == card_Inventory.Length)
-                {
-                    AddCard(current_Item);
-                }
-            }
-            else if (current_Item.tag == "Chest")
-            {
-                Spawn_Box chest = current_Item.GetComponent<Spawn_Box>();
-                if (chest != null)
-                {
-                    chest.Request_Spawn_Cards();
-                }
-            }
-            else if (current_Item.tag == "Item")
-            {
-                Item item = current_Item.GetComponent<Item_Prefab>().itemData;  // 아이템 데이터 가져오기 (현재 아이템의 ScriptableObject)
+    //void InterAction() // 플레이어 캐릭터 상호작용
+    //{
+    //    if (current_Item != null)
+    //    {
+    //        if (current_Item.tag == "Card")
+    //        {
+    //            if (cardCount < card_Inventory.Length || cardCount == card_Inventory.Length)
+    //            {
+    //                AddCard(current_Item);
+    //            }
+    //        }
+    //        else if (current_Item.tag == "Chest")
+    //        {
+    //            Spawn_Box chest = current_Item.GetComponent<Spawn_Box>();
+    //            if (chest != null)
+    //            {
+    //                chest.Request_Spawn_Cards();
+    //            }
+    //        }
+    //        else if (current_Item.tag == "Item")
+    //        {
+    //            Item item = current_Item.GetComponent<Item_Prefab>().itemData;  // 아이템 데이터 가져오기 (현재 아이템의 ScriptableObject)
 
-                if (item != null)
-                {
-                    // 플레이어의 인벤토리에 아이템 추가
-                    AddItem(item);
+    //            if (item != null)
+    //            {
+    //                // 플레이어의 인벤토리에 아이템 추가
+    //                AddItem(item);
 
-                    // 아이템의 효과 적용
-                    item.ApplyEffect(this);
+    //                // 아이템의 효과 적용
+    //                item.ApplyEffect(this);
 
-                    // 아이템을 씬에서 삭제
-                    Destroy(current_Item);
-                }
-                else
-                {
-                    Debug.LogWarning("아이템 데이터를 찾을 수 없습니다.");
-                }
-            }
-            current_Item = null;
-        }
-    }
+    //                // 아이템을 씬에서 삭제
+    //                Destroy(current_Item);
+    //            }
+    //            else
+    //            {
+    //                Debug.LogWarning("아이템 데이터를 찾을 수 없습니다.");
+    //            }
+    //        }
+    //        current_Item = null;
+    //    }
+    //}
 
     public void Input_Teleportation(InputAction.CallbackContext ctx)
     {
@@ -334,27 +333,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 {
                     transform.Translate(Vector2.right * teleporting_Distance);
                 }
+                animator.SetTrigger("Teleport");
                 canTeleporting = false;
             }
         }
     }
-
-    void Teleportation() // 플레이어 캐릭터 순간이동 함수
-    {
-        if (canTeleporting)
-        {
-            if (movement.x < 0)
-            {
-                transform.Translate(Vector2.left * teleporting_Distance);
-            }
-            else if (movement.x > 0)
-            {
-                transform.Translate(Vector2.right * teleporting_Distance);
-            }
-            canTeleporting = false;
-        }
-    }
-
     void Handle_Teleportation_Time()
     {
         if (!canTeleporting)
@@ -369,58 +352,66 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
     }
 
-    /*public void Input_Short_Range_Attack(InputAction.CallbackContext ctx)
+    public override void Set_Weapon(int weaponIndex)
     {
-        if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
-        {
-            if (!isGrounded) return;
+        base.Set_Weapon(weaponIndex);
 
-            if (Time.time >= last_Attack_Time + attackCooldown)
-            {
-                animator.SetTrigger("Attack_1");
-                isAttacking = true;
-                attackPhase = 1;
-                last_ComboAttck_Time = Time.time;
-                last_Attack_Time = Time.time;
-                //Debug.Log("첫 번째 공격 트리거");
-            }
-            else if (isAttacking && attackPhase == 1 && Time.time - last_ComboAttck_Time <= comboTime)
-            {
-                animator.SetTrigger("Attack_2");
-                attackPhase = 2;
-                last_ComboAttck_Time = Time.time;
-                //Debug.Log("두 번째 공격 트리거");
-            }
+        if (cur_Weapon_Data == null)
+        {
+            Debug.LogError("무기 데이터가 올바르게 설정되지 않았습니다.");
+            return;
         }
-    }*/
+
+        // 공격 전략 할당 및 캐스팅 확인
+        attack_Strategy = cur_Weapon_Data.attack_Strategy as IAttack_Strategy;
+
+        if (attack_Strategy == null)
+        {
+            Debug.LogError($"'{cur_Weapon_Data.weapon_Name}'에 대한 공격 전략이 유효하지 않습니다.");
+            Debug.Log($"할당된 전략 타입: {cur_Weapon_Data.attack_Strategy.GetType().Name}");
+            return;
+        }
+
+        Debug.Log($"공격 전략 '{attack_Strategy.GetType().Name}' 설정 완료.");
+        Apply_Weapon_Data();
+    }
+
+    private void Apply_Weapon_Data()
+    {
+        if (cur_Weapon_Data != null)
+        {
+            attack_Strategy = cur_Weapon_Data.attack_Strategy as IAttack_Strategy;
+
+            if (cur_Weapon_Data.overrideController != null)
+            {
+                animator.runtimeAnimatorController = cur_Weapon_Data.overrideController;
+            }
+
+            attackDamage = cur_Weapon_Data.attack_Power;
+            attack_Cooldown = cur_Weapon_Data.attackCooldown;
+            max_AttackCount = cur_Weapon_Data.max_Attack_Count;
+
+            isAttacking = false;
+            cur_AttackCount = 0;
+
+            animator.SetTrigger("Change_Weapon");
+        }
+    }
+
     public void Input_Perform_Attack(InputAction.CallbackContext ctx)
     {
         if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
         {
-            Debug.Log("Attack Call");
-            if (max_AttackCount > cur_AttackCount)
-            {
-                Debug.Log("Attack Start");
-                attack_Strategy.Attack();
-            }
-            else
-            {
-                cur_AttackCount = 0;
-            }
+            return;
         }
-    }
 
+        if (attack_Strategy == null)
+        {
+            Debug.LogError("공격 전략이 설정되지 않았습니다.");
+            return;
+        }
 
-    void Perform_Attack()
-    {
-        if (max_AttackCount > cur_AttackCount)
-        {
-            attack_Strategy.Attack();
-        }
-        else
-        {
-            cur_AttackCount = 0;
-        }
+        attack_Strategy.Attack(this, cur_Weapon_Data);
     }
 
     void HandleCombo() // 콤보 관리용 함수
@@ -433,16 +424,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 cur_AttackCount = 0;
             }
         }
-    }
-
-    public void Set_Max_AttackCount(int count)
-    {
-        max_AttackCount = count;
-        cur_AttackCount = 0;
-    }
-    public void Set_AttackCooldown(float time)
-    {
-        attack_Cooldown = time;
     }
 
     public void ResetAttack() // 애니메이션 호출용 이벤트 함수
@@ -491,29 +472,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
         {
-            attack_Strategy.Skill();
-
-            //if (!isGrounded) return;
-
-            //if (Time.time >= lastSkillTime + skillCooldown)
-            //{
-
-            //    GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-
-            //    Rigidbody2D projectileRb = projectile.GetComponent<Rigidbody2D>();
-            //    Vector2 shootDirection = (transform.localScale.x < 0) ? Vector2.left : Vector2.right;
-            //    projectileRb.velocity = shootDirection * projectileSpeed;
-
-            //    animator.SetTrigger("Attack_1");
-
-            //    lastSkillTime = Time.time;
-            //}
+            attack_Strategy.Skill(this, cur_Weapon_Data);
         }
-    }
-
-    void Skill_Attack() // 원거리 공격 함수
-    {
-        attack_Strategy.Skill();
     }
 
     void Spawn_Chest() // 임시 디버깅 용 상자 소환 함수입니다.
@@ -621,7 +581,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     private void OnDrawGizmosSelected() // 디버그용 공격 범위 그리기
     {
-        Vector2 boxSize = new Vector2(hitCollider_x, hitCollider_y);
+        Vector2 boxSize = new Vector2(0.3f, 0.5f);
         Vector2 boxCenter = (Vector2)transform.position + new Vector2(transform.localScale.x * attackRange, 0f);
 
         Gizmos.color = Color.red;

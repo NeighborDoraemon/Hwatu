@@ -8,7 +8,6 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     public Weapon_Manager weapon_Manager;
     [HideInInspector]
     public Animator animator;
-    private bool comboPressed = false;
 
     [Header("플레이어 캐릭터 능력치")]
     public float movementSpeed = 1.0f; // 이동 속도 조절 변수
@@ -61,19 +60,22 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
         projectile_Rb.velocity = shootDirection * arrowSpeed;
     }
 
-    public void Set_Weapon(int weaponIndex)
+    public virtual void Set_Weapon(int weaponIndex)
     {
-        PlayerCharacter_Controller player = GetComponent<PlayerCharacter_Controller>();
+        Debug.Log($"무기 인덱스 : {weaponIndex}로 변경 시도");
 
-        Weapon_Data newWeapon = weapon_Manager.Get_Weapon_Data(weaponIndex);
-        if (newWeapon != null)
-        {
-            attack_Strategy = new Weapon_Attack_Strategy(player, newWeapon);
-            cur_Weapon_Data = newWeapon;
-            
-            isAttacking = false;
-            cur_AttackCount = 0;
+        Weapon_Data new_Weapon = weapon_Manager.Get_Weapon_Data(weaponIndex);
+
+        if (new_Weapon != null)
+        {            
+            cur_Weapon_Data = new_Weapon;
+            attackDamage = new_Weapon.attack_Power;
+            attack_Cooldown = new_Weapon.attackCooldown;
+            max_AttackCount = new_Weapon.max_Attack_Count;
+
+            //Debug.Log("무기 변경");            
         }
+
     }
 
     // 1땡 스킬 구현 부분 ------------------------------------------------------------------------------------------------------------
