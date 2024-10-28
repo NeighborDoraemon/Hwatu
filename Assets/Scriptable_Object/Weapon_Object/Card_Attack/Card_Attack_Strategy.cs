@@ -7,6 +7,7 @@ public class Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
 {
     private PlayerCharacter_Controller player;
     private Weapon_Data weapon_Data;
+    private float projectile_Speed = 10.0f;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data) 
     {
@@ -24,10 +25,10 @@ public class Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
     private void Initialize_Weapon_Data()
     {
         player.animator.runtimeAnimatorController = weapon_Data.overrideController;
-        player.attackDamage = weapon_Data.attack_Power;
-        player.attack_Cooldown = weapon_Data.skillCooldown;
+        player.attackDamage = weapon_Data.attack_Damage;
+        player.attack_Cooldown = weapon_Data.skill_Cooldown;
         player.max_AttackCount = weapon_Data.max_Attack_Count;
-        player.skill_Cooldown = weapon_Data.skillCooldown;
+        player.skill_Cooldown = weapon_Data.skill_Cooldown;
     }
 
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
@@ -68,7 +69,6 @@ public class Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
     {
         player.animator.SetTrigger(weapon_Data.attack_Trigger);
         player.isAttacking = true;
-
         player.cur_AttackCount = 1;
         Update_Attack_Timers(player);
     }
@@ -77,12 +77,13 @@ public class Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
     {
         player.animator.SetTrigger($"Attack_{player.cur_AttackCount + 1}");
         player.cur_AttackCount++;
+        player.isAttacking = true;
         Update_Attack_Timers(player);
     }
 
     private void End_Attack(PlayerCharacter_Controller player)
     {
-        player.isAttacking = false;
+        //player.isAttacking = false;
         player.cur_AttackCount = 0;
         player.last_Attack_Time = Time.time;
     }
@@ -92,7 +93,13 @@ public class Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
         player.last_ComboAttack_Time = Time.time;
         player.last_Attack_Time = Time.time;
     }
-
+    public void Shoot(PlayerCharacter_Controller player, GameObject prefab, Transform fire_Point)
+    {
+        GameObject projectile = Instantiate(prefab, fire_Point.position, fire_Point.rotation);
+        Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
+        Vector2 shootDirection = (player.transform.localScale.x < 0) ? Vector2.left : Vector2.right;
+        rb.velocity = shootDirection * projectile_Speed;
+    }
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
 

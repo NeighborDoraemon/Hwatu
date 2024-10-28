@@ -5,19 +5,16 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using System;
 
 public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 {
-    private PlayerCharacter_Stat_Manager stat_Manager;
-    private PlayerCharacter_Card_Manager card_Manager;
-    private PlayerChar_Inventory_Manager inventory_Manager;
-
     private Player_InputActions inputActions;
     [SerializeField]
     private GameObject inventoryPanel;
     private bool isInventory_Visible = false;
 
-    Rigidbody2D rb;
+    public Rigidbody2D rb;
     GameObject current_Item; // 현재 아이템 확인 변수
 
     Vector2 movement = new Vector2();
@@ -39,6 +36,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     [Header("Map_Manager")]
     [SerializeField]
     private Map_Manager map_Manager;
+    public bool use_Portal = false;
+    private Camera_Manager camera_Manager;
 
     [HideInInspector]
     public bool isGrounded;
@@ -51,6 +50,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     private CapsuleCollider2D player_Collider;
     private bool is_Down_Performed = false;
 
+    private Collider2D cur_Boundary_Collider;
+
     private bool is_Player_Dead = false; // 사망처리
 
     //NPC
@@ -62,9 +63,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        stat_Manager = GetComponent<PlayerCharacter_Stat_Manager>();
-        card_Manager = GetComponent<PlayerCharacter_Card_Manager>();
-        inventory_Manager = GetComponent<PlayerChar_Inventory_Manager>();
 
         inputActions = new Player_InputActions();
         
@@ -93,10 +91,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     private void Start()
     {
-        if (cur_Weapon_Data != null)
-        {
-
-        }
+        camera_Manager = FindObjectOfType<Camera_Manager>();
 
         if (inventoryPanel != null)
         {
@@ -112,11 +107,18 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (Time.timeScale == 1.0f && !is_Player_Dead) // 일시정지 조건 추가
         {
-            Move();
+            if (isAttacking && isGrounded)
+            {
+                rb.velocity = new Vector2(0, rb.velocity.y);
+            }
+            else
+            {
+                Move();
+            }
+
             if (!isCombDone) // 카드 조합 확인 조건
             {
                 Card_Combination();
-
             }
             Update_Animation_Parameters();
             HandleCombo();
@@ -276,49 +278,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
     }
 
-    //void InterAction() // 플레이어 캐릭터 상호작용
-    //{
-    //    if (current_Item != null)
-    //    {
-    //        if (current_Item.tag == "Card")
-    //        {
-    //            if (cardCount < card_Inventory.Length || cardCount == card_Inventory.Length)
-    //            {
-    //                AddCard(current_Item);
-    //            }
-    //        }
-    //        else if (current_Item.tag == "Chest")
-    //        {
-    //            Spawn_Box chest = current_Item.GetComponent<Spawn_Box>();
-    //            if (chest != null)
-    //            {
-    //                chest.Request_Spawn_Cards();
-    //            }
-    //        }
-    //        else if (current_Item.tag == "Item")
-    //        {
-    //            Item item = current_Item.GetComponent<Item_Prefab>().itemData;  // 아이템 데이터 가져오기 (현재 아이템의 ScriptableObject)
-
-    //            if (item != null)
-    //            {
-    //                // 플레이어의 인벤토리에 아이템 추가
-    //                AddItem(item);
-
-    //                // 아이템의 효과 적용
-    //                item.ApplyEffect(this);
-
-    //                // 아이템을 씬에서 삭제
-    //                Destroy(current_Item);
-    //            }
-    //            else
-    //            {
-    //                Debug.LogWarning("아이템 데이터를 찾을 수 없습니다.");
-    //            }
-    //        }
-    //        current_Item = null;
-    //    }
-    //}
-
     public void Input_Teleportation(InputAction.CallbackContext ctx)
     {
         if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
@@ -367,8 +326,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         if (attack_Strategy == null)
         {
-            Debug.LogError($"'{cur_Weapon_Data.weapon_Name}'에 대한 공격 전략이 유효하지 않습니다.");
-            Debug.Log($"할당된 전략 타입: {cur_Weapon_Data.attack_Strategy.GetType().Name}");
+            Debug.LogError($"'{cur_Weapon_Data.weapon_Name}'에 대한 공격 전략이 유효하지 않습니다.");            
             return;
         }
 
@@ -385,10 +343,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             if (cur_Weapon_Data.overrideController != null)
             {
                 animator.runtimeAnimatorController = cur_Weapon_Data.overrideController;
+                Debug.Log($"애니메이터 컨트롤러 변경 : {cur_Weapon_Data.overrideController}");
             }
 
-            attackDamage = cur_Weapon_Data.attack_Power;
-            attack_Cooldown = cur_Weapon_Data.attackCooldown;
+            attackDamage = cur_Weapon_Data.attack_Damage;
+            attack_Cooldown = cur_Weapon_Data.attack_Cooldown;
             max_AttackCount = cur_Weapon_Data.max_Attack_Count;
 
             isAttacking = false;
@@ -400,7 +359,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public void Input_Perform_Attack(InputAction.CallbackContext ctx)
     {
-        if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
+        if (ctx.phase != InputActionPhase.Performed || Time.timeScale != 1.0f || is_Player_Dead)
         {
             return;
         }
@@ -411,7 +370,28 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             return;
         }
 
+        if (cur_AttackCount >= max_AttackCount)
+        {
+            Debug.Log("최대 공격 횟수 도달");
+            return;
+        }
+
         attack_Strategy.Attack(this, cur_Weapon_Data);
+    }
+
+    public void On_Shoot_Projectile(GameObject projectile_Prefab)
+    {
+        Debug.Log("투사체 발사 이벤트 호출");
+
+        if (attack_Strategy != null)
+        {
+            attack_Strategy.Shoot(this, projectile_Prefab, firePoint);
+            Debug.Log("총알 발사 완료");
+        }
+        else
+        {
+            Debug.LogError("공격 전략이 설정되지 않음");
+        }
     }
 
     void HandleCombo() // 콤보 관리용 함수
@@ -428,12 +408,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public void ResetAttack() // 애니메이션 호출용 이벤트 함수
     {
-        if (cur_AttackCount >= max_AttackCount)
-        {
-            isAttacking = false;
-            cur_AttackCount = 0;
-            last_Attack_Time = Time.time;
-        }
+        isAttacking = false;
+        cur_AttackCount = 0;        
     }
     public void ResetCombo() // 애니메이션 호출용 이벤트 함수
     {
@@ -442,7 +418,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             isAttacking = false;
             cur_AttackCount = 0;
-            Debug.Log("공격 리셋");
+            //Debug.Log("공격 리셋");
         }
     }
 
@@ -458,7 +434,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         LayerMask enemyLayer = LayerMask.GetMask("Enemy");
 
         Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(boxCenter, boxSize, 0, enemyLayer); // 적 레이어 설정
-
+        
         // 감지된 적에게 데미지 처리
         foreach (Collider2D enemy in hitEnemies)
         {
@@ -540,6 +516,15 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             map_Manager.IsOnPortal = true;
             map_Manager.Which_Portal = other.gameObject;
             map_Manager.v_Now_Portal = other.transform.position;
+
+            use_Portal = true;
+        }
+
+        if (other.CompareTag("Boundary"))
+        {
+            cur_Boundary_Collider = other;
+            camera_Manager.Update_Confiner(cur_Boundary_Collider);
+            Debug.Log("맵 안에 있음");
         }
 
         if(other.gameObject.tag == "NPC")
@@ -562,11 +547,24 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         if(other.gameObject.tag == "Portal" && map_Manager.IsOnPortal == true)
         {
             map_Manager.IsOnPortal = false;
+            use_Portal = false;
         }
 
         if (other.gameObject.tag == "Item" || other.gameObject.tag == "Card" || other.gameObject.tag == "Chest")
         {
             current_Item = null;
+        }
+
+        if (other.CompareTag("Boundary"))
+        {
+            if (use_Portal)
+            {
+                return;
+            }
+
+            Debug.Log("맵 벗어나려 함! 가까운 위치로 이동");
+            Vector2 closet_Point = Get_Closet_Point(transform.position);
+            transform.position = closet_Point;
         }
 
         if(other.gameObject.tag == "NPC")
@@ -586,6 +584,15 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(boxCenter, boxSize);
+    }
+
+    private Vector2 Get_Closet_Point(Vector2 position)
+    {
+        if (cur_Boundary_Collider != null)
+        {
+            return cur_Boundary_Collider.ClosestPoint(position);
+        }
+        return position;
     }
 
     public void Player_Take_Damage(int Damage)

@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
   m_Name: Card_1_Weapon
   m_EditorClassIdentifier: 
-  weapon_Name: "\uCE74\uB4DC"
-  attack_Power: 25
-  attackCooldown: 1
+  weapon_Name: Card
+  attack_Damage: 25
+  attack_Cooldown: 1
   max_Attack_Count: 1
-  skillCooldown: 5
+  skill_Damage: 0
+  skill_Cooldown: 0
   attack_Trigger: Attack_1
   skill_Trigger: Skill
   overrideController: {fileID: 22100000, guid: 440478500507e12448c67243724789e4, type: 2}

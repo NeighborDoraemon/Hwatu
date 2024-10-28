@@ -36,7 +36,6 @@ Transform:
   m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8240871130775810756}
   - {fileID: 5462922738750165385}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -375,7 +374,7 @@ MonoBehaviour:
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
-  m_Camera: {fileID: 1220152267481929480}
+  m_Camera: {fileID: 0}
 --- !u!114 &5418104219592675981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -388,7 +387,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eb8770a78580584c9febdda84915a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapon_Manager: {fileID: 0}
+  weapon_Manager: {fileID: 3897658484408764747, guid: 0a2697dacaf493d4a86f0bf8c5f9d9de, type: 3}
   animator: {fileID: 0}
   movementSpeed: 5
   jumpPower: 5
@@ -409,10 +408,10 @@ MonoBehaviour:
   arrowSpeed: 10
   skill_Cooldown: 1
   last_Skill_Time: 0
+  is_Skill_Active: 0
   teleporting_Distance: 3
   teleporting_CoolTime: 3
-  reduced_Attack_Cooldown: 0
-  card_UI_Manager: {fileID: 0}
+  card_UI_Manager: {fileID: 1069907735762571713, guid: 8a2150b5382560f489f2e55a87b10220, type: 3}
   card_Value: {fileID: 0}
   sprite_Renderer: {fileID: 0}
   card_Inventory:
@@ -420,109 +419,17 @@ MonoBehaviour:
   - {fileID: 0}
   is_Start_Spawn: 1
   player_Inventory: []
-  inventoryPanel: {fileID: 0}
+  inventoryPanel: {fileID: 4078496361626159872, guid: ca3777a830c77cb4aac2c02b127f5361, type: 3}
   maxJumpCount: 2
   Player_Health_Bar: {fileID: 0}
   pause_Manager: {fileID: 0}
   player_render: {fileID: 8434130835688464816}
   chestPrefab: {fileID: 939207004396396238, guid: 24e05632e72d6ba48a45d86a62edfa62, type: 3}
   spawnPoint: {fileID: 7421354220885094674}
-  map_Manager: {fileID: 0}
+  map_Manager: {fileID: 7478998900830929774, guid: 93b19b0c9f0da1843afaf3d205cdb2a9, type: 3}
   isGrounded: 0
   canAttack: 1
   player_Collider: {fileID: 4076679307762721750}
---- !u!1 &2991408550391871391
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8240871130775810756}
-  - component: {fileID: 1220152267481929480}
-  - component: {fileID: 5963973931555732991}
-  m_Layer: 10
-  m_Name: Main Camera
-  m_TagString: MainCamera
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8240871130775810756
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2991408550391871391}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.03, z: -10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7421354220885094674}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!20 &1220152267481929480
-Camera:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2991408550391871391}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
-  m_projectionMatrixMode: 1
-  m_GateFitMode: 2
-  m_FOVAxisMode: 0
-  m_Iso: 200
-  m_ShutterSpeed: 0.005
-  m_Aperture: 16
-  m_FocusDistance: 10
-  m_FocalLength: 50
-  m_BladeCount: 5
-  m_Curvature: {x: 2, y: 11}
-  m_BarrelClipping: 0.25
-  m_Anamorphism: 0
-  m_SensorSize: {x: 36, y: 24}
-  m_LensShift: {x: 0, y: 0}
-  m_NormalizedViewPortRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 60
-  orthographic: 1
-  orthographic size: 3
-  m_Depth: -1
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 0
-  m_TargetEye: 0
-  m_HDR: 1
-  m_AllowMSAA: 0
-  m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 0
-  m_OcclusionCulling: 0
-  m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
---- !u!81 &5963973931555732991
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2991408550391871391}
-  m_Enabled: 1
 --- !u!1 &6830120096207300428
 GameObject:
   m_ObjectHideFlags: 0
@@ -548,7 +455,7 @@ Transform:
   m_GameObject: {fileID: 6830120096207300428}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.013, y: 0.013999939, z: -0.005809999}
+  m_LocalPosition: {x: 0.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

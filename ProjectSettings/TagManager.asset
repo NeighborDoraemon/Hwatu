@@ -14,6 +14,7 @@ TagManager:
   - Walls
   - OneWayPlatform
   - NPC
+  - Boundary
   layers:
   - Default
   - TransparentFX

@@ -12,6 +12,9 @@ public class Map_Manager : MonoBehaviour
     [SerializeField]
     private GameObject Obj_Player;
 
+    [SerializeField]
+    private Camera_Manager camera_Manager;
+
     [HideInInspector]
     public bool IsOnPortal = false;
     [HideInInspector]
@@ -24,6 +27,7 @@ public class Map_Manager : MonoBehaviour
 
     private List<Map_Value> ScObj_Not_Used_Map_Value = new List<Map_Value>();
 
+    private Collider2D cur_Map_Boundary;
 
     private int i_room_Num = 0;
 
@@ -49,6 +53,7 @@ public class Map_Manager : MonoBehaviour
         i_room_Num = 0;
         ScObj_Not_Used_Map_Value = new List<Map_Value>();
 
+        Update_Map_Boundary();
         IsOnPortal = false;
     }
 
@@ -66,7 +71,7 @@ public class Map_Manager : MonoBehaviour
             {
                 Check_Portals();
 
-                Obj_Player.transform.position = v_Next_SpawnPoint;
+                Obj_Player.transform.position = v_Next_SpawnPoint;                
 
                 //방 번호 전달
                 Enemy_Generator.i_Room_Number = i_room_Num;
@@ -75,6 +80,16 @@ public class Map_Manager : MonoBehaviour
                 //스폰 시작 트리거
                 Enemy_Generator.Is_Next_Spawn = true;
             }
+        }
+    }
+
+    private void Update_Map_Boundary()
+    {
+        GameObject boundary_Object = GameObject.FindWithTag("Boundary");
+        if (boundary_Object != null)
+        {
+            cur_Map_Boundary = boundary_Object.GetComponent<Collider2D>();
+            camera_Manager.Update_Confiner(cur_Map_Boundary);
         }
     }
 

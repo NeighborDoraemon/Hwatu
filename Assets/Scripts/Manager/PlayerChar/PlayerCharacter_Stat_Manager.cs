@@ -40,6 +40,7 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     [Header("스킬 변수")]
     public float skill_Cooldown = 1.0f;
     public float last_Skill_Time = 0f;
+    public bool is_Skill_Active = false;
 
     [Header("텔레포트")]
     public float teleporting_Distance = 3.0f; // 순간이동 거리 변수
@@ -57,7 +58,7 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
 
         Rigidbody2D projectile_Rb = projectile.GetComponent<Rigidbody2D>();
         Vector2 shootDirection = (transform.localScale.x < 0) ? Vector2.left : Vector2.right;
-        projectile_Rb.velocity = shootDirection * arrowSpeed;
+        projectile_Rb.velocity = shootDirection * arrowSpeed;        
     }
 
     public virtual void Set_Weapon(int weaponIndex)
@@ -69,37 +70,12 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
         if (new_Weapon != null)
         {            
             cur_Weapon_Data = new_Weapon;
-            attackDamage = new_Weapon.attack_Power;
-            attack_Cooldown = new_Weapon.attackCooldown;
+            attackDamage = new_Weapon.attack_Damage;
+            attack_Cooldown = new_Weapon.attack_Cooldown;
             max_AttackCount = new_Weapon.max_Attack_Count;
 
             //Debug.Log("무기 변경");            
         }
 
     }
-
-    // 1땡 스킬 구현 부분 ------------------------------------------------------------------------------------------------------------
-    public float reduced_Attack_Cooldown;
-    private bool isCooldown_Reduced = false;
-    public void One_DD_Skill()
-    {
-        if (!isCooldown_Reduced)
-        {
-            reduced_Attack_Cooldown = attack_Cooldown * 0.5f;
-            attack_Cooldown = reduced_Attack_Cooldown;
-
-            isCooldown_Reduced = true;
-
-            StartCoroutine(Restore_Cooldown_After_Delay());
-        }
-    }
-
-    private IEnumerator Restore_Cooldown_After_Delay()
-    {
-        yield return new WaitForSeconds(3f);
-
-        attack_Cooldown = reduced_Attack_Cooldown / 0.5f;
-        isCooldown_Reduced = false;
-    }
-    //--------------------------------------------------------------------------------------------------------------------------------
 }

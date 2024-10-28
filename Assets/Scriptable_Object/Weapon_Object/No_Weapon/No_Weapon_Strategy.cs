@@ -24,17 +24,20 @@ public class No_Weapon_Strategy : ScriptableObject, IAttack_Strategy
     private void Initialize_Weapon_Data()
     {
         player.animator.runtimeAnimatorController = weapon_Data.overrideController;
-        player.attackDamage = weapon_Data.attack_Power;
-        player.attack_Cooldown = weapon_Data.skillCooldown;
+        player.attackDamage = weapon_Data.attack_Damage;
+        player.attack_Cooldown = weapon_Data.skill_Cooldown;
         player.max_AttackCount = weapon_Data.max_Attack_Count;
-        player.skill_Cooldown = weapon_Data.skillCooldown;
+        player.skill_Cooldown = weapon_Data.skill_Cooldown;
     }
 
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         Debug.Log("맨손 상태입니다.");
     }
+    public void Shoot(PlayerCharacter_Controller player, GameObject prefab, Transform fire_Point)
+    {
 
+    }
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         Debug.Log("맨손 상태입니다.");
