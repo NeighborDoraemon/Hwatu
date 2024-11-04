@@ -25,6 +25,9 @@ public class Map_Value : ScriptableObject
     [Header("About Spawn")]
     public bool Next_To_Kill;
 
+    [Header("Boundary")]
+    public Collider2D Collider;
+
     [HideInInspector]
     public bool Clear_and_Next;
 }

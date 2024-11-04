@@ -13,7 +13,7 @@ public class Enemy_Basic : MonoBehaviour
 
     public void Start()
     {
-        i_Max_Health = IR_Health.Value; //ÃÖ´ëÃ¼·Â ÀúÀå
+        i_Max_Health = IR_Health.Value; //ï¿½Ö´ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
     public void TakeDamage(int damage)
@@ -25,11 +25,15 @@ public class Enemy_Basic : MonoBehaviour
 
         IR_Health.Value -= damage;
 
-        if(IR_Health.Value > i_Max_Health) //ÃÖ´ëÃ¼·Â ÃÊ°ú½Ã ÃÖ´ëÃ¼·ÂÀ¸·Î °­Á¦ º¯°æ
+
+        if(IR_Health.Value > i_Max_Health) //ï¿½Ö´ï¿½Ã¼ï¿½ï¿½ ï¿½Ê°ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         {
             IR_Health.Value = i_Max_Health;
         }
 
+
+
+        
 
         if (IR_Health.Value <= 0)
         {
@@ -37,12 +41,12 @@ public class Enemy_Basic : MonoBehaviour
         }
     }
 
-    private void Die() // Àû »ç¸Á Ã³¸® ÇÔ¼ö
+    private void Die() // ï¿½ï¿½ ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ô¼ï¿½
     {
-        Enemy_Generator.i_Enemy_Count--; //³²Àº ÀûÀÇ ¼ö °è»ê¿ë
+        Enemy_Generator.i_Enemy_Count--; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         Debug.Log(Enemy_Generator.i_Enemy_Count);
 
-        Debug.Log("Àû »ç¸Á");
+        Debug.Log("ï¿½ï¿½ ï¿½ï¿½ï¿½");
         Destroy(gameObject);
     }
 }

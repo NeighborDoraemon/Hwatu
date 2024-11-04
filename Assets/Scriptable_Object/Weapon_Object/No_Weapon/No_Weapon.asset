@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
   m_Name: No_Weapon
   m_EditorClassIdentifier: 
-  weapon_Name: "\uB9E8\uC190"
-  attack_Power: 0
-  attackCooldown: 0
+  weapon_Name: Hand
+  attack_Damage: 0
+  attack_Cooldown: 0
   max_Attack_Count: 0
-  skillCooldown: 0
+  skill_Damage: 0
+  skill_Cooldown: 0
   attack_Trigger: 
   skill_Trigger: 
   overrideController: {fileID: 22100000, guid: 32560cb0b251e0e4d8da42a6456d4d8d, type: 2}

@@ -5,69 +5,82 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using System;
+using Unity.Mathematics;
 
+
+// ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½
 public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 {
-    private PlayerCharacter_Stat_Manager stat_Manager;
-    private PlayerCharacter_Card_Manager card_Manager;
-    private PlayerChar_Inventory_Manager inventory_Manager;
-
     private Player_InputActions inputActions;
     [SerializeField]
     private GameObject inventoryPanel;
     private bool isInventory_Visible = false;
 
-    Rigidbody2D rb;
-    GameObject current_Item; // ÇöÀç ¾ÆÀÌÅÛ È®ÀÎ º¯¼ö
+    public Rigidbody2D rb;
+    GameObject current_Item; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     Vector2 movement = new Vector2();
-    int jumpCount = 0; // Á¡ÇÁ È½¼ö Ä«¿îÆÃ º¯¼ö
-    public int maxJumpCount = 2; // ÃÖ´ë Á¡ÇÁ È½¼ö Ä«¿îÆÃ º¯¼ö
+    int jumpCount = 0; // ï¿½ï¿½ï¿½ï¿½ È½ï¿½ï¿½ Ä«ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public int maxJumpCount = 2; // ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ È½ï¿½ï¿½ Ä«ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-    [Header("Player_UI")]
-    [SerializeField] private Image Player_Health_Bar;
-    [SerializeField] private Pause_Manager pause_Manager;
-    [SerializeField] private SpriteRenderer player_render;
+    [Header("ï¿½Ú·ï¿½ï¿½ï¿½Æ®")]
+    bool canTeleporting = true; // ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-    [Header("ÅÚ·¹Æ÷Æ®")]
-    bool canTeleporting = true; // ¼ø°£ÀÌµ¿ Á¶°Ç È®ÀÎ º¯¼ö
-
-    [Header("»óÀÚ ¼ÒÈ¯")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯")]
     public GameObject chestPrefab;
     public Transform spawnPoint;
-
-    [Header("Map_Manager")]
-    [SerializeField]
-    private Map_Manager map_Manager;
 
     [HideInInspector]
     public bool isGrounded;
     [HideInInspector]
     public bool canAttack = true;
+    
+    [Header("Cinemachine")]
+    private Camera_Manager camera_Manager;
+    private Collider2D cur_Boundary_Collider;
 
+    [Header("Weapon_Data")]
+    public SpriteRenderer weapon_Render;
+    public GameObject weapon_Prefab;
+    private Weapon_Collision_Handler weapon_Handler;    
+    public SpriteRenderer effect_Render;
+    public Transform weapon_Anchor;
+    public Transform effect_Anchor;
+    private bool is_Facing_Right = true;
+
+    //--------------------------------------------------- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    [Header("Player_UI")]
+    [SerializeField] private Image Player_Health_Bar;
+    [SerializeField] private Pause_Manager pause_Manager;
+    [SerializeField] private SpriteRenderer player_render;
+    
+
+    [Header("Map_Manager")]
+    [SerializeField]
+    private Map_Manager map_Manager;
+    public bool use_Portal = false;
+    
     //platform & Collider
     private GameObject current_Platform;
     [SerializeField]
-    private CapsuleCollider2D player_Collider;
-    private bool is_Down_Performed = false;
+    private BoxCollider2D player_Collider;
+    private bool is_Down_Performed = false;    
 
-    private bool is_Player_Dead = false; // »ç¸ÁÃ³¸®
+    private bool is_Player_Dead = false; // ï¿½ï¿½ï¿½Ã³ï¿½ï¿½
 
     //NPC
-    private bool is_Npc_Contack = false; // NPC Á¢ÃË
+    private bool is_Npc_Contack = false; // NPC ï¿½ï¿½ï¿½ï¿½
     private GameObject Now_Contact_Npc;
+    //---------------------------------------------------
 
-
-    private bool is_Knock_Back = false; // ³Ë¹é½Ã ÀÌµ¿ºÒ°¡ Ã³¸®¿ë º¯¼ö
+    private bool is_Knock_Back = false; // ï¿½Ë¹ï¿½ï¿½ ï¿½Ìµï¿½ï¿½Ò°ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        stat_Manager = GetComponent<PlayerCharacter_Stat_Manager>();
-        card_Manager = GetComponent<PlayerCharacter_Card_Manager>();
-        inventory_Manager = GetComponent<PlayerChar_Inventory_Manager>();
 
         inputActions = new Player_InputActions();
         
@@ -79,7 +92,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         inputActions.Player.SpawnChest.performed += ctx => Spawn_Chest();
 
-        Set_Weapon(0);        
+        Set_Weapon(0);
     }
     private void OnEnable()
     {
@@ -96,10 +109,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     private void Start()
     {
-        if (cur_Weapon_Data != null)
-        {
-
-        }
+        camera_Manager = FindObjectOfType<Camera_Manager>();
+        sprite_Renderer = GetComponent<SpriteRenderer>();
 
         if (inventoryPanel != null)
         {
@@ -107,27 +118,38 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
         else
         {
-            Debug.LogError("ÀÎ½ºÆåÅÍ Ã¢¿¡ ÀÎº¥Åä¸® ÆÐ³Î ¾øÀ½");
+            Debug.LogError("ï¿½Î½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¢ï¿½ï¿½ ï¿½Îºï¿½ï¿½ä¸® ï¿½Ð³ï¿½ ï¿½ï¿½ï¿½ï¿½");
         }
     }
     // Update is called once per frame
     void Update()
     {
-        if (Time.timeScale == 1.0f && !is_Player_Dead) // ÀÏ½ÃÁ¤Áö Á¶°Ç Ãß°¡
+        if (Time.timeScale == 1.0f && !is_Player_Dead) // ï¿½Ï½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
         {
-            Move();
-            if (!isCombDone) // Ä«µå Á¶ÇÕ È®ÀÎ Á¶°Ç
+            if (isAttacking && isGrounded)
+            {
+                rb.velocity = new Vector2(0, rb.velocity.y);
+            }
+            else
+            {
+                Move();
+            }
+
+            if (!isCombDone) // Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             {
                 Card_Combination();
-
             }
             Update_Animation_Parameters();
             HandleCombo();
             Handle_Teleportation_Time();
         }
     }
+    private void LateUpdate()
+    {
+        Update_WeaponAnchor_Position();
+    }
 
-    void Update_Animation_Parameters() // ¾Ö´Ï¸ÞÀÌ¼Ç °ü¸® ÇÔ¼ö
+    void Update_Animation_Parameters() // ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
     {
         bool isMoving = Mathf.Abs(movement.x) > 0.01f;
         animator.SetBool("isMove", isMoving);
@@ -140,6 +162,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         animator.SetFloat("vertical_Velocity", rb.velocity.y);
     }
+
+    // ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ ===========================================================================================
     public void Input_Move(InputAction.CallbackContext ctx)
     {
         if(ctx.phase == InputActionPhase.Canceled)
@@ -152,21 +176,28 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
     }
 
-    void Move() // Ä³¸¯ÅÍ xÁÂÇ¥ ÀÌµ¿
+    void Move() // Ä³ï¿½ï¿½ï¿½ï¿½ xï¿½ï¿½Ç¥ ï¿½Ìµï¿½
     {
         if (movement.x < 0)
         {
-            transform.localScale = new Vector3(-0.7f, 0.7f, 1f);
-            
+            if (is_Facing_Right)
+            {
+                is_Facing_Right = false;
+                sprite_Renderer.flipX = true;
+            }                        
         }
         else if (movement.x > 0)
         {
-            transform.localScale = new Vector3(0.7f, 0.7f, 1f);
+            if (!is_Facing_Right)
+            {
+                is_Facing_Right = true;
+                sprite_Renderer.flipX = false;
+            }            
         }
 
         movement.Normalize();
 
-        if (!is_Knock_Back) // ³Ë¹é ½ºÅÏ½Ã ÀÌµ¿ºÒ°¡
+        if (!is_Knock_Back) // ï¿½Ë¹ï¿½ ï¿½ï¿½ï¿½Ï½ï¿½ ï¿½Ìµï¿½ï¿½Ò°ï¿½
         {
             rb.velocity = new Vector2(movement.x * movementSpeed, rb.velocity.y);
         }
@@ -184,9 +215,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 }
             }
             else
-            {
-                //if (isAttacking) return;
-
+            {                
                 if (jumpCount < maxJumpCount)
                 {
                     rb.velocity = new Vector2(rb.velocity.x, 0);
@@ -196,135 +225,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             }
         }
     }
-
-    public void Input_Interaction(InputAction.CallbackContext ctx)
-    {
-        if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
-        {
-            map_Manager.Use_Portal();
-
-            //Debug.Log("»óÈ£ÀÛ¿ë È£Ãâ");
-            if (is_Npc_Contack && Now_Contact_Npc != null)
-            {
-                if(Now_Contact_Npc.gameObject.name == "Stat_Npc")
-                {
-                    Debug.Log("Start_Npc");
-                    Now_Contact_Npc.GetComponent<Stat_Npc_Controller>().UI_Start();
-                }
-                else if(Now_Contact_Npc.gameObject.name == "Start_Card_Npc")
-                {
-                    Now_Contact_Npc.GetComponent<Start_Card_Npc>().Request_Spawn_Cards();
-                }
-                
-            }
-
-            if (current_Item != null)
-            {
-                //Debug.Log("¾ÆÀÌÅÛ È®ÀÎ");
-                if (current_Item.tag == "Card")
-                {
-                    if(cardCount == 0) // ½ÃÀÛ Ã¹ Ä«µå È¹µæ ½Ã È¹µæÇÑ Ä«µå ²¨Áöµµ·Ï ÇÏ±â (À±Çõ ÀÓ½Ã)
-                    {
-                        AddCard(current_Item);
-                        current_Item.gameObject.SetActive(false);
-                    }
-                    else if (cardCount < card_Inventory.Length || cardCount == card_Inventory.Length)
-                    {
-                        AddCard(current_Item);
-                    }
-                }
-                else if (current_Item.tag == "Chest")
-                {
-                    Debug.Log("»óÀÚ¿Í »óÈ£ÀÛ¿ë");
-                    Spawn_Box chest = current_Item.GetComponent<Spawn_Box>();
-                    Card_Spawn_Box debug_Chest = current_Item.GetComponent<Card_Spawn_Box>();
-                    if (chest != null)
-                    {
-                        chest.Request_Spawn_Cards();
-                    }
-                    else if (debug_Chest != null)
-                    {
-                        debug_Chest.Request_Spawn_Cards();
-                    }
-                }
-                else if (current_Item.tag == "Item")
-                {
-                    // ¾ÆÀÌÅÛ°ú »óÈ£ÀÛ¿ë
-                    Debug.Log("¾ÆÀÌÅÛ »ç¿ë ½Ãµµ");
-                    Item item = current_Item.GetComponent<Item_Prefab>().itemData;  // ¾ÆÀÌÅÛ µ¥ÀÌÅÍ °¡Á®¿À±â (ÇöÀç ¾ÆÀÌÅÛÀÇ ScriptableObject)
-
-                    if (item != null)
-                    {
-                        Debug.Log($"¾ÆÀÌÅÛ Àû¿ë {item.name}");
-                        if (item.isConsumable)
-                        {                            
-                            if (this != null) 
-                            {
-                                item.ApplyEffect(this);
-                                Debug.Log($"¾ÆÀÌÅÛ È¿°ú Àû¿ë");
-                            }
-                            Destroy(current_Item);
-                        }
-                        else
-                        {
-                            AddItem(item);
-
-                            Destroy(current_Item);
-                        }
-                    }
-                    else
-                    {
-                        Debug.LogWarning("¾ÆÀÌÅÛ µ¥ÀÌÅÍ¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
-                    }
-                    Object_Manager.instance.Destroy_All_Cards_And_Items();
-                }
-                current_Item = null;
-            }
-        }
-    }
-
-    //void InterAction() // ÇÃ·¹ÀÌ¾î Ä³¸¯ÅÍ »óÈ£ÀÛ¿ë
-    //{
-    //    if (current_Item != null)
-    //    {
-    //        if (current_Item.tag == "Card")
-    //        {
-    //            if (cardCount < card_Inventory.Length || cardCount == card_Inventory.Length)
-    //            {
-    //                AddCard(current_Item);
-    //            }
-    //        }
-    //        else if (current_Item.tag == "Chest")
-    //        {
-    //            Spawn_Box chest = current_Item.GetComponent<Spawn_Box>();
-    //            if (chest != null)
-    //            {
-    //                chest.Request_Spawn_Cards();
-    //            }
-    //        }
-    //        else if (current_Item.tag == "Item")
-    //        {
-    //            Item item = current_Item.GetComponent<Item_Prefab>().itemData;  // ¾ÆÀÌÅÛ µ¥ÀÌÅÍ °¡Á®¿À±â (ÇöÀç ¾ÆÀÌÅÛÀÇ ScriptableObject)
-
-    //            if (item != null)
-    //            {
-    //                // ÇÃ·¹ÀÌ¾îÀÇ ÀÎº¥Åä¸®¿¡ ¾ÆÀÌÅÛ Ãß°¡
-    //                AddItem(item);
-
-    //                // ¾ÆÀÌÅÛÀÇ È¿°ú Àû¿ë
-    //                item.ApplyEffect(this);
-
-    //                // ¾ÆÀÌÅÛÀ» ¾À¿¡¼­ »èÁ¦
-    //                Destroy(current_Item);
-    //            }
-    //            else
-    //            {
-    //                Debug.LogWarning("¾ÆÀÌÅÛ µ¥ÀÌÅÍ¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
-    //            }
-    //        }
-    //        current_Item = null;
-    //    }
-    //}
+    
 
     public void Input_Teleportation(InputAction.CallbackContext ctx)
     {
@@ -354,32 +255,179 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             {
                 teleporting_CoolTime = 3.0f;
                 canTeleporting = true;
-                Debug.Log("¼ø°£ÀÌµ¿ °¡´É");
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½");
+            }
+        }
+    }
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ---------------------------------------------------------------
+    public void Input_Down_Jump(InputAction.CallbackContext ctx)
+    {
+        if (ctx.phase == InputActionPhase.Performed && Time.timeScale == 1.0f)
+        {
+            Debug.Log("Down ï¿½ï¿½ï¿½ï¿½");
+            is_Down_Performed = true;
+            if (current_Platform != null)
+            {
+                StartCoroutine(DisableCollision());
+            }
+        }
+        else if (ctx.phase == InputActionPhase.Canceled)
+        {
+            is_Down_Performed = false;
+        }
+    }
+    // ----------------------------------------------------------------------------
+    // ======================================================================================================
+
+    // ï¿½ï¿½È£ï¿½Û¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ========================================================================================
+    public void Input_Interaction(InputAction.CallbackContext ctx)
+    {
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ -------------------------------------------------------------------------------------
+        if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
+        {
+            map_Manager.Use_Portal();
+
+            //Debug.Log("ï¿½ï¿½È£ï¿½Û¿ï¿½ È£ï¿½ï¿½");
+            if (is_Npc_Contack && Now_Contact_Npc != null)
+            {
+                if(Now_Contact_Npc.gameObject.name == "Stat_Npc")
+                {
+                    Debug.Log("Start_Npc");
+                    Now_Contact_Npc.GetComponent<Stat_Npc_Controller>().UI_Start();
+                }
+                else if(Now_Contact_Npc.gameObject.name == "Start_Card_Npc")
+                {
+                    Now_Contact_Npc.GetComponent<Start_Card_Npc>().Request_Spawn_Cards();
+                }                
+            }
+        // ---------------------------------------------------------------------------------------------------
+            if (current_Item != null)
+            {
+                //Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½");
+                if (current_Item.tag == "Card")
+                {
+                    if(cardCount == 0) // ï¿½ï¿½ï¿½ï¿½ Ã¹ Ä«ï¿½ï¿½ È¹ï¿½ï¿½ ï¿½ï¿½ È¹ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï±ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½Ó½ï¿½)
+                    {
+                        AddCard(current_Item);
+                        current_Item.gameObject.SetActive(false);
+                    }
+                    else if (cardCount < card_Inventory.Length || cardCount == card_Inventory.Length)
+                    {
+                        AddCard(current_Item);
+                    }
+                }
+                else if (current_Item.tag == "Chest")
+                {
+                    Debug.Log("ï¿½ï¿½ï¿½Ú¿ï¿½ ï¿½ï¿½È£ï¿½Û¿ï¿½");
+                    Spawn_Box chest = current_Item.GetComponent<Spawn_Box>();
+                    Card_Spawn_Box debug_Chest = current_Item.GetComponent<Card_Spawn_Box>();
+                    if (chest != null)
+                    {
+                        chest.Request_Spawn_Cards();
+                    }
+                    else if (debug_Chest != null)
+                    {
+                        debug_Chest.Request_Spawn_Cards();
+                    }
+                }
+                else if (current_Item.tag == "Item")
+                {
+                    // ï¿½ï¿½ï¿½ï¿½ï¿½Û°ï¿½ ï¿½ï¿½È£ï¿½Û¿ï¿½
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ãµï¿½");
+                    Item item = current_Item.GetComponent<Item_Prefab>().itemData;  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ScriptableObject)
+
+                    if (item != null)
+                    {
+                        Debug.Log($"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ {item.name}");
+                        if (item.isConsumable)
+                        {                            
+                            if (this != null) 
+                            {
+                                item.ApplyEffect(this);
+                                Debug.Log($"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
+                            }
+                            Destroy(current_Item);
+                        }
+                        else
+                        {
+                            AddItem(item);
+
+                            Destroy(current_Item);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
+                    }
+                    Object_Manager.instance.Destroy_All_Cards_And_Items();
+                }
+                current_Item = null;
             }
         }
     }
 
+    void Spawn_Chest() // ï¿½Ó½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ ï¿½Ô¼ï¿½ï¿½Ô´Ï´ï¿½.
+    {
+        GameObject chest = Instantiate(chestPrefab, spawnPoint.position, spawnPoint.rotation);
+    }
+    // ======================================================================================================
+
+    // ï¿½ï¿½ï¿½ï¿½ =================================================================================================
     public override void Set_Weapon(int weaponIndex)
     {
         base.Set_Weapon(weaponIndex);
 
         if (cur_Weapon_Data == null)
         {
-            Debug.LogError("¹«±â µ¥ÀÌÅÍ°¡ ¿Ã¹Ù¸£°Ô ¼³Á¤µÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            Debug.LogError("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½Ã¹Ù¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò½ï¿½ï¿½Ï´ï¿½.");
             return;
         }
 
-        // °ø°Ý Àü·« ÇÒ´ç ¹× Ä³½ºÆÃ È®ÀÎ
+        if (cur_Weapon_Data.effect_Data == null)
+        {
+            Debug.LogError("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò½ï¿½ï¿½Ï´ï¿½.");
+            return;
+        }
+        
+        if (weapon_Anchor.childCount > 0)
+        {
+            foreach(Transform child in weapon_Anchor)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+        
+        if (cur_Weapon_Data.weapon_Prefab)
+        {
+            weapon_Prefab = cur_Weapon_Data.weapon_Prefab;
+
+            GameObject new_Weapon = Instantiate(cur_Weapon_Data.weapon_Prefab, weapon_Anchor);
+            new_Weapon.transform.localPosition = Vector3.zero;
+            new_Weapon.transform.localRotation = Quaternion.identity;
+
+            weapon_Handler = new_Weapon.GetComponent<Weapon_Collision_Handler>();
+
+            if (weapon_Handler != null)
+            {
+                weapon_Handler.Set_Damage(cur_Weapon_Data.attack_Damage);
+                Debug.Log($"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½ : {cur_Weapon_Data.attack_Damage}");
+            }
+            else
+            {
+                Debug.LogError("Weapon_Collision_Handlerï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½");
+            }
+        }     
+
         attack_Strategy = cur_Weapon_Data.attack_Strategy as IAttack_Strategy;
 
         if (attack_Strategy == null)
         {
-            Debug.LogError($"'{cur_Weapon_Data.weapon_Name}'¿¡ ´ëÇÑ °ø°Ý Àü·«ÀÌ À¯È¿ÇÏÁö ¾Ê½À´Ï´Ù.");
-            Debug.Log($"ÇÒ´çµÈ Àü·« Å¸ÀÔ: {cur_Weapon_Data.attack_Strategy.GetType().Name}");
+            Debug.LogError($"'{cur_Weapon_Data.weapon_Name}'ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¿ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½.");            
             return;
         }
 
-        Debug.Log($"°ø°Ý Àü·« '{attack_Strategy.GetType().Name}' ¼³Á¤ ¿Ï·á.");
+        Debug.Log($"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ '{attack_Strategy.GetType().Name}' ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½.");
+        
         Apply_Weapon_Data();
     }
 
@@ -392,10 +440,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             if (cur_Weapon_Data.overrideController != null)
             {
                 animator.runtimeAnimatorController = cur_Weapon_Data.overrideController;
+                Debug.Log($"ï¿½Ö´Ï¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½Ñ·ï¿½ ï¿½ï¿½ï¿½ï¿½ : {cur_Weapon_Data.overrideController}");
             }
 
-            attackDamage = cur_Weapon_Data.attack_Power;
-            attack_Cooldown = cur_Weapon_Data.attackCooldown;
+            attackDamage = cur_Weapon_Data.attack_Damage;
+            attack_Cooldown = cur_Weapon_Data.attack_Cooldown;
             max_AttackCount = cur_Weapon_Data.max_Attack_Count;
 
             isAttacking = false;
@@ -405,23 +454,170 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
     }
 
+    void Update_WeaponAnchor_Position()
+    {
+        if (cur_Weapon_Data == null)
+        {
+            Debug.LogWarning("cur_Weapon_Data is null.");
+            return;
+        }
+
+        if (cur_Weapon_Data.animation_Pos_Data_List == null)
+        {
+            Debug.LogWarning("animation_Pos_Data_List is null.");
+            return;
+        }
+
+        if (cur_Weapon_Data.animation_Pos_Data_List.Count == 0)
+        {
+            //Debug.LogWarning("animation_Pos_Data_List is empty.");
+            return;
+        }
+
+        AnimatorStateInfo state_Info = animator.GetCurrentAnimatorStateInfo(0);
+        string cur_Animation_Name = Get_Cur_Animation_Name(animator);
+
+        var animation_Data = cur_Weapon_Data.animation_Pos_Data_List.Find(
+            data => string.Equals(data.animation_Name, cur_Animation_Name, StringComparison.OrdinalIgnoreCase)
+        );
+
+        //Debug.Log($"Looking for Animation Name: '{cur_Animation_Name}'");
+        //foreach (var data in cur_Weapon_Data.animation_Pos_Data_List)
+        //{
+        //    Debug.Log($"Comparing with: '{data.animation_Name}'");
+        //    if (data.animation_Name == cur_Animation_Name)
+        //    {
+        //        Debug.Log("Match found!");
+        //    }
+        //}
+
+        if (animation_Data != null)
+        {
+            AnimatorClipInfo[] clipInfo = animator.GetCurrentAnimatorClipInfo(0);
+            if (clipInfo.Length > 0)
+            {
+                AnimationClip cur_Clip = clipInfo[0].clip;
+                int total_Frames = Mathf.RoundToInt(cur_Clip.length * cur_Clip.frameRate);
+                int cur_Frame = Mathf.FloorToInt(state_Info.normalizedTime * total_Frames) % total_Frames;
+
+                //Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : " + cur_Frame);
+
+                Vector3 new_Pos = animation_Data.Get_Position(cur_Frame);
+                Quaternion new_Rotation = animation_Data.Get_Rotation(cur_Frame);
+                
+
+                //Debug.Log("ï¿½ï¿½ ï¿½ï¿½Ä¡ : " + new_Pos + "ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½" + new_Rotation);
+
+                // ï¿½ï¿½Ä¡ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                weapon_Anchor.localPosition = is_Facing_Right ? new_Pos : new Vector3(-new_Pos.x, new_Pos.y, new_Pos.z);
+                weapon_Anchor.localRotation = is_Facing_Right ? new_Rotation : Quaternion.Inverse(new_Rotation);
+                weapon_Anchor.localScale = is_Facing_Right ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
+            }
+            else
+            {
+                //Debug.LogWarning("No animation clip info found.");
+            }
+        }
+        else
+        {
+            //Debug.LogWarning("No matching animation data found for current animation.");
+        }
+    }
+    string Get_Cur_Animation_Name(Animator animator)
+    {
+        AnimatorClipInfo[] clipInfo = animator.GetCurrentAnimatorClipInfo(0);
+        if (clipInfo.Length > 0)
+        {
+            return clipInfo[0].clip.name;
+        }
+        return "";
+    }
+
+    public void Activate_WeaponCollider(float duration)
+    {
+        Debug.Log("Activate_WeaponCollider called");
+        if (weapon_Handler != null)
+        {
+            weapon_Handler.Enable_Collider(duration);
+        }
+    }
+
+    public void Show_Effect(string motion_Name_And_Frame)
+    {
+        var parts = motion_Name_And_Frame.Split(',');
+        if (parts.Length < 2) return;
+
+        string motion_Name = parts[0];
+        int frame_Num;
+        if (!int.TryParse(parts[1], out frame_Num))
+        {
+            return;
+        }
+
+        var effect_Info = cur_Weapon_Data.effect_Data.Get_Effect_Info(motion_Name);
+        if (effect_Info != null)
+        {
+            var frame_Effect_Info = effect_Info.frame_Effects.Find(fe => fe.frame_Number == frame_Num);
+            if (frame_Effect_Info != null)
+            {
+                effect_Render.sprite = frame_Effect_Info.effect_Sprites;
+
+                Vector3 effect_Pos = frame_Effect_Info.position_Offset;
+                effect_Render.transform.position = is_Facing_Right ? (transform.position + effect_Pos) : (transform.position + new Vector3(-effect_Pos.x, effect_Pos.y, effect_Pos.z));                
+
+                effect_Render.enabled = true;
+
+                Invoke("HideEffect", frame_Effect_Info.duration);
+            }
+        }
+    }
+
+    public void HideEffect()
+    {
+        effect_Render.enabled = false;
+        effect_Render.sprite = null;
+    }
+    // ======================================================================================================
+
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Å³ =========================================================================================
     public void Input_Perform_Attack(InputAction.CallbackContext ctx)
     {
-        if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
+        if (ctx.phase != InputActionPhase.Performed || Time.timeScale != 1.0f || is_Player_Dead)
         {
             return;
         }
 
         if (attack_Strategy == null)
         {
-            Debug.LogError("°ø°Ý Àü·«ÀÌ ¼³Á¤µÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            Debug.LogError("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò½ï¿½ï¿½Ï´ï¿½.");
+            return;
+        }
+
+        if (cur_AttackCount >= max_AttackCount)
+        {
+            Debug.Log("ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ È½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
             return;
         }
 
         attack_Strategy.Attack(this, cur_Weapon_Data);
     }
 
-    void HandleCombo() // ÄÞº¸ °ü¸®¿ë ÇÔ¼ö
+    public void On_Shoot_Projectile(GameObject projectile_Prefab)
+    {
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½Ã¼ ï¿½ß»ï¿½ ï¿½Ìºï¿½Æ® È£ï¿½ï¿½");
+
+        if (attack_Strategy != null)
+        {
+            attack_Strategy.Shoot(this, projectile_Prefab, firePoint);
+            Debug.Log("ï¿½Ñ¾ï¿½ ï¿½ß»ï¿½ ï¿½Ï·ï¿½");
+        }
+        else
+        {
+            Debug.LogError("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
+        }
+    }
+
+    void HandleCombo() // ï¿½Þºï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
     {
         if (isAttacking)
         {
@@ -433,43 +629,39 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
     }
 
-    public void ResetAttack() // ¾Ö´Ï¸ÞÀÌ¼Ç È£Ãâ¿ë ÀÌº¥Æ® ÇÔ¼ö
+    public void ResetAttack() // ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ È£ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ® ï¿½Ô¼ï¿½
     {
-        if (cur_AttackCount >= max_AttackCount)
-        {
-            isAttacking = false;
-            cur_AttackCount = 0;
-            last_Attack_Time = Time.time;
-        }
+        isAttacking = false;
+        cur_AttackCount = 0;        
     }
-    public void ResetCombo() // ¾Ö´Ï¸ÞÀÌ¼Ç È£Ãâ¿ë ÀÌº¥Æ® ÇÔ¼ö
+    public void ResetCombo() // ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ È£ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ® ï¿½Ô¼ï¿½
     {
-        //Debug.Log("¸®¼ÂÄÞº¸ ÇÔ¼ö È£Ãâ");
+        //Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½Þºï¿½ ï¿½Ô¼ï¿½ È£ï¿½ï¿½");
         if (cur_AttackCount < max_AttackCount)
         {
             isAttacking = false;
             cur_AttackCount = 0;
-            Debug.Log("°ø°Ý ¸®¼Â");
+            //Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
         }
     }
 
-    public void Check_Enemies_Collider(string hixBox_Values) // ¾Ö´Ï¸ÞÀÌ¼Ç È£Ãâ¿ë Àû °¨Áö ÇÔ¼ö
+    public void Check_Enemies_Collider(string hixBox_Values) // ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ È£ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
     {
         string[] values = hixBox_Values.Split(',');
         float hitBox_x = float.Parse(values[0]);
         float hitBox_y = float.Parse(values[1]);
 
-        // °ø°Ý ¹üÀ§ ¹Ú½º ÄÝ¶óÀÌ´õ ¼³Á¤
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ú½ï¿½ ï¿½Ý¶ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½ï¿½
         Vector2 boxSize = new Vector2(hitBox_x, hitBox_y);
         Vector2 boxCenter = (Vector2)transform.position + new Vector2(transform.localScale.x * attackRange, 0f);
         LayerMask enemyLayer = LayerMask.GetMask("Enemy");
 
-        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(boxCenter, boxSize, 0, enemyLayer); // Àû ·¹ÀÌ¾î ¼³Á¤
-
-        // °¨ÁöµÈ Àû¿¡°Ô µ¥¹ÌÁö Ã³¸®
+        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(boxCenter, boxSize, 0, enemyLayer); // ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
+        
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
         foreach (Collider2D enemy in hitEnemies)
         {
-            Debug.Log("±ÙÁ¢ °ø°Ý Àû °¨Áö");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 
             enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
         }
@@ -482,12 +674,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             attack_Strategy.Skill(this, cur_Weapon_Data);
         }
     }
+    // ======================================================================================================
 
-    void Spawn_Chest() // ÀÓ½Ã µð¹ö±ë ¿ë »óÀÚ ¼ÒÈ¯ ÇÔ¼öÀÔ´Ï´Ù.
-    {
-        GameObject chest = Instantiate(chestPrefab, spawnPoint.position, spawnPoint.rotation);
-    }
-
+    // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ UI ==========================================================================================
     void OnInventory_Pressed(InputAction.CallbackContext context)
     {
         ShowInventory();
@@ -513,6 +702,53 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
     }
 
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ -------------------------------------------------------------------
+    public void Player_Take_Damage(int Damage)
+    {
+        Debug.Log("ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
+        health = health - Damage;
+        Player_Health_Bar.fillAmount = (float)health / max_Health;
+        Debug.Log("ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½");
+
+        if (health <= 0)
+        {
+            //ï¿½ï¿½ï¿½Ã³ï¿½ï¿½
+            Player_Died();
+        }
+    }
+
+    private void Player_Died()
+    {
+        is_Player_Dead = true;
+        player_render.enabled = false;
+
+        pause_Manager.Show_Result();
+    }
+
+    public void Input_Game_Stop(InputAction.CallbackContext ctx)
+    {
+        if (ctx.phase == InputActionPhase.Started)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (Time.timeScale == 0.0f)
+                {
+                    pause_Manager.Pause_Stop();
+                    Time.timeScale = 1.0f;
+                }
+                else if (Time.timeScale == 1.0f)
+                {
+                    pause_Manager.Pause_Start();
+                    Time.timeScale = 0.0f;
+                }
+            }
+        }
+    }
+    // --------------------------------------------------------------------------------
+
+    // ======================================================================================================
+
+    // ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ =======================================================================================
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Platform"))
@@ -547,6 +783,15 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             map_Manager.IsOnPortal = true;
             map_Manager.Which_Portal = other.gameObject;
             map_Manager.v_Now_Portal = other.transform.position;
+
+            use_Portal = true;
+        }
+
+        if (other.CompareTag("Boundary"))
+        {
+            cur_Boundary_Collider = other;
+            camera_Manager.Update_Confiner(cur_Boundary_Collider);
+            Debug.Log("ï¿½ï¿½ ï¿½È¿ï¿½ ï¿½ï¿½ï¿½ï¿½");
         }
 
         if(other.gameObject.tag == "NPC")
@@ -569,11 +814,28 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         if(other.gameObject.tag == "Portal" && map_Manager.IsOnPortal == true)
         {
             map_Manager.IsOnPortal = false;
+            use_Portal = false;
         }
 
         if (other.gameObject.tag == "Item" || other.gameObject.tag == "Card" || other.gameObject.tag == "Chest")
         {
             current_Item = null;
+        }
+
+        if (other.CompareTag("Boundary"))
+        {
+            if (use_Portal)
+            {
+                return;
+            }
+        if (cur_Boundary_Collider != null)
+            {
+                return cur_Boundary_Collider.ClosestPoint(position);
+            }
+            return position;
+            Debug.Log("ï¿½ï¿½ ï¿½ï¿½ï¿½î³ªï¿½ï¿½ ï¿½ï¿½! ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ìµï¿½");
+            Vector2 closet_Point = Get_Closet_Point(transform.position);
+            transform.position = closet_Point;
         }
 
         if(other.gameObject.tag == "NPC")
@@ -582,11 +844,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             if (Now_Contact_Npc.gameObject.name == "Stat_Npc")
             { 
                 Now_Contact_Npc.GetComponent<Stat_Npc_Controller>().Btn_Exit(); 
-            } //NPC Ãß°¡µÇ¸é ¹Ù²î¾î¾ß ÇÔ / ¾Æ´Ï¸é ÇöÀç NPCÄÚµå¸¦ ºÎ¸ð·Î µÎ°í ÆÄ»ý½ÃÄÑ¼­ È£ÃâÇØµµ µÊ
+            } //NPC ï¿½ß°ï¿½ï¿½Ç¸ï¿½ ï¿½Ù²ï¿½ï¿½ï¿½ ï¿½ï¿½ / ï¿½Æ´Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ NPCï¿½Úµå¸¦ ï¿½Î¸ï¿½ï¿½ ï¿½Î°ï¿½ ï¿½Ä»ï¿½ï¿½ï¿½ï¿½Ñ¼ï¿½ È£ï¿½ï¿½ï¿½Øµï¿½ ï¿½ï¿½
         }
     }
 
-    private void OnDrawGizmosSelected() // µð¹ö±×¿ë °ø°Ý ¹üÀ§ ±×¸®±â
+    private Vector2 Get_Closet_Point(Vector2 position)
     {
         Vector2 boxSize = new Vector2(0.3f, 0.5f);
         Vector2 boxCenter = (Vector2)transform.position + new Vector2(transform.localScale.x * attackRange, 0f);
@@ -597,41 +859,14 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public void Player_Take_Damage(int Damage)
     {
-        //Debug.Log("ÇÃ·¹ÀÌ¾î µ¥¹ÌÁö °è»ê");
+        //Debug.Log("ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
         health = health - Damage;
         Player_Health_Bar.fillAmount = (float)health / max_Health;
-        //Debug.Log("°è»ê ¿Ï·á");
+        //Debug.Log("ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½");
 
-        if (health <= 0)
-        {
-            //»ç¸ÁÃ³¸®
-            Player_Died();
-        }
-    }
+        //if (health <= 0)
 
-    private void Player_Died()
-    {
-        is_Player_Dead = true;
-        player_render.enabled = false;
-
-        pause_Manager.Show_Result();
-    }
-
-    public void Input_Down_Jump(InputAction.CallbackContext ctx)
-    {
-        if (ctx.phase == InputActionPhase.Performed && Time.timeScale == 1.0f)
-        {
-            Debug.Log("Down °¨Áö");
-            is_Down_Performed = true;
-            //if (current_Platform != null)
-            //{
-            //    StartCoroutine(DisableCollision());
-            //}
-        }
-        else if(ctx.phase == InputActionPhase.Canceled)
-        {
-            is_Down_Performed = false;
-        }
+        
     }
 
     private IEnumerator DisableCollision()
@@ -643,26 +878,14 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         Physics2D.IgnoreCollision(player_Collider, platform_Collider, false);
     }
 
-    public void Input_Game_Stop(InputAction.CallbackContext ctx)
+    private void OnDrawGizmosSelected() // ï¿½ï¿½ï¿½ï¿½×¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½
     {
-        if(ctx.phase == InputActionPhase.Started)
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                if (Time.timeScale == 0.0f)
-                {
-                    pause_Manager.Pause_Stop();
-                    Time.timeScale = 1.0f;
-                }
-                else if (Time.timeScale == 1.0f)
-                {
-                    pause_Manager.Pause_Start();
-                    Time.timeScale = 0.0f;
-                }
-            }
-        }
-    }
+        Vector2 boxSize = new Vector2(0.3f, 0.5f);
+        Vector2 boxCenter = (Vector2)transform.position + new Vector2(transform.localScale.x * attackRange, 0f);
 
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(boxCenter, boxSize);
+    }
 
     public void Weak_Knock_Back(int Left_Num, float Knock_Back_time, float Power) //Left = 1, Right = -1
     {
@@ -684,6 +907,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
         is_Knock_Back = false;
     }
+    // =========================================================================================================
 }
 
 
