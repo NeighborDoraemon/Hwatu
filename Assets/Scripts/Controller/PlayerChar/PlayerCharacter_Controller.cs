@@ -58,6 +58,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     private GameObject Now_Contact_Npc;
 
 
+    private bool is_Knock_Back = false; // 넉백시 이동불가 처리용 변수
+
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -162,7 +165,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
 
         movement.Normalize();
-        rb.velocity = new Vector2(movement.x * movementSpeed, rb.velocity.y);
+
+        if (!is_Knock_Back) // 넉백 스턴시 이동불가
+        {
+            rb.velocity = new Vector2(movement.x * movementSpeed, rb.velocity.y);
+        }
     }
 
     public void Input_Jump(InputAction.CallbackContext ctx)
@@ -590,10 +597,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public void Player_Take_Damage(int Damage)
     {
-        Debug.Log("플레이어 데미지 계산");
+        //Debug.Log("플레이어 데미지 계산");
         health = health - Damage;
         Player_Health_Bar.fillAmount = (float)health / max_Health;
-        Debug.Log("계산 완료");
+        //Debug.Log("계산 완료");
 
         if (health <= 0)
         {
@@ -654,6 +661,28 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 }
             }
         }
+    }
+
+
+    public void Weak_Knock_Back(int Left_Num, float Knock_Back_time, float Power) //Left = 1, Right = -1
+    {
+        is_Knock_Back = true;
+
+        Vector2 Knock_Back_Direction = new Vector2((float)Left_Num, 0.5f);
+
+        rb.velocity = Vector2.zero;
+        rb.AddForce(Knock_Back_Direction * Power, ForceMode2D.Impulse);
+
+        Invoke("Knock_Back_End", Knock_Back_time);
+    }
+
+    private void Knock_Back_End()
+    {
+        if(rb.velocity.y <= 0.0f)
+        {
+            rb.velocity = Vector2.zero;
+        }
+        is_Knock_Back = false;
     }
 }
 

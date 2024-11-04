@@ -9,7 +9,7 @@ public class ShortSword : MonoBehaviour
     [SerializeField] private float f_Chasing_Speed = 4.0f;
 
     [Header("Attack Delay")]
-    [SerializeField] private float f_Before_Delay = 1.5f;
+    //[SerializeField] private float f_Before_Delay = 1.5f;
     [SerializeField] private float f_After_Delay = 2.0f;
 
     private float Attack_Time = 0.0f;
