@@ -8,7 +8,7 @@ public class Handgun_Attack_Strategy : ScriptableObject, IAttack_Strategy
 {
     private PlayerCharacter_Controller player;
     private Weapon_Data weapon_Data;
-    private float projectile_Speed = 10.0f;
+    public float projectile_Speed = 20.0f;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
@@ -39,10 +39,6 @@ public class Handgun_Attack_Strategy : ScriptableObject, IAttack_Strategy
         {
             Start_Attack(player, weapon_Data);
         }
-        else if (Can_Combo_Attack(player, weapon_Data))
-        {
-            Continue_Combo(player);
-        }
         else if (Is_Combo_Complete(player, weapon_Data))
         {
             End_Attack(player);
@@ -52,13 +48,6 @@ public class Handgun_Attack_Strategy : ScriptableObject, IAttack_Strategy
     private bool Is_Cooldown_Complete(PlayerCharacter_Controller player)
     {
         return Time.time >= player.last_Attack_Time + player.attack_Cooldown;
-    }
-
-    private bool Can_Combo_Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
-    {
-        return player.isAttacking &&
-               player.cur_AttackCount < weapon_Data.max_Attack_Count &&
-               Time.time - player.last_ComboAttack_Time <= player.comboTime;
     }
 
     private bool Is_Combo_Complete(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
@@ -74,14 +63,6 @@ public class Handgun_Attack_Strategy : ScriptableObject, IAttack_Strategy
         Update_Attack_Timers(player);
     }
 
-    private void Continue_Combo(PlayerCharacter_Controller player)
-    {
-        player.animator.SetTrigger($"Attack_{player.cur_AttackCount + 1}");
-        player.cur_AttackCount++;
-        player.isAttacking = true;
-        Update_Attack_Timers(player);
-    }
-
     private void End_Attack(PlayerCharacter_Controller player)
     {
         //player.isAttacking = false;
@@ -90,8 +71,7 @@ public class Handgun_Attack_Strategy : ScriptableObject, IAttack_Strategy
     }
 
     private void Update_Attack_Timers(PlayerCharacter_Controller player)
-    {
-        player.last_ComboAttack_Time = Time.time;
+    {        
         player.last_Attack_Time = Time.time;
     }
     public void Shoot(PlayerCharacter_Controller player, GameObject prefab, Transform fire_Point)

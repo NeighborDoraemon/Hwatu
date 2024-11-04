@@ -6,7 +6,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System;
+using Unity.Mathematics;
 
+
+// 플레이어 캐릭터 조작 제작자 : 전병준 // 김윤혁이 제작한 부분은 따로 표시
 public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 {
     private Player_InputActions inputActions;
@@ -21,11 +24,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     int jumpCount = 0; // 점프 횟수 카운팅 변수
     public int maxJumpCount = 2; // 최대 점프 횟수 카운팅 변수
 
-    [Header("Player_UI")]
-    [SerializeField] private Image Player_Health_Bar;
-    [SerializeField] private Pause_Manager pause_Manager;
-    [SerializeField] private SpriteRenderer player_render;
-
     [Header("텔레포트")]
     bool canTeleporting = true; // 순간이동 조건 확인 변수
 
@@ -33,31 +31,48 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     public GameObject chestPrefab;
     public Transform spawnPoint;
 
-    [Header("Map_Manager")]
-    [SerializeField]
-    private Map_Manager map_Manager;
-    public bool use_Portal = false;
-    private Camera_Manager camera_Manager;
-
     [HideInInspector]
     public bool isGrounded;
     [HideInInspector]
     public bool canAttack = true;
+    
+    [Header("Cinemachine")]
+    private Camera_Manager camera_Manager;
+    private Collider2D cur_Boundary_Collider;
 
+    [Header("Weapon_Data")]
+    public SpriteRenderer weapon_Render;
+    public GameObject weapon_Prefab;
+    private Weapon_Collision_Handler weapon_Handler;    
+    public SpriteRenderer effect_Render;
+    public Transform weapon_Anchor;
+    public Transform effect_Anchor;
+    private bool is_Facing_Right = true;
+
+    //--------------------------------------------------- 김윤혁 제작
+    [Header("Player_UI")]
+    [SerializeField] private Image Player_Health_Bar;
+    [SerializeField] private Pause_Manager pause_Manager;
+    [SerializeField] private SpriteRenderer player_render;
+    
+
+    [Header("Map_Manager")]
+    [SerializeField]
+    private Map_Manager map_Manager;
+    public bool use_Portal = false;
+    
     //platform & Collider
     private GameObject current_Platform;
     [SerializeField]
-    private CapsuleCollider2D player_Collider;
-    private bool is_Down_Performed = false;
-
-    private Collider2D cur_Boundary_Collider;
+    private BoxCollider2D player_Collider;
+    private bool is_Down_Performed = false;    
 
     private bool is_Player_Dead = false; // 사망처리
 
     //NPC
     private bool is_Npc_Contack = false; // NPC 접촉
     private GameObject Now_Contact_Npc;
-
+    //---------------------------------------------------
 
     private void Awake()
     {
@@ -74,7 +89,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         inputActions.Player.SpawnChest.performed += ctx => Spawn_Chest();
 
-        Set_Weapon(0);        
+        Set_Weapon(0);
     }
     private void OnEnable()
     {
@@ -92,6 +107,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     private void Start()
     {
         camera_Manager = FindObjectOfType<Camera_Manager>();
+        sprite_Renderer = GetComponent<SpriteRenderer>();
 
         if (inventoryPanel != null)
         {
@@ -125,6 +141,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             Handle_Teleportation_Time();
         }
     }
+    private void LateUpdate()
+    {
+        Update_WeaponAnchor_Position();
+    }
 
     void Update_Animation_Parameters() // 애니메이션 관리 함수
     {
@@ -139,6 +159,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         animator.SetFloat("vertical_Velocity", rb.velocity.y);
     }
+
+    // 이동 조작 ===========================================================================================
     public void Input_Move(InputAction.CallbackContext ctx)
     {
         if(ctx.phase == InputActionPhase.Canceled)
@@ -155,12 +177,19 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (movement.x < 0)
         {
-            transform.localScale = new Vector3(-0.7f, 0.7f, 1f);
-            
+            if (is_Facing_Right)
+            {
+                is_Facing_Right = false;
+                sprite_Renderer.flipX = true;
+            }                        
         }
         else if (movement.x > 0)
         {
-            transform.localScale = new Vector3(0.7f, 0.7f, 1f);
+            if (!is_Facing_Right)
+            {
+                is_Facing_Right = true;
+                sprite_Renderer.flipX = false;
+            }            
         }
 
         movement.Normalize();
@@ -179,9 +208,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 }
             }
             else
-            {
-                //if (isAttacking) return;
-
+            {                
                 if (jumpCount < maxJumpCount)
                 {
                     rb.velocity = new Vector2(rb.velocity.x, 0);
@@ -191,9 +218,64 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             }
         }
     }
+    
 
+    public void Input_Teleportation(InputAction.CallbackContext ctx)
+    {
+        if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
+        {
+            if (canTeleporting)
+            {
+                if (movement.x < 0)
+                {
+                    transform.Translate(Vector2.left * teleporting_Distance);
+                }
+                else if (movement.x > 0)
+                {
+                    transform.Translate(Vector2.right * teleporting_Distance);
+                }
+                animator.SetTrigger("Teleport");
+                canTeleporting = false;
+            }
+        }
+    }
+    void Handle_Teleportation_Time()
+    {
+        if (!canTeleporting)
+        {
+            teleporting_CoolTime -= Time.deltaTime;
+            if (teleporting_CoolTime <= 0.0f)
+            {
+                teleporting_CoolTime = 3.0f;
+                canTeleporting = true;
+                Debug.Log("순간이동 가능");
+            }
+        }
+    }
+    // 김윤혁 제작 ---------------------------------------------------------------
+    public void Input_Down_Jump(InputAction.CallbackContext ctx)
+    {
+        if (ctx.phase == InputActionPhase.Performed && Time.timeScale == 1.0f)
+        {
+            Debug.Log("Down 감지");
+            is_Down_Performed = true;
+            if (current_Platform != null)
+            {
+                StartCoroutine(DisableCollision());
+            }
+        }
+        else if (ctx.phase == InputActionPhase.Canceled)
+        {
+            is_Down_Performed = false;
+        }
+    }
+    // ----------------------------------------------------------------------------
+    // ======================================================================================================
+
+    // 상호작용 조작 ========================================================================================
     public void Input_Interaction(InputAction.CallbackContext ctx)
     {
+        // 김윤혁 제작 -------------------------------------------------------------------------------------
         if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
         {
             map_Manager.Use_Portal();
@@ -209,10 +291,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 else if(Now_Contact_Npc.gameObject.name == "Start_Card_Npc")
                 {
                     Now_Contact_Npc.GetComponent<Start_Card_Npc>().Request_Spawn_Cards();
-                }
-                
+                }                
             }
-
+        // ---------------------------------------------------------------------------------------------------
             if (current_Item != null)
             {
                 //Debug.Log("아이템 확인");
@@ -278,39 +359,13 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
     }
 
-    public void Input_Teleportation(InputAction.CallbackContext ctx)
+    void Spawn_Chest() // 임시 디버깅 용 상자 소환 함수입니다.
     {
-        if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
-        {
-            if (canTeleporting)
-            {
-                if (movement.x < 0)
-                {
-                    transform.Translate(Vector2.left * teleporting_Distance);
-                }
-                else if (movement.x > 0)
-                {
-                    transform.Translate(Vector2.right * teleporting_Distance);
-                }
-                animator.SetTrigger("Teleport");
-                canTeleporting = false;
-            }
-        }
+        GameObject chest = Instantiate(chestPrefab, spawnPoint.position, spawnPoint.rotation);
     }
-    void Handle_Teleportation_Time()
-    {
-        if (!canTeleporting)
-        {
-            teleporting_CoolTime -= Time.deltaTime;
-            if (teleporting_CoolTime <= 0.0f)
-            {
-                teleporting_CoolTime = 3.0f;
-                canTeleporting = true;
-                Debug.Log("순간이동 가능");
-            }
-        }
-    }
+    // ======================================================================================================
 
+    // 무기 =================================================================================================
     public override void Set_Weapon(int weaponIndex)
     {
         base.Set_Weapon(weaponIndex);
@@ -321,7 +376,41 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             return;
         }
 
-        // 공격 전략 할당 및 캐스팅 확인
+        if (cur_Weapon_Data.effect_Data == null)
+        {
+            Debug.LogError("무기 이펙트 데이터가 설정되지 않았습니다.");
+            return;
+        }
+        
+        if (weapon_Anchor.childCount > 0)
+        {
+            foreach(Transform child in weapon_Anchor)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+        
+        if (cur_Weapon_Data.weapon_Prefab)
+        {
+            weapon_Prefab = cur_Weapon_Data.weapon_Prefab;
+
+            GameObject new_Weapon = Instantiate(cur_Weapon_Data.weapon_Prefab, weapon_Anchor);
+            new_Weapon.transform.localPosition = Vector3.zero;
+            new_Weapon.transform.localRotation = Quaternion.identity;
+
+            weapon_Handler = new_Weapon.GetComponent<Weapon_Collision_Handler>();
+
+            if (weapon_Handler != null)
+            {
+                weapon_Handler.Set_Damage(cur_Weapon_Data.attack_Damage);
+                Debug.Log($"무기 데미지 설정 완료 : {cur_Weapon_Data.attack_Damage}");
+            }
+            else
+            {
+                Debug.LogError("Weapon_Collision_Handler가 프리팹에 없습니다");
+            }
+        }     
+
         attack_Strategy = cur_Weapon_Data.attack_Strategy as IAttack_Strategy;
 
         if (attack_Strategy == null)
@@ -331,6 +420,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
 
         Debug.Log($"공격 전략 '{attack_Strategy.GetType().Name}' 설정 완료.");
+        
         Apply_Weapon_Data();
     }
 
@@ -357,6 +447,132 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
     }
 
+    void Update_WeaponAnchor_Position()
+    {
+        if (cur_Weapon_Data == null)
+        {
+            Debug.LogWarning("cur_Weapon_Data is null.");
+            return;
+        }
+
+        if (cur_Weapon_Data.animation_Pos_Data_List == null)
+        {
+            Debug.LogWarning("animation_Pos_Data_List is null.");
+            return;
+        }
+
+        if (cur_Weapon_Data.animation_Pos_Data_List.Count == 0)
+        {
+            //Debug.LogWarning("animation_Pos_Data_List is empty.");
+            return;
+        }
+
+        AnimatorStateInfo state_Info = animator.GetCurrentAnimatorStateInfo(0);
+        string cur_Animation_Name = Get_Cur_Animation_Name(animator);
+
+        var animation_Data = cur_Weapon_Data.animation_Pos_Data_List.Find(
+            data => string.Equals(data.animation_Name, cur_Animation_Name, StringComparison.OrdinalIgnoreCase)
+        );
+
+        //Debug.Log($"Looking for Animation Name: '{cur_Animation_Name}'");
+        //foreach (var data in cur_Weapon_Data.animation_Pos_Data_List)
+        //{
+        //    Debug.Log($"Comparing with: '{data.animation_Name}'");
+        //    if (data.animation_Name == cur_Animation_Name)
+        //    {
+        //        Debug.Log("Match found!");
+        //    }
+        //}
+
+        if (animation_Data != null)
+        {
+            AnimatorClipInfo[] clipInfo = animator.GetCurrentAnimatorClipInfo(0);
+            if (clipInfo.Length > 0)
+            {
+                AnimationClip cur_Clip = clipInfo[0].clip;
+                int total_Frames = Mathf.RoundToInt(cur_Clip.length * cur_Clip.frameRate);
+                int cur_Frame = Mathf.FloorToInt(state_Info.normalizedTime * total_Frames) % total_Frames;
+
+                //Debug.Log("현재 프레임 : " + cur_Frame);
+
+                Vector3 new_Pos = animation_Data.Get_Position(cur_Frame);
+                Quaternion new_Rotation = animation_Data.Get_Rotation(cur_Frame);
+                
+
+                //Debug.Log("새 위치 : " + new_Pos + "새 회전값" + new_Rotation);
+
+                // 위치와 회전을 강제 적용
+                weapon_Anchor.localPosition = is_Facing_Right ? new_Pos : new Vector3(-new_Pos.x, new_Pos.y, new_Pos.z);
+                weapon_Anchor.localRotation = is_Facing_Right ? new_Rotation : Quaternion.Inverse(new_Rotation);
+                weapon_Anchor.localScale = is_Facing_Right ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
+            }
+            else
+            {
+                //Debug.LogWarning("No animation clip info found.");
+            }
+        }
+        else
+        {
+            //Debug.LogWarning("No matching animation data found for current animation.");
+        }
+    }
+    string Get_Cur_Animation_Name(Animator animator)
+    {
+        AnimatorClipInfo[] clipInfo = animator.GetCurrentAnimatorClipInfo(0);
+        if (clipInfo.Length > 0)
+        {
+            return clipInfo[0].clip.name;
+        }
+        return "";
+    }
+
+    public void Activate_WeaponCollider(float duration)
+    {
+        Debug.Log("Activate_WeaponCollider called");
+        if (weapon_Handler != null)
+        {
+            weapon_Handler.Enable_Collider(duration);
+        }
+    }
+
+    public void Show_Effect(string motion_Name_And_Frame)
+    {
+        var parts = motion_Name_And_Frame.Split(',');
+        if (parts.Length < 2) return;
+
+        string motion_Name = parts[0];
+        int frame_Num;
+        if (!int.TryParse(parts[1], out frame_Num))
+        {
+            return;
+        }
+
+        var effect_Info = cur_Weapon_Data.effect_Data.Get_Effect_Info(motion_Name);
+        if (effect_Info != null)
+        {
+            var frame_Effect_Info = effect_Info.frame_Effects.Find(fe => fe.frame_Number == frame_Num);
+            if (frame_Effect_Info != null)
+            {
+                effect_Render.sprite = frame_Effect_Info.effect_Sprites;
+
+                Vector3 effect_Pos = frame_Effect_Info.position_Offset;
+                effect_Render.transform.position = is_Facing_Right ? (transform.position + effect_Pos) : (transform.position + new Vector3(-effect_Pos.x, effect_Pos.y, effect_Pos.z));                
+
+                effect_Render.enabled = true;
+
+                Invoke("HideEffect", frame_Effect_Info.duration);
+            }
+        }
+    }
+
+    public void HideEffect()
+    {
+        effect_Render.enabled = false;
+        effect_Render.sprite = null;
+    }
+    // ======================================================================================================
+
+    // 공격 및 스킬 =========================================================================================
     public void Input_Perform_Attack(InputAction.CallbackContext ctx)
     {
         if (ctx.phase != InputActionPhase.Performed || Time.timeScale != 1.0f || is_Player_Dead)
@@ -451,12 +667,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             attack_Strategy.Skill(this, cur_Weapon_Data);
         }
     }
+    // ======================================================================================================
 
-    void Spawn_Chest() // 임시 디버깅 용 상자 소환 함수입니다.
-    {
-        GameObject chest = Instantiate(chestPrefab, spawnPoint.position, spawnPoint.rotation);
-    }
-
+    // 플레이어 UI ==========================================================================================
     void OnInventory_Pressed(InputAction.CallbackContext context)
     {
         ShowInventory();
@@ -482,6 +695,53 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
     }
 
+    // 김윤혁 제작 -------------------------------------------------------------------
+    public void Player_Take_Damage(int Damage)
+    {
+        Debug.Log("플레이어 데미지 계산");
+        health = health - Damage;
+        Player_Health_Bar.fillAmount = (float)health / max_Health;
+        Debug.Log("계산 완료");
+
+        if (health <= 0)
+        {
+            //사망처리
+            Player_Died();
+        }
+    }
+
+    private void Player_Died()
+    {
+        is_Player_Dead = true;
+        player_render.enabled = false;
+
+        pause_Manager.Show_Result();
+    }
+
+    public void Input_Game_Stop(InputAction.CallbackContext ctx)
+    {
+        if (ctx.phase == InputActionPhase.Started)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (Time.timeScale == 0.0f)
+                {
+                    pause_Manager.Pause_Stop();
+                    Time.timeScale = 1.0f;
+                }
+                else if (Time.timeScale == 1.0f)
+                {
+                    pause_Manager.Pause_Start();
+                    Time.timeScale = 0.0f;
+                }
+            }
+        }
+    }
+    // --------------------------------------------------------------------------------
+
+    // ======================================================================================================
+
+    // 충돌 관련 코드 =======================================================================================
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Platform"))
@@ -577,15 +837,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
     }
 
-    private void OnDrawGizmosSelected() // 디버그용 공격 범위 그리기
-    {
-        Vector2 boxSize = new Vector2(0.3f, 0.5f);
-        Vector2 boxCenter = (Vector2)transform.position + new Vector2(transform.localScale.x * attackRange, 0f);
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(boxCenter, boxSize);
-    }
-
     private Vector2 Get_Closet_Point(Vector2 position)
     {
         if (cur_Boundary_Collider != null)
@@ -593,45 +844,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             return cur_Boundary_Collider.ClosestPoint(position);
         }
         return position;
-    }
-
-    public void Player_Take_Damage(int Damage)
-    {
-        Debug.Log("플레이어 데미지 계산");
-        health = health - Damage;
-        Player_Health_Bar.fillAmount = (float)health / max_Health;
-        Debug.Log("계산 완료");
-
-        if (health <= 0)
-        {
-            //사망처리
-            Player_Died();
-        }
-    }
-
-    private void Player_Died()
-    {
-        is_Player_Dead = true;
-        player_render.enabled = false;
-
-        pause_Manager.Show_Result();
-    }
-
-    public void Input_Down_Jump(InputAction.CallbackContext ctx)
-    {
-        if (ctx.phase == InputActionPhase.Performed && Time.timeScale == 1.0f)
-        {
-            Debug.Log("Down 감지");
-            is_Down_Performed = true;
-            //if (current_Platform != null)
-            //{
-            //    StartCoroutine(DisableCollision());
-            //}
-        }
-        else if(ctx.phase == InputActionPhase.Canceled)
-        {
-            is_Down_Performed = false;
-        }
     }
 
     private IEnumerator DisableCollision()
@@ -643,25 +855,15 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         Physics2D.IgnoreCollision(player_Collider, platform_Collider, false);
     }
 
-    public void Input_Game_Stop(InputAction.CallbackContext ctx)
+    private void OnDrawGizmosSelected() // 디버그용 공격 범위 그리기
     {
-        if(ctx.phase == InputActionPhase.Started)
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                if (Time.timeScale == 0.0f)
-                {
-                    pause_Manager.Pause_Stop();
-                    Time.timeScale = 1.0f;
-                }
-                else if (Time.timeScale == 1.0f)
-                {
-                    pause_Manager.Pause_Start();
-                    Time.timeScale = 0.0f;
-                }
-            }
-        }
+        Vector2 boxSize = new Vector2(0.3f, 0.5f);
+        Vector2 boxCenter = (Vector2)transform.position + new Vector2(transform.localScale.x * attackRange, 0f);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(boxCenter, boxSize);
     }
+    // =========================================================================================================
 }
 
 

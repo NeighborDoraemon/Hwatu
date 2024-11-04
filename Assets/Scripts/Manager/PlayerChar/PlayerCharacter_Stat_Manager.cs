@@ -48,18 +48,19 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
 
     public Weapon_Data cur_Weapon_Data { get; private set; }
 
-    public void Change_Attack_Strategy(IAttack_Strategy new_Strategy)
-    {
-        attack_Strategy = new_Strategy;
-    }
-    public void ShootPrefab(GameObject prefab)
-    {
-        GameObject projectile = MonoBehaviour.Instantiate(prefab, firePoint.position, firePoint.rotation);
+    //public void Change_Attack_Strategy(IAttack_Strategy new_Strategy)
+    //{
+    //    attack_Strategy = new_Strategy;
+    //}
 
-        Rigidbody2D projectile_Rb = projectile.GetComponent<Rigidbody2D>();
-        Vector2 shootDirection = (transform.localScale.x < 0) ? Vector2.left : Vector2.right;
-        projectile_Rb.velocity = shootDirection * arrowSpeed;        
-    }
+    //public void ShootPrefab(GameObject prefab)
+    //{
+    //    GameObject projectile = MonoBehaviour.Instantiate(prefab, firePoint.position, firePoint.rotation);
+
+    //    Rigidbody2D projectile_Rb = projectile.GetComponent<Rigidbody2D>();
+    //    Vector2 shootDirection = (transform.localScale.x < 0) ? Vector2.left : Vector2.right;
+    //    projectile_Rb.velocity = shootDirection * arrowSpeed;        
+    //}
 
     public virtual void Set_Weapon(int weaponIndex)
     {
@@ -70,10 +71,6 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
         if (new_Weapon != null)
         {            
             cur_Weapon_Data = new_Weapon;
-            attackDamage = new_Weapon.attack_Damage;
-            attack_Cooldown = new_Weapon.attack_Cooldown;
-            max_AttackCount = new_Weapon.max_Attack_Count;
-
             //Debug.Log("무기 변경");            
         }
 

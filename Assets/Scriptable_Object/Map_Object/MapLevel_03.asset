@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MapLevel_03
   m_EditorClassIdentifier: 
   i_Map_Counter: 2
-  v_Map_Spawnpoint: {x: 81.7, y: 40.5, z: 0}
+  v_Map_Spawnpoint: {x: 81.7, y: 41.5, z: 0}
   v_min_Map_Vector: {x: 0, y: 0, z: 0}
   v_Max_Map_Vector: {x: 0, y: 0, z: 0}
   v_Enemy_Spawn_Points_01:
@@ -35,4 +35,5 @@ MonoBehaviour:
   - {x: 91, y: 52, z: 0}
   v_CardBox_SpawnPoint: {x: 95.5, y: 49.4, z: 0}
   Next_To_Kill: 0
+  Collider: {fileID: 0}
   Clear_and_Next: 0

@@ -17,7 +17,7 @@ public class Enemy_Basic : MonoBehaviour
     public void TakeDamage(int damage)
     {
         IR_Health.Value -= damage;
-
+        Debug.Log("몬스터 데미지 입음 : " + damage);
         if (IR_Health.Value <= 0)
         {
             Die();

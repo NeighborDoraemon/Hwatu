@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
+  m_Name: 4_6_Weapon
+  m_EditorClassIdentifier: 
+  weapon_Name: Trident
+  attack_Damage: 50
+  attack_Cooldown: 1
+  max_Attack_Count: 1
+  skill_Damage: 0
+  skill_Cooldown: 0
+  attack_Trigger: Attack_1
+  skill_Trigger: Skill
+  weapon_Prefab: {fileID: 3276080815781264926, guid: 88b70f7f6f8655044a2c4051757742f9, type: 3}
+  overrideController: {fileID: 22100000, guid: 234ce6eb61555b14487c37275c10b68a, type: 2}
+  animation_Pos_Data_List:
+  - {fileID: 11400000, guid: 4bc0d93fcef1c73478aa48fc2a98a19f, type: 2}
+  - {fileID: 11400000, guid: ff67be93a3e412a44b5930622a92fdcb, type: 2}
+  - {fileID: 11400000, guid: 60d057dcf3491f240a45729a2086be57, type: 2}
+  - {fileID: 11400000, guid: f71a8f9ac0fb23643ba3a594bb69777f, type: 2}
+  - {fileID: 11400000, guid: 2e6f03e9e373443429e05ab0cdc5e0b6, type: 2}
+  - {fileID: 11400000, guid: 667186482d3a9a742adbe0408d34feb3, type: 2}
+  effect_Data: {fileID: 11400000, guid: da546ea96b27b9049a10110ec7d94884, type: 2}
+  attack_Strategy: {fileID: 11400000, guid: 519d1f0aa43f4eb4fb415fb562a46bba, type: 2}
