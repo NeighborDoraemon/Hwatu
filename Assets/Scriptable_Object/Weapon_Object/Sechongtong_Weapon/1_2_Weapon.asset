@@ -10,15 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
-  m_Name: 1_10_Weapon
+  m_Name: 1_2_Weapon
   m_EditorClassIdentifier: 
-  weapon_Name: Snake_Wine
-  attack_Damage: 25
-  attack_Cooldown: 1
+  weapon_Name: Sechongtong
+  attack_Damage: 1
+  attack_Cooldown: 0.5
   max_Attack_Count: 1
-  skill_Damage: -50
-  skill_Cooldown: 2
+  skill_Damage: 0
+  skill_Cooldown: 0
   attack_Trigger: Attack_1
   skill_Trigger: Skill
-  overrideController: {fileID: 22100000, guid: 7b190932ee3c0044abd090c3c3992929, type: 2}
-  attack_Strategy: {fileID: 11400000, guid: 657170e14d9c4c5458bbc33a94ea1890, type: 2}
+  weapon_Prefab: {fileID: 0}
+  overrideController: {fileID: 22100000, guid: 04c303d313f593746bb70a433cbe8cf7, type: 2}
+  animation_Pos_Data_List: []
+  effect_Data: {fileID: 0}
+  attack_Strategy: {fileID: 11400000, guid: 966503d850c49a04a8fc725e0cbb7aad, type: 2}

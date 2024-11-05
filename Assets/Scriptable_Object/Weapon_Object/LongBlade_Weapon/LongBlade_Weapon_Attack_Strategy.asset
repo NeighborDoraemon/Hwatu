@@ -9,6 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d101eee36c0b734cadc7b26bb376079, type: 3}
-  m_Name: 1_2_Weapon_Attack_Strategy
+  m_Script: {fileID: 11500000, guid: 8fbe5366b554b0246870650b991afd26, type: 3}
+  m_Name: LongBlade_Weapon_Attack_Strategy
   m_EditorClassIdentifier: 

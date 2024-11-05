@@ -13,12 +13,15 @@ MonoBehaviour:
   m_Name: 1_DD_Weapon
   m_EditorClassIdentifier: 
   weapon_Name: PoleArm
-  attack_Damage: 50
+  attack_Damage: 4
   attack_Cooldown: 1
   max_Attack_Count: 1
   skill_Damage: 0
-  skill_Cooldown: 10
+  skill_Cooldown: 6
   attack_Trigger: Attack_1
   skill_Trigger: Skill
+  weapon_Prefab: {fileID: 0}
   overrideController: {fileID: 22100000, guid: b959b9f40c162344cabafc8e88779e96, type: 2}
+  animation_Pos_Data_List: []
+  effect_Data: {fileID: 0}
   attack_Strategy: {fileID: 11400000, guid: c8b3dafacca71984799000a6f187cf46, type: 2}

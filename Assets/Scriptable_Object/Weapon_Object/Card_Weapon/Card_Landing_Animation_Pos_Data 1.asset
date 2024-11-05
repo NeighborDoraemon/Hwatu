@@ -9,6 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 734ae35591d804849ace78f8dc820d0f, type: 3}
-  m_Name: 1_10_Weapon_Attack_Strategy
+  m_Script: {fileID: 11500000, guid: c8e7cc7e5bf5a124f842638c93b025ba, type: 3}
+  m_Name: Card_Landing_Animation_Pos_Data 1
   m_EditorClassIdentifier: 
+  animation_Name: 
+  frame_Pos: []
+  frame_Rotations: []
