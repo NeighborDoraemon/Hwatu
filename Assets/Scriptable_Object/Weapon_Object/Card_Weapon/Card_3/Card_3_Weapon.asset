@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapon_Name: Card
   attack_Damage: 40
-  attack_Cooldown: 2
+  attack_Cooldown: 1.5
   max_Attack_Count: 3
   skill_Damage: 0
   skill_Cooldown: 0
