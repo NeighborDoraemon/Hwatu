@@ -8,28 +8,45 @@ public class Enemy_Basic : MonoBehaviour
     [Header("BB Int")]
     [SerializeField] private IntReference IR_Health;
 
-    [Header("BB Bool")]
-    [SerializeField] private BoolReference BR_Facing_Left;
-
-
     private GameObject Target_Player;
+    private int i_Max_Health;
+
+    public void Start()
+    {
+        i_Max_Health = IR_Health.Value; //ï¿½Ö´ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    }
 
     public void TakeDamage(int damage)
     {
+        if(damage < 0)
+        {
+            Debug.Log("Get Heal");
+        }
+
         IR_Health.Value -= damage;
-        Debug.Log("¸ó½ºÅÍ µ¥¹ÌÁö ÀÔÀ½ : " + damage);
+
+
+        if(IR_Health.Value > i_Max_Health) //ï¿½Ö´ï¿½Ã¼ï¿½ï¿½ ï¿½Ê°ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        {
+            IR_Health.Value = i_Max_Health;
+        }
+
+
+
+        
+
         if (IR_Health.Value <= 0)
         {
             Die();
         }
     }
 
-    private void Die() // Àû »ç¸Á Ã³¸® ÇÔ¼ö
+    private void Die() // ï¿½ï¿½ ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ô¼ï¿½
     {
-        Enemy_Generator.i_Enemy_Count--; //³²Àº ÀûÀÇ ¼ö °è»ê¿ë
+        Enemy_Generator.i_Enemy_Count--; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         Debug.Log(Enemy_Generator.i_Enemy_Count);
 
-        Debug.Log("Àû »ç¸Á");
+        Debug.Log("ï¿½ï¿½ ï¿½ï¿½ï¿½");
         Destroy(gameObject);
     }
 }

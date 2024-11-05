@@ -42,6 +42,7 @@ public class BH_Turn : Service
 
         if (is_Facing_Left.Value) // 좌측 보는중
         {
+            Debug.Log("Enemy Turned");
             is_Facing_Left.Value = false;
             quater.y = 180.0f;
 
@@ -50,6 +51,7 @@ public class BH_Turn : Service
         }
         else if (!is_Facing_Left.Value)
         {
+            Debug.Log("Enemy Turned");
             is_Facing_Left.Value = true;
             //Obj_Enemy.gameObject.transform.rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
             quater.y = 0.0f;

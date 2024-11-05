@@ -9,7 +9,7 @@ using System;
 using Unity.Mathematics;
 
 
-// ÇÃ·¹ÀÌ¾î Ä³¸¯ÅÍ Á¶ÀÛ Á¦ÀÛÀÚ : Àüº´ÁØ // ±èÀ±ÇõÀÌ Á¦ÀÛÇÑ ºÎºÐÀº µû·Î Ç¥½Ã
+// PlayerCharacter_Controller Created By JBJ, KYH
 public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 {
     private Player_InputActions inputActions;
@@ -18,16 +18,16 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     private bool isInventory_Visible = false;
 
     public Rigidbody2D rb;
-    GameObject current_Item; // ÇöÀç ¾ÆÀÌÅÛ È®ÀÎ º¯¼ö
+    GameObject current_Item;
 
     Vector2 movement = new Vector2();
-    int jumpCount = 0; // Á¡ÇÁ È½¼ö Ä«¿îÆÃ º¯¼ö
-    public int maxJumpCount = 2; // ÃÖ´ë Á¡ÇÁ È½¼ö Ä«¿îÆÃ º¯¼ö
+    int jumpCount = 0;
+    public int maxJumpCount = 2;
 
-    [Header("ÅÚ·¹Æ÷Æ®")]
-    bool canTeleporting = true; // ¼ø°£ÀÌµ¿ Á¶°Ç È®ÀÎ º¯¼ö
+    [Header("Teleport")]
+    bool canTeleporting = true;
 
-    [Header("»óÀÚ ¼ÒÈ¯")]
+    [Header("DebugChest")]
     public GameObject chestPrefab;
     public Transform spawnPoint;
 
@@ -49,7 +49,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     public Transform effect_Anchor;
     private bool is_Facing_Right = true;
 
-    //--------------------------------------------------- ±èÀ±Çõ Á¦ÀÛ
+    //--------------------------------------------------- Created By KYH
     [Header("Player_UI")]
     [SerializeField] private Image Player_Health_Bar;
     [SerializeField] private Pause_Manager pause_Manager;
@@ -67,12 +67,15 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     private BoxCollider2D player_Collider;
     private bool is_Down_Performed = false;    
 
-    private bool is_Player_Dead = false; // »ç¸ÁÃ³¸®
+    private bool is_Player_Dead = false;
 
     //NPC
-    private bool is_Npc_Contack = false; // NPC Á¢ÃË
+    private bool is_Npc_Contack = false;
     private GameObject Now_Contact_Npc;
     //---------------------------------------------------
+
+    private bool is_Knock_Back = false;
+
 
     private void Awake()
     {
@@ -115,13 +118,13 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
         else
         {
-            Debug.LogError("ÀÎ½ºÆåÅÍ Ã¢¿¡ ÀÎº¥Åä¸® ÆÐ³Î ¾øÀ½");
+            Debug.LogError("ï¿½Î½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¢ï¿½ï¿½ ï¿½Îºï¿½ï¿½ä¸® ï¿½Ð³ï¿½ ï¿½ï¿½ï¿½ï¿½");
         }
     }
     // Update is called once per frame
     void Update()
     {
-        if (Time.timeScale == 1.0f && !is_Player_Dead) // ÀÏ½ÃÁ¤Áö Á¶°Ç Ãß°¡
+        if (Time.timeScale == 1.0f && !is_Player_Dead)
         {
             if (isAttacking && isGrounded)
             {
@@ -132,7 +135,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 Move();
             }
 
-            if (!isCombDone) // Ä«µå Á¶ÇÕ È®ÀÎ Á¶°Ç
+            if (!isCombDone)
             {
                 Card_Combination();
             }
@@ -141,12 +144,12 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             Handle_Teleportation_Time();
         }
     }
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         Update_WeaponAnchor_Position();
     }
 
-    void Update_Animation_Parameters() // ¾Ö´Ï¸ÞÀÌ¼Ç °ü¸® ÇÔ¼ö
+    void Update_Animation_Parameters()
     {
         bool isMoving = Mathf.Abs(movement.x) > 0.01f;
         animator.SetBool("isMove", isMoving);
@@ -160,7 +163,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         animator.SetFloat("vertical_Velocity", rb.velocity.y);
     }
 
-    // ÀÌµ¿ Á¶ÀÛ ===========================================================================================
+    // Move ===========================================================================================
     public void Input_Move(InputAction.CallbackContext ctx)
     {
         if(ctx.phase == InputActionPhase.Canceled)
@@ -173,7 +176,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
     }
 
-    void Move() // Ä³¸¯ÅÍ xÁÂÇ¥ ÀÌµ¿
+    void Move()
     {
         if (movement.x < 0)
         {
@@ -193,7 +196,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
 
         movement.Normalize();
-        rb.velocity = new Vector2(movement.x * movementSpeed, rb.velocity.y);
+
+        if (!is_Knock_Back)
+        {
+            rb.velocity = new Vector2(movement.x * movementSpeed, rb.velocity.y);
+        }
     }
 
     public void Input_Jump(InputAction.CallbackContext ctx)
@@ -219,7 +226,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
     }
     
-
     public void Input_Teleportation(InputAction.CallbackContext ctx)
     {
         if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
@@ -239,6 +245,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             }
         }
     }
+
     void Handle_Teleportation_Time()
     {
         if (!canTeleporting)
@@ -248,16 +255,16 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             {
                 teleporting_CoolTime = 3.0f;
                 canTeleporting = true;
-                Debug.Log("¼ø°£ÀÌµ¿ °¡´É");
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½");
             }
         }
     }
-    // ±èÀ±Çõ Á¦ÀÛ ---------------------------------------------------------------
+    // Created By KYH ---------------------------------------------------------------
     public void Input_Down_Jump(InputAction.CallbackContext ctx)
     {
         if (ctx.phase == InputActionPhase.Performed && Time.timeScale == 1.0f)
         {
-            Debug.Log("Down °¨Áö");
+            Debug.Log("Down ï¿½ï¿½ï¿½ï¿½");
             is_Down_Performed = true;
             if (current_Platform != null)
             {
@@ -272,15 +279,15 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     // ----------------------------------------------------------------------------
     // ======================================================================================================
 
-    // »óÈ£ÀÛ¿ë Á¶ÀÛ ========================================================================================
+    // InterAction ==========================================================================================
     public void Input_Interaction(InputAction.CallbackContext ctx)
     {
-        // ±èÀ±Çõ Á¦ÀÛ -------------------------------------------------------------------------------------
+        // Created By KYH -------------------------------------------------------------------------------------
         if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
         {
             map_Manager.Use_Portal();
 
-            //Debug.Log("»óÈ£ÀÛ¿ë È£Ãâ");
+            //Debug.Log("ï¿½ï¿½È£ï¿½Û¿ï¿½ È£ï¿½ï¿½");
             if (is_Npc_Contack && Now_Contact_Npc != null)
             {
                 if(Now_Contact_Npc.gameObject.name == "Stat_Npc")
@@ -295,11 +302,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             }
         // ---------------------------------------------------------------------------------------------------
             if (current_Item != null)
-            {
-                //Debug.Log("¾ÆÀÌÅÛ È®ÀÎ");
+            {                
                 if (current_Item.tag == "Card")
                 {
-                    if(cardCount == 0) // ½ÃÀÛ Ã¹ Ä«µå È¹µæ ½Ã È¹µæÇÑ Ä«µå ²¨Áöµµ·Ï ÇÏ±â (À±Çõ ÀÓ½Ã)
+                    if(cardCount == 0)
                     {
                         AddCard(current_Item);
                         current_Item.gameObject.SetActive(false);
@@ -310,8 +316,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                     }
                 }
                 else if (current_Item.tag == "Chest")
-                {
-                    Debug.Log("»óÀÚ¿Í »óÈ£ÀÛ¿ë");
+                {                    
                     Spawn_Box chest = current_Item.GetComponent<Spawn_Box>();
                     Card_Spawn_Box debug_Chest = current_Item.GetComponent<Card_Spawn_Box>();
                     if (chest != null)
@@ -324,20 +329,16 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                     }
                 }
                 else if (current_Item.tag == "Item")
-                {
-                    // ¾ÆÀÌÅÛ°ú »óÈ£ÀÛ¿ë
-                    Debug.Log("¾ÆÀÌÅÛ »ç¿ë ½Ãµµ");
-                    Item item = current_Item.GetComponent<Item_Prefab>().itemData;  // ¾ÆÀÌÅÛ µ¥ÀÌÅÍ °¡Á®¿À±â (ÇöÀç ¾ÆÀÌÅÛÀÇ ScriptableObject)
+                {                    
+                    Item item = current_Item.GetComponent<Item_Prefab>().itemData;
 
                     if (item != null)
-                    {
-                        Debug.Log($"¾ÆÀÌÅÛ Àû¿ë {item.name}");
+                    {                        
                         if (item.isConsumable)
                         {                            
                             if (this != null) 
                             {
-                                item.ApplyEffect(this);
-                                Debug.Log($"¾ÆÀÌÅÛ È¿°ú Àû¿ë");
+                                item.ApplyEffect(this);                                
                             }
                             Destroy(current_Item);
                         }
@@ -347,11 +348,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
                             Destroy(current_Item);
                         }
-                    }
-                    else
-                    {
-                        Debug.LogWarning("¾ÆÀÌÅÛ µ¥ÀÌÅÍ¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
-                    }
+                    }                    
                     Object_Manager.instance.Destroy_All_Cards_And_Items();
                 }
                 current_Item = null;
@@ -359,26 +356,24 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
     }
 
-    void Spawn_Chest() // ÀÓ½Ã µð¹ö±ë ¿ë »óÀÚ ¼ÒÈ¯ ÇÔ¼öÀÔ´Ï´Ù.
+    void Spawn_Chest() // Spawn Debuging Card Chest
     {
         GameObject chest = Instantiate(chestPrefab, spawnPoint.position, spawnPoint.rotation);
     }
     // ======================================================================================================
 
-    // ¹«±â =================================================================================================
+    // Weapon ===============================================================================================
     public override void Set_Weapon(int weaponIndex)
     {
         base.Set_Weapon(weaponIndex);
 
         if (cur_Weapon_Data == null)
-        {
-            Debug.LogError("¹«±â µ¥ÀÌÅÍ°¡ ¿Ã¹Ù¸£°Ô ¼³Á¤µÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+        {            
             return;
         }
 
         if (cur_Weapon_Data.effect_Data == null)
-        {
-            Debug.LogError("¹«±â ÀÌÆåÆ® µ¥ÀÌÅÍ°¡ ¼³Á¤µÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+        {            
             return;
         }
         
@@ -403,11 +398,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             if (weapon_Handler != null)
             {
                 weapon_Handler.Set_Damage(cur_Weapon_Data.attack_Damage);
-                Debug.Log($"¹«±â µ¥¹ÌÁö ¼³Á¤ ¿Ï·á : {cur_Weapon_Data.attack_Damage}");
+                Debug.Log($"Current Attack Damage : {cur_Weapon_Data.attack_Damage}");
             }
             else
             {
-                Debug.LogError("Weapon_Collision_Handler°¡ ÇÁ¸®ÆÕ¿¡ ¾ø½À´Ï´Ù");
+                Debug.LogError("Weapon_Collision_Handler is Missing");
             }
         }     
 
@@ -415,11 +410,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         if (attack_Strategy == null)
         {
-            Debug.LogError($"'{cur_Weapon_Data.weapon_Name}'¿¡ ´ëÇÑ °ø°Ý Àü·«ÀÌ À¯È¿ÇÏÁö ¾Ê½À´Ï´Ù.");            
+            Debug.LogError($"'{cur_Weapon_Data.weapon_Name}' Weapon Equipe");            
             return;
-        }
-
-        Debug.Log($"°ø°Ý Àü·« '{attack_Strategy.GetType().Name}' ¼³Á¤ ¿Ï·á.");
+        }        
         
         Apply_Weapon_Data();
     }
@@ -432,8 +425,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
             if (cur_Weapon_Data.overrideController != null)
             {
-                animator.runtimeAnimatorController = cur_Weapon_Data.overrideController;
-                Debug.Log($"¾Ö´Ï¸ÞÀÌÅÍ ÄÁÆ®·Ñ·¯ º¯°æ : {cur_Weapon_Data.overrideController}");
+                animator.runtimeAnimatorController = cur_Weapon_Data.overrideController;                
             }
 
             attackDamage = cur_Weapon_Data.attack_Damage;
@@ -491,20 +483,16 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             {
                 AnimationClip cur_Clip = clipInfo[0].clip;
                 int total_Frames = Mathf.RoundToInt(cur_Clip.length * cur_Clip.frameRate);
-                int cur_Frame = Mathf.FloorToInt(state_Info.normalizedTime * total_Frames) % total_Frames;
-
-                //Debug.Log("ÇöÀç ÇÁ·¹ÀÓ : " + cur_Frame);
+                int cur_Frame = Mathf.FloorToInt(state_Info.normalizedTime * total_Frames) % total_Frames;                
 
                 Vector3 new_Pos = animation_Data.Get_Position(cur_Frame);
-                Quaternion new_Rotation = animation_Data.Get_Rotation(cur_Frame);
+                Quaternion new_Rotation = animation_Data.Get_Rotation(cur_Frame);                               
                 
-
-                //Debug.Log("»õ À§Ä¡ : " + new_Pos + "»õ È¸Àü°ª" + new_Rotation);
-
-                // À§Ä¡¿Í È¸ÀüÀ» °­Á¦ Àû¿ë
                 weapon_Anchor.localPosition = is_Facing_Right ? new_Pos : new Vector3(-new_Pos.x, new_Pos.y, new_Pos.z);
                 weapon_Anchor.localRotation = is_Facing_Right ? new_Rotation : Quaternion.Inverse(new_Rotation);
                 weapon_Anchor.localScale = is_Facing_Right ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
+
+                Debug.Log($"Current Frame: {cur_Frame}, Position: {new_Pos}, Rotation: {new_Rotation}");
             }
             else
             {
@@ -572,7 +560,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     }
     // ======================================================================================================
 
-    // °ø°Ý ¹× ½ºÅ³ =========================================================================================
+    // Attack And Skill =====================================================================================
     public void Input_Perform_Attack(InputAction.CallbackContext ctx)
     {
         if (ctx.phase != InputActionPhase.Performed || Time.timeScale != 1.0f || is_Player_Dead)
@@ -582,13 +570,13 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         if (attack_Strategy == null)
         {
-            Debug.LogError("°ø°Ý Àü·«ÀÌ ¼³Á¤µÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            Debug.LogError("Attack Strategy Data is Missing");
             return;
         }
 
         if (cur_AttackCount >= max_AttackCount)
         {
-            Debug.Log("ÃÖ´ë °ø°Ý È½¼ö µµ´Þ");
+            Debug.Log("Current Attack Count reached Max!");
             return;
         }
 
@@ -597,20 +585,18 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public void On_Shoot_Projectile(GameObject projectile_Prefab)
     {
-        Debug.Log("Åõ»çÃ¼ ¹ß»ç ÀÌº¥Æ® È£Ãâ");
 
         if (attack_Strategy != null)
         {
-            attack_Strategy.Shoot(this, projectile_Prefab, firePoint);
-            Debug.Log("ÃÑ¾Ë ¹ß»ç ¿Ï·á");
+            attack_Strategy.Shoot(this, projectile_Prefab, firePoint);            
         }
         else
         {
-            Debug.LogError("°ø°Ý Àü·«ÀÌ ¼³Á¤µÇÁö ¾ÊÀ½");
+            Debug.LogError("Weapon Projectile is Missing!");
         }
     }
 
-    void HandleCombo() // ÄÞº¸ °ü¸®¿ë ÇÔ¼ö
+    void HandleCombo()
     {
         if (isAttacking)
         {
@@ -622,39 +608,35 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
     }
 
-    public void ResetAttack() // ¾Ö´Ï¸ÞÀÌ¼Ç È£Ãâ¿ë ÀÌº¥Æ® ÇÔ¼ö
+    public void ResetAttack()
     {
         isAttacking = false;
         cur_AttackCount = 0;        
     }
-    public void ResetCombo() // ¾Ö´Ï¸ÞÀÌ¼Ç È£Ãâ¿ë ÀÌº¥Æ® ÇÔ¼ö
-    {
-        //Debug.Log("¸®¼ÂÄÞº¸ ÇÔ¼ö È£Ãâ");
+    public void ResetCombo()
+    {        
         if (cur_AttackCount < max_AttackCount)
         {
             isAttacking = false;
-            cur_AttackCount = 0;
-            //Debug.Log("°ø°Ý ¸®¼Â");
+            cur_AttackCount = 0;            
         }
     }
 
-    public void Check_Enemies_Collider(string hixBox_Values) // ¾Ö´Ï¸ÞÀÌ¼Ç È£Ãâ¿ë Àû °¨Áö ÇÔ¼ö
+    public void Check_Enemies_Collider(string hixBox_Values)
     {
         string[] values = hixBox_Values.Split(',');
         float hitBox_x = float.Parse(values[0]);
         float hitBox_y = float.Parse(values[1]);
-
-        // °ø°Ý ¹üÀ§ ¹Ú½º ÄÝ¶óÀÌ´õ ¼³Á¤
+        
         Vector2 boxSize = new Vector2(hitBox_x, hitBox_y);
         Vector2 boxCenter = (Vector2)transform.position + new Vector2(transform.localScale.x * attackRange, 0f);
         LayerMask enemyLayer = LayerMask.GetMask("Enemy");
 
-        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(boxCenter, boxSize, 0, enemyLayer); // Àû ·¹ÀÌ¾î ¼³Á¤
+        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(boxCenter, boxSize, 0, enemyLayer);
         
-        // °¨ÁöµÈ Àû¿¡°Ô µ¥¹ÌÁö Ã³¸®
         foreach (Collider2D enemy in hitEnemies)
         {
-            Debug.Log("±ÙÁ¢ °ø°Ý Àû °¨Áö");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 
             enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
         }
@@ -669,7 +651,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     }
     // ======================================================================================================
 
-    // ÇÃ·¹ÀÌ¾î UI ==========================================================================================
+    // Player Character UI ==========================================================================================
     void OnInventory_Pressed(InputAction.CallbackContext context)
     {
         ShowInventory();
@@ -695,17 +677,17 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
     }
 
-    // ±èÀ±Çõ Á¦ÀÛ -------------------------------------------------------------------
+    // Created By KYH -------------------------------------------------------------------
     public void Player_Take_Damage(int Damage)
     {
-        Debug.Log("ÇÃ·¹ÀÌ¾î µ¥¹ÌÁö °è»ê");
+        Debug.Log("ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
         health = health - Damage;
         Player_Health_Bar.fillAmount = (float)health / max_Health;
-        Debug.Log("°è»ê ¿Ï·á");
+        Debug.Log("ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½");
 
         if (health <= 0)
         {
-            //»ç¸ÁÃ³¸®
+            //ï¿½ï¿½ï¿½Ã³ï¿½ï¿½
             Player_Died();
         }
     }
@@ -741,7 +723,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     // ======================================================================================================
 
-    // Ãæµ¹ °ü·Ã ÄÚµå =======================================================================================
+    // Player Collsion ======================================================================================
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Platform"))
@@ -784,7 +766,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             cur_Boundary_Collider = other;
             camera_Manager.Update_Confiner(cur_Boundary_Collider);
-            Debug.Log("¸Ê ¾È¿¡ ÀÖÀ½");
+            Debug.Log("ï¿½ï¿½ ï¿½È¿ï¿½ ï¿½ï¿½ï¿½ï¿½");
         }
 
         if(other.gameObject.tag == "NPC")
@@ -822,18 +804,19 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 return;
             }
 
-            Debug.Log("¸Ê ¹þ¾î³ª·Á ÇÔ! °¡±î¿î À§Ä¡·Î ÀÌµ¿");
+            Debug.Log("ë§µ ë²—ì–´ë‚˜ë ¤ í•¨! ê°€ê¹Œìš´ ìœ„ì¹˜ë¡œ ì´ë™");
             Vector2 closet_Point = Get_Closet_Point(transform.position);
             transform.position = closet_Point;
         }
 
-        if(other.gameObject.tag == "NPC")
+
+        if (other.gameObject.tag == "NPC")
         {
             is_Npc_Contack = false;
             if (Now_Contact_Npc.gameObject.name == "Stat_Npc")
             { 
                 Now_Contact_Npc.GetComponent<Stat_Npc_Controller>().Btn_Exit(); 
-            } //NPC Ãß°¡µÇ¸é ¹Ù²î¾î¾ß ÇÔ / ¾Æ´Ï¸é ÇöÀç NPCÄÚµå¸¦ ºÎ¸ð·Î µÎ°í ÆÄ»ý½ÃÄÑ¼­ È£ÃâÇØµµ µÊ
+            }
         }
     }
 
@@ -855,13 +838,34 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         Physics2D.IgnoreCollision(player_Collider, platform_Collider, false);
     }
 
-    private void OnDrawGizmosSelected() // µð¹ö±×¿ë °ø°Ý ¹üÀ§ ±×¸®±â
+    private void OnDrawGizmosSelected()
     {
         Vector2 boxSize = new Vector2(0.3f, 0.5f);
         Vector2 boxCenter = (Vector2)transform.position + new Vector2(transform.localScale.x * attackRange, 0f);
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(boxCenter, boxSize);
+    }
+
+    public void Weak_Knock_Back(int Left_Num, float Knock_Back_time, float Power) //Left = 1, Right = -1
+    {
+        is_Knock_Back = true;
+
+        Vector2 Knock_Back_Direction = new Vector2((float)Left_Num, 0.5f);
+
+        rb.velocity = Vector2.zero;
+        rb.AddForce(Knock_Back_Direction * Power, ForceMode2D.Impulse);
+
+        Invoke("Knock_Back_End", Knock_Back_time);
+    }
+
+    private void Knock_Back_End()
+    {
+        if(rb.velocity.y <= 0.0f)
+        {
+            rb.velocity = Vector2.zero;
+        }
+        is_Knock_Back = false;
     }
     // =========================================================================================================
 }

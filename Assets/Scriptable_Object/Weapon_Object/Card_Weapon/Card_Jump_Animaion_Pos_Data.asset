@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animation_Name: PlayerChar_Jump
   frame_Pos:
-  - {x: 0.0569, y: -0.3575, z: 0}
-  - {x: 0.0577, y: -0.3258, z: 0}
-  - {x: 0.0371, y: -0.2719, z: 0}
+  - {x: 0.0485, y: -0.3569, z: 0}
+  - {x: 0.0489, y: -0.3261, z: 0}
+  - {x: 0.031, y: -0.2752, z: 0}
   frame_Rotations:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: -32.103}
+  - {x: 0, y: 0, z: -90}
+  - {x: 0, y: 0, z: -90}
+  - {x: 0, y: 0, z: -90}

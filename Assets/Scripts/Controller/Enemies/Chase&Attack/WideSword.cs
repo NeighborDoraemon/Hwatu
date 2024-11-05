@@ -20,7 +20,6 @@ public class WideSword : MonoBehaviour
     [SerializeField] private BoolReference BR_Facing_Left;
 
     [SerializeField] private FloatReference FR_Attack_Range;
-    [SerializeField] private FloatReference FR_Attack_Cooldown;
     [SerializeField] private IntReference IR_Attack_Damage;
 
     [Header("Others")]

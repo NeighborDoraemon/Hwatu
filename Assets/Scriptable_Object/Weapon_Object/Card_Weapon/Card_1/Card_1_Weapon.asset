@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Card_1_Weapon
   m_EditorClassIdentifier: 
   weapon_Name: Card
-  attack_Damage: 25
-  attack_Cooldown: 1
+  attack_Damage: 3
+  attack_Cooldown: 1.5
   max_Attack_Count: 1
   skill_Damage: 0
   skill_Cooldown: 0
