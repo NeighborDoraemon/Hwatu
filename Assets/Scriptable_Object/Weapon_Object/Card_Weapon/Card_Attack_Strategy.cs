@@ -7,8 +7,10 @@ public class Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
 {
     private PlayerCharacter_Controller player;
     private Weapon_Data weapon_Data;
-    private float projectile_Speed = 10.0f;
 
+    public GameObject projectile_Prefab;
+    private float projectile_Speed = 10.0f;
+    
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data) 
     {
         if (player == null || weapon_Data == null)
@@ -33,7 +35,6 @@ public class Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
-        //Debug.Log("카드 공격 실행");
         if (Is_Cooldown_Complete(player))
         {
             Start_Attack(player, weapon_Data);
@@ -67,7 +68,7 @@ public class Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     private void Start_Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
-        player.animator.SetTrigger(weapon_Data.attack_Trigger);
+        player.animator.SetTrigger("Attack");
         player.isAttacking = true;
         player.cur_AttackCount = 1;
         Update_Attack_Timers(player);
@@ -75,7 +76,7 @@ public class Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     private void Continue_Combo(PlayerCharacter_Controller player)
     {
-        player.animator.SetTrigger($"Attack_{player.cur_AttackCount + 1}");
+        player.animator.SetTrigger("Attack");
         player.cur_AttackCount++;
         player.isAttacking = true;
         Update_Attack_Timers(player);
@@ -93,9 +94,9 @@ public class Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
         player.last_ComboAttack_Time = Time.time;
         player.last_Attack_Time = Time.time;
     }
-    public void Shoot(PlayerCharacter_Controller player, GameObject prefab, Transform fire_Point)
+    public void Shoot(PlayerCharacter_Controller player, Transform fire_Point)
     {
-        GameObject projectile = Instantiate(prefab, fire_Point.position, fire_Point.rotation);
+        GameObject projectile = Instantiate(projectile_Prefab, fire_Point.position, fire_Point.rotation);
         Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
         Vector2 shootDirection = (player.weapon_Anchor.localScale.x < 0) ? Vector2.left : Vector2.right;
         rb.velocity = shootDirection * projectile_Speed;

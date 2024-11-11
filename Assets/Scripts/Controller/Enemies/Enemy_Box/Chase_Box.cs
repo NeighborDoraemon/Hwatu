@@ -37,7 +37,7 @@ public class Chase_Box : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             BR_Chasing.Value = false;
-            Debug.Log("플레이어 놓침");
+            //Debug.Log("플레이어 놓침");
         }
     }
 }

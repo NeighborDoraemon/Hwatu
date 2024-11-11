@@ -15,6 +15,7 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     public int max_Health = 100;
     public int health = 100; // 현재 체력
     public int attackDamage = 25; // 공격 데미지
+    public int player_Life = 0;
 
     [Header("근접 공격 변수")]
     public float attackRange = 0.5f; // 플레이어와 공격 범위 간 거리 설정 변수
@@ -48,20 +49,6 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
 
     public Weapon_Data cur_Weapon_Data { get; private set; }
 
-    //public void Change_Attack_Strategy(IAttack_Strategy new_Strategy)
-    //{
-    //    attack_Strategy = new_Strategy;
-    //}
-
-    //public void ShootPrefab(GameObject prefab)
-    //{
-    //    GameObject projectile = MonoBehaviour.Instantiate(prefab, firePoint.position, firePoint.rotation);
-
-    //    Rigidbody2D projectile_Rb = projectile.GetComponent<Rigidbody2D>();
-    //    Vector2 shootDirection = (transform.localScale.x < 0) ? Vector2.left : Vector2.right;
-    //    projectile_Rb.velocity = shootDirection * arrowSpeed;        
-    //}
-
     public virtual void Set_Weapon(int weaponIndex)
     {
         Debug.Log($"무기 인덱스 : {weaponIndex}로 변경 시도");
@@ -73,6 +60,5 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
             cur_Weapon_Data = new_Weapon;
             //Debug.Log("무기 변경");            
         }
-
     }
 }

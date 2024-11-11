@@ -41,13 +41,14 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     private Collider2D cur_Boundary_Collider;
 
     [Header("Weapon_Data")]
-    public SpriteRenderer weapon_Render;
     public GameObject weapon_Prefab;
     private Weapon_Collision_Handler weapon_Handler;    
     public SpriteRenderer effect_Render;
     public Transform weapon_Anchor;
     public Transform effect_Anchor;
-    private bool is_Facing_Right = true;
+    public bool is_Facing_Right = true;
+
+    public event Action On_Player_Damaged;
 
     //--------------------------------------------------- Created By KYH
     [Header("Player_UI")]
@@ -118,7 +119,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
         else
         {
-            Debug.LogError("�ν����� â�� �κ��丮 �г� ����");
+            Debug.LogError("Inventory Panel is Missing!");
         }
     }
     // Update is called once per frame
@@ -126,7 +127,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (Time.timeScale == 1.0f && !is_Player_Dead)
         {
-            if (isAttacking && isGrounded)
+            if (isAttacking && isGrounded && !cur_Weapon_Data.is_HoldAttack_Enabled)
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
             }
@@ -139,6 +140,12 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             {
                 Card_Combination();
             }
+
+            if (attack_Strategy is Bow_Attack_Strategy bow_Attack_Strategy)
+            {
+                bow_Attack_Strategy.OnUpdate();
+            }
+
             Update_Animation_Parameters();
             HandleCombo();
             Handle_Teleportation_Time();
@@ -232,11 +239,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             if (canTeleporting)
             {
-                if (movement.x < 0)
+                if (!is_Facing_Right)
                 {
                     transform.Translate(Vector2.left * teleporting_Distance);
                 }
-                else if (movement.x > 0)
+                else
                 {
                     transform.Translate(Vector2.right * teleporting_Distance);
                 }
@@ -255,7 +262,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             {
                 teleporting_CoolTime = 3.0f;
                 canTeleporting = true;
-                Debug.Log("�����̵� ����");
+                //Debug.Log("Can Teleport");
             }
         }
     }
@@ -264,7 +271,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (ctx.phase == InputActionPhase.Performed && Time.timeScale == 1.0f)
         {
-            Debug.Log("Down ����");
+            //Debug.Log("Down Input detected");
             is_Down_Performed = true;
             if (current_Platform != null)
             {
@@ -404,7 +411,14 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             {
                 Debug.LogError("Weapon_Collision_Handler is Missing");
             }
-        }     
+
+            Animator weapon_Animator = new_Weapon.GetComponent<Animator>();
+            if (weapon_Animator != null && cur_Weapon_Data.weapon_overrideController != null)
+            {
+                weapon_Animator.runtimeAnimatorController = cur_Weapon_Data.weapon_overrideController;
+                weapon_Animator.SetTrigger("Change");
+            }
+        }
 
         attack_Strategy = cur_Weapon_Data.attack_Strategy as IAttack_Strategy;
 
@@ -486,13 +500,15 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 int cur_Frame = Mathf.FloorToInt(state_Info.normalizedTime * total_Frames) % total_Frames;                
 
                 Vector3 new_Pos = animation_Data.Get_Position(cur_Frame);
-                Quaternion new_Rotation = animation_Data.Get_Rotation(cur_Frame);                               
+                Quaternion new_Rotation = animation_Data.Get_Rotation(cur_Frame);
+                Vector3 new_Scale = animation_Data.Get_Scale(cur_Frame);
                 
                 weapon_Anchor.localPosition = is_Facing_Right ? new_Pos : new Vector3(-new_Pos.x, new_Pos.y, new_Pos.z);
                 weapon_Anchor.localRotation = is_Facing_Right ? new_Rotation : Quaternion.Inverse(new_Rotation);
-                weapon_Anchor.localScale = is_Facing_Right ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
+                weapon_Anchor.localScale = is_Facing_Right ?
+                    new_Scale : new Vector3(-new_Scale.x, new_Scale.y, new_Scale.z);
 
-                Debug.Log($"Current Frame: {cur_Frame}, Position: {new_Pos}, Rotation: {new_Rotation}");
+                //Debug.Log($"Current Frame: {cur_Frame}, Position: {new_Pos}, Rotation: {new_Rotation}");
             }
             else
             {
@@ -563,7 +579,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     // Attack And Skill =====================================================================================
     public void Input_Perform_Attack(InputAction.CallbackContext ctx)
     {
-        if (ctx.phase != InputActionPhase.Performed || Time.timeScale != 1.0f || is_Player_Dead)
+        if (Time.timeScale != 1.0f || is_Player_Dead)
         {
             return;
         }
@@ -574,22 +590,52 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             return;
         }
 
-        if (cur_AttackCount >= max_AttackCount)
+        if (cur_Weapon_Data.is_HoldAttack_Enabled)
         {
-            Debug.Log("Current Attack Count reached Max!");
-            return;
+            switch (ctx.phase)
+            {
+                case InputActionPhase.Started:
+                    isAttacking = true;
+                    StartCoroutine(Continuous_Attack());
+                    //attack_Strategy.Attack(this, cur_Weapon_Data);
+                    break;
+                case InputActionPhase.Canceled:
+                    isAttacking = false;
+                    StopCoroutine(Continuous_Attack());
+                    break;
+            }
         }
-
-        attack_Strategy.Attack(this, cur_Weapon_Data);
+        else
+        {
+            if (ctx.phase == InputActionPhase.Performed)
+            {
+                if (cur_AttackCount < max_AttackCount)
+                {
+                    attack_Strategy.Attack(this, cur_Weapon_Data);
+                }
+                else
+                {
+                    Debug.Log("Current Attack Count reached Max!");
+                }
+            }
+        }
     }
 
-    public void On_Shoot_Projectile(GameObject projectile_Prefab)
+    private IEnumerator Continuous_Attack()
     {
+        while (isAttacking)
+        {
+            attack_Strategy.Attack(this, cur_Weapon_Data);            
+            yield return new WaitForSeconds(cur_Weapon_Data.attack_Cooldown);
+        }
+    }
 
+    public void On_Shoot_Projectile()
+    {
         if (attack_Strategy != null)
         {
-            attack_Strategy.Shoot(this, projectile_Prefab, firePoint);            
-        }
+            attack_Strategy.Shoot(this, firePoint);
+        }        
         else
         {
             Debug.LogError("Weapon Projectile is Missing!");
@@ -608,19 +654,19 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
     }
 
-    public void ResetAttack()
-    {
-        isAttacking = false;
-        cur_AttackCount = 0;        
-    }
-    public void ResetCombo()
-    {        
-        if (cur_AttackCount < max_AttackCount)
-        {
-            isAttacking = false;
-            cur_AttackCount = 0;            
-        }
-    }
+    //public void ResetAttack()
+    //{
+    //    isAttacking = false;
+    //    cur_AttackCount = 0;        
+    //}
+    //public void ResetCombo()
+    //{        
+    //    if (cur_AttackCount < max_AttackCount)
+    //    {
+    //        isAttacking = false;
+    //        cur_AttackCount = 0;            
+    //    }
+    //}
 
     public void Check_Enemies_Collider(string hixBox_Values)
     {
@@ -636,8 +682,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         
         foreach (Collider2D enemy in hitEnemies)
         {
-            Debug.Log("���� ���� �� ����");
-
             enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
         }
     }
@@ -679,16 +723,17 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     // Created By KYH -------------------------------------------------------------------
     public void Player_Take_Damage(int Damage)
-    {
-        Debug.Log("�÷��̾� ������ ���");
+    {        
         health = health - Damage;
         Player_Health_Bar.fillAmount = (float)health / max_Health;
-        Debug.Log("��� �Ϸ�");
 
         if (health <= 0)
-        {
-            //���ó��
+        {            
             Player_Died();
+        }
+        else
+        {
+            On_Player_Damaged?.Invoke();
         }
     }
 
@@ -765,15 +810,14 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         if (other.CompareTag("Boundary"))
         {
             cur_Boundary_Collider = other;
-            camera_Manager.Update_Confiner(cur_Boundary_Collider);
-            Debug.Log("�� �ȿ� ����");
+            camera_Manager.Update_Confiner(cur_Boundary_Collider);            
         }
 
         if(other.gameObject.tag == "NPC")
         {
             is_Npc_Contack = true;
             Now_Contact_Npc = other.gameObject;
-        }
+        }        
     }
 
     private void OnTriggerStay2D(Collider2D other)

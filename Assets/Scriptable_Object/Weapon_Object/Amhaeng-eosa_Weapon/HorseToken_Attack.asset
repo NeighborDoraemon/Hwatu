@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdede10e80f6c4343a67cbeff0aee278, type: 3}
+  m_Name: HorseToken_Attack
+  m_EditorClassIdentifier: 
+  projectile_Prefab: {fileID: 4150010414422937313, guid: 751ea12bbb2f82c4fa37d62b58ab324c, type: 3}
+  projectile_Speed: 20
+  max_Stack: 5

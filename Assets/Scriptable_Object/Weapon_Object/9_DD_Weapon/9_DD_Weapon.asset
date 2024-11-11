@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
+  m_Name: 9_DD_Weapon
+  m_EditorClassIdentifier: 
+  weapon_Name: Scythe
+  attack_Damage: 7
+  attack_Cooldown: 1
+  max_Attack_Count: 3
+  skill_Damage: 50
+  skill_Cooldown: 5
+  weapon_Prefab: {fileID: 2976884597404987267, guid: 3cfa2400908a12f4b8dad67e644359c9, type: 3}
+  overrideController: {fileID: 22100000, guid: 3733cf225828c894e996dff32fa619fa, type: 2}
+  weapon_overrideController: {fileID: 0}
+  animation_Pos_Data_List:
+  - {fileID: 11400000, guid: e184bd094f73da3419d97f61c8fc1c6c, type: 2}
+  - {fileID: 11400000, guid: 5d92e8cb9ca32db41bf48d7c9b71f8e5, type: 2}
+  effect_Data: {fileID: 11400000, guid: 72c283aea0efc5c479ee65ac1a1ee3d4, type: 2}
+  attack_Strategy: {fileID: 11400000, guid: 05d336678b5d9a141878baddab0d6437, type: 2}
+  is_HoldAttack_Enabled: 0

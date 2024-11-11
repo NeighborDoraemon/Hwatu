@@ -6,14 +6,14 @@ using MBT;
 public class Enemy_Basic : MonoBehaviour
 {
     [Header("BB Int")]
-    [SerializeField] private IntReference IR_Health;
+    [SerializeField] public IntReference IR_Health;
 
     private GameObject Target_Player;
     private int i_Max_Health;
 
     public void Start()
     {
-        i_Max_Health = IR_Health.Value; //�ִ�ü�� ����
+        i_Max_Health = IR_Health.Value;
     }
 
     public void TakeDamage(int damage)
@@ -25,15 +25,10 @@ public class Enemy_Basic : MonoBehaviour
 
         IR_Health.Value -= damage;
 
-
-        if(IR_Health.Value > i_Max_Health) //�ִ�ü�� �ʰ��� �ִ�ü������ ���� ����
+        if(IR_Health.Value > i_Max_Health)
         {
             IR_Health.Value = i_Max_Health;
-        }
-
-
-
-        
+        }        
 
         if (IR_Health.Value <= 0)
         {
@@ -41,12 +36,11 @@ public class Enemy_Basic : MonoBehaviour
         }
     }
 
-    private void Die() // �� ��� ó�� �Լ�
+    private void Die()
     {
-        Enemy_Generator.i_Enemy_Count--; //���� ���� �� ����
+        Enemy_Generator.i_Enemy_Count--;
         Debug.Log(Enemy_Generator.i_Enemy_Count);
 
-        Debug.Log("�� ���");
         Destroy(gameObject);
     }
 }

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
+  m_Name: 1_8_GDD_Weapon
+  m_EditorClassIdentifier: 
+  weapon_Name: Fan
+  attack_Damage: 15
+  attack_Cooldown: 1.5
+  max_Attack_Count: 2
+  skill_Damage: 18
+  skill_Cooldown: 18
+  weapon_Prefab: {fileID: 7843703564842448239, guid: 2ec1157792a2afb4ea2edbcd458bc8ff, type: 3}
+  overrideController: {fileID: 22100000, guid: c72e79ee86cc9a74896348d498e7dc3a, type: 2}
+  weapon_overrideController: {fileID: 0}
+  animation_Pos_Data_List:
+  - {fileID: 11400000, guid: ae5dad03b5e8da04f99422dca78a2125, type: 2}
+  - {fileID: 11400000, guid: b53c407f8b0987a469b65f3b43750f1f, type: 2}
+  - {fileID: 11400000, guid: 5ccf140fc9e8b0245b2c4236a5c89409, type: 2}
+  - {fileID: 11400000, guid: a7df89a723a31384ebc00c19236cec42, type: 2}
+  - {fileID: 11400000, guid: 5a315a0f374810d4b959ee7301d4a63f, type: 2}
+  - {fileID: 11400000, guid: a9d2571d944a7194d9a8994225a7d60d, type: 2}
+  effect_Data: {fileID: 11400000, guid: da546ea96b27b9049a10110ec7d94884, type: 2}
+  attack_Strategy: {fileID: 11400000, guid: 55dc28d23dd44cd40a6637008e2dfc95, type: 2}
+  is_HoldAttack_Enabled: 0

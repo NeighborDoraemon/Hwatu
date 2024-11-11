@@ -125,7 +125,7 @@ public class WideSword : MonoBehaviour
 
             if (player != null && !damaged_Plaer_Collider.Contains(P_Controller))
             {
-                Debug.Log("플레이어 공격 성공");
+                //Debug.Log("플레이어 공격 성공");
                 player.GetComponent<PlayerCharacter_Controller>().Player_Take_Damage(IR_Attack_Damage.Value);
 
                 damaged_Plaer_Collider.Add(P_Controller);

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
+  m_Name: Amhaeng-eosa_Weapon
+  m_EditorClassIdentifier: 
+  weapon_Name: HorseToken
+  attack_Damage: 5
+  attack_Cooldown: 1
+  max_Attack_Count: 1
+  skill_Damage: 0
+  skill_Cooldown: 0
+  weapon_Prefab: {fileID: 186924946055935400, guid: c05440161b0f3d34d9105a66b86182d7, type: 3}
+  overrideController: {fileID: 22100000, guid: c72e79ee86cc9a74896348d498e7dc3a, type: 2}
+  weapon_overrideController: {fileID: 0}
+  animation_Pos_Data_List:
+  - {fileID: 11400000, guid: 8131d1f4cd9e7034c9f2a641d22477e2, type: 2}
+  - {fileID: 11400000, guid: 2e6f03e9e373443429e05ab0cdc5e0b6, type: 2}
+  - {fileID: 11400000, guid: 667186482d3a9a742adbe0408d34feb3, type: 2}
+  - {fileID: 11400000, guid: 6dbd70c0e2be0684d80fa6620e13e4c7, type: 2}
+  - {fileID: 11400000, guid: 07e5899f476ec004bb7802863c4d8ec3, type: 2}
+  effect_Data: {fileID: 11400000, guid: da546ea96b27b9049a10110ec7d94884, type: 2}
+  attack_Strategy: {fileID: 11400000, guid: dcdcb7354d07f8b45b4bbc7c43b31320, type: 2}
+  is_HoldAttack_Enabled: 0

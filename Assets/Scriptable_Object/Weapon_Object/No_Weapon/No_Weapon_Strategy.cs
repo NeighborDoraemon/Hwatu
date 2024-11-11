@@ -34,7 +34,7 @@ public class No_Weapon_Strategy : ScriptableObject, IAttack_Strategy
     {
         Debug.Log("맨손 상태입니다.");
     }
-    public void Shoot(PlayerCharacter_Controller player, GameObject prefab, Transform fire_Point)
+    public void Shoot(PlayerCharacter_Controller player, Transform fire_Point)
     {
 
     }

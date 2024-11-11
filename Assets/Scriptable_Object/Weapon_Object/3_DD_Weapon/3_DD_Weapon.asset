@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
+  m_Name: 3_DD_Weapon
+  m_EditorClassIdentifier: 
+  weapon_Name: ExecutionSword
+  attack_Damage: 3
+  attack_Cooldown: 1.5
+  max_Attack_Count: 2
+  skill_Damage: 0
+  skill_Cooldown: 0
+  weapon_Prefab: {fileID: 1016120686701011945, guid: 230058256ecb96a4b98b6e67843c7ee9, type: 3}
+  overrideController: {fileID: 22100000, guid: 137439b4adeb6ad4fab7c3bb56acb336, type: 2}
+  weapon_overrideController: {fileID: 0}
+  animation_Pos_Data_List:
+  - {fileID: 11400000, guid: 864ba0ac3910f2b4e9c8e5d21c092499, type: 2}
+  - {fileID: 11400000, guid: af6c24ada2dfb214fb0a467499b586bd, type: 2}
+  effect_Data: {fileID: 11400000, guid: 72c283aea0efc5c479ee65ac1a1ee3d4, type: 2}
+  attack_Strategy: {fileID: 11400000, guid: 95d0bec430cd1c447866d5e31e04ca45, type: 2}
+  is_HoldAttack_Enabled: 0

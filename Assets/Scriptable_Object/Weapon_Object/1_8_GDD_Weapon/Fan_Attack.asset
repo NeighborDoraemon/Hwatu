@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12654154159b165459b3feae2ce43a9c, type: 3}
+  m_Name: Fan_Attack
+  m_EditorClassIdentifier: 
+  first_Projectile_Prefab: {fileID: 4150010414422937313, guid: b40bcc1a9c5458140a5a563ee11cefaf, type: 3}
+  second_Projectile_Prefab: {fileID: 4150010414422937313, guid: 062a93e440de44244ab7ea8232fd6926, type: 3}
+  skill_Projectile_Prefab: {fileID: 4150010414422937313, guid: 4e1678a9292b0d541b24bb5cf89a1890, type: 3}
+  projectile_Speed: 10
+  skill_Projectile_Scale: 0.5
+  scale_Up_Duration: 1.5
