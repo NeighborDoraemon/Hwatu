@@ -95,7 +95,7 @@ public class Hog : MonoBehaviour
                 this.transform.Translate(Vector3.right * -f_Chasing_Speed * Time.deltaTime);
             }
 
-            if(Mathf.Abs(this.transform.position.x - f_Dash_StartPosition) >= f_Dash_Distance || Attack_Time >= 5.0f)
+            if(Mathf.Abs(this.transform.position.x - f_Dash_StartPosition) >= f_Dash_Distance || Attack_Time >= 3.0f)
             {
                 Attack_Time = 0.0f;
                 is_First_End = true;
