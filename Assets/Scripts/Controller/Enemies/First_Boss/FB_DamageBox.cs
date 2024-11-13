@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class FB_DamageBox : MonoBehaviour
 {
     [SerializeField] private int Trap_Damage = 5;
     [SerializeField] private float f_Attack_Delay = 2.0f;
+    [SerializeField] private bool is_Call_CoolDown;
 
     private GameObject Obj_Player;
+
+
 
     private void Update()
     {
@@ -47,11 +51,13 @@ public class FB_DamageBox : MonoBehaviour
 
     public void Call_Invoke()
     {
-        Invoke("Gine_Damage", f_Attack_Delay);
+        StartCoroutine(Give_Damage());
     }
 
-    private void Give_Damage()
+    IEnumerator Give_Damage()
     {
+        Debug.Log("Coroutine Called");
+        yield return new WaitForSeconds(f_Attack_Delay);
         if (Obj_Player != null)
         {
             Obj_Player.GetComponent<PlayerCharacter_Controller>().Player_Take_Damage(Trap_Damage);
@@ -64,6 +70,11 @@ public class FB_DamageBox : MonoBehaviour
             {
                 Obj_Player.GetComponent<PlayerCharacter_Controller>().Weak_Knock_Back(-1, 0.2f, 3.0f);
             }
+        }
+
+        if(is_Call_CoolDown)
+        {
+            transform.parent.SendMessage("Call_Coroutine");
         }
     }
 }

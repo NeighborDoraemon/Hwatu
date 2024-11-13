@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1115273240711944341}
   m_Layer: 0
   m_Name: Rock_Object
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -129,14 +129,14 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 15863
   m_ForceReceiveLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 15863
   m_ContactCaptureLayers:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -161,6 +161,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cfd98da5d01496469c5154ec409e365, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  i_Damage: 5
-  f_moveSpeed: 0.5
+  i_Damage: 10
+  f_moveSpeed: 0.7
   is_Left: 1
