@@ -37,6 +37,7 @@ public class Acher : MonoBehaviour
     void Start()
     {
         //Target_Player = OR_Player.Value;
+        Target_Player = FindObjectOfType<PlayerCharacter_Controller>().gameObject;
     }
 
     // Update is called once per frame

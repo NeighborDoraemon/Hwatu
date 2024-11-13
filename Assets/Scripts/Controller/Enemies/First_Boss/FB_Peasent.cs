@@ -407,4 +407,10 @@ public class FB_Peasent : MonoBehaviour
             }
         }
     }
+
+
+    public void Start_Pattern()
+    {
+        is_Started = true;
+    }
 }

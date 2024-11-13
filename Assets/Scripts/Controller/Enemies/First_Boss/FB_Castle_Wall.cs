@@ -14,6 +14,7 @@ public class FB_Castle_Wall : MonoBehaviour
     [SerializeField] private GameObject Obj_ArrowRain_02;
     [SerializeField] private GameObject Obj_Rock_Position;
     [SerializeField] private GameObject Obj_Sniper_Location;
+    [SerializeField] private GameObject Obj_FB_Peasent;
 
     [Header("Others")]
     [SerializeField] private GameObject Prfb_Rock;
@@ -84,6 +85,16 @@ public class FB_Castle_Wall : MonoBehaviour
         if(is_Started)
         {
             f_Repeat_Time += Time.deltaTime;
+
+            if(IR_Health.Value <= 0 && !is_Second_Phase)
+            {
+                Do_Second_Phase();
+            }
+            else if(IR_Health.Value <= 0 && is_Second_Phase)
+            {
+                Destroy(gameObject); // Die
+            }
+
             Health_Calculate();
             State_Setter();
         }
@@ -250,5 +261,14 @@ public class FB_Castle_Wall : MonoBehaviour
                     break;
                 }
         }
+    }
+
+    private void Do_Second_Phase()
+    {
+        IR_Health.Value = 500; // Second Phase Health
+        is_Second_Phase = true;
+
+        Obj_FB_Peasent.SetActive(true);
+        Obj_FB_Peasent.GetComponent<FB_Peasent>().Start_Pattern();
     }
 }
