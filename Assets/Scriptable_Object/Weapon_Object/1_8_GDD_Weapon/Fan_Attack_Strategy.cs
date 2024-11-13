@@ -2,7 +2,6 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Playables;
 
 [CreateAssetMenu(fileName = "Fan_Attack", menuName = "Weapon/Attack Strategy/Fan")]
 public class Fan_Attack_Strategy : ScriptableObject, IAttack_Strategy

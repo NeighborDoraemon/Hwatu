@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: HorseToken_Attack
   m_EditorClassIdentifier: 
   projectile_Prefab: {fileID: 4150010414422937313, guid: 751ea12bbb2f82c4fa37d62b58ab324c, type: 3}
-  projectile_Speed: 20
+  projectile_Speed: 10
+  shoot_Delay: 0.1
   max_Stack: 5

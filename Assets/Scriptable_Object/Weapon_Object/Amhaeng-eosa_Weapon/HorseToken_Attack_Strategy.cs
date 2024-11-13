@@ -91,7 +91,7 @@ public class HorseToken_Attack_Strategy : ScriptableObject, IAttack_Strategy
     {
         for (int i = 0; i < cur_Stack; i++)
         {
-            GameObject projectile_Obj = Instantiate(projectile_Prefab, fire_Point.position, fire_Point.rotation);
+            GameObject projectile_Obj = Instantiate(projectile_Prefab, fire_Point.position, Quaternion.identity);
             Horse_Projectile projectile = projectile_Obj.GetComponent<Horse_Projectile>();
 
             Vector2 shootDirection = (player.weapon_Anchor.transform.localScale.x < 0) ? Vector2.left : Vector2.right;

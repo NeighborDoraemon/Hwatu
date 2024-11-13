@@ -273,10 +273,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             //Debug.Log("Down Input detected");
             is_Down_Performed = true;
-            if (current_Platform != null)
-            {
-                StartCoroutine(DisableCollision());
-            }
+            //if (current_Platform != null)
+            //{
+            //    StartCoroutine(DisableCollision());
+            //}
         }
         else if (ctx.phase == InputActionPhase.Canceled)
         {
@@ -532,7 +532,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public void Activate_WeaponCollider(float duration)
     {
-        Debug.Log("Activate_WeaponCollider called");
+        //Debug.Log("Activate_WeaponCollider called");
         if (weapon_Handler != null)
         {
             weapon_Handler.Enable_Collider(duration);
@@ -560,7 +560,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 effect_Render.sprite = frame_Effect_Info.effect_Sprites;
 
                 Vector3 effect_Pos = frame_Effect_Info.position_Offset;
-                effect_Render.transform.position = is_Facing_Right ? (transform.position + effect_Pos) : (transform.position + new Vector3(-effect_Pos.x, effect_Pos.y, effect_Pos.z));                
+                effect_Pos.x = is_Facing_Right ? effect_Pos.x : -effect_Pos.x;
+                effect_Render.transform.position = transform.position + effect_Pos;
+
+                effect_Render.transform.localScale = new Vector3(is_Facing_Right ? 1 : -1, 1, 1);
 
                 effect_Render.enabled = true;
 
@@ -615,7 +618,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 }
                 else
                 {
-                    Debug.Log("Current Attack Count reached Max!");
+                    //Debug.Log("Current Attack Count reached Max!");
                 }
             }
         }

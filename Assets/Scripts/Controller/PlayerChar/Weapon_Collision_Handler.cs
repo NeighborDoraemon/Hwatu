@@ -25,12 +25,7 @@ public class Weapon_Collision_Handler : MonoBehaviour
     {
         if (weapon_Collider != null)
         {
-            weapon_Collider.enabled = true;
-            if (weapon_Collider.enabled)
-            {
-                Debug.Log("무기 콜라이더 활성화");
-            }
-            
+            weapon_Collider.enabled = true;                        
             Invoke(nameof(Disable_Collider), duration);
         }                
     }
@@ -39,11 +34,7 @@ public class Weapon_Collision_Handler : MonoBehaviour
     {
         if (weapon_Collider != null)
         {
-            weapon_Collider.enabled = false;
-            if (!weapon_Collider.enabled)
-            {
-                Debug.Log("무기 콜라이더 비활성화");
-            }            
+            weapon_Collider.enabled = false;                      
         }        
     }
 
@@ -52,7 +43,7 @@ public class Weapon_Collision_Handler : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             other.GetComponent<Enemy_Basic>().TakeDamage(attack_Damage);
-            Debug.Log("Enemy hit by weapon");
+            //Debug.Log("Enemy hit by weapon");
         }
     }
 }

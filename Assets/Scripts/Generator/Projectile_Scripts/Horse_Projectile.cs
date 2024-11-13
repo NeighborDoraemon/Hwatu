@@ -44,7 +44,7 @@ public class Horse_Projectile : MonoBehaviour
         if (OnMiss != null)
         {
             OnMiss?.Invoke();
-        }        
+        }
         Destroy(gameObject);
     }
 }

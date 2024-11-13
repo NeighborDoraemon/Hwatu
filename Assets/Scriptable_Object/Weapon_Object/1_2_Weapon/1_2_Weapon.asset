@@ -15,7 +15,7 @@ MonoBehaviour:
   weapon_Name: Sechongtong
   attack_Damage: 1
   attack_Cooldown: 0.5
-  max_Attack_Count: 1
+  max_Attack_Count: 3
   skill_Damage: 0
   skill_Cooldown: 0
   weapon_Prefab: {fileID: 1378905126976110162, guid: 580c849f1b743734e8ef899026a02e50, type: 3}
