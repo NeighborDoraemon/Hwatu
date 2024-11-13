@@ -1205,6 +1205,7 @@ MonoBehaviour:
     blackboard: {fileID: 1556020812}
     key: i_Health
     constantValue: 0
+  f_Pattern_Delay: 3
 --- !u!114 &172223719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19395,6 +19396,10 @@ PrefabInstance:
     - target: {fileID: 951381219383572638, guid: 8404ee64339eccd489e3b6cf2d4f4f19, type: 3}
       propertyPath: f_Dash_Distance
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 951381219383572638, guid: 8404ee64339eccd489e3b6cf2d4f4f19, type: 3}
+      propertyPath: f_Pattern_Delay
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5632435895048989300, guid: 8404ee64339eccd489e3b6cf2d4f4f19, type: 3}
       propertyPath: m_LocalPosition.x

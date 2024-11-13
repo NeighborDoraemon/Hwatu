@@ -87,6 +87,7 @@ public class FB_Peasent : MonoBehaviour
         if(is_Started)
         {
             Distance = Mathf.Abs(this.gameObject.transform.position.x - Target_Player.transform.position.x);
+            f_Pattern_Time += Time.deltaTime;
 
             State_Setter();
 
@@ -129,7 +130,7 @@ public class FB_Peasent : MonoBehaviour
 
     private void State_Setter() // Dicide What to do
     {
-        if(Now_State == Attack_State.Nothing)
+        if(Now_State == Attack_State.Nothing && f_Pattern_Time >= f_Pattern_Delay)
         {
             if (!Throw_Cooldown && Distance >= f_Throw_Distance)
             {
@@ -181,6 +182,7 @@ public class FB_Peasent : MonoBehaviour
             is_Attack_Called = false;
 
             StartCoroutine(Attack_CoolDown(Now_State));
+            f_Pattern_Time = 0.0f;
 
             Now_State = Attack_State.Nothing;
         }
@@ -278,6 +280,7 @@ public class FB_Peasent : MonoBehaviour
             is_Move_Complete = false;
 
             StartCoroutine(Attack_CoolDown(Now_State));
+            f_Pattern_Time = 0.0f;
 
             Now_State = Attack_State.Nothing;
         }
@@ -317,6 +320,7 @@ public class FB_Peasent : MonoBehaviour
             f_Dash_Time = 0.0f;
 
             StartCoroutine(Attack_CoolDown(Now_State));
+            f_Pattern_Time = 0.0f;
 
             Now_State = Attack_State.Nothing;
         }

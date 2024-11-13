@@ -24,7 +24,8 @@ public class FB_Castle_Wall : MonoBehaviour
 
     [Header("Value")]
     [SerializeField] private IntReference IR_Health;
-
+    [SerializeField] private float f_Pattern_Delay = 0.0f;
+    private float f_Pattern_Time = 0.0f;
 
     private float f_Repeat_Time = 0.0f;
     private float f_Do_Time = 3.0f;
@@ -85,8 +86,9 @@ public class FB_Castle_Wall : MonoBehaviour
         if(is_Started)
         {
             f_Repeat_Time += Time.deltaTime;
+            f_Pattern_Time += Time.deltaTime;
 
-            if(IR_Health.Value <= 0 && !is_Second_Phase)
+            if (IR_Health.Value <= 0 && !is_Second_Phase)
             {
                 Do_Second_Phase();
             }
@@ -136,7 +138,7 @@ public class FB_Castle_Wall : MonoBehaviour
 
     private void State_Setter() // Dicide What to do
     {
-        if (Now_State == Attack_State.Nothing)
+        if (Now_State == Attack_State.Nothing && f_Pattern_Time >= f_Pattern_Delay)
         {
             if (!LandMine_CoolDown && is_Can_Use_LandMine)
             {
@@ -217,6 +219,8 @@ public class FB_Castle_Wall : MonoBehaviour
     public void Call_Coroutine()
     {
         StartCoroutine(Attack_CoolDown(Now_State));
+
+        f_Pattern_Time = 0.0f;
 
         Now_State = Attack_State.Nothing;
         is_Once_Attacked = false;
