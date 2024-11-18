@@ -27,6 +27,7 @@ public class Enemy_Basic : MonoBehaviour
         }
 
         IR_Health.Value -= damage;
+        Debug.Log($"Enmey took {damage} damage. Remaining health : {IR_Health.Value}");
 
         if(IR_Health.Value > i_Max_Health)
         {

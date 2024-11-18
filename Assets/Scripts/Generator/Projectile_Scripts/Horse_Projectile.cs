@@ -37,14 +37,10 @@ public class Horse_Projectile : MonoBehaviour
             OnHitEnemy?.Invoke();
             Destroy(gameObject);
         }
-    }
-
-    private void OnBecameInvisible() // 화면 밖으로 나갈 경우 자동 삭제
-    {
-        if (OnMiss != null)
+        else if(other.CompareTag("Walls"))
         {
             OnMiss?.Invoke();
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
     }
 }

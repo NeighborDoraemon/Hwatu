@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
+  m_Name: 4_10_Weapon
+  m_EditorClassIdentifier: 
+  weapon_Name: DokkaebiBat
+  attack_Damage: 4
+  attack_Cooldown: 1.5
+  max_Attack_Count: 2
+  skill_Damage: 100
+  skill_Cooldown: 8
+  weapon_Prefab: {fileID: 122386551544426127, guid: 5a42644185bb1e04aafd8e6708054dfb, type: 3}
+  overrideController: {fileID: 22100000, guid: 3a62746cff03c6540baeaad5bea3c74d, type: 2}
+  weapon_overrideController: {fileID: 0}
+  animation_Pos_Data_List:
+  - {fileID: 11400000, guid: 2c06151144bfe034da2ac90e0647b70e, type: 2}
+  - {fileID: 11400000, guid: 21ba621b77a023c42a89199ca583435f, type: 2}
+  - {fileID: 11400000, guid: afe3aa6fca1408248915eed91e7e3d8d, type: 2}
+  - {fileID: 11400000, guid: f8da7d6e39a779740bbea0d1792d75e3, type: 2}
+  - {fileID: 11400000, guid: 0931cc1dde7b96e49a9fd09cd75686c1, type: 2}
+  - {fileID: 11400000, guid: d90f3488a3ab0f7479b29c42847cce95, type: 2}
+  effect_Data: {fileID: 11400000, guid: 3bba59c06037aa146a2f3facd4bb4423, type: 2}
+  attack_Strategy: {fileID: 11400000, guid: 0737b7af94737344f9250dc99473f300, type: 2}
+  is_HoldAttack_Enabled: 0
