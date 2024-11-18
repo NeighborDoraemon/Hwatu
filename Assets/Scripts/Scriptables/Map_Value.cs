@@ -19,6 +19,15 @@ public class Map_Value : ScriptableObject
     public List<Vector3> v_Enemy_Spawn_Points_02;
     public List<Vector3> v_Enemy_Spawn_Points_03;
 
+    [Header("New Enemy Spawn Points")]
+    public List<Vectors> v_New_Spawn_Points;
+
+    [Header("New Enemy Spawn Data")]
+    public List<e_Numbers> i_Enemy_Index;
+
+    [Header("New Enemy Wave Count")]
+    public int i_How_Many_Wave;
+
     [Header("CardBox Spawn Point")]
     public Vector3 v_CardBox_SpawnPoint;
 
@@ -30,4 +39,16 @@ public class Map_Value : ScriptableObject
 
     [HideInInspector]
     public bool Clear_and_Next;
+}
+
+[System.Serializable]
+public class Vectors
+{
+    public List<Vector3> v_Dataes;
+}
+
+[System.Serializable]
+public class e_Numbers
+{
+    public List<int> i_enemy_Index;
 }

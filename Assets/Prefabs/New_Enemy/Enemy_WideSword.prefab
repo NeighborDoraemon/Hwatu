@@ -31,13 +31,14 @@ Transform:
   m_GameObject: {fileID: 4371916878449458698}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -26.13, y: 0.72, z: -8.368034}
+  m_LocalPosition: {x: -26.13, y: 0.72, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6204506642613285462}
   - {fileID: 5276532383167184965}
   - {fileID: 7094515612413555684}
+  - {fileID: 4120210210250983394}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6947182369615431783
@@ -165,10 +166,10 @@ CapsuleCollider2D:
     m_Bits: 4294967295
   m_ContactCaptureLayers:
     serializedVersion: 2
-    m_Bits: 11255
+    m_Bits: 15351
   m_CallbackLayers:
     serializedVersion: 2
-    m_Bits: 11255
+    m_Bits: 15351
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -193,12 +194,8 @@ MonoBehaviour:
     blackboard: {fileID: 4843434418119999694}
     key: i_Health
     constantValue: 0
-  BR_Facing_Left:
-    useConstant: 0
-    mode: 0
-    blackboard: {fileID: 4843434418119999694}
-    key: is_Facing_Left
-    constantValue: 0
+  is_Boos_Object: 0
+  scarecrow: {fileID: 0}
 --- !u!114 &1712178304082829948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,7 +209,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   f_Chasing_Speed: 3
-  f_Before_Delay: 1.5
+  f_Before_Delay: 2
   f_After_Delay: 0.5
   BR_Chasing:
     useConstant: 0
@@ -232,19 +229,125 @@ MonoBehaviour:
     blackboard: {fileID: 4843434418119999694}
     key: f_Attack_Range
     constantValue: 0
-  FR_Attack_Cooldown:
-    useConstant: 0
-    mode: 0
-    blackboard: {fileID: 4843434418119999694}
-    key: f_Attack_CoolDown
-    constantValue: 0
   IR_Attack_Damage:
     useConstant: 0
     mode: 0
     blackboard: {fileID: 4843434418119999694}
     key: i_Attack_Damage
     constantValue: 0
+  BR_Not_Attacking:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 4843434418119999694}
+    key: is_Not_Attacking
+    constantValue: 0
   Target_Player: {fileID: 0}
+  Enemy_Crash_Box: {fileID: 7252858169000148663}
+--- !u!1 &7252858169000148663
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4120210210250983394}
+  - component: {fileID: 7181917060733976519}
+  - component: {fileID: 4453163665698884878}
+  m_Layer: 12
+  m_Name: WideSword_AttackBox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4120210210250983394
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7252858169000148663}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1703561661887111361}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &7181917060733976519
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7252858169000148663}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 1024
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 1024
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 1024
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.4, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.6, y: 0.7}
+  m_EdgeRadius: 0
+--- !u!114 &4453163665698884878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7252858169000148663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3548fe5b4b21a1d488385c8a26a17aee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IR_Attack_Damage:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 4843434418119999694}
+    key: i_Attack_Damage
+    constantValue: 0
+  BR_Not_Attacking:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 4843434418119999694}
+    key: is_Not_Attacking
+    constantValue: 0
+  f_Knockback_Time: 0.2
+  f_Knockback_Power: 2
+  Damage_Once: 1
 --- !u!1 &7299613699066321449
 GameObject:
   m_ObjectHideFlags: 0
@@ -369,7 +472,7 @@ GameObject:
   - component: {fileID: 4888567021920235669}
   - component: {fileID: 794867799444663994}
   - component: {fileID: 2561634496302639100}
-  - component: {fileID: 2356063173293649451}
+  - component: {fileID: 7958097876959033018}
   m_Layer: 0
   m_Name: WideSword_Behavior
   m_TagString: Untagged
@@ -443,7 +546,7 @@ MonoBehaviour:
   - {fileID: 4888567021920235669}
   - {fileID: 794867799444663994}
   - {fileID: 2561634496302639100}
-  - {fileID: 2356063173293649451}
+  - {fileID: 7958097876959033018}
   masterBlackboard: {fileID: 0}
 --- !u!114 &7644248878249205609
 MonoBehaviour:
@@ -748,7 +851,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: is_Facing_Left
-  val: 0
+  val: 1
 --- !u!114 &4692929625260170176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -804,7 +907,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: i_Health
-  val: 100
+  val: 20
 --- !u!114 &794867799444663994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -818,7 +921,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: i_Attack_Damage
-  val: 5
+  val: 3
 --- !u!114 &2561634496302639100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -832,8 +935,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: f_Attack_Range
-  val: 0.8
---- !u!114 &2356063173293649451
+  val: 0.6
+--- !u!114 &7958097876959033018
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -842,11 +945,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7466199425284580376}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4e5f4db414f0ab4c82c187a7653e99d, type: 3}
+  m_Script: {fileID: 11500000, guid: 5ae15c5e6bcb1714080f2e8296c3d17a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: f_Attack_CoolDown
-  val: 1.5
+  key: is_Not_Attacking
+  val: 1
 --- !u!1 &7915380139120839169
 GameObject:
   m_ObjectHideFlags: 0

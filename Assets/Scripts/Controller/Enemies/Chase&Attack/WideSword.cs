@@ -21,9 +21,12 @@ public class WideSword : MonoBehaviour
 
     [SerializeField] private FloatReference FR_Attack_Range;
     [SerializeField] private IntReference IR_Attack_Damage;
+    [SerializeField] private BoolReference BR_Not_Attacking;
 
     [Header("Others")]
     [SerializeField] private GameObject Target_Player;
+    [SerializeField] private GameObject Enemy_Crash_Box;
+
     private float Distance = 0.0f;
 
     private bool is_Attack_Turn = false;
@@ -38,7 +41,7 @@ public class WideSword : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         Distance = Mathf.Abs(this.gameObject.transform.position.x - Target_Player.transform.position.x);
 
@@ -71,8 +74,6 @@ public class WideSword : MonoBehaviour
 
     private void Attack_Call()
     {
-        Attack_Time += Time.deltaTime;
-
         if (!is_Attack_Turn) // 공격 시작 시, 플레이어 방향 보게하기
         {
             TurnAround();
@@ -81,12 +82,17 @@ public class WideSword : MonoBehaviour
 
             is_Attacking = true;
             is_Attack_Turn = true;
+
+            is_Attack_Complete = false;
         }
+
+        Attack_Time += Time.deltaTime;
 
         if (Attack_Time >= f_Before_Delay && !is_Attack_Complete) // Attack
         {
             if (BR_Facing_Left.Value) //Attack Left
             {
+                //Debug.Log(Attack_Time);
                 WideSword_Attack(-1);
                 is_Attack_Complete = true;
             }
@@ -105,33 +111,41 @@ public class WideSword : MonoBehaviour
             is_Attack_Complete = false;
 
             Attack_Time = 0.0f;
+            BR_Not_Attacking.Value = true;
         }
     }
 
     private void WideSword_Attack(int Alpha) //Left = -1, Right = 1;
     {
-        HashSet<PlayerCharacter_Controller> damaged_Plaer_Collider = new HashSet<PlayerCharacter_Controller>();
+        //HashSet<PlayerCharacter_Controller> damaged_Plaer_Collider = new HashSet<PlayerCharacter_Controller>();
 
-        this.transform.Translate(Vector3.zero);
+        //this.transform.Translate(Vector3.zero);
 
-        Vector2 boxSize = new Vector2(0.2f, 0.4f);
-        Vector2 boxCenter = (Vector2)transform.position + new Vector2(Alpha * FR_Attack_Range.Value, 0f);
-        LayerMask playerLayer = LayerMask.GetMask("Character");
+        //Vector2 boxSize = new Vector2(0.2f, 0.4f);
+        //Vector2 boxCenter = (Vector2)transform.position + new Vector2(Alpha * FR_Attack_Range.Value, 0f);
+        //LayerMask playerLayer = LayerMask.GetMask("Character");
 
-        Collider2D[] hitPlayer = Physics2D.OverlapBoxAll(boxCenter, boxSize, 0, playerLayer);
+        //Collider2D[] hitPlayer = Physics2D.OverlapBoxAll(boxCenter, boxSize, 0, playerLayer);
 
-        foreach (Collider2D player in hitPlayer)
+        //foreach (Collider2D player in hitPlayer)
+        //{
+        //    PlayerCharacter_Controller P_Controller = player.GetComponent<PlayerCharacter_Controller>();
+
+        //    if (player != null && !damaged_Plaer_Collider.Contains(P_Controller))
+        //    {
+        //        //Debug.Log("플레이어 공격 성공");
+        //        player.GetComponent<PlayerCharacter_Controller>().Player_Take_Damage(IR_Attack_Damage.Value);
+
+        //        damaged_Plaer_Collider.Add(P_Controller);
+        //    }
+        //    //enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
+        //}
+
+        if (BR_Not_Attacking.Value)
         {
-            PlayerCharacter_Controller P_Controller = player.GetComponent<PlayerCharacter_Controller>();
-
-            if (player != null && !damaged_Plaer_Collider.Contains(P_Controller))
-            {
-                //Debug.Log("플레이어 공격 성공");
-                player.GetComponent<PlayerCharacter_Controller>().Player_Take_Damage(IR_Attack_Damage.Value);
-
-                damaged_Plaer_Collider.Add(P_Controller);
-            }
-            //enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
+            Enemy_Crash_Box.GetComponent<Crash_Box>().Damage_Once = true;
+            //Enemy_CB.Damage_Once = true;
+            BR_Not_Attacking.Value = false;
         }
     }
 

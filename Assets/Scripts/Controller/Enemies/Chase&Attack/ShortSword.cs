@@ -9,7 +9,7 @@ public class ShortSword : MonoBehaviour
     [SerializeField] private float f_Chasing_Speed = 4.0f;
 
     [Header("Attack Delay")]
-    //[SerializeField] private float f_Before_Delay = 1.5f;
+    [SerializeField] private float f_Before_Delay = 1.5f;
     [SerializeField] private float f_After_Delay = 2.0f;
 
     private float Attack_Time = 0.0f;
@@ -18,12 +18,14 @@ public class ShortSword : MonoBehaviour
     [SerializeField] private BoolReference BR_Chasing;
     [SerializeField] private BoolReference BR_Facing_Left;
     //[SerializeField] private GameObjectReference OR_Player;
+    [SerializeField] private BoolReference BR_Not_Attacking;
 
     [SerializeField] private FloatReference FR_Attack_Range;
     [SerializeField] private IntReference IR_Attack_Damage;
 
     [Header("Others")]
     [SerializeField] private GameObject Target_Player;
+    [SerializeField] private Crash_Box Enemy_CB;
     private float Distance = 0.0f;
 
     private bool is_Attack_Turn = false;
@@ -38,7 +40,7 @@ public class ShortSword : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         Distance = Mathf.Abs(this.gameObject.transform.position.x - Target_Player.transform.position.x);
 
@@ -83,7 +85,7 @@ public class ShortSword : MonoBehaviour
             is_Attack_Turn = true;
         }
 
-        if (!is_Attack_Complete) // Attack
+        if (Attack_Time >= f_Before_Delay && !is_Attack_Complete) // Attack
         {
             if (BR_Facing_Left.Value) //Attack Left
             {
@@ -98,40 +100,47 @@ public class ShortSword : MonoBehaviour
         }
 
         //Call After Delay Method
-        if (Attack_Time >= f_After_Delay)
+        if (Attack_Time >= f_Before_Delay + f_After_Delay)
         {
             is_Attack_Turn = false;
             is_Attacking = false;
             is_Attack_Complete = false;
 
             Attack_Time = 0.0f;
+            BR_Not_Attacking.Value = true;
         }
     }
 
     private void ShortSword_Attack(int Alpha) //Left = -1, Right = 1;
     {
-        HashSet<PlayerCharacter_Controller> damaged_Plaer_Collider = new HashSet<PlayerCharacter_Controller>();
+        //HashSet<PlayerCharacter_Controller> damaged_Plaer_Collider = new HashSet<PlayerCharacter_Controller>();
 
-        this.transform.Translate(Vector3.zero);
+        //this.transform.Translate(Vector3.zero);
 
-        Vector2 boxSize = new Vector2(0.2f, 0.4f);
-        Vector2 boxCenter = (Vector2)transform.position + new Vector2(Alpha * FR_Attack_Range.Value, 0f);
-        LayerMask playerLayer = LayerMask.GetMask("Character");
+        //Vector2 boxSize = new Vector2(0.2f, 0.4f);
+        //Vector2 boxCenter = (Vector2)transform.position + new Vector2(Alpha * FR_Attack_Range.Value, 0f);
+        //LayerMask playerLayer = LayerMask.GetMask("Character");
 
-        Collider2D[] hitPlayer = Physics2D.OverlapBoxAll(boxCenter, boxSize, 0, playerLayer);
+        //Collider2D[] hitPlayer = Physics2D.OverlapBoxAll(boxCenter, boxSize, 0, playerLayer);
 
-        foreach (Collider2D player in hitPlayer)
+        //foreach (Collider2D player in hitPlayer)
+        //{
+        //    PlayerCharacter_Controller P_Controller = player.GetComponent<PlayerCharacter_Controller>();
+
+        //    if (player != null && !damaged_Plaer_Collider.Contains(P_Controller))
+        //    {
+        //        Debug.Log("플레이어 공격 성공");
+        //        player.GetComponent<PlayerCharacter_Controller>().Player_Take_Damage(IR_Attack_Damage.Value);
+
+        //        damaged_Plaer_Collider.Add(P_Controller);
+        //    }
+        //    //enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
+        //}
+
+        if(BR_Not_Attacking.Value)
         {
-            PlayerCharacter_Controller P_Controller = player.GetComponent<PlayerCharacter_Controller>();
-
-            if (player != null && !damaged_Plaer_Collider.Contains(P_Controller))
-            {
-                Debug.Log("플레이어 공격 성공");
-                player.GetComponent<PlayerCharacter_Controller>().Player_Take_Damage(IR_Attack_Damage.Value);
-
-                damaged_Plaer_Collider.Add(P_Controller);
-            }
-            //enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
+            Enemy_CB.Damage_Once = true;
+            BR_Not_Attacking.Value = false;
         }
     }
 

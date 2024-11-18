@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 2517142397857934587}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -30.34, y: -1.28, z: -8.399792}
+  m_LocalPosition: {x: -30.34, y: -1.28, z: 0}
   m_LocalScale: {x: 0.5, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -116,10 +116,10 @@ CapsuleCollider2D:
     m_Bits: 4294967295
   m_ContactCaptureLayers:
     serializedVersion: 2
-    m_Bits: 3063
+    m_Bits: 15351
   m_CallbackLayers:
     serializedVersion: 2
-    m_Bits: 3063
+    m_Bits: 15351
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -171,6 +171,7 @@ MonoBehaviour:
     blackboard: {fileID: 2963058167193352549}
     key: i_Health
     constantValue: 0
+  is_Boos_Object: 0
 --- !u!114 &2421345227707640232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,7 +205,7 @@ MonoBehaviour:
     key: i_Attack_Damage
     constantValue: 0
   Target_Player: {fileID: 0}
-  Bullet_Prefab: {fileID: 4150010414422937313, guid: 382a799ee5aa5834e9a23ce7c7cdc1af, type: 3}
+  Bullet_Prefab: {fileID: 8333097592702568372, guid: 11ba6240cc42a0243a0641d2fc307506, type: 3}
 --- !u!1 &7380151953747770808
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,7 +820,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: i_Health
-  val: 100
+  val: 15
 --- !u!114 &2532859368303627537
 MonoBehaviour:
   m_ObjectHideFlags: 0

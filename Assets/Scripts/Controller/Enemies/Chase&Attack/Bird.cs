@@ -44,7 +44,7 @@ public class Bird : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (BR_Chasing.Value || is_Attacking)
         {
@@ -102,15 +102,15 @@ public class Bird : MonoBehaviour
             {
                 //this.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(-1.0f * f_Attack_Move_Speed, 0.0f);
                 //Obj_Attack_Box.GetComponent<Rigidbody2D>().velocity = new Vector2(-1.0f * f_Attack_Move_Speed, 0.0f);
-                this.transform.Translate(new Vector3(-0.02f * f_Attack_Move_Speed, 0.0f));
-                Obj_Attack_Box.transform.Translate(new Vector3(0.0f, 0.01f * f_Attack_Down_Speed * i_For_UpDown));
+                this.transform.Translate(new Vector3(-0.2f * f_Attack_Move_Speed, 0.0f));
+                Obj_Attack_Box.transform.Translate(new Vector3(0.0f, 0.1f * f_Attack_Down_Speed * i_For_UpDown));
             }
             else //Attack Right
             {
                 //this.transform.Translate(Vector3.right * -f_Down_Speed * Time.deltaTime);
 
-                this.transform.Translate(new Vector3(-0.02f * f_Attack_Move_Speed, 0.0f));
-                Obj_Attack_Box.transform.Translate(new Vector3(0.0f, 0.01f * f_Attack_Down_Speed * i_For_UpDown));
+                this.transform.Translate(new Vector3(-0.2f * f_Attack_Move_Speed, 0.0f));
+                Obj_Attack_Box.transform.Translate(new Vector3(0.0f, 0.1f * f_Attack_Down_Speed * i_For_UpDown));
 
             }
 
