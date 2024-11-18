@@ -32,6 +32,23 @@ MonoBehaviour:
   - {x: 19, y: 18.5, z: 0}
   - {x: 21, y: 18.5, z: 0}
   - {x: 23, y: 18.5, z: 0}
+  v_New_Spawn_Points:
+  - v_Dataes:
+    - {x: 23, y: 21, z: 0}
+    - {x: 20, y: 21, z: 0}
+    - {x: 23, y: 18.5, z: 0}
+    - {x: 21, y: 18.5, z: 0}
+    - {x: 18, y: 18.5, z: 0}
+    - {x: 17.5, y: 18.5, z: 0}
+  - v_Dataes:
+    - {x: 19.5, y: 22.5, z: 0}
+    - {x: 21.5, y: 22.5, z: 0}
+    - {x: 29, y: 20.55, z: 0}
+    - {x: 26, y: 20.55, z: 0}
+  - v_Dataes:
+    - {x: 23, y: 18.5, z: 0}
+    - {x: 21, y: 18.5, z: 0}
+    - {x: 23, y: 18.5, z: 0}
   v_CardBox_SpawnPoint: {x: 20, y: 18.5, z: 0}
   Next_To_Kill: 0
   Collider: {fileID: 0}

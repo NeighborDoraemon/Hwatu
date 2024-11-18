@@ -53,7 +53,7 @@ CircleCollider2D:
     m_Bits: 2112
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 5632
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 592ccdabe65c9c84685ed700ae981ca0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  f_Before_Delay: 0.3
+  f_Before_Delay: 0.7
   BR_Chasing:
     useConstant: 0
     mode: 0
@@ -450,7 +450,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: i_Health
-  val: 20
+  val: 15
 --- !u!114 &1446111564727360154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -464,7 +464,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: i_Attack_Damage
-  val: 3
+  val: 4
 --- !u!114 &223131327052688867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -827,6 +827,7 @@ MonoBehaviour:
     key: i_Health
     constantValue: 0
   is_Boos_Object: 0
+  scarecrow: {fileID: 0}
 --- !u!1 &9222270611744656121
 GameObject:
   m_ObjectHideFlags: 0

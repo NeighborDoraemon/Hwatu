@@ -198,6 +198,111 @@ MonoBehaviour:
     blackboard: {fileID: 5099408561669530431}
     key: is_Chasing
     constantValue: 0
+--- !u!1 &696688903604587495
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8432911658798365645}
+  - component: {fileID: 3747065566221673683}
+  - component: {fileID: 5778403979605014869}
+  m_Layer: 12
+  m_Name: ShortSword_AttackBox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8432911658798365645
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696688903604587495}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7096759245075570668}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &3747065566221673683
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696688903604587495}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 8183
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 8183
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.3, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.2}
+  m_EdgeRadius: 0
+--- !u!114 &5778403979605014869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696688903604587495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3548fe5b4b21a1d488385c8a26a17aee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IR_Attack_Damage:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 5099408561669530431}
+    key: i_Attack_Damage
+    constantValue: 0
+  BR_Not_Attacking:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 5099408561669530431}
+    key: is_Not_Attacking
+    constantValue: 0
+  f_Knockback_Time: 0.2
+  f_Knockback_Power: 2
+  Damage_Once: 1
 --- !u!1 &697132459651496800
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,9 +329,9 @@ GameObject:
   - component: {fileID: 8779037687947769790}
   - component: {fileID: 2947784194460774156}
   - component: {fileID: 800940431300529294}
-  - component: {fileID: 5259934238475893838}
   - component: {fileID: 3830047811896370407}
   - component: {fileID: 8378203510706650686}
+  - component: {fileID: 996498767010621026}
   m_Layer: 0
   m_Name: ShortSword_Behavior
   m_TagString: Untagged
@@ -285,9 +390,9 @@ MonoBehaviour:
   - {fileID: 8779037687947769790}
   - {fileID: 2947784194460774156}
   - {fileID: 800940431300529294}
-  - {fileID: 5259934238475893838}
   - {fileID: 3830047811896370407}
   - {fileID: 8378203510706650686}
+  - {fileID: 996498767010621026}
   masterBlackboard: {fileID: 0}
 --- !u!114 &4508961625890396795
 MonoBehaviour:
@@ -647,7 +752,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: i_Health
-  val: 50
+  val: 12
 --- !u!114 &800940431300529294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -661,21 +766,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: f_Attack_Range
-  val: 0.8
---- !u!114 &5259934238475893838
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 697132459651496800}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4e5f4db414f0ab4c82c187a7653e99d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  key: f_Attack_CoolDown
-  val: 2
+  val: 0.4
 --- !u!114 &3830047811896370407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -689,7 +780,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: i_Attack_Damage
-  val: 10
+  val: 5
 --- !u!114 &8378203510706650686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -703,6 +794,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: is_Facing_Left
+  val: 1
+--- !u!114 &996498767010621026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 697132459651496800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ae15c5e6bcb1714080f2e8296c3d17a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: is_Not_Attacking
   val: 1
 --- !u!1 &2382109295417009260
 GameObject:
@@ -735,13 +840,14 @@ Transform:
   m_GameObject: {fileID: 2382109295417009260}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -27.96, y: -1.26, z: -8.368034}
+  m_LocalPosition: {x: -27.96, y: -1.26, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4470760914548093805}
   - {fileID: 6596737160515579006}
   - {fileID: 4969897067488155470}
+  - {fileID: 8432911658798365645}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3851950908364520951
@@ -835,12 +941,8 @@ MonoBehaviour:
     blackboard: {fileID: 5099408561669530431}
     key: i_Health
     constantValue: 0
-  BR_Facing_Left:
-    useConstant: 0
-    mode: 0
-    blackboard: {fileID: 5099408561669530431}
-    key: is_Facing_Left
-    constantValue: 0
+  is_Boos_Object: 0
+  scarecrow: {fileID: 0}
 --- !u!114 &5217230651503807799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -854,7 +956,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   f_Chasing_Speed: 4
-  f_Before_Delay: 1.5
+  f_Before_Delay: 0.5
   f_After_Delay: 2
   BR_Chasing:
     useConstant: 0
@@ -867,6 +969,12 @@ MonoBehaviour:
     mode: 0
     blackboard: {fileID: 5099408561669530431}
     key: is_Facing_Left
+    constantValue: 0
+  BR_Not_Attacking:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 5099408561669530431}
+    key: is_Not_Attacking
     constantValue: 0
   FR_Attack_Range:
     useConstant: 0
@@ -881,6 +989,7 @@ MonoBehaviour:
     key: i_Attack_Damage
     constantValue: 0
   Target_Player: {fileID: 0}
+  Enemy_CB: {fileID: 5778403979605014869}
 --- !u!70 &5935776456029407434
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -906,10 +1015,10 @@ CapsuleCollider2D:
     m_Bits: 4294967295
   m_ContactCaptureLayers:
     serializedVersion: 2
-    m_Bits: 3063
+    m_Bits: 15351
   m_CallbackLayers:
     serializedVersion: 2
-    m_Bits: 3063
+    m_Bits: 15351
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0

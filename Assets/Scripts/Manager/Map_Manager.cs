@@ -8,6 +8,7 @@ public class Map_Manager : MonoBehaviour
 {
     [SerializeField]
     private Map_Value[] Map_Dataes;
+    [SerializeField] private Vector3 FB_Boss_Point;
 
     [SerializeField]
     private GameObject Obj_Player;
@@ -67,18 +68,20 @@ public class Map_Manager : MonoBehaviour
     {
         //if (Input.GetKeyDown(KeyCode.W))
         {
-            if (IsOnPortal && Enemy_Generator.Is_Room_Clear == true && ScObj_Not_Used_Map_Value.Count != 0) //맵 클리어시에만 이동 가능하도록 변경
+            if (IsOnPortal && Enemy_Generator.Is_Room_Clear == true/* && ScObj_Not_Used_Map_Value.Count != 0*/) //맵 클리어시에만 이동 가능하도록 변경
             {
+                //방 번호 전달
+                //Enemy_Generator.i_Room_Number = i_room_Num;
+                
                 Check_Portals();
 
-                Obj_Player.transform.position = v_Next_SpawnPoint;                
+                Obj_Player.transform.position = v_Next_SpawnPoint;
 
-                //방 번호 전달
-                Enemy_Generator.i_Room_Number = i_room_Num;
-                //방 이동시 클리어 초기화
-                Enemy_Generator.Is_Room_Clear = false;
                 //스폰 시작 트리거
                 Enemy_Generator.Is_Next_Spawn = true;
+
+                //방 이동시 클리어 초기화
+                Enemy_Generator.Is_Room_Clear = false;
             }
         }
     }
@@ -100,36 +103,39 @@ public class Map_Manager : MonoBehaviour
         //Reset_PortalList();
 
 
-        if (v_Next_SpawnPoint == new Vector3(0.0f, 0.0f, 0.0f))
+        //if (v_Next_SpawnPoint == new Vector3(0.0f, 0.0f, 0.0f))
+        //{
+        //    Randoms = Random.Range(0, ScObj_Not_Used_Map_Value.Count);
+        //    v_Next_SpawnPoint = ScObj_Not_Used_Map_Value[Randoms].v_Map_Spawnpoint;
+
+        //    //이동한 맵의 번호를 적 생성 스크립트에 전달하기 위함
+        //    i_room_Num = ScObj_Not_Used_Map_Value[Randoms].i_Map_Counter;
+
+        //    ScObj_Not_Used_Map_Value.RemoveAt(Randoms);
+
+        //    //i_room_Num = ScObj_Not_Used_Map_Value[Randoms].i_Map_Counter;
+        //}
+
+        if (ScObj_Not_Used_Map_Value.Count <= 0 && Enemy_Generator.Is_Room_Clear == true)
+        {
+            Set_Next_Boss();
+        }
+        else
         {
             Randoms = Random.Range(0, ScObj_Not_Used_Map_Value.Count);
+
             v_Next_SpawnPoint = ScObj_Not_Used_Map_Value[Randoms].v_Map_Spawnpoint;
 
             //이동한 맵의 번호를 적 생성 스크립트에 전달하기 위함
             i_room_Num = ScObj_Not_Used_Map_Value[Randoms].i_Map_Counter;
 
+            Enemy_Generator.i_Room_Number = i_room_Num;
+
             ScObj_Not_Used_Map_Value.RemoveAt(Randoms);
 
+            //Obj_NextPortal = Obj_Portals[Randoms];
+
             //i_room_Num = ScObj_Not_Used_Map_Value[Randoms].i_Map_Counter;
-        }
-
-        //if (v_Next_SpawnPoint == v_Now_Portal)
-        {
-            //while (Obj_NextPortal.name == Which_Portal.name /*|| Check_Use_Portal(Obj_NextPortal)*/)
-            {
-                Randoms = Random.Range(0, ScObj_Not_Used_Map_Value.Count);
-
-                v_Next_SpawnPoint = ScObj_Not_Used_Map_Value[Randoms].v_Map_Spawnpoint;
-
-                //이동한 맵의 번호를 적 생성 스크립트에 전달하기 위함
-                i_room_Num = ScObj_Not_Used_Map_Value[Randoms].i_Map_Counter;
-
-                ScObj_Not_Used_Map_Value.RemoveAt(Randoms);
-
-                //Obj_NextPortal = Obj_Portals[Randoms];
-
-                //i_room_Num = ScObj_Not_Used_Map_Value[Randoms].i_Map_Counter;
-            }
         }
     }
 
@@ -140,10 +146,19 @@ public class Map_Manager : MonoBehaviour
             for (int i = 0; i < Map_Dataes.Length; i++)
             {
                 ScObj_Not_Used_Map_Value.Add(Map_Dataes[i]);
+                //Debug.Log(ScObj_Not_Used_Map_Value.Count);
                 //Debug.Log(ScObj_Not_Used_Map_Value[i]);
             }
             //Debug.Log("List Reset");
         }
         //ScObj_Not_Used_Map_Value.RemoveAt(0);
+    }
+
+    private void Set_Next_Boss()
+    {
+        Debug.Log("Set Next Boss");
+        v_Next_SpawnPoint = FB_Boss_Point;
+        i_room_Num = -1;
+        Enemy_Generator.i_Room_Number = i_room_Num;
     }
 }

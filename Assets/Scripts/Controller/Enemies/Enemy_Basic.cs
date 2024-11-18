@@ -11,6 +11,8 @@ public class Enemy_Basic : MonoBehaviour
     [Header("Bool")]
     [SerializeField] private bool is_Boos_Object = false;
 
+    [SerializeField] private Obj_ScareCrow scarecrow = null;
+
     private GameObject Target_Player;
     private int i_Max_Health;
 
@@ -38,6 +40,11 @@ public class Enemy_Basic : MonoBehaviour
         {
             Die();
         }
+
+        if(scarecrow != null)
+        {
+            scarecrow.ShowDamage(damage);
+        }
     }
 
 
@@ -46,6 +53,13 @@ public class Enemy_Basic : MonoBehaviour
         Enemy_Generator.i_Enemy_Count--; 
         Debug.Log(Enemy_Generator.i_Enemy_Count);
 
-        Destroy(gameObject);
+        if (this.transform.parent != null)
+        {
+            Destroy(this.transform.parent.gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 }

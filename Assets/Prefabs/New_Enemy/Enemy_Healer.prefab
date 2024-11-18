@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: i_Health
-  val: 40
+  val: 20
 --- !u!114 &820453627876301195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,7 +246,7 @@ GameObject:
   - component: {fileID: 8105292427216586328}
   m_Layer: 9
   m_Name: Enemy_Healer
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -345,10 +345,10 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_ContactCaptureLayers:
     serializedVersion: 2
-    m_Bits: 7671
+    m_Bits: 15863
   m_CallbackLayers:
     serializedVersion: 2
-    m_Bits: 7671
+    m_Bits: 15863
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0

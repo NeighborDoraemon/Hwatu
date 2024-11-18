@@ -313,7 +313,7 @@ MonoBehaviour:
     key: is_Not_Attacking
     constantValue: 0
   f_Knockback_Time: 1
-  f_Knockback_Power: 10
+  f_Knockback_Power: 5
 --- !u!1 &1266772745039207582
 GameObject:
   m_ObjectHideFlags: 0
@@ -975,7 +975,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: i_Health
-  val: 100
+  val: 36
 --- !u!114 &5014478024242684356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -989,7 +989,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: i_Attack_Damage
-  val: 5
+  val: 6
 --- !u!114 &1534228618265668135
 MonoBehaviour:
   m_ObjectHideFlags: 0
