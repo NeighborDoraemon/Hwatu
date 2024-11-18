@@ -18,16 +18,10 @@ MonoBehaviour:
   max_Attack_Count: 1
   skill_Damage: 0
   skill_Cooldown: 0
-  attack_Trigger: Attack_1
-  skill_Trigger: Skill
   weapon_Prefab: {fileID: 7843703564842448239, guid: 3438e58655288c242938845a37924cc5, type: 3}
-  overrideController: {fileID: 22100000, guid: c72e79ee86cc9a74896348d498e7dc3a, type: 2}
+  overrideController: {fileID: 22100000, guid: 33afa0930e0a8ea4d9decd7ad2f96d42, type: 2}
   weapon_overrideController: {fileID: 0}
-  animation_Pos_Data_List:
-  - {fileID: 11400000, guid: 8131d1f4cd9e7034c9f2a641d22477e2, type: 2}
-  - {fileID: 11400000, guid: 2e6f03e9e373443429e05ab0cdc5e0b6, type: 2}
-  - {fileID: 11400000, guid: 667186482d3a9a742adbe0408d34feb3, type: 2}
-  - {fileID: 11400000, guid: 6dbd70c0e2be0684d80fa6620e13e4c7, type: 2}
-  - {fileID: 11400000, guid: 07e5899f476ec004bb7802863c4d8ec3, type: 2}
-  effect_Data: {fileID: 11400000, guid: da546ea96b27b9049a10110ec7d94884, type: 2}
+  animation_Pos_Data_List: []
+  effect_Data: {fileID: 11400000, guid: 0dd1f1221b20f904dafc48d078b8ad1d, type: 2}
   attack_Strategy: {fileID: 11400000, guid: 554f2286881dede4d8d470aadf728fc2, type: 2}
+  is_HoldAttack_Enabled: 0

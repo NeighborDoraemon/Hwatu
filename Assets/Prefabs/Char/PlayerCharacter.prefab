@@ -225,7 +225,7 @@ Rigidbody2D:
     serializedVersion: 2
     m_Bits: 0
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!70 &4076679307762721750
@@ -513,6 +513,7 @@ MonoBehaviour:
   map_Manager: {fileID: 0}
   use_Portal: 0
   player_Collider: {fileID: 3641037530319108596}
+  is_Knock_Back: 0
 --- !u!1 &5417539781672758290
 GameObject:
   m_ObjectHideFlags: 0
@@ -585,7 +586,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1375957023
   m_SortingLayer: 3
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

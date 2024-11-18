@@ -115,6 +115,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                 if ((card_1.Month == 11 && card_2.Month == 13)
                     || (card_1.Month == 13 && card_2.Month == 11))
                 {
+                    Set_Weapon(21);
                     Debug.Log("1 3 堡动");
                 }
                 else if ((card_1.Month == 11 && card_2.Month == 18)
@@ -148,9 +149,11 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                         Debug.Log("3动");
                         break;
                     case 4:
+                        Set_Weapon(18);
                         Debug.Log("4动");
                         break;
                     case 5:
+                        Set_Weapon(20);
                         Debug.Log("5动");
                         break;
                     case 6:
@@ -201,6 +204,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                     else if ((card_1.Month == 10 && card_2.Month == 4)
                         || (card_1.Month == 4 && card_2.Month == 10))
                     {
+                        Set_Weapon(17);
                         Debug.Log("厘荤");
                     }                     
                     else if ((card_1.Month == 7 && card_2.Month == 4)
@@ -211,7 +215,8 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                     }  
                     else if ((card_1.Month == 9 && card_2.Month == 4)
                         || (card_1.Month == 4 && card_2.Month == 9))
-                    {                        
+                    {
+                        Set_Weapon(19);
                         Debug.Log("49颇配");
                     }
                     else if ((card_1.Month == 7 && card_2.Month == 3)

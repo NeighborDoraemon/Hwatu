@@ -9,12 +9,6 @@ AnimatorOverrideController:
   m_Name: Pyeongon_Weapon_Animation
   m_Controller: {fileID: 9100000, guid: 6c65eefea63f86e4b80afe8a1bc6af6e, type: 2}
   m_Clips:
-  - m_OriginalClip: {fileID: 7400000, guid: 22d48ffb78dc6d0478d1ce14cf09e2a6, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: b30e42370579ce64484d65ecbbe78476, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: 711e83a4a37e4ee41ba41688d839ba99, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: a4f59647c4d6a954a9c79e94d24ba352, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: f38850e1f5c5bf3448729d2d5b6bd6b4, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 77e7615f499f01749b08a50277fd9aa3, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 7481a63663c0d1c4dbc0d8ce3994b488, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 8aa8c4be60aafd94cba8f20673e3b9dd, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: b8091b6eb84f529439b2398989a87703, type: 2}
@@ -23,9 +17,5 @@ AnimatorOverrideController:
     m_OverrideClip: {fileID: 7400000, guid: 64a955fcaeea31f4b99922399bbde051, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: db83e448d17eb404eb7114484cf14ed1, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: db83e448d17eb404eb7114484cf14ed1, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: ff8eaa3a28d34d546b5227a6507171fd, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: ff8eaa3a28d34d546b5227a6507171fd, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: c5b533d7dc28fac4a94073a08809d80c, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 77e7615f499f01749b08a50277fd9aa3, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: e19f93be974fd1e4b84926e5b17825f5, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 77e7615f499f01749b08a50277fd9aa3, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 8c72a1e9db9f31546ab0d13e15e5afee, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 8c72a1e9db9f31546ab0d13e15e5afee, type: 2}

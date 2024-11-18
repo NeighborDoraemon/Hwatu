@@ -75,7 +75,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     private GameObject Now_Contact_Npc;
     //---------------------------------------------------
 
-    private bool is_Knock_Back = false;
+    public bool is_Knock_Back = false;
 
 
     private void Awake()
@@ -141,14 +141,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 Card_Combination();
             }
 
-            if (attack_Strategy is Bow_Attack_Strategy bow_Attack_Strategy)
-            {
-                bow_Attack_Strategy.OnUpdate();
-            }
-
             Update_Animation_Parameters();
             HandleCombo();
-            Handle_Teleportation_Time();
+            Handle_Teleportation_Time();            
         }
     }
     private void FixedUpdate()
@@ -202,11 +197,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             }            
         }
 
-        movement.Normalize();
+        Vector2 normalized_Movement = movement.normalized;
 
         if (!is_Knock_Back)
         {
-            rb.velocity = new Vector2(movement.x * movementSpeed, rb.velocity.y);
+            rb.velocity = new Vector2(normalized_Movement.x * movementSpeed, rb.velocity.y);
         }
     }
 
@@ -293,8 +288,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
         {
             map_Manager.Use_Portal();
-
-            //Debug.Log("��ȣ�ۿ� ȣ��");
+            
             if (is_Npc_Contack && Now_Contact_Npc != null)
             {
                 if(Now_Contact_Npc.gameObject.name == "Stat_Npc")
@@ -442,9 +436,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 animator.runtimeAnimatorController = cur_Weapon_Data.overrideController;                
             }
 
-            attackDamage = cur_Weapon_Data.attack_Damage;
-            attack_Cooldown = cur_Weapon_Data.attack_Cooldown;
-            max_AttackCount = cur_Weapon_Data.max_Attack_Count;
+            attack_Strategy.Initialize(this, cur_Weapon_Data);
 
             isAttacking = false;
             cur_AttackCount = 0;
@@ -599,12 +591,14 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             {
                 case InputActionPhase.Started:
                     isAttacking = true;
-                    StartCoroutine(Continuous_Attack());
-                    //attack_Strategy.Attack(this, cur_Weapon_Data);
+                    Debug.Log("Attack started, continuous attack enabled");
+                    animator.SetBool("isHoldAtk", true);                    
+                    StartCoroutine(Continuous_Attack());                    
                     break;
                 case InputActionPhase.Canceled:
                     isAttacking = false;
-                    StopCoroutine(Continuous_Attack());
+                    Debug.Log("Attack started, continuous attack enabled");
+                    animator.SetBool("isHoldAtk", false);
                     break;
             }
         }
@@ -628,7 +622,17 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         while (isAttacking)
         {
-            attack_Strategy.Attack(this, cur_Weapon_Data);            
+            Debug.Log("Continuous_Attack is running");
+            if (attack_Strategy != null)
+            {
+                attack_Strategy.Attack(this, cur_Weapon_Data);
+            }
+            else
+            {
+                Debug.LogError("Attack Strategy is missing for Hold_Attack");
+                break;
+            }
+            
             yield return new WaitForSeconds(cur_Weapon_Data.attack_Cooldown);
         }
     }
@@ -649,6 +653,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (isAttacking)
         {
+            if (cur_Weapon_Data != null && cur_Weapon_Data.is_HoldAttack_Enabled)
+            {
+                return;
+            }
+
             if (Time.time - last_ComboAttack_Time > comboTime)
             {
                 isAttacking = false;
@@ -657,38 +666,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
     }
 
-    //public void ResetAttack()
-    //{
-    //    isAttacking = false;
-    //    cur_AttackCount = 0;        
-    //}
-    //public void ResetCombo()
-    //{        
-    //    if (cur_AttackCount < max_AttackCount)
-    //    {
-    //        isAttacking = false;
-    //        cur_AttackCount = 0;            
-    //    }
-    //}
-
-    public void Check_Enemies_Collider(string hixBox_Values)
-    {
-        string[] values = hixBox_Values.Split(',');
-        float hitBox_x = float.Parse(values[0]);
-        float hitBox_y = float.Parse(values[1]);
-        
-        Vector2 boxSize = new Vector2(hitBox_x, hitBox_y);
-        Vector2 boxCenter = (Vector2)transform.position + new Vector2(transform.localScale.x * attackRange, 0f);
-        LayerMask enemyLayer = LayerMask.GetMask("Enemy");
-
-        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(boxCenter, boxSize, 0, enemyLayer);
-        
-        foreach (Collider2D enemy in hitEnemies)
-        {
-            enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
-        }
-    }
-    
     public void Input_Skill_Attack(InputAction.CallbackContext ctx)
     {
         if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
@@ -883,15 +860,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         Physics2D.IgnoreCollision(player_Collider, platform_Collider);
         yield return new WaitForSeconds(0.5f);
         Physics2D.IgnoreCollision(player_Collider, platform_Collider, false);
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Vector2 boxSize = new Vector2(0.3f, 0.5f);
-        Vector2 boxCenter = (Vector2)transform.position + new Vector2(transform.localScale.x * attackRange, 0f);
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(boxCenter, boxSize);
     }
 
     public void Weak_Knock_Back(int Left_Num, float Knock_Back_time, float Power) //Left = 1, Right = -1

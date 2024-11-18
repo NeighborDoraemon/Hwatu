@@ -18,10 +18,9 @@ public class Projectile : MonoBehaviour
             other.GetComponent<Enemy_Basic>().TakeDamage(damage);
             Destroy(gameObject);
         }
-    }
-
-    private void OnBecameInvisible() // 화면 밖으로 나갈 경우 자동 삭제
-    {
-        Destroy(gameObject);
+        else if (other.CompareTag("Walls"))
+        {
+            Destroy(gameObject);
+        }
     }
 }

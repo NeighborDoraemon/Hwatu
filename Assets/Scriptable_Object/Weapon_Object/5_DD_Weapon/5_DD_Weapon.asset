@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
+  m_Name: 5_DD_Weapon
+  m_EditorClassIdentifier: 
+  weapon_Name: EnergyAttack
+  attack_Damage: 4
+  attack_Cooldown: 1
+  max_Attack_Count: 1
+  skill_Damage: 10
+  skill_Cooldown: 5
+  weapon_Prefab: {fileID: 4783793673759612592, guid: 1c0ac8585cd489e468c5223ba043ca35, type: 3}
+  overrideController: {fileID: 22100000, guid: 3a62746cff03c6540baeaad5bea3c74d, type: 2}
+  weapon_overrideController: {fileID: 0}
+  animation_Pos_Data_List:
+  - {fileID: 11400000, guid: f8da7d6e39a779740bbea0d1792d75e3, type: 2}
+  effect_Data: {fileID: 11400000, guid: 0dd1f1221b20f904dafc48d078b8ad1d, type: 2}
+  attack_Strategy: {fileID: 11400000, guid: 7d227f858243efd419d588691a5a85f8, type: 2}
+  is_HoldAttack_Enabled: 0

@@ -12,6 +12,7 @@ public class Musket_Attack_Strategy : ScriptableObject, IAttack_Strategy
     public float projectile_Speed = 20.0f;
 
     private bool is_Reloading = false;
+    private bool is_Empty = false;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
@@ -24,29 +25,44 @@ public class Musket_Attack_Strategy : ScriptableObject, IAttack_Strategy
         this.weapon_Data = weapon_Data;
 
         Initialize_Weapon_Data();
+
+        is_Reloading = false;
+        is_Empty = false;
+        //Debug.Log($"is_Reloading : {is_Reloading}, is_Empty : {is_Empty}");
+        //Debug.Log($"Attack Cooldown : {player.attack_Cooldown}");
     }
 
     private void Initialize_Weapon_Data()
     {
         player.animator.runtimeAnimatorController = weapon_Data.overrideController;
         player.attackDamage = weapon_Data.attack_Damage;
-        player.attack_Cooldown = weapon_Data.skill_Cooldown;
+        player.attack_Cooldown = weapon_Data.attack_Cooldown;
         player.max_AttackCount = weapon_Data.max_Attack_Count;
         player.skill_Cooldown = weapon_Data.skill_Cooldown;
     }
 
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
+        //Debug.Log($"Attack called. is_Reloading : {is_Reloading}, is_Empty : {is_Empty}");
+
         if (is_Reloading)
         {
-            Debug.Log("Empty..Press Attack Button to reload.");
-            Reload();
+            Debug.Log("Currently Reloading");
+            return;
+        }
+        
+        if (is_Empty)
+        {
+            Debug.Log("Empty.");
+            Reload(player);
+            return;
         }
 
-        if (Is_Cooldown_Complete(player))
+        if (!is_Empty && !is_Reloading)
         {
+            Debug.Log("Start Attack");
             Start_Attack(player, weapon_Data);
-        }
+        }        
     }
 
     private bool Is_Cooldown_Complete(PlayerCharacter_Controller player)
@@ -61,29 +77,54 @@ public class Musket_Attack_Strategy : ScriptableObject, IAttack_Strategy
         player.cur_AttackCount = 1;
         Update_Attack_Timers(player);
 
-        is_Reloading = true;
+        is_Empty = true;
+        //Debug.Log("Attack Completed. Ammo now empty");
     }
 
-    public void Reload()
+    public void Reload(PlayerCharacter_Controller player)
     {
         if (is_Reloading)
         {
-            Debug.Log("Reloading!");
-            is_Reloading = false;
-            //player.animator.SetTrigger("Reload");
+            Debug.Log("Reload is already in progress");
+            return;           
         }
+        else
+        {
+            player.StartCoroutine(Reload_Coroutine(player));
+        }        
+    }
+
+    private IEnumerator Reload_Coroutine(PlayerCharacter_Controller player)
+    {
+        is_Reloading = true;
+        //Debug.Log($"Reloading Start : {Time.time} seconds");
+
+        yield return new WaitForSeconds(player.attack_Cooldown);
+
+        //Debug.Log($"Reload Complete : {Time.time}");
+        is_Reloading = false;
+        is_Empty = false;
     }
 
     private void Update_Attack_Timers(PlayerCharacter_Controller player)
     {
         player.last_Attack_Time = Time.time;
+        player.last_ComboAttack_Time = Time.time;
     }
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point)
     {
-        GameObject projectile = Instantiate(projectile_Prefab, fire_Point.position, fire_Point.rotation);
+        if (is_Empty || is_Reloading)
+        {
+            //Debug.Log("Can't shoot while reloading or empty");
+            return;
+        }
+
+        GameObject projectile = Instantiate(projectile_Prefab, fire_Point.position, Quaternion.identity);
         Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
-        Vector2 shootDirection = (player.transform.localScale.x < 0) ? Vector2.left : Vector2.right;
+        Vector2 shootDirection = (player.is_Facing_Right) ? Vector2.right : Vector2.left;
         rb.velocity = shootDirection * projectile_Speed;
+
+        is_Empty = true;
     }
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {

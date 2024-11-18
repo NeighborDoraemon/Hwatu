@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9931eede985daa64daadc9c5533b5e0d, type: 3}
+  m_Name: DoubleHandsSword_Attack
+  m_EditorClassIdentifier: 
+  skill_Projectile_Prefab: {fileID: 4150010414422937313, guid: 062a93e440de44244ab7ea8232fd6926, type: 3}
+  projectile_Speed: 10

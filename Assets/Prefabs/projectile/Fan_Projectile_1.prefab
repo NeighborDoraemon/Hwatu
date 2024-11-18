@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -3873603157392868242}
   - component: {fileID: 4758685549957708341}
   - component: {fileID: 8757078013798441767}
+  - component: {fileID: -147050135952712873}
   m_Layer: 0
   m_Name: Fan_Projectile_1
   m_TagString: Attack
@@ -172,3 +173,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.2946457, y: 0.34451926}
   m_EdgeRadius: 0
+--- !u!95 &-147050135952712873
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4150010414422937313}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 844fc23aaf206f44bbb26d3921ec2ce9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
