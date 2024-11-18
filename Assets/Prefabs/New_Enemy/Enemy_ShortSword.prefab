@@ -710,7 +710,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: f_Move_Speed
-  val: 1
+  val: 1.5
 --- !u!114 &2805949218480259475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -955,7 +955,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ae3fd4396b2450459d85c4a4d7eed9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  f_Chasing_Speed: 4
+  f_Chasing_Speed: 3
   f_Before_Delay: 0.5
   f_After_Delay: 2
   BR_Chasing:

@@ -436,7 +436,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: f_Move_Speed
-  val: 3
+  val: 2
 --- !u!114 &8931259323765503247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -808,6 +808,7 @@ MonoBehaviour:
     constantValue: 0
   f_Knockback_Time: 1
   f_Knockback_Power: 5
+  Damage_Once: 1
 --- !u!114 &101030975460925924
 MonoBehaviour:
   m_ObjectHideFlags: 0

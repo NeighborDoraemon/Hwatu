@@ -172,6 +172,7 @@ MonoBehaviour:
     key: i_Health
     constantValue: 0
   is_Boos_Object: 0
+  scarecrow: {fileID: 0}
 --- !u!114 &2421345227707640232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -778,7 +779,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: f_Move_Speed
-  val: 0.8
+  val: 1
 --- !u!114 &7513222416513998399
 MonoBehaviour:
   m_ObjectHideFlags: 0

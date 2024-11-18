@@ -31,8 +31,8 @@ public class Bird : MonoBehaviour
     private bool is_Down_Complete = false;
 
 
-    private float f_Attack_Move_Speed = 0.5f;
-    private float f_Attack_Down_Speed = 0.5f;
+    [SerializeField] private float f_Attack_Move_Speed = 0.5f;
+    [SerializeField] private float f_Attack_Down_Speed = 0.5f;
 
     private int i_For_UpDown = -1;
 

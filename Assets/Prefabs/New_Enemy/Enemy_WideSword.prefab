@@ -208,7 +208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa3f154eef04cca46b7aa9c536f15cea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  f_Chasing_Speed: 3
+  f_Chasing_Speed: 2
   f_Before_Delay: 2
   f_After_Delay: 0.5
   BR_Chasing:
@@ -865,7 +865,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: f_Move_Speed
-  val: 2
+  val: 1.5
 --- !u!114 &2365628252032208204
 MonoBehaviour:
   m_ObjectHideFlags: 0

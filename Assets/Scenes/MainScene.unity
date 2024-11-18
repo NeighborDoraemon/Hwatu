@@ -18972,7 +18972,7 @@ Transform:
   m_GameObject: {fileID: 879990129}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 83.54, y: 14.900001, z: -10}
+  m_LocalPosition: {x: -28.22, y: 1.3399999, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -27935,7 +27935,7 @@ Transform:
   m_GameObject: {fileID: 1709604181}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 83.54, y: 14.900001, z: -10}
+  m_LocalPosition: {x: -28.22, y: 1.3399999, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -29638,6 +29638,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2d207f1c5228468438f2aeeb3a0716a1, type: 2}
   - {fileID: 11400000, guid: 10eaf106969c97842aa6578b38af1129, type: 2}
   - {fileID: 11400000, guid: a37599c3a759c4341b6f7fac34497d99, type: 2}
+  Enemy_Prefabs: []
 --- !u!4 &1939926765
 Transform:
   m_ObjectHideFlags: 0
@@ -30711,10 +30712,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8222395040624788167, guid: 89ac4e5350b5c764089964155d708b1f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89ac4e5350b5c764089964155d708b1f, type: 3}
 --- !u!1001 &1097749508849876858
 PrefabInstance:
@@ -30781,6 +30779,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 546713623}
     - target: {fileID: 5418104219592675981, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
+      propertyPath: movementSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5418104219592675981, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
       propertyPath: pause_Manager
       value: 
       objectReference: {fileID: 249063052}
@@ -30800,13 +30802,17 @@ PrefabInstance:
       propertyPath: Player_Health_Bar
       value: 
       objectReference: {fileID: 420545958}
+    - target: {fileID: 5418104219592675981, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
+      propertyPath: teleporting_Distance
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7421354220885094674, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 83.54
+      value: -28.22
       objectReference: {fileID: 0}
     - target: {fileID: 7421354220885094674, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 14.8
+      value: 1.24
       objectReference: {fileID: 0}
     - target: {fileID: 7421354220885094674, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
       propertyPath: m_LocalPosition.z
@@ -30976,7 +30982,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7072692218491328136, guid: 8a2150b5382560f489f2e55a87b10220, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -32088,3 +32094,9 @@ SceneRoots:
   - {fileID: 788678272}
   - {fileID: 1949641562790812218}
   - {fileID: 755039726610191185}
+  - {fileID: 409934726}
+  - {fileID: 55178586}
+  - {fileID: 22717363}
+  - {fileID: 1037226473}
+  - {fileID: 1904023993}
+  - {fileID: 1939926765}

@@ -173,6 +173,7 @@ MonoBehaviour:
     key: i_Health
     constantValue: 0
   is_Boos_Object: 0
+  scarecrow: {fileID: 0}
 --- !u!114 &6880663914124848282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,6 +315,7 @@ MonoBehaviour:
     constantValue: 0
   f_Knockback_Time: 1
   f_Knockback_Power: 5
+  Damage_Once: 1
 --- !u!1 &1266772745039207582
 GameObject:
   m_ObjectHideFlags: 0
@@ -933,7 +935,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: f_Move_Speed
-  val: 2
+  val: 1.5
 --- !u!114 &3561972374673254769
 MonoBehaviour:
   m_ObjectHideFlags: 0
