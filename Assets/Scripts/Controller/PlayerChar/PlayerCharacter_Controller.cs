@@ -749,30 +749,40 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     // ======================================================================================================
 
     // Player Collsion ======================================================================================
+
+    private int i_platform = 0;
+
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Platform"))
+        if (other.gameObject.CompareTag("Platform") || other.gameObject.CompareTag("OneWayPlatform"))
         {
             isGrounded = true;
-        }
-        else if (other.gameObject.CompareTag("OneWayPlatform"))
-        {
-            isGrounded = true;
-            current_Platform = other.gameObject;
+            i_platform++;
+
+            if (other.gameObject.CompareTag("OneWayPlatform"))
+            {
+                current_Platform = other.gameObject;
+            }
         }
     }
 
 
     private void OnCollisionExit2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Platform"))
+        if (other.gameObject.CompareTag("Platform") || other.gameObject.CompareTag("OneWayPlatform"))
         {
+            i_platform--;
+
+            if(i_platform == 0)
             isGrounded = false;
-        }
-        else if (other.gameObject.CompareTag("OneWayPlatform"))
-        {
-            isGrounded = false;
-            current_Platform = null;
+
+            if (other.gameObject.CompareTag("OneWayPlatform"))
+            {
+                if (other.gameObject == current_Platform)
+                {
+                    current_Platform = null;
+                }
+            }
         }
     }
 
@@ -781,8 +791,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         if (other.gameObject.tag == "Portal" && map_Manager.IsOnPortal == false)
         {
             map_Manager.IsOnPortal = true;
-            map_Manager.Which_Portal = other.gameObject;
-            map_Manager.v_Now_Portal = other.transform.position;
 
             use_Portal = true;
         }
@@ -813,6 +821,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         if(other.gameObject.tag == "Portal" && map_Manager.IsOnPortal == true)
         {
             map_Manager.IsOnPortal = false;
+
             use_Portal = false;
         }
 

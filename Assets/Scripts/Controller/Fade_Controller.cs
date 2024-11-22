@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 
 public class Fade_Controller : MonoBehaviour
@@ -61,40 +62,52 @@ public class Fade_Controller : MonoBehaviour
 
         if (In_or_Out)//Fade In
         {
-            while (imageColor.a > 0.0f)
-            {
-                imageColor.a -= Time.deltaTime / Fade_Time;
+            //while (imageColor.a > 0.0f)
+            //{
+            //    imageColor.a -= Time.deltaTime / Fade_Time;
 
-                if (imageColor.a <= 0.0f)
-                {
-                    imageColor.a = 0.0f;
-                }
+            //    if (imageColor.a <= 0.0f)
+            //    {
+            //        imageColor.a = 0.0f;
+            //    }
 
-                Fade_Image.color = imageColor;
-                yield return null;
-            }
+            //    Fade_Image.color = imageColor;
+            //    yield return null;
+            //}
+            Fade_Image.DOFade(0.0f, 2.0f)
+                .SetEase(Ease.InOutQuad)
+                .OnComplete(() => Debug.Log("Fade In Complete"));
+
             Fade_Image.gameObject.SetActive(false);
             is_Fading = false;
 
             Fade_Canvas.gameObject.SetActive(false);
+
+            yield return null;
         }
         else // Fade Out
         {
-            imageColor.a = 0.0f;
-            Fade_Image.color = imageColor;
+            //imageColor.a = 0.0f;
+            //Fade_Image.color = imageColor;
 
-            while (imageColor.a < 1.0f)
-            {
-                imageColor.a += Time.deltaTime / Fade_Time;
+            //while (imageColor.a < 1.0f)
+            //{
+            //    imageColor.a += Time.deltaTime / Fade_Time;
 
-                if (imageColor.a >= 1.0f)
-                {
-                    imageColor.a = 1.0f;
-                }
+            //    if (imageColor.a >= 1.0f)
+            //    {
+            //        imageColor.a = 1.0f;
+            //    }
 
-                Fade_Image.color = imageColor;
-                yield return null;
-            }
+            //    Fade_Image.color = imageColor;
+            //    yield return null;
+            //}
+
+            Fade_Image.DOFade(1.0f, 2.0f)
+                .SetEase(Ease.InOutQuad)
+                .OnComplete(() => Debug.Log("Fade Out Complete"));
+
+            yield return null;
         }
     }
 
