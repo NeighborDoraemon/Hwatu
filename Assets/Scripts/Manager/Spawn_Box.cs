@@ -29,7 +29,7 @@ public class Spawn_Box : MonoBehaviour
             {
                 Object_Manager.instance.Spawn_Cards(spawnPos);
             }
-            else
+            else if (i == 1)
             {
                 Object_Manager.instance.Spawn_Item(itemName_To_Spawn, spawnPos, player);
             }

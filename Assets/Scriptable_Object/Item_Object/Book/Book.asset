@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 86385ed30deb3bf4094345f126ce6a87, type: 3}
-  m_Name: 4_Bracelet
+  m_Name: Book
   m_EditorClassIdentifier: 
-  itemName: Bracelet
-  item_icon: {fileID: 21300000, guid: 2b7d5ad1316173e4f83b2b33852e7c86, type: 3}
-  itemEffect: {fileID: 11400000, guid: a241b1736b3e4e0448dd179891c1c20a, type: 2}
+  itemName: "\uCC45"
+  icon: {fileID: 21300000, guid: 969b484b9e3ada14da3b970812f35143, type: 3}
+  itemEffect: {fileID: 11400000, guid: f122a202a27e8b845bd303a25366f367, type: 2}
   isConsumable: 0

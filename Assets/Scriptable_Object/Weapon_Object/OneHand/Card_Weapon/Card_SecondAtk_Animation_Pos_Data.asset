@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animation_Name: PC_OH_SecondAtk
   frame_Pos:
-  - {x: -0.0226, y: -0.3349, z: 0}
-  - {x: 0.1476, y: -0.1876, z: 0}
-  - {x: 0.1332, y: -0.2528, z: 0}
-  - {x: 0.1102, y: -0.3401, z: 0}
-  - {x: 0.0799, y: -0.3495, z: 0}
-  frame_Rotations:
-  - {x: 0, y: 0, z: -90}
-  - {x: 0, y: 0, z: 90}
-  - {x: 0, y: 0, z: 90}
   - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: -90}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  frame_Rotations:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
   frame_Scales: []
