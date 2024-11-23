@@ -17,7 +17,7 @@ public class Inventory_Slot : MonoBehaviour
     public void AddItem(Item item)
     {
         cur_Items = item;
-        item_Image.sprite = item.item_icon;
+        item_Image.sprite = item.icon;
         item_Image.enabled = true;
     }
 

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 4_6_Weapon
   m_EditorClassIdentifier: 
   weapon_Name: Dangpa
-  attack_Damage: 100
+  attack_Damage: 3
   attack_Cooldown: 1
   max_Attack_Count: 1
   skill_Damage: 0
