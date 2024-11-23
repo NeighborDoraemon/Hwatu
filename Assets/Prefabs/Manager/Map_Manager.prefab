@@ -44,13 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 024e3c456e794e04c884aa87f0330c67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Map_Dataes:
-  - {fileID: 11400000, guid: 376d1702c34250d4f940e71fcd6a6dc5, type: 2}
-  - {fileID: 11400000, guid: 53f147f61addcbd468c995afbad4849b, type: 2}
-  - {fileID: 11400000, guid: 2d207f1c5228468438f2aeeb3a0716a1, type: 2}
-  - {fileID: 11400000, guid: 10eaf106969c97842aa6578b38af1129, type: 2}
-  - {fileID: 11400000, guid: a37599c3a759c4341b6f7fac34497d99, type: 2}
+  Map_Dataes: []
+  Map_Data: []
+  FB_Boss_Point: {x: 0, y: 0, z: 0}
   Obj_Player: {fileID: 0}
+  camera_Manager: {fileID: 0}
   IsOnPortal: 0
   Which_Portal: {fileID: 0}
   v_Now_Portal: {x: 0, y: 0, z: 0}

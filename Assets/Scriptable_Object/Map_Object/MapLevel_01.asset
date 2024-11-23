@@ -14,20 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   i_Map_Counter: 0
   v_Map_Spawnpoint: {x: 39.4, y: 41.4, z: 0}
-  v_min_Map_Vector: {x: 0, y: 0, z: 0}
-  v_Max_Map_Vector: {x: 0, y: 0, z: 0}
-  v_Enemy_Spawn_Points_01:
-  - {x: 46, y: 38.4, z: 0}
-  - {x: 48, y: 38.4, z: 0}
-  - {x: 50, y: 38.4, z: 0}
-  v_Enemy_Spawn_Points_02:
-  - {x: 47, y: 40.4, z: 0}
-  - {x: 51, y: 39.6, z: 0}
-  - {x: 52, y: 39.6, z: 0}
-  v_Enemy_Spawn_Points_03:
-  - {x: 59, y: 43.6, z: 0}
-  - {x: 60, y: 43.6, z: 0}
-  - {x: 61, y: 43.6, z: 0}
   v_New_Spawn_Points:
   - v_Dataes:
     - {x: 46, y: 38.4, z: 0}
@@ -47,6 +33,4 @@ MonoBehaviour:
   - i_enemy_Index: 040000000400000005000000
   i_How_Many_Wave: 3
   v_CardBox_SpawnPoint: {x: 59.5, y: 43.5, z: 0}
-  Next_To_Kill: 0
   Collider: {fileID: 0}
-  Clear_and_Next: 0

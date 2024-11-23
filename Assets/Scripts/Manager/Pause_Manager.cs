@@ -15,6 +15,7 @@ public class Pause_Manager : MonoBehaviour
     [Header("Objects")]
     [SerializeField] private PlayerCharacter_Controller p_control;
     [SerializeField] private Fade_Controller fade_Con;
+    [SerializeField] private New_Fade_Controller new_Fade;
 
 
     // Start is called before the first frame update
@@ -69,22 +70,26 @@ public class Pause_Manager : MonoBehaviour
     public void Btn_New_Game()
     {
         Pause_Stop();
-        fade_Con.Scene_Reload_Fade();
+        //fade_Con.Scene_Reload_Fade();
+        new_Fade.Scene_Fade_Out("MainScene");
     }
 
     public void Btn_Game_Quit()
     {
         Pause_Stop();
-        fade_Con.Scene_Fade_Out();
+        //fade_Con.Scene_Fade_Out();
+        new_Fade.Scene_Fade_Out("Start_Scene");
     }
 
     public void Btn_Result_Newgame()
     {
-        fade_Con.Scene_Reload_Fade();
+        //fade_Con.Scene_Reload_Fade();
+        new_Fade.Scene_Fade_Out("MainScene");
     }
 
     public void Btn_Result_Quit()
     {
-        fade_Con.Scene_Fade_Out();
+        //fade_Con.Scene_Fade_Out();
+        new_Fade.Scene_Fade_Out("Start_Scene");
     }
 }

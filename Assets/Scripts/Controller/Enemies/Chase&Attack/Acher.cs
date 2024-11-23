@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Acher : MonoBehaviour
+public class Acher : MonoBehaviour, Enemy_Interface
 {
     //[Header("Float Values")]
     //[SerializeField] private float f_Chasing_Speed = 4.0f;
@@ -33,11 +33,16 @@ public class Acher : MonoBehaviour
     private bool is_Attacking = false; // 공격 중 범위를 벗어났을 때, 다른 행동을 못하게 설정
     private bool is_Attack_Complete = false; // 연속공격의 방지
 
+    public void Player_Initialize(PlayerCharacter_Controller player)
+    {
+        Target_Player = player.gameObject;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         //Target_Player = OR_Player.Value;
-        Target_Player = FindObjectOfType<PlayerCharacter_Controller>().gameObject;
+        //Target_Player = FindObjectOfType<PlayerCharacter_Controller>().gameObject;
     }
 
     // Update is called once per frame
@@ -49,28 +54,7 @@ public class Acher : MonoBehaviour
         {
             Attack_Call();
         }
-        //else if (BR_Chasing.Value && Distance > FR_Attack_Range.Value)
-        //{
-        //    Chasing();
-        //}
     }
-
-    //private void Chasing()
-    //{
-    //    if (!is_Attacking)
-    //    {
-    //        TurnAround();
-
-    //        if (BR_Facing_Left.Value)
-    //        {
-    //            this.transform.Translate(Vector3.left * f_Chasing_Speed * Time.deltaTime);
-    //        }
-    //        else
-    //        {
-    //            this.transform.Translate(Vector3.right * -f_Chasing_Speed * Time.deltaTime);
-    //        }
-    //    }
-    //}
 
     private void Attack_Call()
     {
@@ -113,30 +97,6 @@ public class Acher : MonoBehaviour
 
     private void Acher_Attack(int Alpha) //Left = -1, Right = 1;
     {
-        //HashSet<PlayerCharacter_Controller> damaged_Plaer_Collider = new HashSet<PlayerCharacter_Controller>();
-
-        //this.transform.Translate(Vector3.zero);
-
-        //Vector2 boxSize = new Vector2(0.2f, 0.4f);
-        //Vector2 boxCenter = (Vector2)transform.position + new Vector2(Alpha * FR_Attack_Range.Value, 0f);
-        //LayerMask playerLayer = LayerMask.GetMask("Character");
-
-        //Collider2D[] hitPlayer = Physics2D.OverlapBoxAll(boxCenter, boxSize, 0, playerLayer);
-
-        //foreach (Collider2D player in hitPlayer)
-        //{
-        //    PlayerCharacter_Controller P_Controller = player.GetComponent<PlayerCharacter_Controller>();
-
-        //    if (player != null && !damaged_Plaer_Collider.Contains(P_Controller))
-        //    {
-        //        Debug.Log("플레이어 공격 성공");
-        //        player.GetComponent<PlayerCharacter_Controller>().Player_Take_Damage(IR_Attack_Damage.Value);
-
-        //        damaged_Plaer_Collider.Add(P_Controller);
-        //    }
-        //    //enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
-        //}
-
         GameObject projectile = MonoBehaviour.Instantiate(Bullet_Prefab, this.gameObject.transform.position, this.gameObject.transform.rotation);
 
         Rigidbody2D projectile_Rb = projectile.GetComponent<Rigidbody2D>();

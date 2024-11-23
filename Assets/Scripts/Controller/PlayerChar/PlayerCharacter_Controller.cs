@@ -64,8 +64,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     
     //platform & Collider
     private GameObject current_Platform;
-    [SerializeField]
-    private BoxCollider2D player_Collider;
+    [SerializeField] private BoxCollider2D player_Collider;
+    private GameObject Now_New_Platform;
     private bool is_Down_Performed = false;    
 
     private bool is_Player_Dead = false;
@@ -77,7 +77,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public bool is_Knock_Back = false;
 
-    private int platformCount = 0;
     
     private void Awake()
     {
@@ -158,7 +157,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         animator.SetBool("isMove", isMoving);
 
         animator.SetBool("isGrounded", isGrounded);
-        if (isGrounded && rb.velocity.y == 0)
+
+        if (isGrounded && rb.velocity.y == 0 && this.gameObject.transform.position.y - 0.3f > Now_New_Platform.transform.position.y)
         {
             jumpCount = 0;
         }
@@ -750,17 +750,22 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     // ======================================================================================================
 
     // Player Collsion ======================================================================================
+
+    private int i_platform = 0;
+
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Platform") || other.gameObject.CompareTag("OneWayPlatform"))
         {
-            platformCount++;
             isGrounded = true;
+            i_platform++;
 
             if (other.gameObject.CompareTag("OneWayPlatform"))
             {
                 current_Platform = other.gameObject;
             }
+
+            Now_New_Platform = other.gameObject; //Reset condition
         }
     }
 
@@ -769,16 +774,15 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (other.gameObject.CompareTag("Platform") || other.gameObject.CompareTag("OneWayPlatform"))
         {
-            platformCount--;
-            isGrounded = true;
+            i_platform--;
 
-            if(platformCount <= 0)
+            if (i_platform <= 0)
             {
                 isGrounded = false;
-                platformCount = 0;
+                i_platform = 0;
             }
 
-            if (other.gameObject.CompareTag("OneWayPlatform") && current_Platform == other.gameObject)
+            if (other.gameObject.CompareTag("OneWayPlatform") && other.gameObject == current_Platform)
             {
                 current_Platform = null;
             }
@@ -790,8 +794,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         if (other.gameObject.tag == "Portal" && map_Manager.IsOnPortal == false)
         {
             map_Manager.IsOnPortal = true;
-            map_Manager.Which_Portal = other.gameObject;
-            map_Manager.v_Now_Portal = other.transform.position;
 
             use_Portal = true;
         }
@@ -822,6 +824,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         if(other.gameObject.tag == "Portal" && map_Manager.IsOnPortal == true)
         {
             map_Manager.IsOnPortal = false;
+
             use_Portal = false;
         }
 
@@ -892,6 +895,17 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         is_Knock_Back = false;
     }
     // =========================================================================================================
+
+    public void Add_Player_Money(int Income) // Money Method
+    {
+        i_Money += Income;
+
+        if (i_Money <= 0)
+        {
+            i_Money = 0;
+        }
+        Debug.Log("Player Money : " + i_Money);
+    }
 }
 
 

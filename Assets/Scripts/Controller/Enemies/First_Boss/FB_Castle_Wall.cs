@@ -16,6 +16,11 @@ public class FB_Castle_Wall : MonoBehaviour
     [SerializeField] private GameObject Obj_Sniper_Location;
     [SerializeField] private GameObject Obj_FB_Peasent;
 
+    [Header("Sprite Renders")]
+    [SerializeField] private SpriteRenderer SR_LandMine;
+    [SerializeField] private SpriteRenderer SR_Arrow_01;
+    [SerializeField] private SpriteRenderer SR_Arrow_02;
+
     [Header("Others")]
     [SerializeField] private GameObject Prfb_Rock;
     [SerializeField] private GameObject Prfb_FB_Peasent;
@@ -27,8 +32,6 @@ public class FB_Castle_Wall : MonoBehaviour
     [SerializeField] private float f_Pattern_Delay = 0.0f;
     private float f_Pattern_Time = 0.0f;
 
-    private float f_Repeat_Time = 0.0f;
-    private float f_Do_Time = 3.0f;
 
     // LandMine Mechanism needs to be fixed
     //==== Value For LandMine
@@ -85,7 +88,6 @@ public class FB_Castle_Wall : MonoBehaviour
     {
         if(is_Started)
         {
-            f_Repeat_Time += Time.deltaTime;
             f_Pattern_Time += Time.deltaTime;
 
             if (IR_Health.Value <= 0 && !is_Second_Phase)
@@ -169,6 +171,7 @@ public class FB_Castle_Wall : MonoBehaviour
                     {
                         Debug.Log("LandMine Called");
                         Obj_LandMine.gameObject.GetComponent<FB_DamageBox>().Call_Invoke();
+                        StartCoroutine(Fade_Sprite(SR_LandMine, 1.0f, 1.0f, 0.0f));
 
                         is_Once_Attacked = true;
                         LandMine_CoolDown = true;
@@ -181,7 +184,9 @@ public class FB_Castle_Wall : MonoBehaviour
                     {
                         Debug.Log("ArrowRain Called");
                         Obj_ArrowRain_01.gameObject.GetComponent<FB_DamageBox>().Call_Invoke();
+                        StartCoroutine(Fade_Sprite(SR_Arrow_01, 1.0f, 1.0f, 0.0f));
                         Obj_ArrowRain_02.gameObject.GetComponent<FB_DamageBox>().Call_Invoke();
+                        StartCoroutine(Fade_Sprite(SR_Arrow_02, 1.0f, 1.0f, 3.0f));
 
                         is_Once_Attacked = true;
                         ArrowRain_CoolDown = true;
@@ -274,5 +279,49 @@ public class FB_Castle_Wall : MonoBehaviour
 
         Obj_FB_Peasent.SetActive(true);
         Obj_FB_Peasent.GetComponent<FB_Peasent>().Start_Pattern();
+    }
+
+    public void Call_Start()
+    {
+        Invoke("Start_Pattern", 3.0f);
+    }
+
+    private void Start_Pattern()
+    {
+        is_Started = true;
+    }
+
+
+    // for Warning Fade
+    private IEnumerator Fade_Sprite(SpriteRenderer sprite, float targetAlpha, float duration, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        Color color = sprite.color;
+        //float startAlpha = color.a;
+
+        for(float t = 0.0f; t < duration; t += Time.deltaTime)
+        {
+            float alpha = Mathf.Lerp(0.0f, targetAlpha, t / duration);
+            color.a = alpha;
+            sprite.color = color;
+
+            yield return null;
+        }
+
+        color.a = targetAlpha;
+        sprite.color = color;
+
+        for (float t = 0.0f; t < duration; t += Time.deltaTime)
+        {
+            float alpha = Mathf.Lerp(targetAlpha, 0.0f, t / duration);
+            color.a = alpha;
+            sprite.color = color;
+
+            yield return null;
+        }
+
+        color.a = 0.0f;
+        sprite.color = color;
     }
 }
