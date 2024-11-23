@@ -21,7 +21,7 @@ public class Card_Spawn_Box : MonoBehaviour
 
         int spawnCount = Mathf.Min(number_Of_Objects_To_Spawn, spawnPoints.Length); // 둘 중 더 작은 수로 스폰카운트 반환
 
-        for (int i = 0; i < spawnCount; i++)
+        for (int i = 0; i < number_Of_Objects_To_Spawn; i++)
         {
             Vector2 spawnPos = spawnPoints[i].position;
 

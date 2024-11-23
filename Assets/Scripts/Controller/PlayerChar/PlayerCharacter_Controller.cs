@@ -8,16 +8,14 @@ using UnityEngine.InputSystem;
 using System;
 using Unity.Mathematics;
 
+
 // PlayerCharacter_Controller Created By JBJ, KYH
 public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 {
     private Player_InputActions inputActions;
     [SerializeField]
     private GameObject inventoryPanel;
-    private bool isInventory_Open_Viewing = false;
-    private bool isInventory_Open_toSwap = false;
-    private int selected_Slot_Index = 0;
-    private Item cur_Item_to_Swap;
+    private bool isInventory_Visible = false;
 
     public Rigidbody2D rb;
     GameObject current_Item;
@@ -30,8 +28,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     bool canTeleporting = true;
 
     [Header("DebugChest")]
-    public GameObject chest_Prefab;
-    public GameObject card_Chest_Prefab;
+    public GameObject chestPrefab;
     public Transform spawnPoint;
 
     [HideInInspector]
@@ -42,7 +39,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     [Header("Cinemachine")]
     private Camera_Manager camera_Manager;
     private Collider2D cur_Boundary_Collider;
-    private Collider2D cur_Cinemachine_Boundary;
 
     [Header("Weapon_Data")]
     public GameObject weapon_Prefab;
@@ -60,6 +56,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     [SerializeField] private Pause_Manager pause_Manager;
     [SerializeField] private SpriteRenderer player_render;
     
+
     [Header("Map_Manager")]
     [SerializeField]
     private Map_Manager map_Manager;
@@ -88,7 +85,12 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         inputActions = new Player_InputActions();
         
-        inputActions.Player.SpawnCard.performed += ctx => Spawn_Card();
+        //inputActions.Player.Teleportation.performed += ctx => Teleportation();
+
+        //inputActions.Player.Attack.performed += ctx => Perform_Attack();
+
+        //inputActions.Player.InterAction.performed += ctx => InterAction();
+
         inputActions.Player.SpawnChest.performed += ctx => Spawn_Chest();
 
         Set_Weapon(0);
@@ -123,11 +125,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     // Update is called once per frame
     void Update()
     {
-        if (isInventory_Open_toSwap)
-        {
-            Handle_Inventory_Nav();
-        }
-        else if (Time.timeScale == 1.0f && !is_Player_Dead)
+        if (Time.timeScale == 1.0f && !is_Player_Dead)
         {
             if (isAttacking && isGrounded && !cur_Weapon_Data.is_HoldAttack_Enabled)
             {
@@ -152,7 +150,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         Update_WeaponAnchor_Position();
     }
-    
+
     void Update_Animation_Parameters()
     {
         bool isMoving = Mathf.Abs(movement.x) > 0.01f;
@@ -269,7 +267,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         if (ctx.phase == InputActionPhase.Performed && Time.timeScale == 1.0f)
         {
             //Debug.Log("Down Input detected");
-            is_Down_Performed = true;            
+            is_Down_Performed = true;
+            //if (current_Platform != null)
+            //{
+            //    StartCoroutine(DisableCollision());
+            //}
         }
         else if (ctx.phase == InputActionPhase.Canceled)
         {
@@ -281,114 +283,83 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     // InterAction ==========================================================================================
     public void Input_Interaction(InputAction.CallbackContext ctx)
-    {        
+    {
+        // Created By KYH -------------------------------------------------------------------------------------
         if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
         {
             map_Manager.Use_Portal();
-
-            Interact_With_Npc();
-
-            if (current_Item != null)
+            
+            if (is_Npc_Contack && Now_Contact_Npc != null)
             {
-                switch (current_Item.tag)
+                if(Now_Contact_Npc.gameObject.name == "Stat_Npc")
                 {
-                    case "Card":
-                        Interact_With_Card();
-                        break;
-                    case "Chest":
-                        Interact_With_Chest();
-                        break;
-                    case "Item":
-                        Interact_With_Item(); 
-                        break;
-                    default:
-                        Debug.Log("Unrecognize Data");
-                        break;
+                    Debug.Log("Start_Npc");
+                    Now_Contact_Npc.GetComponent<Stat_Npc_Controller>().UI_Start();
                 }
-            }
-        }
-    }
-
-    private void Interact_With_Npc()
-    {
-        if (is_Npc_Contack && Now_Contact_Npc != null)
-        {
-            string npcName = Now_Contact_Npc.gameObject.name;
-
-            if (npcName == "Stat_Npc")
-            {
-                Now_Contact_Npc.GetComponent<Stat_Npc_Controller>().UI_Start();
-            }
-            else if (npcName == "Start_Card_Npc")
-            {
-                Now_Contact_Npc.GetComponent<Start_Card_Npc>().Request_Spawn_Cards();
-            }
-        }
-    }
-    private void Interact_With_Card()
-    {
-        if (cardCount == 0)
-        {
-            AddCard(current_Item);
-            current_Item.gameObject.SetActive(false);
-        }
-        else if (cardCount <= card_Inventory.Length)
-        {
-            AddCard(current_Item);
-        }
-    }
-    private void Interact_With_Chest()
-    {
-        Spawn_Box chest = current_Item.GetComponent<Spawn_Box>();
-        Card_Spawn_Box debug_Chest = current_Item.GetComponent<Card_Spawn_Box>();
-
-        if (chest != null)
-        {
-            chest.Request_Spawn_Cards();
-        }
-        else if (debug_Chest != null)
-        {
-            debug_Chest.Request_Spawn_Cards();
-        }
-    }
-    private void Interact_With_Item()
-    {
-        Item item = current_Item.GetComponent<Item_Prefab>().itemData;
-
-        if (item != null)
-        {
-            if (item.isConsumable)
-            {
-                item.ApplyEffect(this);
-                Destroy(current_Item);
-            }
-            else
-            {
-                if (is_Inventory_Full)
+                else if(Now_Contact_Npc.gameObject.name == "Start_Card_Npc")
                 {
-                    Debug.Log("Inventory full");
-                    Open_Inventory_To_Swap(item);
-                }
-                else
-                {
-                    AddItem(item);
-                    Destroy(current_Item);
+                    Now_Contact_Npc.GetComponent<Start_Card_Npc>().Request_Spawn_Cards();
                 }                
             }
+        // ---------------------------------------------------------------------------------------------------
+            if (current_Item != null)
+            {                
+                if (current_Item.tag == "Card")
+                {
+                    if(cardCount == 0)
+                    {
+                        AddCard(current_Item);
+                        current_Item.gameObject.SetActive(false);
+                    }
+                    else if (cardCount < card_Inventory.Length || cardCount == card_Inventory.Length)
+                    {
+                        AddCard(current_Item);
+                    }
+                }
+                else if (current_Item.tag == "Chest")
+                {                    
+                    Spawn_Box chest = current_Item.GetComponent<Spawn_Box>();
+                    Card_Spawn_Box debug_Chest = current_Item.GetComponent<Card_Spawn_Box>();
+                    if (chest != null)
+                    {
+                        chest.Request_Spawn_Cards();
+                    }
+                    else if (debug_Chest != null)
+                    {
+                        debug_Chest.Request_Spawn_Cards();
+                    }
+                }
+                else if (current_Item.tag == "Item")
+                {                    
+                    Item item = current_Item.GetComponent<Item_Prefab>().itemData;
+
+                    if (item != null)
+                    {                        
+                        if (item.isConsumable)
+                        {                            
+                            if (this != null) 
+                            {
+                                item.ApplyEffect(this);                                
+                            }
+                            Destroy(current_Item);
+                        }
+                        else
+                        {
+                            AddItem(item);
+
+                            Destroy(current_Item);
+                        }
+                    }                    
+                    Object_Manager.instance.Destroy_All_Cards_And_Items();
+                }
+                current_Item = null;
+            }
         }
-
-        Object_Manager.instance.Destroy_All_Cards_And_Items();
     }
 
-    void Spawn_Card() // Spawn Debuging Card Chest
-    {
-        Vector3 spawn_Position = new Vector3(spawnPoint.position.x, spawnPoint.position.y - 0.5f, spawnPoint.position.z);
-        GameObject chest = Instantiate(card_Chest_Prefab, spawn_Position, spawnPoint.rotation);
-    }
     void Spawn_Chest() // Spawn Debuging Card Chest
     {
-        Vector3 spawn_Position = new Vector3(spawnPoint.position.x, spawnPoint.position.y - 0.5f, spawnPoint.position.z);
-        GameObject chest = Instantiate(chest_Prefab, spawn_Position, spawnPoint.rotation);
+        GameObject chest = Instantiate(chestPrefab, spawnPoint.position, spawnPoint.rotation);
     }
     // ======================================================================================================
 
@@ -427,8 +398,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
             if (weapon_Handler != null)
             {
-                weapon_Handler.Set_Damage(attackDamage);
-                Debug.Log($"Current Attack Damage : {attackDamage}");
+                weapon_Handler.Set_Damage(cur_Weapon_Data.attack_Damage);
+                Debug.Log($"Current Attack Damage : {cur_Weapon_Data.attack_Damage}");
             }
             else
             {
@@ -707,95 +678,29 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     // Player Character UI ==========================================================================================
     void OnInventory_Pressed(InputAction.CallbackContext context)
     {
-        if (!isInventory_Open_toSwap)
-        {
-            ShowInventory_Viewing();
-        }        
+        ShowInventory();
     }
     void OnInventory_Released(InputAction.CallbackContext context)
     {
-        if (!isInventory_Open_toSwap)
-        {
-            HideInventory();
-        }        
-    }
-    void ShowInventory_Viewing()
-    {
-        isInventory_Open_Viewing = true;
-        inventoryPanel.SetActive(true);
-    }
-
-    void HideInventory()
-    {
-        isInventory_Open_Viewing = false;
-        isInventory_Open_toSwap = false;
-        inventoryPanel.SetActive(false);
-    }
-
-    public void Open_Inventory_To_Swap(Item newItem)
-    {
-        Debug.Log("Inventory swap true");
-        isInventory_Open_Viewing = false;
-        isInventory_Open_toSwap = true;
-        cur_Item_to_Swap = newItem;
-        inventoryPanel.SetActive(true);
-
-        selected_Slot_Index = 0;
-        Highlight_Slot(selected_Slot_Index);
-    }
-    
-    private void Handle_Inventory_Nav()
-    {
-        if (!isInventory_Open_toSwap) return;
-
-        if (Input.GetKeyDown(KeyCode.UpArrow) && selected_Slot_Index > 2)
-        {
-            Move_Selection(selected_Slot_Index - 3);
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow) && selected_Slot_Index < 3)
-        {
-            Move_Selection(selected_Slot_Index + 3);
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow) && selected_Slot_Index % 3 != 0)
-        {
-            Move_Selection(selected_Slot_Index - 1);
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) && selected_Slot_Index % 3 != 2)
-        {
-            Move_Selection(selected_Slot_Index + 1);
-        }
-
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            Swap_Selected_Item();
-        }
-    }
-    private void Move_Selection(int newSlot_Index)
-    {
-        Unhighlight_Slot(selected_Slot_Index);
-        selected_Slot_Index = newSlot_Index;
-        Highlight_Slot(selected_Slot_Index);
-    }
-    private void Highlight_Slot(int slot_Index)
-    {
-        inventory_Slots[slot_Index].Highlight(true);
-    }
-    private void Unhighlight_Slot(int slot_Index)
-    {
-        inventory_Slots[slot_Index].Highlight(false);
-    }
-
-    private void Swap_Selected_Item()
-    {
-        var selected_Slot = inventory_Slots[selected_Slot_Index];
-        Item slotItem = selected_Slot.GetItem();
-
-        selected_Slot.AddItem(cur_Item_to_Swap);
-        cur_Item_to_Swap = slotItem;
-        isInventory_Open_toSwap = false;
-        is_Inventory_Full = true;
         HideInventory();
     }
+    void ShowInventory()
+    {
+        if (!isInventory_Visible && inventoryPanel != null)
+        {
+            inventoryPanel.SetActive(true);
+            isInventory_Visible = true;
+        }
+    }
+    void HideInventory()
+    {
+        if (isInventory_Visible && inventoryPanel != null)
+        {
+            inventoryPanel.SetActive(false);
+            isInventory_Visible = false;
+        }
+    }
+
     // Created By KYH -------------------------------------------------------------------
     public void Player_Take_Damage(int Damage)
     {        
@@ -884,13 +789,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         if (other.CompareTag("Boundary"))
         {
-            cur_Boundary_Collider = other;            
-        }
-
-        if (other.CompareTag("Cinemachine_Boundary"))
-        {
-            cur_Cinemachine_Boundary = other;
-            camera_Manager.Update_Confiner(cur_Cinemachine_Boundary);
+            cur_Boundary_Collider = other;
+            camera_Manager.Update_Confiner(cur_Boundary_Collider);            
         }
 
         if(other.gameObject.tag == "NPC")
@@ -928,7 +828,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 return;
             }
 
-            Debug.Log("Trying to leave the map! Go to a nearby location");
+            Debug.Log("맵 벗어나려 함! 가까운 위치로 이동");
             Vector2 closet_Point = Get_Closet_Point(transform.position);
             transform.position = closet_Point;
         }
@@ -984,3 +884,5 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     }
     // =========================================================================================================
 }
+
+
