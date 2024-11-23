@@ -382,17 +382,21 @@ public class FB_Peasent : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.CompareTag("Player") && Now_State == Attack_State.Dash)
+        if(collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<PlayerCharacter_Controller>().Player_Take_Damage(i_Dash_Damage);
+            if (Now_State == Attack_State.Dash || Now_State == Attack_State.Heavy)
+            {
+                Debug.Log("Dash Damage");
+                collision.gameObject.GetComponent<PlayerCharacter_Controller>().Player_Take_Damage(i_Dash_Damage);
 
-            if (this.transform.position.x < collision.transform.position.x) // 적이 플레이어의 좌측에 있음
-            {
-                collision.GetComponent<PlayerCharacter_Controller>().Weak_Knock_Back(1, f_Knockback_Time, f_Knockback_Power);
-            }
-            else
-            {
-                collision.GetComponent<PlayerCharacter_Controller>().Weak_Knock_Back(-1, f_Knockback_Time, f_Knockback_Power);
+                if (this.transform.position.x < collision.transform.position.x) // 적이 플레이어의 좌측에 있음
+                {
+                    collision.GetComponent<PlayerCharacter_Controller>().Weak_Knock_Back(1, f_Knockback_Time, f_Knockback_Power);
+                }
+                else
+                {
+                    collision.GetComponent<PlayerCharacter_Controller>().Weak_Knock_Back(-1, f_Knockback_Time, f_Knockback_Power);
+                }
             }
         }
     }

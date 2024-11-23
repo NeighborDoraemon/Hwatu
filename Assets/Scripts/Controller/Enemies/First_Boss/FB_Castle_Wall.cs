@@ -96,6 +96,7 @@ public class FB_Castle_Wall : MonoBehaviour
             }
             else if(IR_Health.Value <= 0 && is_Second_Phase)
             {
+                Obj_FB_Peasent.SetActive(false);
                 Destroy(gameObject); // Die
             }
 

@@ -41,8 +41,15 @@ public class Enemy_Projectile : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("OneWayPlatform") || collision.gameObject.CompareTag("Walls"))
+        if (collision.gameObject.CompareTag("Walls"))
         {
+            Destroy(gameObject);
+        }
+
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            collision.gameObject.GetComponent<PlayerCharacter_Controller>().Player_Take_Damage(i_Damage);
+
             Destroy(gameObject);
         }
     }
