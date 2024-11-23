@@ -7,31 +7,31 @@ using UnityEngine;
 public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
 {
     [Header("Card_Manager")]
-    public Card_UI_Manager card_UI_Manager; // 화투 UI 매니저 변수
+    public Card_UI_Manager card_UI_Manager;
     [HideInInspector]
-    public Card_Value card_Value; // 카드 스크립터블 오브젝트
+    public Card_Value card_Value;
     [HideInInspector]
     public SpriteRenderer sprite_Renderer;
 
-    public GameObject[] card_Inventory = new GameObject[2]; // 화투 오브젝트 저장 공간 배열
-    protected int cardCount = 0; // 화투 갯수 카운트 변수
+    public GameObject[] card_Inventory = new GameObject[2];
+    protected int cardCount = 0;
 
-    protected bool isCombDone = false; // 화투 조합이 이루어졌는지 체크하는 변수
+    protected bool isCombDone = false;
 
-    [HideInInspector] public bool is_Start_Spawn = true; // 시작 지급인지 확인하는 변수 (윤혁)
+    [HideInInspector] public bool is_Start_Spawn = true;
 
-    public void AddCard(GameObject card) // 화투 저장 함수
+    public void AddCard(GameObject card)
     {
         isCombDone = false;
 
         if (cardCount == card_Inventory.Length)
         {
-            if (card_Inventory[0] != null) // 기존 화투 삭제함으로써 메모리 관리
+            if (card_Inventory[0] != null)
             {
                 Card cardComponent = card_Inventory[0].GetComponent<Card>();
                 if (cardComponent != null && cardComponent.selected_Sprite != null)
                 {
-                    Object_Manager.instance.Remove_Used_Sprite(cardComponent.selected_Sprite); // 카드 수집 시 수집된 카드의 스프라이트 해쉬에 저장
+                    Object_Manager.instance.Remove_Used_Sprite(cardComponent.selected_Sprite);
                 }
 
                 Destroy(card_Inventory[0]);
@@ -40,7 +40,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
             card_Inventory[0] = card_Inventory[1];
             card_Inventory[1] = card;
 
-            //Debug.Log("카드 교체");
+            //Debug.Log("Card Changed");
         }
         else
         {
@@ -48,7 +48,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
             cardCount++;
             Debug.Log("카드 추가" + card.name);
 
-            if (cardCount == card_Inventory.Length) // 첫 획득 시 카드가 완전히 사라지지 않도록 1회성 방지 (윤혁, 임시)
+            if (cardCount == card_Inventory.Length)
             {
                 is_Start_Spawn = false;
             }
@@ -56,8 +56,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
 
         UpdateCardUI();
         Card_Combination();
-
-        //카드 수집 후 필드에 남아있는 카드 삭제
+        
         if (Object_Manager.instance != null && !is_Start_Spawn)
         {
             Sprite collected_Sprite = card.GetComponent<SpriteRenderer>().sprite;
@@ -68,10 +67,10 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
 
             card.SetActive(false);
         }
-        else { Debug.LogWarning("Card Manager에서 Card Spawner 인스턴스 실종"); }
+        else { Debug.LogWarning("Object Spawner instance is missing"); }
     }
 
-    void UpdateCardUI() // 화투 UI 스프라이트 업데이트 함수
+    void UpdateCardUI()
     {
         Sprite[] cardSprites = new Sprite[card_Inventory.Length];
 
@@ -87,7 +86,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                 }
                 else
                 {
-                    Debug.LogError("카드에 스프라이트 렌더러 없음" + card_Inventory[i].name);
+                    Debug.LogError("No spriteRenderer in Card" + card_Inventory[i].name);
                 }
             }
             else
@@ -99,7 +98,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
         card_UI_Manager.UpdateCardUI(cardSprites);
     }
 
-    public void Card_Combination() // 화투 조합을 통한 능력치 변경 함수
+    public void Card_Combination()
     {
         isCombDone = false;
 
@@ -127,7 +126,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                 else if ((card_1.Month == 13 && card_2.Month == 18)
                     || (card_1.Month == 18 && card_2.Month == 13))
                 {
-                    Set_Weapon(6);
+                    Set_Weapon(15);
                     Debug.Log("3 8 광땡");
                 }
                 isCombDone = true;
