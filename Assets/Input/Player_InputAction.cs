@@ -82,7 +82,7 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""SpawnChest"",
+                    ""name"": ""SpawnCard"",
                     ""type"": ""Button"",
                     ""id"": ""b7047090-46c1-4fba-bf0a-4faf14b6f1ba"",
                     ""expectedControlType"": ""Button"",
@@ -112,6 +112,15 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
                     ""name"": ""Inventory"",
                     ""type"": ""Button"",
                     ""id"": ""7592c333-04fc-4c13-8e46-05039ec065e2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpawnChest"",
+                    ""type"": ""Button"",
+                    ""id"": ""56b590b3-959a-488a-9c89-2860adb4619d"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -214,7 +223,7 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SpawnChest"",
+                    ""action"": ""SpawnCard"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -250,6 +259,17 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Inventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""676fcab2-e637-44ca-9113-8b69f5fd0706"",
+                    ""path"": ""<Keyboard>/o"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpawnChest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -270,10 +290,11 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_Skill = m_Player.FindAction("Skill", throwIfNotFound: true);
         m_Player_InterAction = m_Player.FindAction("InterAction", throwIfNotFound: true);
-        m_Player_SpawnChest = m_Player.FindAction("SpawnChest", throwIfNotFound: true);
+        m_Player_SpawnCard = m_Player.FindAction("SpawnCard", throwIfNotFound: true);
         m_Player_DownJump = m_Player.FindAction("DownJump", throwIfNotFound: true);
         m_Player_Game_Pause = m_Player.FindAction("Game_Pause", throwIfNotFound: true);
         m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
+        m_Player_SpawnChest = m_Player.FindAction("SpawnChest", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
     }
@@ -343,10 +364,11 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_Skill;
     private readonly InputAction m_Player_InterAction;
-    private readonly InputAction m_Player_SpawnChest;
+    private readonly InputAction m_Player_SpawnCard;
     private readonly InputAction m_Player_DownJump;
     private readonly InputAction m_Player_Game_Pause;
     private readonly InputAction m_Player_Inventory;
+    private readonly InputAction m_Player_SpawnChest;
     public struct PlayerActions
     {
         private @Player_InputActions m_Wrapper;
@@ -357,10 +379,11 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputAction @Skill => m_Wrapper.m_Player_Skill;
         public InputAction @InterAction => m_Wrapper.m_Player_InterAction;
-        public InputAction @SpawnChest => m_Wrapper.m_Player_SpawnChest;
+        public InputAction @SpawnCard => m_Wrapper.m_Player_SpawnCard;
         public InputAction @DownJump => m_Wrapper.m_Player_DownJump;
         public InputAction @Game_Pause => m_Wrapper.m_Player_Game_Pause;
         public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
+        public InputAction @SpawnChest => m_Wrapper.m_Player_SpawnChest;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -388,9 +411,9 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
             @InterAction.started += instance.OnInterAction;
             @InterAction.performed += instance.OnInterAction;
             @InterAction.canceled += instance.OnInterAction;
-            @SpawnChest.started += instance.OnSpawnChest;
-            @SpawnChest.performed += instance.OnSpawnChest;
-            @SpawnChest.canceled += instance.OnSpawnChest;
+            @SpawnCard.started += instance.OnSpawnCard;
+            @SpawnCard.performed += instance.OnSpawnCard;
+            @SpawnCard.canceled += instance.OnSpawnCard;
             @DownJump.started += instance.OnDownJump;
             @DownJump.performed += instance.OnDownJump;
             @DownJump.canceled += instance.OnDownJump;
@@ -400,6 +423,9 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
             @Inventory.started += instance.OnInventory;
             @Inventory.performed += instance.OnInventory;
             @Inventory.canceled += instance.OnInventory;
+            @SpawnChest.started += instance.OnSpawnChest;
+            @SpawnChest.performed += instance.OnSpawnChest;
+            @SpawnChest.canceled += instance.OnSpawnChest;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -422,9 +448,9 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
             @InterAction.started -= instance.OnInterAction;
             @InterAction.performed -= instance.OnInterAction;
             @InterAction.canceled -= instance.OnInterAction;
-            @SpawnChest.started -= instance.OnSpawnChest;
-            @SpawnChest.performed -= instance.OnSpawnChest;
-            @SpawnChest.canceled -= instance.OnSpawnChest;
+            @SpawnCard.started -= instance.OnSpawnCard;
+            @SpawnCard.performed -= instance.OnSpawnCard;
+            @SpawnCard.canceled -= instance.OnSpawnCard;
             @DownJump.started -= instance.OnDownJump;
             @DownJump.performed -= instance.OnDownJump;
             @DownJump.canceled -= instance.OnDownJump;
@@ -434,6 +460,9 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
             @Inventory.started -= instance.OnInventory;
             @Inventory.performed -= instance.OnInventory;
             @Inventory.canceled -= instance.OnInventory;
+            @SpawnChest.started -= instance.OnSpawnChest;
+            @SpawnChest.performed -= instance.OnSpawnChest;
+            @SpawnChest.canceled -= instance.OnSpawnChest;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -497,10 +526,11 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         void OnAttack(InputAction.CallbackContext context);
         void OnSkill(InputAction.CallbackContext context);
         void OnInterAction(InputAction.CallbackContext context);
-        void OnSpawnChest(InputAction.CallbackContext context);
+        void OnSpawnCard(InputAction.CallbackContext context);
         void OnDownJump(InputAction.CallbackContext context);
         void OnGame_Pause(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
+        void OnSpawnChest(InputAction.CallbackContext context);
     }
     public interface IMenuActions
     {

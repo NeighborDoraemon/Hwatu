@@ -35,26 +35,26 @@ public class Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
-        Debug.Log("Attack function called");
+        //Debug.Log("Attack function called");
 
         if (Is_Cooldown_Complete(player))
         {
-            Debug.Log("Starting Attack - cur_Attack Count" + player.cur_AttackCount);
+            //Debug.Log("Starting Attack - cur_Attack Count" + player.cur_AttackCount);
             Start_Attack(player, weapon_Data);
         }
         else if (Can_Combo_Attack(player, weapon_Data))
         {
-            Debug.Log("Continuing Combo - cur_Attack Count" + player.cur_AttackCount);
+            //Debug.Log("Continuing Combo - cur_Attack Count" + player.cur_AttackCount);
             Continue_Combo(player);
         }
         else if (Is_Combo_Complete(player,weapon_Data))
         {
-            Debug.Log("Combo complete, calling End_Attack");
+            //Debug.Log("Combo complete, calling End_Attack");
             End_Attack(player);
         }
         else
         {
-            Debug.Log("No conditions met for combo or attack completion");
+            //Debug.Log("No conditions met for combo or attack completion");
         }
     }
 
@@ -73,7 +73,7 @@ public class Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
     private bool Is_Combo_Complete(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         bool result = player.cur_AttackCount >= weapon_Data.max_Attack_Count;
-        Debug.Log($"Is_Combo_Complete : {result} (cur_Attack Count : {player.cur_AttackCount}), max_Attack Count : {weapon_Data.max_Attack_Count})");
+        //Debug.Log($"Is_Combo_Complete : {result} (cur_Attack Count : {player.cur_AttackCount}), max_Attack Count : {weapon_Data.max_Attack_Count})");
         return player.cur_AttackCount >= weapon_Data.max_Attack_Count;
     }
 
@@ -90,7 +90,7 @@ public class Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
         player.animator.SetTrigger("Attack");
         player.cur_AttackCount++;
         player.isAttacking = true;
-        Debug.Log("Continue_Combo - cur_Attack Count : " + player.cur_AttackCount);
+        //Debug.Log("Continue_Combo - cur_Attack Count : " + player.cur_AttackCount);
         Update_Attack_Timers(player);
     }
 

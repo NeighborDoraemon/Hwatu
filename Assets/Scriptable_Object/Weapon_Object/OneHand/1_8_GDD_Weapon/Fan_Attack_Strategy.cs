@@ -115,8 +115,11 @@ public class Fan_Attack_Strategy : ScriptableObject, IAttack_Strategy
         if (projectile_Prefab != null)
         {
             GameObject projectile = Instantiate(projectile_Prefab, player.transform.position, Quaternion.identity);
-            Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
+            Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();            
             Vector2 shoot_Direction = (player.is_Facing_Right) ? Vector2.right : Vector2.left;
+            projectile.transform.localScale = new Vector3(
+                Mathf.Abs(projectile.transform.localScale.x) * (player.is_Facing_Right ? 1 : -1),
+                projectile.transform.localScale.y, projectile.transform.localScale.z);
             rb.velocity = shoot_Direction * projectile_Speed;
         }
     }
