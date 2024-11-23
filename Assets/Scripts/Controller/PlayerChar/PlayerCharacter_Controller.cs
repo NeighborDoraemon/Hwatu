@@ -77,7 +77,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public bool is_Knock_Back = false;
 
-    private int platformCount = 0;
     
     private void Awake()
     {
@@ -758,7 +757,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (other.gameObject.CompareTag("Platform") || other.gameObject.CompareTag("OneWayPlatform"))
         {
-            platformCount++;
             isGrounded = true;
             i_platform++;
 
