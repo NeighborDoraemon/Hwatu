@@ -10,7 +10,6 @@ public class New_Fade_Controller : MonoBehaviour
     [Header("Fade Target")]
     [SerializeField] private Image fade_Image;
     private float fade_Time = 1.0f;
-    private Ease fadeEase = Ease.Linear;
 
     private bool is_Fading = false;
 

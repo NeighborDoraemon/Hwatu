@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MBT;
 
-public class Bird : MonoBehaviour
+public class Bird : MonoBehaviour, Enemy_Interface
 {
     [Header("Attack Delay")]
     [SerializeField] private float f_Before_Delay = 0.3f;
@@ -36,11 +36,16 @@ public class Bird : MonoBehaviour
 
     private int i_For_UpDown = -1;
 
+    public void Player_Initialize(PlayerCharacter_Controller player)
+    {
+        Target_Player = player.gameObject;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         //Target_Player = OR_Player.Value;
-        Target_Player = FindObjectOfType<PlayerCharacter_Controller>().gameObject;
+        //Target_Player = FindObjectOfType<PlayerCharacter_Controller>().gameObject;
     }
 
     // Update is called once per frame

@@ -64,8 +64,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     
     //platform & Collider
     private GameObject current_Platform;
-    [SerializeField]
-    private BoxCollider2D player_Collider;
+    [SerializeField] private BoxCollider2D player_Collider;
+    private GameObject Now_New_Platform;
     private bool is_Down_Performed = false;    
 
     private bool is_Player_Dead = false;
@@ -157,7 +157,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         animator.SetBool("isMove", isMoving);
 
         animator.SetBool("isGrounded", isGrounded);
-        if (isGrounded && rb.velocity.y == 0)
+
+        if (isGrounded && rb.velocity.y == 0 && this.gameObject.transform.position.y - 0.3f > Now_New_Platform.transform.position.y)
         {
             jumpCount = 0;
         }
@@ -763,6 +764,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             {
                 current_Platform = other.gameObject;
             }
+
+            Now_New_Platform = other.gameObject; //Reset condition
         }
     }
 
@@ -773,15 +776,15 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             i_platform--;
 
-            if(i_platform == 0)
-            isGrounded = false;
-
-            if (other.gameObject.CompareTag("OneWayPlatform"))
+            if (i_platform <= 0)
             {
-                if (other.gameObject == current_Platform)
-                {
-                    current_Platform = null;
-                }
+                isGrounded = false;
+                i_platform = 0;
+            }
+
+            if (other.gameObject.CompareTag("OneWayPlatform") && other.gameObject == current_Platform)
+            {
+                current_Platform = null;
             }
         }
     }
@@ -892,6 +895,17 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         is_Knock_Back = false;
     }
     // =========================================================================================================
+
+    public void Add_Player_Money(int Income) // Money Method
+    {
+        i_Money += Income;
+
+        if (i_Money <= 0)
+        {
+            i_Money = 0;
+        }
+        Debug.Log("Player Money : " + i_Money);
+    }
 }
 
 

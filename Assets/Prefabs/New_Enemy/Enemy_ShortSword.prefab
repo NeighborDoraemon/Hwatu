@@ -943,6 +943,8 @@ MonoBehaviour:
     constantValue: 0
   is_Boos_Object: 0
   scarecrow: {fileID: 0}
+  min_Money_Drop: 5
+  Max_Money_Drop: 20
 --- !u!114 &5217230651503807799
 MonoBehaviour:
   m_ObjectHideFlags: 0

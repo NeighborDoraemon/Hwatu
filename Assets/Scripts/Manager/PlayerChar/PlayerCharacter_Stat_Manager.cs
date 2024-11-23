@@ -47,6 +47,9 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     public float teleporting_Distance = 3.0f; // 순간이동 거리 변수
     public float teleporting_CoolTime = 3.0f; // 순간이동 쿨타임 변수
 
+    [Header("Money")]
+    public int i_Money = 0;
+
     public Weapon_Data cur_Weapon_Data { get; private set; }
 
     public virtual void Set_Weapon(int weaponIndex)

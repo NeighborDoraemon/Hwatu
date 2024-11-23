@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WideSword : MonoBehaviour
+public class WideSword : MonoBehaviour, Enemy_Interface
 {       // Chase & Attack
     [Header("Float Values")]
     [SerializeField] private float f_Chasing_Speed = 3.0f;
@@ -33,11 +33,16 @@ public class WideSword : MonoBehaviour
     private bool is_Attacking = false; // 공격 중 범위를 벗어났을 때, 다른 행동을 못하게 설정
     private bool is_Attack_Complete = false; // 연속공격의 방지
 
+    public void Player_Initialize(PlayerCharacter_Controller player)
+    {
+        Target_Player = player.gameObject;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         //Target_Player = OR_Player.Value;
-        Target_Player = FindObjectOfType<PlayerCharacter_Controller>().gameObject;
+        //Target_Player = FindObjectOfType<PlayerCharacter_Controller>().gameObject;
     }
 
     // Update is called once per frame

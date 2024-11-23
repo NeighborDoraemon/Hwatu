@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hog : MonoBehaviour
+public class Hog : MonoBehaviour,Enemy_Interface
 {
     [Header("Float Values")]
     [SerializeField] private float f_Chasing_Speed = 15.0f;
@@ -34,11 +34,16 @@ public class Hog : MonoBehaviour
 
     private float f_Dash_StartPosition = 0.0f;
 
+    public void Player_Initialize(PlayerCharacter_Controller player)
+    {
+        Target_Player = player.gameObject;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         //Target_Player = OR_Player.Value;
-        Target_Player = FindObjectOfType<PlayerCharacter_Controller>().gameObject;
+        //Target_Player = FindObjectOfType<PlayerCharacter_Controller>().gameObject;
     }
 
     // Update is called once per frame
@@ -50,22 +55,6 @@ public class Hog : MonoBehaviour
         }
     }
 
-    //private void Chasing()
-    //{
-    //    if (!is_Attacking)
-    //    {
-    //        TurnAround();
-
-    //        if (BR_Facing_Left.Value)
-    //        {
-    //            this.transform.Translate(Vector3.left * f_Chasing_Speed * Time.deltaTime);
-    //        }
-    //        else
-    //        {
-    //            this.transform.Translate(Vector3.right * -f_Chasing_Speed * Time.deltaTime);
-    //        }
-    //    }
-    //}
 
     private void Attack_Call()
     {

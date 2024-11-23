@@ -10,6 +10,7 @@ public class Enemy_Generator : MonoBehaviour
     private GameObject Enemy_Prefab;
     [SerializeField]
     private GameObject CardBox_Prefab;
+    [SerializeField] private PlayerCharacter_Controller p_Controller;
 
     [Header("Array")]
     [SerializeField] private GameObject[] Enemy_Prefabs;
@@ -83,7 +84,13 @@ public class Enemy_Generator : MonoBehaviour
             {
                 new_Enemy = Enemy_Prefabs[Map_Manager.Map_Shuffled_List[i_Map_Count].i_Enemy_Index[Wave_Count - 1].i_enemy_Index[Enemy_Count]];
 
-                Instantiate(new_Enemy, v_Spawn, Quaternion.identity);
+                GameObject spawned_Enemy = Instantiate(new_Enemy, v_Spawn, Quaternion.identity);
+
+                foreach(Enemy_Interface enemy_interface in spawned_Enemy.GetComponentsInChildren<Enemy_Interface>(true)) //적에게 플레이어 전달
+                {
+                    enemy_interface.Player_Initialize(p_Controller);
+                }
+
                 i_Enemy_Count++;
                 Enemy_Count++;
             }

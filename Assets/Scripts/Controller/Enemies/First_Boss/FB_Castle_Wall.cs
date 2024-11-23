@@ -32,8 +32,6 @@ public class FB_Castle_Wall : MonoBehaviour
     [SerializeField] private float f_Pattern_Delay = 0.0f;
     private float f_Pattern_Time = 0.0f;
 
-    private float f_Repeat_Time = 0.0f;
-    private float f_Do_Time = 3.0f;
 
     // LandMine Mechanism needs to be fixed
     //==== Value For LandMine
@@ -90,7 +88,6 @@ public class FB_Castle_Wall : MonoBehaviour
     {
         if(is_Started)
         {
-            f_Repeat_Time += Time.deltaTime;
             f_Pattern_Time += Time.deltaTime;
 
             if (IR_Health.Value <= 0 && !is_Second_Phase)

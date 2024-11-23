@@ -48,7 +48,6 @@ public class FB_Peasent : MonoBehaviour
     //private bool is_Acting = false;
 
     private Rigidbody2D enemy_Rigid;
-    private GameObject attack_Point = null;
 
     //=======Big Homi Crash Boolean
     [HideInInspector] public bool is_Homi_Crashed = false;
@@ -203,9 +202,8 @@ public class FB_Peasent : MonoBehaviour
                 is_Left_Point = true;
             }
 
-            //Set_Attack_Point();
             TurnAround();
-            //is_Homi_Crashed = false;
+
             is_Attack_Called = false;
 
             is_Move_Complete = false;
@@ -360,19 +358,6 @@ public class FB_Peasent : MonoBehaviour
                 }
         }
     }
-
-    //private void Set_Attack_Point()
-    //{
-    //    if(this.gameObject.transform.position.x <= Target_Player.transform.position.x) // Player is On Right
-    //    {
-    //        attack_Point = FB_Heavy_01;
-    //    }
-    //    else
-    //    {
-    //        attack_Point = FB_Heavy_02;
-    //    }
-    //    attack_Point = null;
-    //}
 
     private void TurnAround()
     {
