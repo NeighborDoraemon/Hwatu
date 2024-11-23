@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -3873603157392868242}
   - component: {fileID: 7292497364329268012}
   - component: {fileID: 4758685549957708341}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Fan_Skill_Projectile
   m_TagString: Attack
   m_Icon: {fileID: 0}
