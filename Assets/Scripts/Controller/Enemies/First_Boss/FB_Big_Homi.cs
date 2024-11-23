@@ -32,6 +32,7 @@ public class FB_Big_Homi : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
+            Debug.Log("Big Homi");
             collision.gameObject.GetComponent<PlayerCharacter_Controller>().Player_Take_Damage(i_Damage);
         }
 
