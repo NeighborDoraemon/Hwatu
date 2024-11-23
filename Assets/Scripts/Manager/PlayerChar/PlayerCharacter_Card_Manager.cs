@@ -126,7 +126,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                 else if ((card_1.Month == 13 && card_2.Month == 18)
                     || (card_1.Month == 18 && card_2.Month == 13))
                 {
-                    Set_Weapon(6);
+                    Set_Weapon(15);
                     Debug.Log("3 8 ±¤¶¯");
                 }
                 isCombDone = true;
