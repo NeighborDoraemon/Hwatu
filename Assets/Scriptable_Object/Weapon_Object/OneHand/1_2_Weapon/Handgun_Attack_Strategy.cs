@@ -83,9 +83,7 @@ public class Handgun_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
         Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
         Vector2 shootDirection = (player.is_Facing_Right) ? Vector2.right : Vector2.left;
-        projectile.transform.localScale = new Vector3(
-                Mathf.Abs(projectile.transform.localScale.x) * (player.is_Facing_Right ? 1 : -1),
-                projectile.transform.localScale.y, projectile.transform.localScale.z);
+
         rb.velocity = shootDirection * projectile_Speed;
         projectile.transform.rotation = Quaternion.identity;
     }

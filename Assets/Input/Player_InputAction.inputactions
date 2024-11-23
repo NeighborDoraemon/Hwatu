@@ -60,7 +60,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SpawnCard",
+                    "name": "SpawnChest",
                     "type": "Button",
                     "id": "b7047090-46c1-4fba-bf0a-4faf14b6f1ba",
                     "expectedControlType": "Button",
@@ -90,15 +90,6 @@
                     "name": "Inventory",
                     "type": "Button",
                     "id": "7592c333-04fc-4c13-8e46-05039ec065e2",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SpawnChest",
-                    "type": "Button",
-                    "id": "56b590b3-959a-488a-9c89-2860adb4619d",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -201,7 +192,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SpawnCard",
+                    "action": "SpawnChest",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -235,17 +226,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Inventory",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "676fcab2-e637-44ca-9113-8b69f5fd0706",
-                    "path": "<Keyboard>/o",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SpawnChest",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
