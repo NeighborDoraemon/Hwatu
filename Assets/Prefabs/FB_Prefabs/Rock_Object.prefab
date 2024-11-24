@@ -162,5 +162,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   i_Damage: 10
-  f_moveSpeed: 0.7
+  f_moveSpeed: 0.5
   is_Left: 1

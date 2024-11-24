@@ -14,7 +14,6 @@ public class Pause_Manager : MonoBehaviour
 
     [Header("Objects")]
     [SerializeField] private PlayerCharacter_Controller p_control;
-    [SerializeField] private Fade_Controller fade_Con;
     [SerializeField] private New_Fade_Controller new_Fade;
 
 

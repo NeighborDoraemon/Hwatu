@@ -23,7 +23,6 @@ public class Map_Manager : MonoBehaviour
     [Header("Objects")]
     [SerializeField] private GameObject Obj_Player;
     [SerializeField] private Enemy_Generator Obj_e_Generator;
-    [SerializeField] private Fade_Controller fade_Con;
     [SerializeField] private New_Fade_Controller new_Fade;
 
     [SerializeField]
