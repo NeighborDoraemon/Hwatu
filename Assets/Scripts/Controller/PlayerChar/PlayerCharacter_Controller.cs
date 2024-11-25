@@ -724,7 +724,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         is_Player_Dead = true;
         player_render.enabled = false;
 
-        pause_Manager.Show_Result();
+        pause_Manager.Show_Result(true);
     }
 
     public void Input_Game_Stop(InputAction.CallbackContext ctx)
