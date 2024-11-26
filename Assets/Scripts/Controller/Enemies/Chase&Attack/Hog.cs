@@ -25,6 +25,8 @@ public class Hog : MonoBehaviour,Enemy_Interface
 
     [Header("Others")]
     [SerializeField] private GameObject Target_Player;
+    [SerializeField] private Animator Hog_Animator;
+    [SerializeField] private Animator Hog_Effect_Animator;
 
     private bool is_Attack_Turn = false;
     private bool is_Attacking = false; // 공격 중 범위를 벗어났을 때, 다른 행동을 못하게 설정
@@ -55,6 +57,11 @@ public class Hog : MonoBehaviour,Enemy_Interface
         }
     }
 
+    private void Animation_Controll()
+    {
+        //Hog_Animator.SetFloat("X_Velocity", this.gameObject.)
+    }
+
 
     private void Attack_Call()
     {
@@ -70,12 +77,15 @@ public class Hog : MonoBehaviour,Enemy_Interface
             is_Attacking = true;
             is_Attack_Turn = true;
             
-            f_Dash_StartPosition = this.transform.position.x; 
+            f_Dash_StartPosition = this.transform.position.x;
+            Hog_Animator.SetBool("is_Attacking", true);
         }
 
         if (Attack_Time >= f_Before_Delay && !is_Attack_Complete) // Attack
         {
             //BR_Not_Attacking.Value = false;
+            Hog_Animator.SetBool("is_Delay_End", true);
+            Hog_Effect_Animator.SetBool("is_Attacking", true);
 
             if (BR_Facing_Left.Value) //Attack Left
             {
@@ -91,6 +101,10 @@ public class Hog : MonoBehaviour,Enemy_Interface
                 Attack_Time = 0.0f;
                 is_First_End = true;
                 is_Attack_Complete = true;
+
+                Hog_Animator.SetBool("is_Delay_End", false);
+                Hog_Animator.SetBool("is_Attacking", false);
+                Hog_Effect_Animator.SetBool("is_Attacking", false);
             }
         }
 
