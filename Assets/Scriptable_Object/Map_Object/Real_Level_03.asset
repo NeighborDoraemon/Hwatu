@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a0ab8aaa10ed3c469323a621fc4d81e, type: 3}
   m_Name: Real_Level_03
   m_EditorClassIdentifier: 
-  i_Map_Counter: 0
   v_Map_Spawnpoint: {x: 77, y: -36, z: 0}
   v_New_Spawn_Points:
   - v_Dataes:
@@ -26,13 +25,13 @@ MonoBehaviour:
     - {x: 96, y: -53, z: 0}
     - {x: 93, y: -51, z: 0}
     - {x: 96, y: -51, z: 0}
-    - {x: 93, y: -48, z: 0}
-    - {x: 96, y: -48, z: 0}
+    - {x: 93, y: -49, z: 0}
+    - {x: 96, y: -49, z: 0}
   - v_Dataes:
     - {x: 102, y: -46, z: 0}
     - {x: 110, y: -46, z: 0}
-    - {x: 106, y: -48, z: 0}
-    - {x: 107, y: -48, z: 0}
+    - {x: 106, y: -47, z: 0}
+    - {x: 107, y: -47, z: 0}
   i_Enemy_Index:
   - i_enemy_Index: 03000000
   - i_enemy_Index: 000000000000000004000000
