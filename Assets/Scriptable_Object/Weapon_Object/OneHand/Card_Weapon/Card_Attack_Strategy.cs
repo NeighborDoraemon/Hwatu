@@ -109,9 +109,10 @@ public class Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
     }
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point)
     {
-        GameObject projectile = Instantiate(projectile_Prefab, fire_Point.position, fire_Point.rotation);
+        GameObject projectile = Instantiate(projectile_Prefab, fire_Point.position, Quaternion.identity);
         Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
-        Vector2 shootDirection = (player.weapon_Anchor.localScale.x < 0) ? Vector2.left : Vector2.right;
+
+        Vector2 shootDirection = (player.is_Facing_Right) ? Vector2.right : Vector2.left;
         rb.velocity = shootDirection * projectile_Speed;
     }
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
