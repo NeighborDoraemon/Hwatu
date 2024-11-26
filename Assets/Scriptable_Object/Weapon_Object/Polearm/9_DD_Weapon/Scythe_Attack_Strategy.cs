@@ -126,15 +126,25 @@ public class Scythe_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     private IEnumerator Dash_Skill(PlayerCharacter_Controller player)
     {
-        Vector2 dash_Direction = (player.weapon_Anchor.transform.localScale.x < 0) ? Vector2.left : Vector2.right;
-       
+        Vector2 dash_Direction = (player.is_Facing_Right) ? Vector2.right : Vector2.left;              
+        
         float elapsed = 0.0f;
-        float check_Interval = 0.1f;
+        float check_Interval = 0.05f;
         float check_Radius = 0.5f;
+        float dash_Step = dash_Speed * Time.deltaTime;
         LayerMask enemy_Layer = LayerMask.GetMask("Enemy");
+        LayerMask wall_Layer = LayerMask.GetMask("Walls");
 
         while (elapsed < dash_Duration)
         {
+            RaycastHit2D hit = Physics2D.Raycast(player.transform.position, dash_Direction, dash_Step, wall_Layer);
+
+            if (hit.collider != null)
+            {
+                Debug.Log("Dash blocked by wall");
+                break;
+            }
+
             player.transform.Translate(dash_Direction * dash_Speed * Time.deltaTime);
 
             if (elapsed % check_Interval < Time.deltaTime)
@@ -152,6 +162,11 @@ public class Scythe_Attack_Strategy : ScriptableObject, IAttack_Strategy
                         if (enemy.IR_Health.Value <= 0)
                         {
                             player.Player_Take_Damage(-heal_Amount);
+
+                            if (player.health > player.max_Health)
+                            {
+                                player.health = player.max_Health;
+                            }
                         }
                     }
                 }
@@ -160,6 +175,6 @@ public class Scythe_Attack_Strategy : ScriptableObject, IAttack_Strategy
             yield return null;
         }
 
-        player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        player.rb.velocity = Vector2.zero;
     }
 }
