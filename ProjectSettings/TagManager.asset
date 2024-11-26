@@ -15,6 +15,7 @@ TagManager:
   - OneWayPlatform
   - NPC
   - Boundary
+  - CM_Boundary
   layers:
   - Default
   - TransparentFX

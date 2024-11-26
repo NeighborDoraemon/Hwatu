@@ -14,8 +14,8 @@ public class Pause_Manager : MonoBehaviour
 
     [Header("Objects")]
     [SerializeField] private PlayerCharacter_Controller p_control;
-    [SerializeField] private Fade_Controller fade_Con;
     [SerializeField] private New_Fade_Controller new_Fade;
+    [SerializeField] private Text Result_Text;
 
 
     // Start is called before the first frame update
@@ -30,9 +30,17 @@ public class Pause_Manager : MonoBehaviour
         
     }
 
-    public void Show_Result()
+    public void Show_Result(bool is_Died)
     {
         Main_Can.gameObject.SetActive(false);
+        if(is_Died) // Player is Dead
+        {
+            Result_Text.text = "Game Over";
+        }
+        else
+        {
+            Result_Text.text = "Demo Clear!";
+        }
         Result_Can.gameObject.SetActive(true);
     }
 

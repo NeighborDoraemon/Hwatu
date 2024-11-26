@@ -20,6 +20,7 @@ public class FB_Castle_Wall : MonoBehaviour
     [SerializeField] private SpriteRenderer SR_LandMine;
     [SerializeField] private SpriteRenderer SR_Arrow_01;
     [SerializeField] private SpriteRenderer SR_Arrow_02;
+    [SerializeField] private Pause_Manager pause_Manager;
 
     [Header("Others")]
     [SerializeField] private GameObject Prfb_Rock;
@@ -97,6 +98,7 @@ public class FB_Castle_Wall : MonoBehaviour
             else if(IR_Health.Value <= 0 && is_Second_Phase)
             {
                 Obj_FB_Peasent.SetActive(false);
+                pause_Manager.Show_Result(false);
                 Destroy(gameObject); // Die
             }
 

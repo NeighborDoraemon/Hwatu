@@ -22,7 +22,13 @@ public class Fall_Platform_Object : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
+            collision.gameObject.GetComponent<PlayerCharacter_Controller>().Player_Take_Damage(10);
             collision.gameObject.transform.position = v_Return_Position;
+        }
+
+        if(collision.gameObject.CompareTag("Enemy"))
+        {
+            collision.gameObject.GetComponent<Enemy_Basic>().TakeDamage(99999);
         }
     }
 }

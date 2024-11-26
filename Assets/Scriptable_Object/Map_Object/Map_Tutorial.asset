@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Map_Tutorial
   m_EditorClassIdentifier: 
   i_Map_Counter: 0
-  v_Map_Spawnpoint: {x: -30, y: -0.6, z: 0}
+  v_Map_Spawnpoint: {x: -5, y: 12, z: 0}
   v_New_Spawn_Points: []
   i_Enemy_Index: []
   i_How_Many_Wave: 0

@@ -39,6 +39,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     [Header("Cinemachine")]
     private Camera_Manager camera_Manager;
     private Collider2D cur_Boundary_Collider;
+    private Collider2D cur_Cinemachine_Collider;
 
     [Header("Weapon_Data")]
     public GameObject weapon_Prefab;
@@ -723,7 +724,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         is_Player_Dead = true;
         player_render.enabled = false;
 
-        pause_Manager.Show_Result();
+        pause_Manager.Show_Result(true);
     }
 
     public void Input_Game_Stop(InputAction.CallbackContext ctx)
@@ -800,8 +801,13 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         if (other.CompareTag("Boundary"))
         {
-            cur_Boundary_Collider = other;
-            camera_Manager.Update_Confiner(cur_Boundary_Collider);            
+            cur_Boundary_Collider = other;            
+        }
+        
+        if (other.CompareTag("CM_Boundary"))
+        {
+            cur_Cinemachine_Collider = other;
+            camera_Manager.Update_Confiner(cur_Cinemachine_Collider);
         }
 
         if(other.gameObject.tag == "NPC")

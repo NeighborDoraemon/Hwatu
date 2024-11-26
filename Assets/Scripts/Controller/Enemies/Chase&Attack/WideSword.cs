@@ -26,6 +26,7 @@ public class WideSword : MonoBehaviour, Enemy_Interface
     [Header("Others")]
     [SerializeField] private GameObject Target_Player;
     [SerializeField] private GameObject Enemy_Crash_Box;
+    [SerializeField] private Animator Wide_Animator;
 
     private float Distance = 0.0f;
 
@@ -50,12 +51,15 @@ public class WideSword : MonoBehaviour, Enemy_Interface
     {
         Distance = Mathf.Abs(this.gameObject.transform.position.x - Target_Player.transform.position.x);
 
-        if (Distance <= FR_Attack_Range.Value || is_Attacking)
+        if ((BR_Chasing.Value && Distance <= FR_Attack_Range.Value) || is_Attacking)
         {
+            Wide_Animator.SetBool("is_Chasing", false);
+            Wide_Animator.SetBool("is_Attacking", true);
             Attack_Call();
         }
         else if (BR_Chasing.Value && Distance > FR_Attack_Range.Value)
         {
+            Wide_Animator.SetBool("is_Chasing", true);
             Chasing();
         }
     }
@@ -95,6 +99,7 @@ public class WideSword : MonoBehaviour, Enemy_Interface
 
         if (Attack_Time >= f_Before_Delay && !is_Attack_Complete) // Attack
         {
+            Wide_Animator.SetBool("is_Delay_End", true);
             if (BR_Facing_Left.Value) //Attack Left
             {
                 //Debug.Log(Attack_Time);
@@ -117,35 +122,14 @@ public class WideSword : MonoBehaviour, Enemy_Interface
 
             Attack_Time = 0.0f;
             BR_Not_Attacking.Value = true;
+
+            Wide_Animator.SetBool("is_Attacking", false);
+            Wide_Animator.SetBool("is_Delay_End", false);
         }
     }
 
     private void WideSword_Attack(int Alpha) //Left = -1, Right = 1;
     {
-        //HashSet<PlayerCharacter_Controller> damaged_Plaer_Collider = new HashSet<PlayerCharacter_Controller>();
-
-        //this.transform.Translate(Vector3.zero);
-
-        //Vector2 boxSize = new Vector2(0.2f, 0.4f);
-        //Vector2 boxCenter = (Vector2)transform.position + new Vector2(Alpha * FR_Attack_Range.Value, 0f);
-        //LayerMask playerLayer = LayerMask.GetMask("Character");
-
-        //Collider2D[] hitPlayer = Physics2D.OverlapBoxAll(boxCenter, boxSize, 0, playerLayer);
-
-        //foreach (Collider2D player in hitPlayer)
-        //{
-        //    PlayerCharacter_Controller P_Controller = player.GetComponent<PlayerCharacter_Controller>();
-
-        //    if (player != null && !damaged_Plaer_Collider.Contains(P_Controller))
-        //    {
-        //        //Debug.Log("플레이어 공격 성공");
-        //        player.GetComponent<PlayerCharacter_Controller>().Player_Take_Damage(IR_Attack_Damage.Value);
-
-        //        damaged_Plaer_Collider.Add(P_Controller);
-        //    }
-        //    //enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
-        //}
-
         if (BR_Not_Attacking.Value)
         {
             Enemy_Crash_Box.GetComponent<Crash_Box>().Damage_Once = true;

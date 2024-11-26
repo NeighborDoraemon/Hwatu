@@ -23,6 +23,7 @@ public class BH_Patrol : Service
 
     [Header("Others")]
     [SerializeField] private GameObject Obj_Enemy;
+    [SerializeField] private Animator Enemy_Animator;
 
     private void Reset_Random()
     {
@@ -35,23 +36,28 @@ public class BH_Patrol : Service
 
         if (is_Chasing.Value) // 감지범위에 플레이어가 들어왔다
         {
+            Enemy_Animator.SetBool("is_Moving", false);
             return NodeResult.failure;
         }
 
         if (is_At_End.Value) // 발판의 끝에 서있다
         {
+            Enemy_Animator.SetBool("is_Moving", false);
             return NodeResult.failure;
         }
 
         if (e_Moving_Time.Value < e_Moving_Random.Value) // 한참 이동 중
         {
+            //Enemy_Animator.SetBool("is_Moving", true);
             Wandering();
         }
         else if (e_Moving_Time.Value >= e_Moving_Random.Value) // 이동 시간 종료
         {
             Reset_Random();
+            Enemy_Animator.SetBool("is_Moving", false);
             return NodeResult.success;
         }
+        Enemy_Animator.SetBool("is_Moving", true);
         return NodeResult.running;
     }
 

@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -26.13, y: 0.72, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6204506642613285462}
@@ -81,13 +81,13 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 225975847, guid: 5921b8a88b0139c4abaa17dff8be5771, type: 3}
+  m_SortingOrder: 10
+  m_Sprite: {fileID: 89106219, guid: d6951fc9b43d323448db50204ded92b0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.6875, y: 1}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -103,7 +103,7 @@ Animator:
   m_GameObject: {fileID: 4371916878449458698}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f81f62fa64e55164daf60bfb08e38769, type: 2}
+  m_Controller: {fileID: 9100000, guid: 4440d2be5a6f3b541afb929fc9838167, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -173,8 +173,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.7, y: 1}
+  m_Offset: {x: 0, y: -0.15}
+  m_Size: {x: 0.3, y: 0.45}
   m_Direction: 0
 --- !u!114 &7292053845289287722
 MonoBehaviour:
@@ -245,6 +245,7 @@ MonoBehaviour:
     constantValue: 0
   Target_Player: {fileID: 0}
   Enemy_Crash_Box: {fileID: 7252858169000148663}
+  Wide_Animator: {fileID: 575172417556235026}
 --- !u!1 &7252858169000148663
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,7 +311,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.4, y: 0}
+  m_Offset: {x: -0.15, y: -0.1}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -321,7 +322,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.6, y: 0.7}
+  m_Size: {x: 0.15, y: 0.2}
   m_EdgeRadius: 0
 --- !u!114 &4453163665698884878
 MonoBehaviour:
@@ -415,7 +416,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.5, y: 0.25}
+  m_Offset: {x: -0.3, y: -0.1}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -426,7 +427,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4, y: 1.5}
+  m_Size: {x: 1.5, y: 0.5}
   m_EdgeRadius: 0
 --- !u!114 &517185956895606251
 MonoBehaviour:
@@ -446,6 +447,7 @@ MonoBehaviour:
     blackboard: {fileID: 4843434418119999694}
     key: is_Chasing
     constantValue: 0
+  enemy_Animator: {fileID: 575172417556235026}
 --- !u!1 &7466199425284580376
 GameObject:
   m_ObjectHideFlags: 0
@@ -475,6 +477,7 @@ GameObject:
   - component: {fileID: 794867799444663994}
   - component: {fileID: 2561634496302639100}
   - component: {fileID: 7958097876959033018}
+  - component: {fileID: 8439859706757916290}
   m_Layer: 0
   m_Name: WideSword_Behavior
   m_TagString: Untagged
@@ -509,7 +512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b25af8627659c6949b60949c3aa8d91d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedEditorNode: {fileID: 7771392247050961495}
+  selectedEditorNode: {fileID: 4671441239727917433}
   repeatOnFinish: 0
   maxExecutionsPerTick: 1000
   parent: {fileID: 0}
@@ -636,6 +639,7 @@ MonoBehaviour:
     height: 44
   parent: {fileID: 7771392247050961495}
   children:
+  - {fileID: 8439859706757916290}
   - {fileID: 4671441239727917433}
   - {fileID: 6635116993782320907}
   behaviourTree: {fileID: 0}
@@ -658,7 +662,7 @@ MonoBehaviour:
   rect:
     serializedVersion: 2
     x: 320
-    y: 220
+    y: 240
     width: 160
     height: 44
   parent: {fileID: 3746172972414191353}
@@ -684,8 +688,8 @@ MonoBehaviour:
   title: BH_Patrol
   rect:
     serializedVersion: 2
-    x: 212
-    y: 295.19998
+    x: 200
+    y: 320
     width: 160
     height: 44
   parent: {fileID: 4671441239727917433}
@@ -733,6 +737,7 @@ MonoBehaviour:
     key: is_At_End
     constantValue: 0
   Obj_Enemy: {fileID: 4371916878449458698}
+  Enemy_Animator: {fileID: 575172417556235026}
 --- !u!114 &3139067524550847810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -748,8 +753,8 @@ MonoBehaviour:
   title: BH_Rest
   rect:
     serializedVersion: 2
-    x: 400
-    y: 300
+    x: 420
+    y: 320
     width: 160
     height: 44
   parent: {fileID: 4671441239727917433}
@@ -937,7 +942,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: f_Attack_Range
-  val: 0.6
+  val: 0.4
 --- !u!114 &7958097876959033018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -952,6 +957,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   key: is_Not_Attacking
   val: 1
+--- !u!114 &8439859706757916290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7466199425284580376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3702a634de274fe47b0b9e5ff37c881f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: BH_Check_Bool
+  rect:
+    serializedVersion: 2
+    x: 100
+    y: 220
+    width: 160
+    height: 44
+  parent: {fileID: 3746172972414191353}
+  children: []
+  behaviourTree: {fileID: 0}
+  runtimePriority: 0
+  breakpoint: 0
+  interval: 1
+  randomDeviation: 0
+  callOnEnter: 1
+  BR_To_Check:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 4843434418119999694}
+    key: is_Not_Attacking
+    constantValue: 0
 --- !u!1 &7915380139120839169
 GameObject:
   m_ObjectHideFlags: 0
@@ -1017,7 +1055,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -1, y: -0.5}
+  m_Offset: {x: -0.25, y: -0.35}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1028,7 +1066,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.2, y: 0.5}
+  m_Size: {x: 0.05, y: 0.2}
   m_EdgeRadius: 0
 --- !u!114 &5332700727335261689
 MonoBehaviour:

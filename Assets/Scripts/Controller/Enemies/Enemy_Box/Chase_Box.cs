@@ -6,6 +6,7 @@ using UnityEngine;
 public class Chase_Box : MonoBehaviour
 {
     [SerializeField] private BoolReference BR_Chasing;
+    [SerializeField] private Animator enemy_Animator;
     //private GameObject Target_Player;
 
 
@@ -37,6 +38,7 @@ public class Chase_Box : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             BR_Chasing.Value = false;
+            enemy_Animator.SetBool("is_Chasing", false);
             //Debug.Log("플레이어 놓침");
         }
     }

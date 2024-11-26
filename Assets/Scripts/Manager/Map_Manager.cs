@@ -23,7 +23,6 @@ public class Map_Manager : MonoBehaviour
     [Header("Objects")]
     [SerializeField] private GameObject Obj_Player;
     [SerializeField] private Enemy_Generator Obj_e_Generator;
-    [SerializeField] private Fade_Controller fade_Con;
     [SerializeField] private New_Fade_Controller new_Fade;
 
     [SerializeField]
@@ -66,6 +65,8 @@ public class Map_Manager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        map_Index = 0;
+        Boss_map_Index = 0;
         Shuffle_Maps();
         if (is_Tutorial_Cleared)
         {
