@@ -16,7 +16,7 @@ public class FB_Big_Homi : MonoBehaviour
         peasent = FindObjectOfType<FB_Peasent>().gameObject;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (is_Reverse) // Big_Homi_Reverse
         {

@@ -8,7 +8,6 @@ using UnityEngine.UIElements;
 public class Map_Value : ScriptableObject
 {
     [Header("Maps")]
-    public int i_Map_Counter;
     public Vector3 v_Map_Spawnpoint;
 
 

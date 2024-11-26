@@ -59,6 +59,7 @@ public class Hog : MonoBehaviour,Enemy_Interface
     private void Attack_Call()
     {
         Attack_Time += Time.deltaTime;
+        BR_Not_Attacking.Value = false;
 
         if (!is_Attack_Turn && !is_Attack_Complete) // 공격 시작 시, 플레이어 방향 보게하기
         {
@@ -74,7 +75,7 @@ public class Hog : MonoBehaviour,Enemy_Interface
 
         if (Attack_Time >= f_Before_Delay && !is_Attack_Complete) // Attack
         {
-            BR_Not_Attacking.Value = false;
+            //BR_Not_Attacking.Value = false;
 
             if (BR_Facing_Left.Value) //Attack Left
             {
@@ -105,14 +106,11 @@ public class Hog : MonoBehaviour,Enemy_Interface
             BR_Not_Attacking.Value = true;
 
             Attack_Time = 0.0f;
-            Debug.Log("After Delay End");
         }
     }
 
     private void TurnAround()
     {
-        Debug.Log("Turn Called");
-
         Quaternion quater = this.gameObject.transform.rotation;
 
         if (this.gameObject.transform.position.x <= Target_Player.transform.position.x && BR_Facing_Left.Value) // 좌측 보는중 & 플레이어가 우측

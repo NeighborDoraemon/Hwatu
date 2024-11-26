@@ -65,6 +65,8 @@ public class Map_Manager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        map_Index = 0;
+        Boss_map_Index = 0;
         Shuffle_Maps();
         if (is_Tutorial_Cleared)
         {
