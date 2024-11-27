@@ -138,6 +138,8 @@ public class Scythe_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
         while (elapsed < dash_Duration)
         {
+            player.is_Knock_Back = true;
+
             RaycastHit2D hit = Physics2D.Raycast(player.transform.position, dash_Direction, dash_Step, wall_Layer);
             RaycastHit2D hit_02 = Physics2D.Raycast(player.transform.position, dash_Direction, dash_Step, boss_Layer);
 
@@ -178,5 +180,6 @@ public class Scythe_Attack_Strategy : ScriptableObject, IAttack_Strategy
         }
 
         player.rb.velocity = Vector2.zero;
+        player.is_Knock_Back = false;
     }
 }
