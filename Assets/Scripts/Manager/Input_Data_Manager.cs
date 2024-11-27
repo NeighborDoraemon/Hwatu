@@ -33,6 +33,9 @@ public class Input_Data_Manager : MonoBehaviour
 
     private bool is_Option_Setting = false;
 
+    [Header("Key Objects")]
+    [SerializeField] private List<GameObject> Key_Objects = new List<GameObject>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,6 +49,8 @@ public class Input_Data_Manager : MonoBehaviour
             }
 
             player_Input.actions.LoadBindingOverridesFromJson(rebinds);
+
+            Change_Key_Objects();
         }
 
 
@@ -138,6 +143,8 @@ public class Input_Data_Manager : MonoBehaviour
         string rebinds = player_Input.actions.SaveBindingOverridesAsJson();
 
         PlayerPrefs.SetString("Rebinds", rebinds);
+
+        Change_Key_Objects();
     }
 
     public void Btn_Option()
@@ -163,5 +170,13 @@ public class Input_Data_Manager : MonoBehaviour
     public void Btn_Quit()
     {
         Application.Quit();
+    }
+
+    private void Change_Key_Objects()
+    {
+        foreach(GameObject g_Obj in Key_Objects)
+        {
+            g_Obj.GetComponent<Obj_KeyBoard>().Call_KeyObjects();
+        }
     }
 }

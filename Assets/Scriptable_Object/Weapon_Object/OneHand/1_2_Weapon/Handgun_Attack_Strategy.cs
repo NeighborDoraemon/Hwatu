@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -83,6 +84,9 @@ public class Handgun_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
         Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
         Vector2 shootDirection = (player.is_Facing_Right) ? Vector2.right : Vector2.left;
+        Vector3 projectile_Scale = projectile.transform.localScale;
+        projectile_Scale.x = (player.is_Facing_Right) ? Mathf.Abs(projectile_Scale.x) : -Mathf.Abs(projectile_Scale.x);
+        projectile.transform.localScale = projectile_Scale;
 
         rb.velocity = shootDirection * projectile_Speed;
         projectile.transform.rotation = Quaternion.identity;

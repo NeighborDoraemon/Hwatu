@@ -33,6 +33,10 @@ public class FB_Castle_Wall : MonoBehaviour
     [SerializeField] private float f_Pattern_Delay = 0.0f;
     private float f_Pattern_Time = 0.0f;
 
+    [Header("Boss_Boundary")]
+    [SerializeField] private PolygonCollider2D boundary_01;
+    [SerializeField] private PolygonCollider2D boundary_02;
+
 
     // LandMine Mechanism needs to be fixed
     //==== Value For LandMine
@@ -99,6 +103,9 @@ public class FB_Castle_Wall : MonoBehaviour
             {
                 Obj_FB_Peasent.SetActive(false);
                 pause_Manager.Show_Result(false);
+
+                boundary_01.gameObject.SetActive(false);
+                boundary_02.gameObject.SetActive(true);
                 Destroy(gameObject); // Die
             }
 

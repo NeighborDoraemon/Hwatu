@@ -892,7 +892,13 @@ PlayerSettings:
   XboxOneOverrideIdentityName: 
   XboxOneOverrideIdentityPublisher: 
   vrEditorSettings: {}
-  cloudServicesEnabled: {}
+  cloudServicesEnabled:
+    Build: 0
+    Game Performance: 0
+    Legacy Analytics: 0
+    Purchasing: 0
+    UDP: 0
+    Unity Ads: 0
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 
@@ -912,11 +918,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: 7f933a95-531e-42d8-9f71-8c22cec1a50b
+  cloudProjectId: ef37356b-d9b1-45e1-b87a-8050ea3aec68
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
   projectName: Hwatu
-  organizationId: neighbordoraemon
+  organizationId: colinxxx25799752
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

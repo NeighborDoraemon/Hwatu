@@ -206,7 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b25af8627659c6949b60949c3aa8d91d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedEditorNode: {fileID: 4363305617217278103}
+  selectedEditorNode: {fileID: 903655778660092387}
   repeatOnFinish: 0
   maxExecutionsPerTick: 1000
   parent: {fileID: 0}
@@ -662,6 +662,7 @@ MonoBehaviour:
     blackboard: {fileID: 361652465450674757}
     key: is_Chasing
     constantValue: 0
+  enemy_Animator: {fileID: 340837632673452773}
 --- !u!1 &5129122655065837426
 GameObject:
   m_ObjectHideFlags: 0
@@ -846,6 +847,7 @@ GameObject:
   - component: {fileID: 7890624679756550833}
   - component: {fileID: 533184294156890444}
   - component: {fileID: 101030975460925924}
+  - component: {fileID: 340837632673452773}
   m_Layer: 9
   m_Name: Bird_AttackBox
   m_TagString: Enemy
@@ -1005,6 +1007,27 @@ MonoBehaviour:
   scarecrow: {fileID: 0}
   min_Money_Drop: 5
   Max_Money_Drop: 20
+--- !u!95 &340837632673452773
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7828112140264504557}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8744a0cfd3487094ab4b68cac611c140, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &9222270611744656121
 GameObject:
   m_ObjectHideFlags: 0

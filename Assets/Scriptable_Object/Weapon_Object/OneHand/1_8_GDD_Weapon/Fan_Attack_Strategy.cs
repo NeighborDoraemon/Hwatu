@@ -99,6 +99,16 @@ public class Fan_Attack_Strategy : ScriptableObject, IAttack_Strategy
         player.last_ComboAttack_Time = Time.time;
     }
 
+    private bool Is_Skill_Cooldown_Complete(PlayerCharacter_Controller player)
+    {
+        return Time.time >= player.last_Skill_Time + player.skill_Cooldown;
+    }
+
+    private void Update_Skill_Timer(PlayerCharacter_Controller player)
+    {
+        player.last_Skill_Time = Time.time;
+    }
+
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point)
     {
         GameObject projectile_Prefab = null;
@@ -117,21 +127,34 @@ public class Fan_Attack_Strategy : ScriptableObject, IAttack_Strategy
             GameObject projectile = Instantiate(projectile_Prefab, player.transform.position, Quaternion.identity);
             Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
             Vector2 shoot_Direction = (player.is_Facing_Right) ? Vector2.right : Vector2.left;
+
+            Vector3 projectile_Scale = projectile.transform.localScale;
+            projectile_Scale.x = (player.is_Facing_Right) ? Mathf.Abs(projectile_Scale.x) : -Mathf.Abs(projectile_Scale.x);
+            projectile.transform.localScale = projectile_Scale;
+
             rb.velocity = shoot_Direction * projectile_Speed;
         }
     }
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
-        GameObject skill_Projectile = Instantiate(skill_Projectile_Prefab, player.transform.position, player.transform.rotation);
+        if (Is_Skill_Cooldown_Complete(player))
+        {
+            GameObject skill_Projectile = Instantiate(skill_Projectile_Prefab, player.transform.position, player.transform.rotation);
 
-        skill_Projectile.transform.localScale = Vector3.one * 0.05f;        
+            skill_Projectile.transform.localScale = Vector3.one * 0.05f;
 
-        skill_Projectile.transform.DOScale(skill_Projectile_Scale, scale_Up_Duration).SetEase(Ease.OutQuad);
+            skill_Projectile.transform.DOScale(skill_Projectile_Scale, scale_Up_Duration).SetEase(Ease.OutQuad);
 
-        Rigidbody2D rb = skill_Projectile.GetComponent<Rigidbody2D>();
-        Vector2 shoot_Direction = (player.weapon_Anchor.transform.localScale.x < 0) ? Vector2.left : Vector2.right;
-        rb.velocity = shoot_Direction * projectile_Speed;
+            Rigidbody2D rb = skill_Projectile.GetComponent<Rigidbody2D>();
+            Vector2 shoot_Direction = (player.weapon_Anchor.transform.localScale.x < 0) ? Vector2.left : Vector2.right;
+            rb.velocity = shoot_Direction * projectile_Speed;
 
-        Destroy(skill_Projectile, 3.0f);
+            Destroy(skill_Projectile, 3.0f);
+            Update_Skill_Timer(player);
+        }
+        else
+        {
+            Debug.Log("Skill is on cooldown");
+        }
     }
 }

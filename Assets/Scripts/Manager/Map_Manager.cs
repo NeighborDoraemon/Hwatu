@@ -67,6 +67,7 @@ public class Map_Manager : MonoBehaviour
     {
         map_Index = 0;
         Boss_map_Index = 0;
+        Map_Shuffled_List.Clear();
         Shuffle_Maps();
         if (is_Tutorial_Cleared)
         {

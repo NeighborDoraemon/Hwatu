@@ -16,7 +16,7 @@ MonoBehaviour:
   attack_Damage: 7
   attack_Cooldown: 1
   max_Attack_Count: 3
-  skill_Damage: 50
+  skill_Damage: 14
   skill_Cooldown: 5
   weapon_Prefab: {fileID: 2976884597404987267, guid: 3cfa2400908a12f4b8dad67e644359c9, type: 3}
   overrideController: {fileID: 22100000, guid: 3733cf225828c894e996dff32fa619fa, type: 2}
@@ -24,6 +24,9 @@ MonoBehaviour:
   animation_Pos_Data_List:
   - {fileID: 11400000, guid: e184bd094f73da3419d97f61c8fc1c6c, type: 2}
   - {fileID: 11400000, guid: 5d92e8cb9ca32db41bf48d7c9b71f8e5, type: 2}
-  effect_Data: {fileID: 11400000, guid: 72c283aea0efc5c479ee65ac1a1ee3d4, type: 2}
+  - {fileID: 11400000, guid: 765e5d8c3d3116946ae998a21c2a0c32, type: 2}
+  - {fileID: 11400000, guid: a79ad007528153345af966382bac94c5, type: 2}
+  - {fileID: 11400000, guid: 70b1755e19824bd408977b37ee9a81e8, type: 2}
+  effect_Data: {fileID: 11400000, guid: 0dd1f1221b20f904dafc48d078b8ad1d, type: 2}
   attack_Strategy: {fileID: 11400000, guid: 05d336678b5d9a141878baddab0d6437, type: 2}
   is_HoldAttack_Enabled: 0

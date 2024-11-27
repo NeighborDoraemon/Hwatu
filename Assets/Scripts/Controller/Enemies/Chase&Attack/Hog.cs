@@ -120,6 +120,8 @@ public class Hog : MonoBehaviour,Enemy_Interface
             BR_Not_Attacking.Value = true;
 
             Attack_Time = 0.0f;
+
+            //Hog_Animator.SetBool("is_Attacking", false);
         }
     }
 
