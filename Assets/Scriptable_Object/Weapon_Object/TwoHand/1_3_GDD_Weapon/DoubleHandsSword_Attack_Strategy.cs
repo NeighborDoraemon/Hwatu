@@ -60,10 +60,14 @@ public class DoubleHandsSword_Attack_Strategy : ScriptableObject, IAttack_Strate
     {
         while (!player.isGrounded)
         {
+            player.is_Knock_Back = true;            
+
             player.animator.SetTrigger("Attack");
             player.rb.velocity = new Vector2(player.rb.velocity.x, -2f);
             yield return new WaitForSeconds(0.5f);
         }
+
+        player.is_Knock_Back = false;
     }
 
     private bool Is_Cooldown_Complete(PlayerCharacter_Controller player)
@@ -150,6 +154,7 @@ public class DoubleHandsSword_Attack_Strategy : ScriptableObject, IAttack_Strate
         rb.velocity = shoot_Direction * projectile_Speed;
 
         Destroy(skill_Projectile, 3.0f);
+        Update_Skill_Timers(player);
     }
 
     private void Update_Skill_Timers(PlayerCharacter_Controller player)

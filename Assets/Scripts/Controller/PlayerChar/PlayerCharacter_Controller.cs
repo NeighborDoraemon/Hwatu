@@ -86,12 +86,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         inputActions = new Player_InputActions();
         
-        //inputActions.Player.Teleportation.performed += ctx => Teleportation();
-
-        //inputActions.Player.Attack.performed += ctx => Perform_Attack();
-
-        //inputActions.Player.InterAction.performed += ctx => InterAction();
-
         inputActions.Player.SpawnChest.performed += ctx => Spawn_Chest();
 
         Set_Weapon(0);
