@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.InputSystem.iOS;
 
 [CreateAssetMenu(fileName = "SanSam_Effect", menuName = "ItemEffects/SanSam_Effect")]
 public class SanSam_Effect : ItemEffect
