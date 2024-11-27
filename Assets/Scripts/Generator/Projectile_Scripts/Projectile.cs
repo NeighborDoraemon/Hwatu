@@ -19,7 +19,7 @@ public class Projectile : MonoBehaviour
             other.GetComponentInChildren<Enemy_Basic>().TakeDamage(damage);
             Destroy(gameObject);
         }
-        else if (other.CompareTag("Walls") || other.CompareTag("Platform") || other.CompareTag("OneWayPlatform"))
+        else if (other.CompareTag("Walls")/* || other.CompareTag("Platform") || other.CompareTag("OneWayPlatform")*/)
         {
             Destroy(gameObject);
         }

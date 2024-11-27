@@ -134,12 +134,14 @@ public class Scythe_Attack_Strategy : ScriptableObject, IAttack_Strategy
         float dash_Step = dash_Speed * Time.deltaTime;
         LayerMask enemy_Layer = LayerMask.GetMask("Enemy");
         LayerMask wall_Layer = LayerMask.GetMask("Walls");
+        LayerMask boss_Layer = LayerMask.GetMask("Boss_Enemy");
 
         while (elapsed < dash_Duration)
         {
             RaycastHit2D hit = Physics2D.Raycast(player.transform.position, dash_Direction, dash_Step, wall_Layer);
+            RaycastHit2D hit_02 = Physics2D.Raycast(player.transform.position, dash_Direction, dash_Step, boss_Layer);
 
-            if (hit.collider != null)
+            if (hit.collider != null || hit_02.collider != null)
             {
                 Debug.Log("Dash blocked by wall");
                 break;
