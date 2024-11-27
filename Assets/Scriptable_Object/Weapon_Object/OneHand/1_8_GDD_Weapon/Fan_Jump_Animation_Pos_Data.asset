@@ -15,8 +15,8 @@ MonoBehaviour:
   animation_Name: PC_OH_Jump
   frame_Pos:
   - {x: 0.0557, y: -0.3987, z: 0}
-  - {x: 0.0544, y: -0.3974, z: 0}
-  - {x: 0.022, y: -0.3637, z: 0}
+  - {x: 0.0544, y: -0.3987, z: 0}
+  - {x: 0.036, y: -0.376, z: 0}
   frame_Rotations:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
