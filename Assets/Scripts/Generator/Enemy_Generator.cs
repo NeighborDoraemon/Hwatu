@@ -70,7 +70,7 @@ public class Enemy_Generator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (i_Enemy_Count == 0 && !Is_Room_Clear)
+        if (i_Enemy_Count <= 0 && !Is_Room_Clear)
         {
             Check_Need_Spawn();
         }

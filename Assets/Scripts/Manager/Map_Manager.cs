@@ -78,7 +78,7 @@ public class Map_Manager : MonoBehaviour
             v_Next_SpawnPoint = Map_Tutorial.v_Map_Spawnpoint;
         }
 
-        Update_Map_Boundary();
+        //Update_Map_Boundary();
         IsOnPortal = false;
     }
 
@@ -90,7 +90,6 @@ public class Map_Manager : MonoBehaviour
 
     public void Use_Portal()
     {
-        //if (Input.GetKeyDown(KeyCode.W))
         {
             if (IsOnPortal && Enemy_Generator.Is_Room_Clear == true) //맵 클리어시에만 이동 가능하도록 변경
             {
@@ -107,23 +106,6 @@ public class Map_Manager : MonoBehaviour
                         Debug.Log("Fade In Complete");
                     });
                 });
-
-                //Obj_Player.transform.position = v_Next_SpawnPoint;
-
-                //if(is_Boss_Stage)
-                //{
-                //    First_Boss.GetComponent<FB_Castle_Wall>().Call_Start();
-                //}
-
-                //if (is_Tutorial_Cleared)
-                //{
-                //    Obj_e_Generator.Set_Next();
-                //    Obj_e_Generator.New_Enemy_Spawn(); // First Spawn in map
-                //}
-
-                //Set_Next_Point();
-                //is_Tutorial_Cleared = true;
-                
             }
         }
     }
@@ -147,15 +129,15 @@ public class Map_Manager : MonoBehaviour
         is_Tutorial_Cleared = true;
     }
 
-    private void Update_Map_Boundary()
-    {
-        GameObject boundary_Object = GameObject.FindWithTag("Boundary");
-        if (boundary_Object != null)
-        {
-            cur_Map_Boundary = boundary_Object.GetComponent<Collider2D>();
-            camera_Manager.Update_Confiner(cur_Map_Boundary);
-        }
-    }
+    //private void Update_Map_Boundary()
+    //{
+    //    GameObject boundary_Object = GameObject.FindWithTag("Boundary");
+    //    if (boundary_Object != null)
+    //    {
+    //        cur_Map_Boundary = boundary_Object.GetComponent<Collider2D>();
+    //        camera_Manager.Update_Confiner(cur_Map_Boundary);
+    //    }
+    //}
 
     private void Shuffle_Maps()
     {

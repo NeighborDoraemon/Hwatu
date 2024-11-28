@@ -60,16 +60,11 @@ public class Obj_KeyBoard : MonoBehaviour
         if (spriteRenderer != null)
         {
             Vector3 newSize = new Vector3(
-                textSize.x + padding,  // 텍스트 폭 + 여백
-                spriteRenderer.size.y, // 기존 높이를 유지
-                1f                     // 깊이는 기본값 유지
+                textSize.x + padding,  
+                spriteRenderer.size.y, 
+                1f                     
             );
-
-            // SpriteRenderer의 크기를 변경
             spriteRenderer.size = newSize;
         }
-
-        // 부모의 로컬 스케일 조정 (추가로 스케일 조정이 필요한 경우)
-        //this.gameObject.transform.localScale = new Vector3(textSize.x + padding, this.gameObject.transform.localScale.y, this.gameObject.transform.localScale.z);
     }
 }
