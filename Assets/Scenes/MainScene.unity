@@ -36051,6 +36051,10 @@ PrefabInstance:
       value: Boundary (1)
       objectReference: {fileID: 0}
     - target: {fileID: 1069791400476037174, guid: ffa7eee27acee0b41ad4268fbf818bb7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1069791400476037174, guid: ffa7eee27acee0b41ad4268fbf818bb7, type: 3}
       propertyPath: m_TagString
       value: Boundary
       objectReference: {fileID: 0}

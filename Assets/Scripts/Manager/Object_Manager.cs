@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Object_Manager : MonoBehaviour
 {
-    public static Object_Manager instance { get; private set; } // 싱글톤
+    public static Object_Manager instance { get; private set; }
 
     public GameObject card_Prefab;
     public Card_Value[] card_Values;
 
     [SerializeField]
-    private HashSet<Sprite> used_Card_Sprite = new HashSet<Sprite>(); // 사용된 카드의 스프라이트 저장할 해쉬셋
-    public List<GameObject> current_Spawned_Card = new List<GameObject>(); // 현재 상자에 소환된 카드를 저장하는 리스트
+    private HashSet<Sprite> used_Card_Sprite = new HashSet<Sprite>();
+    public List<GameObject> current_Spawned_Card = new List<GameObject>();
 
     public ItemDatabase item_Database;
     public GameObject itemPrefab;
@@ -32,22 +32,21 @@ public class Object_Manager : MonoBehaviour
     }
 
 
-    // 카드 소환 코드
+    // Card
     public GameObject Making_Card(Vector2 spawnPosition, Card_Value selected_Card, Sprite selected_Sprite)
     {
-        GameObject spawnedCard = Instantiate(card_Prefab, spawnPosition, Quaternion.identity); // 프리팹을 필드에 소환
-
-        // 스크립터블 오브젝트에서 카드 값을 가져와서 카드에 적용
+        GameObject spawnedCard = Instantiate(card_Prefab, spawnPosition, Quaternion.identity);
+        
         SpriteRenderer spriteRenderer = spawnedCard.GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = selected_Sprite; // 랜덤 스프라이트
+        spriteRenderer.sprite = selected_Sprite;
 
         Card cardComponent = spawnedCard.GetComponent<Card>();
         cardComponent.cardValue = selected_Card;
         cardComponent.selected_Sprite = selected_Sprite;
 
-        spawnedCard.tag = "Card"; // 소환 오브젝트 태그 카드로 설정
+        spawnedCard.tag = "Card";
 
-        current_Spawned_Card.Add(spawnedCard); // 현재 소환된 카드 리스트에 추가
+        current_Spawned_Card.Add(spawnedCard);
         used_Card_Sprite.Add(selected_Sprite);
 
         return spawnedCard;
@@ -58,17 +57,16 @@ public class Object_Manager : MonoBehaviour
         Card_Value selected_Card = null;
         Sprite selected_Sprite = null;
         bool found_Valid_Card = false;
-        // 무한루프 방지 변수
+        
         int attempts = 0;
         int maxAttempts = 100;
 
         while (!found_Valid_Card && attempts < maxAttempts)
         {
-            int random_Card_Index = Random.Range(0, card_Values.Length); // 랜덤 스크립터블 오브젝트 지정
-            selected_Card = card_Values[random_Card_Index]; // 선택된 카드에 저장
-            selected_Sprite = selected_Card.GetRandomSprite(); // 저장된 카드에 랜덤 스프라이트 추출 후 선택된 스프라이트에 저장
-
-            // 현재 저장된 스프라이트가 아닐 경우 탈출
+            int random_Card_Index = Random.Range(0, card_Values.Length);
+            selected_Card = card_Values[random_Card_Index];
+            selected_Sprite = selected_Card.GetRandomSprite();
+            
             if (!used_Card_Sprite.Contains(selected_Sprite))
             {
                 found_Valid_Card = true;
@@ -83,12 +81,12 @@ public class Object_Manager : MonoBehaviour
             return;
         }
 
-        used_Card_Sprite.Add(selected_Sprite); // 사용된 스프라이트 해쉬에 저장
+        used_Card_Sprite.Add(selected_Sprite);
 
-        Making_Card(spawnPosition, selected_Card, selected_Sprite); // 카드 제작 완료
+        Making_Card(spawnPosition, selected_Card, selected_Sprite);
     }
 
-    public void Destroy_All_Cards(GameObject card_To_Keep = null) // 현재 소환된 카드 삭제 함수
+    public void Destroy_All_Cards(GameObject card_To_Keep = null)
     {
         for (int i = current_Spawned_Card.Count -1; i >= 0; i--)
         {
@@ -96,9 +94,9 @@ public class Object_Manager : MonoBehaviour
             if (card != null && card != card_To_Keep)
             {
                 Sprite cardSprite = card.GetComponent<SpriteRenderer>().sprite;
-                Remove_Used_Sprite(cardSprite); // 삭제되는 카드들의 스프라이트를 사용된 스프라이트 해쉬에서 삭제하여 중복 소환 방지
+                Remove_Used_Sprite(cardSprite);
                 Destroy(card);
-                current_Spawned_Card.RemoveAt(i); // 소환된 카드 리스트 삭제 코드
+                current_Spawned_Card.RemoveAt(i);
             }
         }
     }
@@ -111,7 +109,7 @@ public class Object_Manager : MonoBehaviour
         }
     }
 
-    public void Add_To_Used_Sprites(Sprite sprite) // 사용된 스프라이트 해쉬에 저장하는 함수
+    public void Add_To_Used_Sprites(Sprite sprite)
     {
         if (used_Card_Sprite.Add(sprite))
         {
@@ -119,7 +117,7 @@ public class Object_Manager : MonoBehaviour
         }
     }
 
-    public void Remove_Used_Sprite(Sprite sprite) // 사용된 스프라이트 해쉬에서 삭제하는 함수
+    public void Remove_Used_Sprite(Sprite sprite)
     {
         if (used_Card_Sprite.Contains(sprite))
         {
@@ -129,7 +127,7 @@ public class Object_Manager : MonoBehaviour
 
 
 
-    // 아이템 소환 코드
+    // Item
     public void Spawn_Item(string itemName, Vector2 spawnPos, PlayerCharacter_Controller player)
     {
         if (item_Database == null || itemPrefab == null)
@@ -138,12 +136,12 @@ public class Object_Manager : MonoBehaviour
             return;
         }
 
-        Item randomItem = Get_Random_Item();  // 데이터베이스에서 랜덤 아이템 선택
+        Item randomItem = Get_Random_Item();
         if (randomItem == null) return;
 
-        GameObject itemInstance = Instantiate(itemPrefab, spawnPos, Quaternion.identity);  // 아이템 프리팹 소환
+        GameObject itemInstance = Instantiate(itemPrefab, spawnPos, Quaternion.identity);
         Item_Prefab itemPrefabScript = itemInstance.GetComponent<Item_Prefab>();
-        itemPrefabScript.Initialize(randomItem);  // 랜덤 아이템 데이터를 프리팹에 초기화
+        itemPrefabScript.Initialize(randomItem);
 
         if (!randomItem.isConsumable)
         {
@@ -154,18 +152,15 @@ public class Object_Manager : MonoBehaviour
 
     private Item Get_Random_Item()
     {
-        List<Item> available_Items = new List<Item>(item_Database.Get_All_Items());  // 데이터베이스에서 모든 아이템 가져오기
-
-        // 이미 등장한 아이템 목록을 제외한 아이템들만 남김
+        List<Item> available_Items = new List<Item>(item_Database.Get_All_Items());
+        
         available_Items.RemoveAll(item => spawnedItems.Contains(item));
 
         if (available_Items.Count == 0)
         {
             Debug.LogWarning("모든 아이템 소환 완료");
-            return null;  // 더 이상 소환할 수 있는 아이템이 없는 경우 null 반환
-        }
-
-        // 남아있는 아이템 중에서 랜덤으로 선택
+            return null;
+        }        
         return available_Items[Random.Range(0, available_Items.Count)];
     }
 
