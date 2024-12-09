@@ -228,6 +228,7 @@ MonoBehaviour:
   Target_Player: {fileID: 0}
   Hog_Animator: {fileID: 6863468945306204544}
   Hog_Effect_Animator: {fileID: 2146850831946901140}
+  enemy_CB: {fileID: 8586810206639760400}
 --- !u!95 &6863468945306204544
 Animator:
   serializedVersion: 5

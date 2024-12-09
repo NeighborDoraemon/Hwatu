@@ -13,12 +13,18 @@ public class Crash_Box : MonoBehaviour
     [SerializeField] private float f_Knockback_Time;
     [SerializeField] private float f_Knockback_Power;
 
-    [HideInInspector] public bool Damage_Once = true;
+    [HideInInspector] public bool Damage_Once = false;
+
+    private void Start()
+    {
+        Damage_Once = false;
+    }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            Debug.Log(Damage_Once);
             if(!BR_Not_Attacking.Value && Damage_Once)
             {
                 GameObject Obj_Player = collision.gameObject;
@@ -41,12 +47,11 @@ public class Crash_Box : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if(collision.gameObject.CompareTag("Player"))
-        {
-            Damage_Once = true;
-        }
-    }
-
+    //private void OnTriggerExit2D(Collider2D collision)
+    //{
+    //    if(collision.gameObject.CompareTag("Player"))
+    //    {
+    //        Damage_Once = true;
+    //    }
+    //}
 }
