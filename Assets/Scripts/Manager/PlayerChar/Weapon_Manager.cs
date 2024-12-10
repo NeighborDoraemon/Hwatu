@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,7 +12,7 @@ public class Weapon_Manager : MonoBehaviour
         {
             return weaponList[index];
         }
-        Debug.LogError("무기 인덱스가 유효하지 않음");
+        Debug.LogError("Weapon Index is invalid");
         return null;
     }
 }

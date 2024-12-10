@@ -18,11 +18,10 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
             }
         }
     }
-
-    // 아이템 획득 시 플레이어가 상호작용한 아이템을 제거하는 함수
+    
     public void RemoveItem(Item item)
     {
-        player_Inventory.Remove(item);  // 인벤토리에서 아이템 제거
-        //Debug.Log($"{item.itemName} 인벤토리에서 제거됨.");
+        player_Inventory.Remove(item);
+        //Debug.Log($"{item.itemName} is removed from inventory");
     }
 }

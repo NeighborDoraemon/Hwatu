@@ -230,14 +230,34 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             if (canTeleporting)
             {
+                float adjusted_Distance = teleporting_Distance;
+
+                Vector2 top_Pos = new Vector2(transform.position.x, transform.position.y + GetComponent<Collider2D>().bounds.extents.y);
+                Vector2 bottom_Pos = new Vector2(transform.position.x, transform.position.y - GetComponent<Collider2D>().bounds.extents.y);
+
+                Vector2 direction = is_Facing_Right ? Vector2.right : Vector2.left;
+
+                RaycastHit2D topHit = Physics2D.Raycast(top_Pos, direction, teleporting_Distance, LayerMask.GetMask("Walls"));
+                RaycastHit2D bottomHit = Physics2D.Raycast(bottom_Pos, direction, teleporting_Distance, LayerMask.GetMask("Walls"));
+
+                if (topHit.collider != null)
+                {
+                    adjusted_Distance = Mathf.Min(adjusted_Distance, topHit.distance);
+                }
+                if (bottomHit.collider != null)
+                {
+                    adjusted_Distance = Mathf.Min(adjusted_Distance, bottomHit.distance);
+                }
+
                 if (!is_Facing_Right)
                 {
-                    transform.Translate(Vector2.left * teleporting_Distance);
+                    transform.Translate(Vector2.left * adjusted_Distance);
                 }
                 else
                 {
-                    transform.Translate(Vector2.right * teleporting_Distance);
+                    transform.Translate(Vector2.right * adjusted_Distance);
                 }
+
                 animator.SetTrigger("Teleport");
                 canTeleporting = false;
             }
@@ -465,18 +485,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         string cur_Animation_Name = Get_Cur_Animation_Name(animator);
 
         var animation_Data = cur_Weapon_Data.animation_Pos_Data_List.Find(
-            data => string.Equals(data.animation_Name, cur_Animation_Name, StringComparison.OrdinalIgnoreCase)
-        );
-
-        //Debug.Log($"Looking for Animation Name: '{cur_Animation_Name}'");
-        //foreach (var data in cur_Weapon_Data.animation_Pos_Data_List)
-        //{
-        //    Debug.Log($"Comparing with: '{data.animation_Name}'");
-        //    if (data.animation_Name == cur_Animation_Name)
-        //    {
-        //        Debug.Log("Match found!");
-        //    }
-        //}
+            data => string.Equals(data.animation_Name, cur_Animation_Name, StringComparison.OrdinalIgnoreCase));
 
         if (animation_Data != null)
         {
@@ -494,19 +503,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 weapon_Anchor.localPosition = is_Facing_Right ? new_Pos : new Vector3(-new_Pos.x, new_Pos.y, new_Pos.z);
                 weapon_Anchor.localRotation = is_Facing_Right ? new_Rotation : Quaternion.Inverse(new_Rotation);
                 weapon_Anchor.localScale = is_Facing_Right ?
-                    new_Scale : new Vector3(-new_Scale.x, new_Scale.y, new_Scale.z);
-
-                //Debug.Log($"Current Frame: {cur_Frame}, Position: {new_Pos}, Rotation: {new_Rotation}");
-            }
-            else
-            {
-                //Debug.LogWarning("No animation clip info found.");
-            }
-        }
-        else
-        {
-            //Debug.LogWarning("No matching animation data found for current animation.");
-        }
+                    new_Scale : new Vector3(-new_Scale.x, new_Scale.y, new_Scale.z);                
+            }            
+        }        
     }
     string Get_Cur_Animation_Name(Animator animator)
     {

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Card_UI_Manager : MonoBehaviour
 {
-    public Image[] cardSlots; // 플레이어가 소지한 화투 이미지 저장 공간
+    public Image[] cardSlots;
 
     public void UpdateCardUI(Sprite[] cardSprites)
     {

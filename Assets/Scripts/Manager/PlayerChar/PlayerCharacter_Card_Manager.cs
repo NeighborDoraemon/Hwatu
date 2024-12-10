@@ -20,18 +20,18 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
 
     [HideInInspector] public bool is_Start_Spawn = true; // 시작 지급인지 확인하는 변수 (윤혁)
 
-    public void AddCard(GameObject card) // 화투 저장 함수
+    public void AddCard(GameObject card)
     {
         isCombDone = false;
 
         if (cardCount == card_Inventory.Length)
         {
-            if (card_Inventory[0] != null) // 기존 화투 삭제함으로써 메모리 관리
+            if (card_Inventory[0] != null)
             {
                 Card cardComponent = card_Inventory[0].GetComponent<Card>();
                 if (cardComponent != null && cardComponent.selected_Sprite != null)
                 {
-                    Object_Manager.instance.Remove_Used_Sprite(cardComponent.selected_Sprite); // 카드 수집 시 수집된 카드의 스프라이트 해쉬에 저장
+                    Object_Manager.instance.Remove_Used_Sprite(cardComponent.selected_Sprite);
                 }
 
                 Destroy(card_Inventory[0]);
@@ -40,7 +40,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
             card_Inventory[0] = card_Inventory[1];
             card_Inventory[1] = card;
 
-            //Debug.Log("카드 교체");
+            //Debug.Log("Card Changed");
         }
         else
         {
@@ -48,16 +48,14 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
             cardCount++;
             Debug.Log("카드 추가" + card.name);
 
-            if (cardCount == card_Inventory.Length) // 첫 획득 시 카드가 완전히 사라지지 않도록 1회성 방지 (윤혁, 임시)
+            if (cardCount == card_Inventory.Length)
             {
                 is_Start_Spawn = false;
             }
         }
-
         UpdateCardUI();
         Card_Combination();
-
-        //카드 수집 후 필드에 남아있는 카드 삭제
+        
         if (Object_Manager.instance != null && !is_Start_Spawn)
         {
             Sprite collected_Sprite = card.GetComponent<SpriteRenderer>().sprite;
@@ -68,7 +66,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
 
             card.SetActive(false);
         }
-        else { Debug.LogWarning("Card Manager에서 Card Spawner 인스턴스 실종"); }
+        else { Debug.LogWarning("Object Manager is missing"); }
     }
 
     void UpdateCardUI() // 화투 UI 스프라이트 업데이트 함수
