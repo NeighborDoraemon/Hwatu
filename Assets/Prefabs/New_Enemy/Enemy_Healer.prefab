@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8243373549076787149}
   - component: {fileID: 820453627876301195}
   - component: {fileID: 350475163364165852}
+  - component: {fileID: 1901724655909924700}
   m_Layer: 0
   m_Name: Healer_Behavior
   m_TagString: Untagged
@@ -68,6 +69,7 @@ MonoBehaviour:
   variables:
   - {fileID: 8243373549076787149}
   - {fileID: 820453627876301195}
+  - {fileID: 1901724655909924700}
   masterBlackboard: {fileID: 0}
 --- !u!114 &5968057588937430081
 MonoBehaviour:
@@ -134,6 +136,20 @@ MonoBehaviour:
   behaviourTree: {fileID: 0}
   runtimePriority: 0
   breakpoint: 0
+--- !u!114 &1901724655909924700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1253700710978350161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ae15c5e6bcb1714080f2e8296c3d17a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: is_Stunned
+  val: 0
 --- !u!1 &4235309169489438213
 GameObject:
   m_ObjectHideFlags: 0
@@ -578,6 +594,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   f_Delay: 3
   Obj_HealBox: {fileID: 4838491342078749907}
+  BR_Stunned:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 4881719599483596832}
+    key: is_Stunned
+    constantValue: 0
 --- !u!114 &8105292427216586328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -595,6 +617,12 @@ MonoBehaviour:
     mode: 0
     blackboard: {fileID: 4881719599483596832}
     key: i_Health
+    constantValue: 0
+  BR_Stunned:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 4881719599483596832}
+    key: is_Stunned
     constantValue: 0
   is_Boos_Object: 0
   scarecrow: {fileID: 0}

@@ -173,6 +173,12 @@ MonoBehaviour:
     blackboard: {fileID: 2963058167193352549}
     key: i_Health
     constantValue: 0
+  BR_Stunned:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 2963058167193352549}
+    key: is_Stunned
+    constantValue: 0
   is_Boos_Object: 0
   scarecrow: {fileID: 0}
   min_Money_Drop: 2
@@ -208,6 +214,12 @@ MonoBehaviour:
     mode: 0
     blackboard: {fileID: 2963058167193352549}
     key: i_Attack_Damage
+    constantValue: 0
+  BR_Stunned:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 2963058167193352549}
+    key: is_Stunned
     constantValue: 0
   Target_Player: {fileID: 0}
   Bullet_Prefab: {fileID: 8333097592702568372, guid: 11ba6240cc42a0243a0641d2fc307506, type: 3}
@@ -364,6 +376,8 @@ GameObject:
   - component: {fileID: 2224668231276547706}
   - component: {fileID: 2532859368303627537}
   - component: {fileID: 7178832960913433242}
+  - component: {fileID: 3049140515160344409}
+  - component: {fileID: 4050860983270022169}
   m_Layer: 0
   m_Name: Acher_Behavior
   m_TagString: Untagged
@@ -398,7 +412,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b25af8627659c6949b60949c3aa8d91d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedEditorNode: {fileID: 2056338446931502127}
+  selectedEditorNode: {fileID: 8277430724074581987}
   repeatOnFinish: 0
   maxExecutionsPerTick: 1000
   parent: {fileID: 0}
@@ -425,6 +439,7 @@ MonoBehaviour:
   - {fileID: 2224668231276547706}
   - {fileID: 2532859368303627537}
   - {fileID: 7178832960913433242}
+  - {fileID: 3049140515160344409}
   masterBlackboard: {fileID: 0}
 --- !u!114 &7690636277992644717
 MonoBehaviour:
@@ -552,6 +567,7 @@ MonoBehaviour:
     height: 44
   parent: {fileID: 2195434286245895410}
   children:
+  - {fileID: 4050860983270022169}
   - {fileID: 8277430724074581987}
   - {fileID: 3111510522288312603}
   - {fileID: 2080723554975587683}
@@ -718,8 +734,8 @@ MonoBehaviour:
   title: BH_Check_Bool
   rect:
     serializedVersion: 2
-    x: 100
-    y: 240
+    x: 130.4
+    y: 242.4
     width: 160
     height: 44
   parent: {fileID: 20402302700234494}
@@ -736,6 +752,7 @@ MonoBehaviour:
     blackboard: {fileID: 2963058167193352549}
     key: is_Look_Once
     constantValue: 0
+  Boolean: 1
 --- !u!114 &6060624172829497078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -876,6 +893,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   key: f_Attack_Range
   val: 25
+--- !u!114 &3049140515160344409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7875893978766043934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ae15c5e6bcb1714080f2e8296c3d17a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: is_Stunned
+  val: 0
+--- !u!114 &4050860983270022169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7875893978766043934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3702a634de274fe47b0b9e5ff37c881f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: BH_Check_Bool
+  rect:
+    serializedVersion: 2
+    x: -60
+    y: 240
+    width: 160
+    height: 44
+  parent: {fileID: 20402302700234494}
+  children: []
+  behaviourTree: {fileID: 0}
+  runtimePriority: 0
+  breakpoint: 0
+  interval: 1
+  randomDeviation: 0
+  callOnEnter: 1
+  BR_To_Check:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 2963058167193352549}
+    key: is_Stunned
+    constantValue: 0
+  Boolean: 0
 --- !u!1 &7934362307330029101
 GameObject:
   m_ObjectHideFlags: 0

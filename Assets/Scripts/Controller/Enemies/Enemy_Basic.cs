@@ -5,8 +5,9 @@ using MBT;
 
 public class Enemy_Basic : MonoBehaviour, Enemy_Interface
 {
-    [Header("BB Int")]
+    [Header("BB")]
     [SerializeField] public IntReference IR_Health;
+    [SerializeField] private BoolReference BR_Stunned;
 
     [Header("Bool")]
     [SerializeField] private bool is_Boos_Object = false;
@@ -60,6 +61,15 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
         }
     }
 
+    public void Take_Stun(float duration)
+    {
+        if (!is_Boos_Object)
+        { 
+            BR_Stunned.Value = true; 
+        }
+        StartCoroutine(Stun_Durable(duration));
+    }
+
 
     private void Die() 
     {
@@ -83,5 +93,11 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
         {
             Destroy(gameObject);
         }
+    }
+
+    IEnumerator Stun_Durable(float Duration)
+    {
+        yield return new WaitForSeconds(Duration);
+        BR_Stunned.Value = false;
     }
 }

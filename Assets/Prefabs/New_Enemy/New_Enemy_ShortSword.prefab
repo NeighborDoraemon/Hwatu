@@ -126,6 +126,9 @@ GameObject:
   - component: {fileID: 5802750751329975312}
   - component: {fileID: 1973941783751985486}
   - component: {fileID: 7432368918749782831}
+  - component: {fileID: 8858919288674509087}
+  - component: {fileID: 203294103937889339}
+  - component: {fileID: 1702752818525257210}
   m_Layer: 0
   m_Name: New_ShortSword_Behavior
   m_TagString: Untagged
@@ -160,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b25af8627659c6949b60949c3aa8d91d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedEditorNode: {fileID: 3026766014613941829}
+  selectedEditorNode: {fileID: 1702752818525257210}
   repeatOnFinish: 0
   maxExecutionsPerTick: 1000
   parent: {fileID: 0}
@@ -187,6 +190,7 @@ MonoBehaviour:
   - {fileID: 5802750751329975312}
   - {fileID: 1973941783751985486}
   - {fileID: 7432368918749782831}
+  - {fileID: 8858919288674509087}
   masterBlackboard: {fileID: 0}
 --- !u!114 &732732923161261345
 MonoBehaviour:
@@ -287,6 +291,8 @@ MonoBehaviour:
     height: 44
   parent: {fileID: 3177505033231438049}
   children:
+  - {fileID: 1702752818525257210}
+  - {fileID: 203294103937889339}
   - {fileID: 251845477724747062}
   - {fileID: 3988325424356821951}
   behaviourTree: {fileID: 0}
@@ -604,6 +610,88 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   key: is_Not_Attacking
   val: 1
+--- !u!114 &8858919288674509087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344399451173941206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ae15c5e6bcb1714080f2e8296c3d17a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: is_Stunned
+  val: 0
+--- !u!114 &203294103937889339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344399451173941206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3702a634de274fe47b0b9e5ff37c881f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: BH_Check_Bool
+  rect:
+    serializedVersion: 2
+    x: -16
+    y: 277.6
+    width: 160
+    height: 44
+  parent: {fileID: 4158990827908203999}
+  children: []
+  behaviourTree: {fileID: 0}
+  runtimePriority: 0
+  breakpoint: 0
+  interval: 1
+  randomDeviation: 0
+  callOnEnter: 1
+  BR_To_Check:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 1680579883527586225}
+    key: is_Not_Attacking
+    constantValue: 0
+  Boolean: 1
+--- !u!114 &1702752818525257210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344399451173941206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3702a634de274fe47b0b9e5ff37c881f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: BH_Check_Bool
+  rect:
+    serializedVersion: 2
+    x: -200
+    y: 280
+    width: 160
+    height: 44
+  parent: {fileID: 4158990827908203999}
+  children: []
+  behaviourTree: {fileID: 0}
+  runtimePriority: 0
+  breakpoint: 0
+  interval: 1
+  randomDeviation: 0
+  callOnEnter: 1
+  BR_To_Check:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 1680579883527586225}
+    key: is_Stunned
+    constantValue: 0
+  Boolean: 0
 --- !u!1 &2349051777312973323
 GameObject:
   m_ObjectHideFlags: 0
@@ -943,6 +1031,12 @@ MonoBehaviour:
     blackboard: {fileID: 1680579883527586225}
     key: i_Health
     constantValue: 0
+  BR_Stunned:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 1680579883527586225}
+    key: is_Stunned
+    constantValue: 0
   is_Boos_Object: 0
   scarecrow: {fileID: 0}
   min_Money_Drop: 5
@@ -979,6 +1073,12 @@ MonoBehaviour:
     mode: 0
     blackboard: {fileID: 1680579883527586225}
     key: is_Not_Attacking
+    constantValue: 0
+  BR_Stunned:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 1680579883527586225}
+    key: is_Stunned
     constantValue: 0
   FR_Attack_Range:
     useConstant: 0

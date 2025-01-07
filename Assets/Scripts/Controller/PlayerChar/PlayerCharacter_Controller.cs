@@ -905,6 +905,34 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
         Debug.Log("Player Money : " + i_Money);
     }
+
+    public void Player_Bind(float Bind_Time)
+    {
+        is_Knock_Back = true;
+        rb.velocity = Vector2.zero;
+
+        Invoke("Knock_Back_End", Bind_Time);
+    }
+
+    public void Player_Stun()
+    {
+
+    }
+
+    public void Start_Tick_Damage(float Tick_Time, int Tick_Damage, int Tick_Count)
+    {
+        StartCoroutine(Player_Tick_Damage(Tick_Time, Tick_Damage, Tick_Count));
+    }
+
+    private IEnumerator Player_Tick_Damage(float Tick_Time, int Tick_Damage, int Tick_Count)
+    {
+        Debug.Log("Tick Damage Coroutine Start");
+        for(int i = 0; i < Tick_Count; i++)
+        {
+            yield return new WaitForSeconds(Tick_Time);
+            Player_Take_Damage(Tick_Damage);
+        }
+    }
 }
 
 

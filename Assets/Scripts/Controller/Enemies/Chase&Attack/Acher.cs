@@ -21,12 +21,12 @@ public class Acher : MonoBehaviour, Enemy_Interface
 
     //[SerializeField] private FloatReference FR_Attack_Range;
     [SerializeField] private IntReference IR_Attack_Damage;
+    [SerializeField] private BoolReference BR_Stunned;
 
     [Header("Others")]
     [SerializeField] private GameObject Target_Player;
     [SerializeField] private GameObject Bullet_Prefab;
 
-    private float Distance = 0.0f;
     private float arrowSpeed = 15.0f;
 
     private bool is_Attack_Turn = false;
@@ -48,11 +48,16 @@ public class Acher : MonoBehaviour, Enemy_Interface
     // Update is called once per frame
     void Update()
     {
-        Distance = Mathf.Abs(this.gameObject.transform.position.x - Target_Player.transform.position.x);
-
-        if (BR_Chasing.Value || is_Attacking)
+        if (BR_Stunned.Value)
         {
-            Attack_Call();
+            Stunned();
+        }
+        else
+        {
+            if (BR_Chasing.Value || is_Attacking)
+            {
+                Attack_Call();
+            }
         }
     }
 
@@ -99,6 +104,8 @@ public class Acher : MonoBehaviour, Enemy_Interface
     {
         GameObject projectile = MonoBehaviour.Instantiate(Bullet_Prefab, this.gameObject.transform.position, this.gameObject.transform.rotation);
 
+        projectile.GetComponent<Enemy_Porjectile>().i_Projectile_Damage = IR_Attack_Damage.Value;
+
         Rigidbody2D projectile_Rb = projectile.GetComponent<Rigidbody2D>();
         Vector2 shootDirection = new Vector2 (Alpha, 0.0f);
         projectile_Rb.velocity = shootDirection * arrowSpeed;
@@ -124,5 +131,10 @@ public class Acher : MonoBehaviour, Enemy_Interface
 
             this.gameObject.transform.rotation = quater;
         }
+    }
+
+    private void Stunned()
+    {
+
     }
 }

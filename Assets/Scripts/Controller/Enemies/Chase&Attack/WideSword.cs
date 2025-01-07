@@ -22,6 +22,7 @@ public class WideSword : MonoBehaviour, Enemy_Interface
     [SerializeField] private FloatReference FR_Attack_Range;
     [SerializeField] private IntReference IR_Attack_Damage;
     [SerializeField] private BoolReference BR_Not_Attacking;
+    [SerializeField] private BoolReference BR_Stunned;
 
     [Header("Others")]
     [SerializeField] private GameObject Target_Player;
@@ -51,16 +52,24 @@ public class WideSword : MonoBehaviour, Enemy_Interface
     {
         Distance = Mathf.Abs(this.gameObject.transform.position.x - Target_Player.transform.position.x);
 
-        if ((BR_Chasing.Value && Distance <= FR_Attack_Range.Value) || is_Attacking)
+
+        if (BR_Stunned.Value)
         {
-            Wide_Animator.SetBool("is_Chasing", false);
-            Wide_Animator.SetBool("is_Attacking", true);
-            Attack_Call();
+            Stunned();
         }
-        else if (BR_Chasing.Value && Distance > FR_Attack_Range.Value)
+        else
         {
-            Wide_Animator.SetBool("is_Chasing", true);
-            Chasing();
+            if ((BR_Chasing.Value && Distance <= FR_Attack_Range.Value) || is_Attacking)
+            {
+                Wide_Animator.SetBool("is_Chasing", false);
+                Wide_Animator.SetBool("is_Attacking", true);
+                Attack_Call();
+            }
+            else if (BR_Chasing.Value && Distance > FR_Attack_Range.Value)
+            {
+                Wide_Animator.SetBool("is_Chasing", true);
+                Chasing();
+            }
         }
     }
 
@@ -157,5 +166,10 @@ public class WideSword : MonoBehaviour, Enemy_Interface
 
             this.gameObject.transform.rotation = quater;
         }
+    }
+
+    private void Stunned()
+    {
+
     }
 }

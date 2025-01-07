@@ -20,6 +20,8 @@ public class Bird : MonoBehaviour, Enemy_Interface
 
     [SerializeField] private IntReference IR_Attack_Damage;
 
+    [SerializeField] private BoolReference BR_Stunned;
+
     [Header("Others")]
     [SerializeField] private GameObject Target_Player;
     [SerializeField] private GameObject Obj_Attack_Box;
@@ -31,8 +33,8 @@ public class Bird : MonoBehaviour, Enemy_Interface
     private bool is_Down_Complete = false;
 
 
-    [SerializeField] private float f_Attack_Move_Speed = 0.5f;
-    [SerializeField] private float f_Attack_Down_Speed = 0.5f;
+    [SerializeField] private float f_Attack_Move_Speed = 0.7f;
+    [SerializeField] private float f_Attack_Down_Speed = 0.7f;
 
     private int i_For_UpDown = -1;
 
@@ -51,9 +53,16 @@ public class Bird : MonoBehaviour, Enemy_Interface
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (BR_Chasing.Value || is_Attacking)
+        if (BR_Stunned.Value)
         {
-            Attack_Call();
+            Stunned();
+        }
+        else
+        {
+            if (BR_Chasing.Value || is_Attacking)
+            {
+                Attack_Call();
+            }
         }
     }
 
@@ -167,5 +176,10 @@ public class Bird : MonoBehaviour, Enemy_Interface
 
             this.gameObject.transform.rotation = quater;
         }
+    }
+
+    private void Stunned()
+    {
+
     }
 }
