@@ -606,8 +606,8 @@ MonoBehaviour:
   title: BH_Check_Bool
   rect:
     serializedVersion: 2
-    x: -180
-    y: 260
+    x: -157.59999
+    y: 267.2
     width: 160
     height: 44
   parent: {fileID: 7593027971783143551}
