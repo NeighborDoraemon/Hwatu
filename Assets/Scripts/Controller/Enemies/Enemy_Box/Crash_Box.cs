@@ -24,7 +24,6 @@ public class Crash_Box : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log(Damage_Once);
             if(!BR_Not_Attacking.Value && Damage_Once)
             {
                 GameObject Obj_Player = collision.gameObject;

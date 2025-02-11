@@ -21,11 +21,16 @@ public class Grenadier : MonoBehaviour,Enemy_Interface
 
     [SerializeField] private FloatReference FR_Attack_Range;
     [SerializeField] private IntReference IR_Attack_Damage;
+    [SerializeField] private BoolReference BR_Stunned;
 
     [Header("Others")]
     [SerializeField] private GameObject Target_Player;
-    [SerializeField] private Crash_Box Enemy_CB;
-    private float Distance = 0.0f;
+
+    [Header("Grenader")]
+    [SerializeField] private Transform player;       // 플레이어의 Transform
+    [SerializeField] private Rigidbody2D grenade;   // 포탄의 Rigidbody2D
+    [SerializeField] private float flightTime = 1f; // 포탄이 목표에 도달하는 시간
+    [SerializeField] private float gravity = 9.8f;  // 중력 (Unity 기본값)
 
     private bool is_Attack_Turn = false;
     private bool is_Attacking = false; // 공격 중 범위를 벗어났을 때, 다른 행동을 못하게 설정
@@ -45,33 +50,29 @@ public class Grenadier : MonoBehaviour,Enemy_Interface
     // Update is called once per frame
     void FixedUpdate()
     {
-        Distance = Mathf.Abs(this.gameObject.transform.position.x - Target_Player.transform.position.x);
-
-        if ((BR_Chasing.Value && Distance <= FR_Attack_Range.Value) || is_Attacking)
+        if (BR_Stunned.Value)
         {
-            Attack_Call();
+            Stunned();
         }
-        else if (BR_Chasing.Value && Distance > FR_Attack_Range.Value)
+        else
         {
-            Chasing();
+            if (is_Attacking || BR_Chasing.Value)
+            {
+                Attack_Call();
+            }
+            else if (!BR_Chasing.Value)
+            {
+                Chasing();
+            }
         }
     }
 
     private void Chasing()
     {
-        if (!is_Attacking)
-        {
-            TurnAround();
-
-            if (BR_Facing_Left.Value)
-            {
-
-            }
-            else
-            {
-
-            }
-        }
+        //if (!is_Attacking)
+        //{
+        //    TurnAround();
+        //}
     }
 
     private void Attack_Call()
@@ -86,23 +87,19 @@ public class Grenadier : MonoBehaviour,Enemy_Interface
 
             is_Attacking = true;
             is_Attack_Turn = true;
-
-            //ShortSword_Animator.SetBool("is_Delay_End", true);
         }
 
         if (Attack_Time >= f_Before_Delay && !is_Attack_Complete) // Attack
         {
             if (BR_Facing_Left.Value) //Attack Left
             {
-                ShortSword_Attack(-1);
                 is_Attack_Complete = true;
-                //ShortSword_Animator.SetBool("is_Delay_End", false);
+                Throw_Attack();
             }
             else //Attack Right
             {
-                ShortSword_Attack(1);
                 is_Attack_Complete = true;
-                //ShortSword_Animator.SetBool("is_Delay_End", false);
+                Throw_Attack();
             }
         }
 
@@ -118,13 +115,19 @@ public class Grenadier : MonoBehaviour,Enemy_Interface
         }
     }
 
-    private void ShortSword_Attack(int Alpha) //Left = -1, Right = 1;
+    private void Throw_Attack()
     {
-        if (BR_Not_Attacking.Value)
-        {
-            Enemy_CB.Damage_Once = true;
-            BR_Not_Attacking.Value = false;
-        }
+        Vector2 startPosition = transform.position;          // 척탄병 위치
+        Vector2 targetPosition = player.position;            // 플레이어 위치
+        Vector2 displacement = targetPosition - startPosition; // 거리 계산
+
+        float t = flightTime;                                // 비행 시간
+        float vx = displacement.x / t;                       // 수평 속도
+        float vy = (displacement.y + 0.5f * gravity * t * t) / t; // 수직 속도
+
+        Vector2 initialVelocity = new Vector2(vx, vy);       // 초기 속도
+        Rigidbody2D grenadeInstance = Instantiate(grenade, startPosition, Quaternion.identity); // 포탄 생성
+        grenadeInstance.velocity = initialVelocity;          // 속도 부여
     }
 
     private void TurnAround()
@@ -147,4 +150,33 @@ public class Grenadier : MonoBehaviour,Enemy_Interface
             this.gameObject.transform.rotation = quater;
         }
     }
+
+    private void Stunned()
+    {
+
+    }
+
+    //private void OnDrawGizmos()
+    //{
+    //    if (player == null) return;
+
+    //    Vector2 startPosition = transform.position;
+    //    Vector2 targetPosition = player.position;
+    //    Vector2 displacement = targetPosition - startPosition;
+
+    //    float t = flightTime;
+    //    float vx = displacement.x / t;
+    //    float vy = (displacement.y + 0.5f * gravity * t * t) / t;
+
+    //    Vector2 velocity = new Vector2(vx, vy);
+    //    Vector2 currentPosition = startPosition;
+
+    //    Gizmos.color = Color.red;
+    //    for (float time = 0; time < t; time += 0.1f)
+    //    {
+    //        Vector2 nextPosition = startPosition + velocity * time + 0.5f * Physics2D.gravity * time * time;
+    //        Gizmos.DrawLine(currentPosition, nextPosition);
+    //        currentPosition = nextPosition;
+    //    }
+    //}
 }

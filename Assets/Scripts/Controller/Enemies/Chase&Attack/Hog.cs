@@ -20,6 +20,7 @@ public class Hog : MonoBehaviour,Enemy_Interface
     [SerializeField] private BoolReference BR_Facing_Left;
     [SerializeField] private BoolReference BR_At_End;
     [SerializeField] private BoolReference BR_Not_Attacking;
+    [SerializeField] private BoolReference BR_Stunned;
 
     [SerializeField] private IntReference IR_Attack_Damage;
 
@@ -52,9 +53,16 @@ public class Hog : MonoBehaviour,Enemy_Interface
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (BR_Chasing.Value || is_Attacking)
+        if (BR_Stunned.Value)
         {
-            Attack_Call();
+            Stunned();
+        }
+        else
+        {
+            if (BR_Chasing.Value || is_Attacking)
+            {
+                Attack_Call();
+            }
         }
     }
 
@@ -155,5 +163,24 @@ public class Hog : MonoBehaviour,Enemy_Interface
 
             this.gameObject.transform.rotation = quater;
         }
+    }
+
+    private void Stunned()
+    {
+        Hog_Animator.SetBool("is_Delay_End", false);
+        Hog_Animator.SetBool("is_Attacking", false);
+        Hog_Effect_Animator.SetBool("is_Attacking", false);
+
+        is_Attack_Turn = false;
+        is_Attacking = false;
+        is_Attack_Complete = false;
+
+        is_First_End = false;
+
+        BR_Not_Attacking.Value = true;
+
+        Attack_Time = 0.0f;
+
+        is_Attack_Once = false;
     }
 }

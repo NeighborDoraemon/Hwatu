@@ -107,14 +107,14 @@ CapsuleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 9216
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
-    m_Bits: 7159
+    m_Bits: 15351
   m_ForceReceiveLayers:
     serializedVersion: 2
     m_Bits: 7159
@@ -175,6 +175,12 @@ MonoBehaviour:
     blackboard: {fileID: 2792283785755650094}
     key: i_Health
     constantValue: 0
+  BR_Stunned:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 2792283785755650094}
+    key: is_Stunned
+    constantValue: 0
   is_Boos_Object: 0
   scarecrow: {fileID: 0}
   min_Money_Drop: 15
@@ -218,6 +224,12 @@ MonoBehaviour:
     mode: 0
     blackboard: {fileID: 2792283785755650094}
     key: is_Not_Attacking
+    constantValue: 0
+  BR_Stunned:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 2792283785755650094}
+    key: is_Stunned
     constantValue: 0
   IR_Attack_Damage:
     useConstant: 0
@@ -573,6 +585,8 @@ GameObject:
   - component: {fileID: 5014478024242684356}
   - component: {fileID: 1534228618265668135}
   - component: {fileID: 5662621090711114038}
+  - component: {fileID: 1296218170073598151}
+  - component: {fileID: 7780137179482500586}
   m_Layer: 0
   m_Name: Hog_Behavior
   m_TagString: Untagged
@@ -607,7 +621,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b25af8627659c6949b60949c3aa8d91d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedEditorNode: {fileID: 2916854173321974604}
+  selectedEditorNode: {fileID: 7780137179482500586}
   repeatOnFinish: 0
   maxExecutionsPerTick: 1000
   parent: {fileID: 0}
@@ -633,6 +647,7 @@ MonoBehaviour:
   - {fileID: 6203560732343987916}
   - {fileID: 5014478024242684356}
   - {fileID: 5662621090711114038}
+  - {fileID: 1296218170073598151}
   masterBlackboard: {fileID: 0}
 --- !u!114 &6409942887978289644
 MonoBehaviour:
@@ -760,6 +775,7 @@ MonoBehaviour:
     height: 44
   parent: {fileID: 5139872722475941293}
   children:
+  - {fileID: 7780137179482500586}
   - {fileID: 1534228618265668135}
   - {fileID: 1084707367798450103}
   - {fileID: 2916854173321974604}
@@ -1038,7 +1054,7 @@ MonoBehaviour:
   title: BH_Check_Bool
   rect:
     serializedVersion: 2
-    x: 60
+    x: 100
     y: 260
     width: 160
     height: 44
@@ -1056,6 +1072,7 @@ MonoBehaviour:
     blackboard: {fileID: 2792283785755650094}
     key: is_Not_Attacking
     constantValue: 0
+  Boolean: 1
 --- !u!114 &5662621090711114038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1070,6 +1087,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   key: is_Not_Attacking
   val: 1
+--- !u!114 &1296218170073598151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5725202305076103074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ae15c5e6bcb1714080f2e8296c3d17a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: is_Stunned
+  val: 0
+--- !u!114 &7780137179482500586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5725202305076103074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3702a634de274fe47b0b9e5ff37c881f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: BH_Check_Bool
+  rect:
+    serializedVersion: 2
+    x: -80
+    y: 260
+    width: 160
+    height: 44
+  parent: {fileID: 8802557079258297723}
+  children: []
+  behaviourTree: {fileID: 0}
+  runtimePriority: 0
+  breakpoint: 0
+  interval: 1
+  randomDeviation: 0
+  callOnEnter: 1
+  BR_To_Check:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 2792283785755650094}
+    key: is_Stunned
+    constantValue: 0
+  Boolean: 0
 --- !u!1 &7350023019205906952
 GameObject:
   m_ObjectHideFlags: 0

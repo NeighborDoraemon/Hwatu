@@ -24,8 +24,7 @@ public class Enemy_Generator : MonoBehaviour
     public static bool Is_Room_Clear = true; //방 전부 클리어 했는지 확인용
 
     private int Wave_Count = 1;
-    [HideInInspector]
-    public static int i_Enemy_Count = 0;
+    
 
 
     private bool is_Now_Started = false;
@@ -36,6 +35,23 @@ public class Enemy_Generator : MonoBehaviour
     private bool is_Do_Once = false;
     private bool b_boss_Stage = false;
 
+
+    public static Enemy_Generator Instance { get; private set; }
+    [HideInInspector]
+    public static int i_Enemy_Count = 0;
+
+
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -153,5 +169,11 @@ public class Enemy_Generator : MonoBehaviour
     {
         Is_Next_Spawn = true;
         Is_Room_Clear = false;
+    }
+
+
+    public void From_Other_Add_Enemy()
+    {
+        i_Enemy_Count++;
     }
 }

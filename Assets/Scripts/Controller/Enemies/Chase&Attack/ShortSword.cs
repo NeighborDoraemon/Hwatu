@@ -19,6 +19,7 @@ public class ShortSword : MonoBehaviour, Enemy_Interface
     [SerializeField] private BoolReference BR_Facing_Left;
     //[SerializeField] private GameObjectReference OR_Player;
     [SerializeField] private BoolReference BR_Not_Attacking;
+    [SerializeField] private BoolReference BR_Stunned;
 
     [SerializeField] private FloatReference FR_Attack_Range;
     [SerializeField] private IntReference IR_Attack_Damage;
@@ -50,16 +51,23 @@ public class ShortSword : MonoBehaviour, Enemy_Interface
     {
         Distance = Mathf.Abs(this.gameObject.transform.position.x - Target_Player.transform.position.x);
 
-        if ((BR_Chasing.Value && Distance <= FR_Attack_Range.Value) || is_Attacking)
+        if (BR_Stunned.Value)
         {
-            ShortSword_Animator.SetBool("is_Chasing", false);
-            ShortSword_Animator.SetBool("is_Attacking", true);
-            Attack_Call();
+            Stunned();
         }
-        else if (BR_Chasing.Value && Distance > FR_Attack_Range.Value)
+        else
         {
-            ShortSword_Animator.SetBool("is_Chasing", true);
-            Chasing();
+            if ((BR_Chasing.Value && Distance <= FR_Attack_Range.Value) || is_Attacking)
+            {
+                ShortSword_Animator.SetBool("is_Chasing", false);
+                ShortSword_Animator.SetBool("is_Attacking", true);
+                Attack_Call();
+            }
+            else if (BR_Chasing.Value && Distance > FR_Attack_Range.Value)
+            {
+                ShortSword_Animator.SetBool("is_Chasing", true);
+                Chasing();
+            }
         }
     }
 
@@ -156,5 +164,10 @@ public class ShortSword : MonoBehaviour, Enemy_Interface
 
             this.gameObject.transform.rotation = quater;
         }
+    }
+
+    private void Stunned()
+    {
+
     }
 }

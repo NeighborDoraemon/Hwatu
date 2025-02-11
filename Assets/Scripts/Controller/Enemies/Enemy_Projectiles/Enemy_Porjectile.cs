@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Enemy_Porjectile : MonoBehaviour
 {
-    [SerializeField] private int i_Projectile_Damage;
+    [SerializeField] public int i_Projectile_Damage;
+    [SerializeField] private bool is_Bolas = false;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +24,12 @@ public class Enemy_Porjectile : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<PlayerCharacter_Controller>().Player_Take_Damage(i_Projectile_Damage);
+
+            if(is_Bolas) // bind
+            {
+                collision.gameObject.GetComponent<PlayerCharacter_Controller>().Player_Bind(2.0f);
+            }
+
             Destroy(gameObject);
         }
         else if (collision.gameObject.CompareTag("Platform") || collision.gameObject.CompareTag("OneWayPlatform") || collision.gameObject.CompareTag("Walls"))
