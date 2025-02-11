@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ac9b5587998da144aea8b0799655ff4, type: 3}
   m_Name: Scythe_Attack
   m_EditorClassIdentifier: 
+  dash_Speed: 10
+  dash_Duration: 0.3
+  heal_Amount: 10
