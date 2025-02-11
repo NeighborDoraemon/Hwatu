@@ -28,17 +28,21 @@ public class Summoner : MonoBehaviour, Enemy_Interface
 
     [Header("Enemies")]
     [SerializeField] private GameObject enemy_Hog;
-    [SerializeField] private GameObject enem_Bird;
-    [SerializeField] private GameObject enem_Magpie;
+    [SerializeField] private GameObject enemy_Bird;
+    [SerializeField] private GameObject enemy_Magpie;
+    [SerializeField] private GameObject enemy_Wolf;
 
 
     private enum Enemies
     {
         HOG,
         BIRD,
-        MAGPIE
+        MAGPIE,
+        WOLF
     }
+    private List<Enemies> remain_Enemies = new List<Enemies>();
 
+    
     public void Player_Initialize(PlayerCharacter_Controller player)
     {
         Target_Player = player.gameObject;
@@ -50,10 +54,14 @@ public class Summoner : MonoBehaviour, Enemy_Interface
 
     private float Attack_Time = 0.0f;
 
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        remain_Enemies.Add(Enemies.HOG);
+        remain_Enemies.Add(Enemies.BIRD);
+        remain_Enemies.Add(Enemies.MAGPIE);
+        remain_Enemies.Add(Enemies.WOLF);
     }
 
     // Update is called once per frame
@@ -119,34 +127,47 @@ public class Summoner : MonoBehaviour, Enemy_Interface
 
     private void Summon()
     {
-        int rand = Random.Range(0, 3);
+        if(remain_Enemies.Count == 0)
+        {
+            Debug.Log("Spawned All Enemies!");
+            return;
+        }
+
+        int rand_Index = Random.Range(0, remain_Enemies.Count);
+        Enemies Selected_Enemy = remain_Enemies[rand_Index];
 
         GameObject spawned_Enemy = null;
 
-        switch(rand)
+        switch(remain_Enemies[rand_Index])
         {
-            case 0:
+            case Enemies.HOG:
                 {
                     spawned_Enemy = Instantiate(enemy_Hog, Summon_Position.transform.position, Summon_Position.transform.rotation);
                     break;
                 }
-            case 1:
+            case Enemies.BIRD:
                 {
-                    spawned_Enemy = Instantiate(enem_Bird, Summon_Position.transform.position, Summon_Position.transform.rotation);
+                    spawned_Enemy = Instantiate(enemy_Bird, Summon_Position.transform.position, Summon_Position.transform.rotation);
                     break;
                 }
-            case 2:
+            case Enemies.MAGPIE:
                 {
-                    spawned_Enemy = Instantiate(enem_Magpie, Summon_Position.transform.position, Summon_Position.transform.rotation);
+                    spawned_Enemy = Instantiate(enemy_Magpie, Summon_Position.transform.position, Summon_Position.transform.rotation);
+                    break;
+                }
+            case Enemies.WOLF:
+                {
+                    spawned_Enemy = Instantiate(enemy_Wolf, Summon_Position.transform.position, Summon_Position.transform.rotation);
                     break;
                 }
             default:
                 {
                     Debug.Log("Summon Case Error!");
-                    break;
+                    return;
                 }
         }
 
+        remain_Enemies.RemoveAt(rand_Index);
         Enemy_Generator.Instance.From_Other_Add_Enemy();
 
         foreach (Enemy_Interface enemy_interface in spawned_Enemy.GetComponentsInChildren<Enemy_Interface>(true)) //적에게 플레이어 전달

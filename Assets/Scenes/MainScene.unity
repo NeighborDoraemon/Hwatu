@@ -37159,10 +37159,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1505994622277891683, guid: 4b8f37bf526e48843af7f72c8dd4a5a6, type: 3}
+      propertyPath: m_Offset.x
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1626734228443647797, guid: 4b8f37bf526e48843af7f72c8dd4a5a6, type: 3}
+      propertyPath: enemy_Bird
+      value: 
+      objectReference: {fileID: 119715352043712820, guid: 70a66c6e314511343a11edb39177ffaf, type: 3}
+    - target: {fileID: 1626734228443647797, guid: 4b8f37bf526e48843af7f72c8dd4a5a6, type: 3}
+      propertyPath: enemy_Wolf
+      value: 
+      objectReference: {fileID: 6888356697249192122, guid: 1b04da6e633e8a746b7ba4733d6d19be, type: 3}
     - target: {fileID: 1626734228443647797, guid: 4b8f37bf526e48843af7f72c8dd4a5a6, type: 3}
       propertyPath: e_Generator
       value: 
       objectReference: {fileID: 5951382397574324037}
+    - target: {fileID: 1626734228443647797, guid: 4b8f37bf526e48843af7f72c8dd4a5a6, type: 3}
+      propertyPath: enemy_Magpie
+      value: 
+      objectReference: {fileID: 2120112856537873307, guid: 4bc5ddba295284848932df048d668e66, type: 3}
     - target: {fileID: 1626734228443647797, guid: 4b8f37bf526e48843af7f72c8dd4a5a6, type: 3}
       propertyPath: Target_Player
       value: 
@@ -37210,6 +37226,10 @@ PrefabInstance:
     - target: {fileID: 3465345333553980773, guid: 4b8f37bf526e48843af7f72c8dd4a5a6, type: 3}
       propertyPath: m_Name
       value: Enemy_Summoner
+      objectReference: {fileID: 0}
+    - target: {fileID: 3465345333553980773, guid: 4b8f37bf526e48843af7f72c8dd4a5a6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
