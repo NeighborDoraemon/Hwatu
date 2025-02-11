@@ -639,6 +639,7 @@ MonoBehaviour:
     constantValue: 0
   Target_Player: {fileID: 0}
   Summon_Position: {fileID: 3528760516356842291}
+  e_Generator: {fileID: 0}
   enemy_Hog: {fileID: 362895113993197914, guid: 3b36c711410824740812ebfbea927d8e, type: 3}
   enem_Bird: {fileID: 119715352043712820, guid: 70a66c6e314511343a11edb39177ffaf, type: 3}
   enem_Magpie: {fileID: 2120112856537873307, guid: 4bc5ddba295284848932df048d668e66, type: 3}
@@ -667,7 +668,7 @@ Transform:
   m_GameObject: {fileID: 3528760516356842291}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.5, y: 2, z: 0}
+  m_LocalPosition: {x: -1.5, y: 1.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -31,6 +31,7 @@ public class Summoner : MonoBehaviour, Enemy_Interface
     [SerializeField] private GameObject enem_Bird;
     [SerializeField] private GameObject enem_Magpie;
 
+
     private enum Enemies
     {
         HOG,
@@ -145,6 +146,8 @@ public class Summoner : MonoBehaviour, Enemy_Interface
                     break;
                 }
         }
+
+        Enemy_Generator.Instance.From_Other_Add_Enemy();
 
         foreach (Enemy_Interface enemy_interface in spawned_Enemy.GetComponentsInChildren<Enemy_Interface>(true)) //적에게 플레이어 전달
         {
