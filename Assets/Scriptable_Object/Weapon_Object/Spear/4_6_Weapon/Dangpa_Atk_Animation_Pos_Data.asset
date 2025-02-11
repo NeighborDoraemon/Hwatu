@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e7cc7e5bf5a124f842638c93b025ba, type: 3}
   m_Name: Dangpa_Atk_Animation_Pos_Data
   m_EditorClassIdentifier: 
-  animation_Name: PlayerChar_Spear_Atk
+  animation_Name: PC_Spear_Atk
   frame_Pos:
   - {x: 0.0519, y: -0.2896, z: 0}
   - {x: 0.1539, y: -0.3051, z: 0}
@@ -23,3 +23,4 @@ MonoBehaviour:
   - {x: 0, y: 0, z: -11.003}
   - {x: 0, y: 0, z: -11.003}
   - {x: 0, y: 0, z: 0}
+  frame_Scales: []

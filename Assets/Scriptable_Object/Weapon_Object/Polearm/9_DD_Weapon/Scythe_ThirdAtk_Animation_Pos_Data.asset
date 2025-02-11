@@ -12,19 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e7cc7e5bf5a124f842638c93b025ba, type: 3}
   m_Name: Scythe_ThirdAtk_Animation_Pos_Data
   m_EditorClassIdentifier: 
-  animation_Name: PlayerChar_Spear_Atk
+  animation_Name: PC_Scythe_ThirdAtk
   frame_Pos:
-  - {x: -0.0457, y: -0.3832, z: 0}
-  - {x: -0.0457, y: -0.3832, z: 0}
-  - {x: -0.0457, y: -0.3832, z: 0}
-  - {x: -0.0457, y: -0.3832, z: 0}
-  - {x: -0.0457, y: -0.3832, z: 0}
-  - {x: -0.0457, y: -0.3832, z: 0}
-  frame_Rotations: []
+  - {x: -0.061, y: -0.358, z: 0}
+  - {x: -0.083, y: -0.166, z: 0}
+  - {x: 0.126, y: -0.38, z: 0}
+  - {x: 0.126, y: -0.38, z: 0}
+  frame_Rotations:
+  - {x: 0, y: 0, z: -368.306}
+  - {x: 0, y: 0, z: -180.437}
+  - {x: 0, y: 0, z: -372.984}
+  - {x: 0, y: 0, z: -372.984}
   frame_Scales:
   - {x: 1, y: 1, z: 1}
-  - {x: 1, y: 1, z: 1}
   - {x: -1, y: 1, z: 1}
   - {x: -1, y: 1, z: 1}
-  - {x: 1, y: 1, z: 1}
-  - {x: 1, y: 1, z: 1}
+  - {x: -1, y: 1, z: 1}

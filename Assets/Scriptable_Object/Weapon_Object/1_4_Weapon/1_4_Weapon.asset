@@ -15,19 +15,19 @@ MonoBehaviour:
   weapon_Name: SnakeWine
   attack_Damage: 3
   attack_Cooldown: 1
-  max_Attack_Count: 2
+  max_Attack_Count: 1
   skill_Damage: -15
   skill_Cooldown: 3
-  weapon_Prefab: {fileID: 7843703564842448239, guid: 3438e58655288c242938845a37924cc5, type: 3}
-  overrideController: {fileID: 22100000, guid: 58c7d26d032b1b9478887bae7f3331ab, type: 2}
-  weapon_overrideController: {fileID: 0}
+  weapon_Prefab: {fileID: 7843703564842448239, guid: cc8cf3880c9d6634f9f26da12a813d58, type: 3}
+  overrideController: {fileID: 22100000, guid: cf27bac6ce395fd4b8ec3af39a7fcd61, type: 2}
+  weapon_overrideController: {fileID: 22100000, guid: 6ffcb2919db719b41805994c6c5bc8aa, type: 2}
   animation_Pos_Data_List:
-  - {fileID: 11400000, guid: 667186482d3a9a742adbe0408d34feb3, type: 2}
-  - {fileID: 11400000, guid: 2ea0f6c00fb29b8438847e39a262c226, type: 2}
-  - {fileID: 11400000, guid: 8131d1f4cd9e7034c9f2a641d22477e2, type: 2}
-  - {fileID: 11400000, guid: 2e6f03e9e373443429e05ab0cdc5e0b6, type: 2}
-  - {fileID: 11400000, guid: 6dbd70c0e2be0684d80fa6620e13e4c7, type: 2}
-  - {fileID: 11400000, guid: d5ebe2f253a1bf142b0d3c6f609599b8, type: 2}
-  effect_Data: {fileID: 11400000, guid: 72c283aea0efc5c479ee65ac1a1ee3d4, type: 2}
+  - {fileID: 11400000, guid: bacd55d76c856f24989fa4c32344a9c0, type: 2}
+  - {fileID: 11400000, guid: 766851b9cb6679841aea76460be67f19, type: 2}
+  - {fileID: 11400000, guid: 120d7d4c0f7b18c48adfe2f2f78db44b, type: 2}
+  - {fileID: 11400000, guid: e75eaa3b75bcd2049b0fc557078b3e79, type: 2}
+  - {fileID: 11400000, guid: b288a53322d75e1419e0922a384d9d4e, type: 2}
+  - {fileID: 11400000, guid: 9d3b7ee7c89ac0348b3796b55b51b8a9, type: 2}
+  effect_Data: {fileID: 11400000, guid: 0dd1f1221b20f904dafc48d078b8ad1d, type: 2}
   attack_Strategy: {fileID: 11400000, guid: 657170e14d9c4c5458bbc33a94ea1890, type: 2}
   is_HoldAttack_Enabled: 0

@@ -10,6 +10,7 @@ public class Weapon_Effect_Data : ScriptableObject
     {
         public int frame_Number;
         public Sprite effect_Sprites;
+        public RuntimeAnimatorController effect_Animator;
         public Vector3 position_Offset;
         public float duration;
     }

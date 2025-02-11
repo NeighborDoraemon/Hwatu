@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
+  m_Name: 10_DD_Weapon
+  m_EditorClassIdentifier: 
+  weapon_Name: Crow_Card
+  attack_Damage: 10
+  attack_Cooldown: 0.5
+  max_Attack_Count: 3
+  skill_Damage: 0
+  skill_Cooldown: 2
+  weapon_Prefab: {fileID: 7843703564842448239, guid: 3438e58655288c242938845a37924cc5, type: 3}
+  overrideController: {fileID: 22100000, guid: 58c7d26d032b1b9478887bae7f3331ab, type: 2}
+  weapon_overrideController: {fileID: 0}
+  animation_Pos_Data_List: []
+  effect_Data: {fileID: 11400000, guid: da546ea96b27b9049a10110ec7d94884, type: 2}
+  attack_Strategy: {fileID: 11400000, guid: 3989fe033eebb1f4fac2e640785888a7, type: 2}
+  is_HoldAttack_Enabled: 0

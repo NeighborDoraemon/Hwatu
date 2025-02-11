@@ -10,8 +10,7 @@ public class Musket_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public GameObject projectile_Prefab;
     public float projectile_Speed = 20.0f;
-
-    private bool is_Reloading = false;
+    
     private bool is_Empty = false;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
@@ -26,96 +25,71 @@ public class Musket_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
         Initialize_Weapon_Data();
 
-        is_Reloading = false;
         is_Empty = false;
-        //Debug.Log($"is_Reloading : {is_Reloading}, is_Empty : {is_Empty}");
-        //Debug.Log($"Attack Cooldown : {player.attack_Cooldown}");
     }
 
     private void Initialize_Weapon_Data()
     {
-        player.animator.runtimeAnimatorController = weapon_Data.overrideController;
-        player.attackDamage = weapon_Data.attack_Damage;
+        player.animator.runtimeAnimatorController = weapon_Data.overrideController;        
         player.attack_Cooldown = weapon_Data.attack_Cooldown;
         player.max_AttackCount = weapon_Data.max_Attack_Count;
         player.skill_Cooldown = weapon_Data.skill_Cooldown;
     }
 
+    private enum WeaponState
+    {
+        Ready,
+        Empty,
+        Reloading
+    }
+    private WeaponState cur_WeaponState = WeaponState.Ready;
+
+    private void Update_WeaponState(WeaponState newState)
+    {
+        cur_WeaponState = newState;
+    }
+
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
-        //Debug.Log($"Attack called. is_Reloading : {is_Reloading}, is_Empty : {is_Empty}");
-
-        if (is_Reloading)
+        switch (cur_WeaponState)
         {
-            Debug.Log("Currently Reloading");
-            return;
+            case WeaponState.Reloading:
+                return;
+            case WeaponState.Empty:
+                Reload(player);
+                return;
+            case WeaponState.Ready:
+                player.animator.SetTrigger("Attack");
+                player.isAttacking = true;
+                player.cur_AttackCount++;                
+                return;
         }
-        
-        if (is_Empty)
-        {
-            Debug.Log("Empty.");
-            Reload(player);
-            return;
-        }
-
-        if (!is_Empty && !is_Reloading)
-        {
-            Debug.Log("Start Attack");
-            Start_Attack(player, weapon_Data);
-        }        
-    }
-
-    private bool Is_Cooldown_Complete(PlayerCharacter_Controller player)
-    {
-        return Time.time >= player.last_Attack_Time + player.attack_Cooldown;
-    }
-
-    private void Start_Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
-    {
-        player.animator.SetTrigger("Attack");
-        player.isAttacking = true;
-        player.cur_AttackCount = 1;
-        Update_Attack_Timers(player);
-
-        is_Empty = true;
-        //Debug.Log("Attack Completed. Ammo now empty");
     }
 
     public void Reload(PlayerCharacter_Controller player)
     {
-        if (is_Reloading)
+        if (cur_WeaponState == WeaponState.Reloading)
         {
             Debug.Log("Reload is already in progress");
-            return;           
+            return;
         }
-        else
-        {
-            player.StartCoroutine(Reload_Coroutine(player));
-        }        
+
+        player.StartCoroutine(Reload_Coroutine(player));
     }
 
     private IEnumerator Reload_Coroutine(PlayerCharacter_Controller player)
     {
-        is_Reloading = true;
-        //Debug.Log($"Reloading Start : {Time.time} seconds");
+        Update_WeaponState(WeaponState.Reloading);        
 
         yield return new WaitForSeconds(player.attack_Cooldown);
-
-        //Debug.Log($"Reload Complete : {Time.time}");
-        is_Reloading = false;
-        is_Empty = false;
+        
+        Update_WeaponState(WeaponState.Ready);
     }
 
-    private void Update_Attack_Timers(PlayerCharacter_Controller player)
-    {
-        player.last_Attack_Time = Time.time;
-        player.last_ComboAttack_Time = Time.time;
-    }
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point)
     {
-        if (is_Empty || is_Reloading)
+        if (cur_WeaponState == WeaponState.Empty || cur_WeaponState == WeaponState.Reloading)
         {
-            //Debug.Log("Can't shoot while reloading or empty");
             return;
         }
 
@@ -124,7 +98,7 @@ public class Musket_Attack_Strategy : ScriptableObject, IAttack_Strategy
         Vector2 shootDirection = (player.is_Facing_Right) ? Vector2.right : Vector2.left;
         rb.velocity = shootDirection * projectile_Speed;
 
-        is_Empty = true;
+        Update_WeaponState(WeaponState.Empty);
     }
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {

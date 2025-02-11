@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af469d3b98f997c4fb43f6459e5ec0b7, type: 3}
   m_Name: Pyeongon_Attack_Strategy
   m_EditorClassIdentifier: 
+  cloud_Prefab: {fileID: 2942747371512883950, guid: ca4736e024299154d942697e47eeb607, type: 3}
+  duration: 1
+  move_Speed: 4

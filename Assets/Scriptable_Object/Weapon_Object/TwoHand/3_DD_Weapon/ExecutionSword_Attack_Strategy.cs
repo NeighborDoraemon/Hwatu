@@ -9,9 +9,11 @@ public class ExecutionSword_Attack_Strategy : ScriptableObject, IAttack_Strategy
     private Weapon_Data weapon_Data;
 
     private int kill_Stack = 0;
-    private float move_Distance = 1.0f;
+    public float move_Distance = 1.0f;
     private float move_Duration = 0.2f;
+    public float move_Delay = 0.1f;
     private bool is_Moveing_Forward = false;
+    private Queue<Vector3> moveQueue = new Queue<Vector3>();
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
@@ -28,67 +30,21 @@ public class ExecutionSword_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     private void Initialize_Weapon_Data()
     {
-        player.animator.runtimeAnimatorController = weapon_Data.overrideController;
-        player.attackDamage = weapon_Data.attack_Damage;
+        player.animator.runtimeAnimatorController = weapon_Data.overrideController;        
         player.attack_Cooldown = weapon_Data.attack_Cooldown;
         player.max_AttackCount = weapon_Data.max_Attack_Count;
         player.skill_Cooldown = weapon_Data.skill_Cooldown;
     }
 
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
-    {
-        if (Is_Cooldown_Complete(player))
-        {
-            Start_Attack(player, weapon_Data);
-        }
-        else if (Can_Combo_Attack(player, weapon_Data))
-        {
-            Continue_Combo(player);
-        }
-        else if (Is_Combo_Complete(player, weapon_Data))
-        {
-            End_Attack(player);
-        }
-    }
-
-    private bool Is_Cooldown_Complete(PlayerCharacter_Controller player)
-    {
-        return Time.time >= player.last_Attack_Time + player.attack_Cooldown;
-    }
-
-    private bool Is_Combo_Complete(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
-    {
-        return player.cur_AttackCount >= weapon_Data.max_Attack_Count;
-    }
-
-    private void Start_Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
-    {
+    {        
         player.animator.SetTrigger("Attack");
         player.isAttacking = true;
-        player.cur_AttackCount = 1;
-        Update_Attack_Timers(player);
-
-        if (!is_Moveing_Forward)
-        {
-            player.StartCoroutine(MoveForward_While_Attacking(player));
-        }
-        
-        Apply_Stack_Effects();
-    }
-
-    private bool Can_Combo_Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
-    {
-        return player.isAttacking &&
-               player.cur_AttackCount < weapon_Data.max_Attack_Count &&
-               Time.time - player.last_ComboAttack_Time <= player.comboTime;
-    }
-
-    private void Continue_Combo(PlayerCharacter_Controller player)
-    {
-        player.animator.SetTrigger("Attack");
         player.cur_AttackCount++;
-        player.isAttacking = true;
-        Update_Attack_Timers(player);
+
+        Vector3 target_Pos = player.transform.position +
+            (player.is_Facing_Right ? Vector3.right : Vector3.left) * move_Distance;
+        moveQueue.Enqueue(target_Pos);
 
         if (!is_Moveing_Forward)
         {
@@ -101,32 +57,29 @@ public class ExecutionSword_Attack_Strategy : ScriptableObject, IAttack_Strategy
     private IEnumerator MoveForward_While_Attacking(PlayerCharacter_Controller player)
     {
         is_Moveing_Forward = true;
-        float elapsed_Time = 0f;
-        Vector3 initialPosition = player.transform.position;
-        Vector3 target_Position = initialPosition + (player.is_Facing_Right ? Vector3.right : Vector3.left) * move_Distance;
-
-        while (elapsed_Time < move_Duration) 
+        
+        while (moveQueue.Count > 0) 
         {
-            player.transform.position = Vector3.Lerp(initialPosition, target_Position, elapsed_Time / move_Duration);
-            elapsed_Time += Time.deltaTime;
-            yield return null;
+            Vector3 target_Position = moveQueue.Dequeue();
+            Vector3 initial_Position = player.transform.position;
+            float elapsed_Time = 0f;
+
+            while (elapsed_Time < move_Duration)
+            {
+                player.transform.position = Vector3.Lerp(initial_Position, target_Position, elapsed_Time / move_Duration);
+                elapsed_Time += Time.deltaTime;
+                yield return null;
+            }
+
+            player.transform.position = target_Position;
+
+            if (moveQueue.Count > 0)
+            {
+                yield return new WaitForSeconds(move_Delay);
+            }
         }
-
-        player.transform.position = target_Position;
+        
         is_Moveing_Forward = false;
-    }
-
-    private void End_Attack(PlayerCharacter_Controller player)
-    {
-        player.isAttacking = false;
-        player.cur_AttackCount = 0;
-        player.last_Attack_Time = Time.time;
-    }
-
-    private void Update_Attack_Timers(PlayerCharacter_Controller player)
-    {
-        player.last_ComboAttack_Time = Time.time;
-        player.last_Attack_Time = Time.time;
     }
 
     public void Add_Kill_Stack()

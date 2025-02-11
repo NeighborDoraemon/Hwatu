@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e7cc7e5bf5a124f842638c93b025ba, type: 3}
   m_Name: Dangpa_Jump_Animation_Pos_Data
   m_EditorClassIdentifier: 
-  animation_Name: PlayerChar_Spear_Jump
+  animation_Name: PC_Spear_Jump
   frame_Pos:
   - {x: 0.0592, y: -0.256, z: 0}
   - {x: 0.0592, y: -0.256, z: 0}
@@ -21,3 +21,4 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
+  frame_Scales: []

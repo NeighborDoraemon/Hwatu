@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e7cc7e5bf5a124f842638c93b025ba, type: 3}
   m_Name: Dangpa_Fall_Animation_Pois_Data
   m_EditorClassIdentifier: 
-  animation_Name: PlayerChar_Spear_Fall
+  animation_Name: PC_Spear_Fall
   frame_Pos:
   - {x: 0.046, y: -0.311, z: 0}
   - {x: 0.046, y: -0.304, z: 0}
   frame_Rotations:
   - {x: 0, y: 0, z: -11.652}
   - {x: 0, y: 0, z: -11.652}
+  frame_Scales: []

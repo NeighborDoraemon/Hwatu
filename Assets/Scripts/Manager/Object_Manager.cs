@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Object_Manager : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class Object_Manager : MonoBehaviour
 
     private List<GameObject> spawned_Item_Instances = new List<GameObject>();
     private List<Item> spawnedItems = new List<Item>();
+
 
     private void Awake()
     {
@@ -128,7 +130,7 @@ public class Object_Manager : MonoBehaviour
 
 
     // Item
-    public void Spawn_Item(string itemName, Vector2 spawnPos, PlayerCharacter_Controller player)
+    public void Spawn_Item(Vector2 spawnPos, Dictionary<ItemRarity, float> dropRates, PlayerCharacter_Controller player)
     {
         if (item_Database == null || itemPrefab == null)
         {
@@ -136,32 +138,60 @@ public class Object_Manager : MonoBehaviour
             return;
         }
 
-        Item randomItem = Get_Random_Item();
-        if (randomItem == null) return;
+        ItemRarity selected_Rarity = Get_Random_Rarity(dropRates);
+        Debug.Log($"선택된 아이템 등급 : {selected_Rarity}");
+
+        Item random_Item = Get_Random_Item(selected_Rarity);
+
+        if (random_Item == null) return;
+
+        Debug.Log($"드롭된 아이템 : {random_Item.itemName} (등급 : {random_Item.item_Rarity})");
 
         GameObject itemInstance = Instantiate(itemPrefab, spawnPos, Quaternion.identity);
         Item_Prefab itemPrefabScript = itemInstance.GetComponent<Item_Prefab>();
-        itemPrefabScript.Initialize(randomItem);
+        itemPrefabScript.Initialize(random_Item);
 
-        if (!randomItem.isConsumable)
+        if (!random_Item.isConsumable)
         {
-            spawnedItems.Add(randomItem);
+            spawnedItems.Add(random_Item);
         }
         spawned_Item_Instances.Add(itemInstance);
     }
 
-    private Item Get_Random_Item()
+    private ItemRarity Get_Random_Rarity(Dictionary<ItemRarity, float> dropRates)
     {
-        List<Item> available_Items = new List<Item>(item_Database.Get_All_Items());
-        
-        available_Items.RemoveAll(item => spawnedItems.Contains(item));
+        float total_Weight = 0f;
+        foreach (var rate in dropRates.Values)
+        {
+            total_Weight += rate;
+        }
 
+        float random_Value = Random.Range(0f, total_Weight);
+        float cumulative = 0f;
+
+        foreach (var entry in dropRates)
+        {
+            cumulative += entry.Value;
+            if (random_Value <= cumulative)
+            {
+                return entry.Key;
+            }
+        }
+
+        return ItemRarity.Common;
+    }
+
+    private Item Get_Random_Item(ItemRarity rarity)
+    {
+        List<Item> available_Items = item_Database.Get_Items_By_Rarity(rarity);
+        
         if (available_Items.Count == 0)
         {
-            Debug.LogWarning("모든 아이템 소환 완료");
-            return null;
+            Debug.LogWarning("해당 등급 아이템 없음. 다른 등급 아이템 반환");
+            available_Items = item_Database.Get_All_Items();
         }        
-        return available_Items[Random.Range(0, available_Items.Count)];
+
+        return available_Items.Count > 0 ? available_Items[Random.Range(0, available_Items.Count)] : null;
     }
 
     public void Reset_Spawned_Items()

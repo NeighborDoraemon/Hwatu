@@ -36,74 +36,9 @@ public class Scythe_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
-        if (Is_Cooldown_Complete(player))
-        {
-            Start_Attack(player, weapon_Data);
-        }
-        else if (Can_Combo_Attack(player, weapon_Data))
-        {
-            Continue_Combo(player);
-        }
-        else if (Is_Combo_Complete(player, weapon_Data))
-        {
-            End_Attack(player);
-        }
-    }
-
-    private bool Is_Cooldown_Complete(PlayerCharacter_Controller player)
-    {
-        return Time.time >= player.last_Attack_Time + player.attack_Cooldown;
-    }
-
-    private bool Can_Combo_Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
-    {
-        return player.isAttacking &&
-               player.cur_AttackCount < weapon_Data.max_Attack_Count &&
-               Time.time - player.last_ComboAttack_Time <= player.comboTime;
-    }
-
-    private bool Is_Combo_Complete(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
-    {
-        return player.cur_AttackCount >= weapon_Data.max_Attack_Count;
-    }
-
-    private void Start_Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
-    {
         player.animator.SetTrigger("Attack");
         player.isAttacking = true;
-        player.cur_AttackCount = 1;
-        Update_Attack_Timers(player);
-    }
-
-    private void Continue_Combo(PlayerCharacter_Controller player)
-    {
-        player.animator.SetTrigger("Attack");
-        player.cur_AttackCount++;
-        player.isAttacking = true;
-        Update_Attack_Timers(player);
-    }
-
-    private void End_Attack(PlayerCharacter_Controller player)
-    {
-        //player.isAttacking = false;
-        player.cur_AttackCount = 0;
-        player.last_Attack_Time = Time.time;
-    }
-
-    private void Update_Attack_Timers(PlayerCharacter_Controller player)
-    {
-        player.last_ComboAttack_Time = Time.time;
-        player.last_Attack_Time = Time.time;
-    }
-
-    private bool Is_Skill_Cooldown_Complete(PlayerCharacter_Controller player)
-    {
-        return Time.time >= player.last_Skill_Time + player.skill_Cooldown;
-    }
-
-    private void Update_Skill_Timer(PlayerCharacter_Controller player)
-    {
-        player.last_Skill_Time = Time.time;
+        //player.cur_AttackCount++;
     }
 
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point)
@@ -113,15 +48,7 @@ public class Scythe_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
-        if (Is_Skill_Cooldown_Complete(player))
-        {
-            player.StartCoroutine(Dash_Skill(player));
-            Update_Skill_Timer(player);
-        }
-        else
-        {
-            Debug.Log("Skill is on cooldown");
-        }
+        player.StartCoroutine(Dash_Skill(player));        
     }
 
     private IEnumerator Dash_Skill(PlayerCharacter_Controller player)
@@ -131,25 +58,26 @@ public class Scythe_Attack_Strategy : ScriptableObject, IAttack_Strategy
         float elapsed = 0.0f;
         float check_Interval = 0.05f;
         float check_Radius = 0.5f;
-        float dash_Step = dash_Speed * Time.deltaTime;
+
         LayerMask enemy_Layer = LayerMask.GetMask("Enemy");
         LayerMask wall_Layer = LayerMask.GetMask("Walls");
         LayerMask boss_Layer = LayerMask.GetMask("Boss_Enemy");
+
+        player.rb.velocity = dash_Direction * dash_Speed;
+        player.is_Knock_Back = true;
 
         while (elapsed < dash_Duration)
         {
             player.is_Knock_Back = true;
 
-            RaycastHit2D hit = Physics2D.Raycast(player.transform.position, dash_Direction, dash_Step, wall_Layer);
-            RaycastHit2D hit_02 = Physics2D.Raycast(player.transform.position, dash_Direction, dash_Step, boss_Layer);
+            RaycastHit2D hit = Physics2D.Raycast(player.transform.position, dash_Direction, 0.1f, wall_Layer);
+            RaycastHit2D hit_boss = Physics2D.Raycast(player.transform.position, dash_Direction, 0.1f, boss_Layer);
 
-            if (hit.collider != null || hit_02.collider != null)
+            if (hit.collider != null || hit_boss.collider != null)
             {
                 Debug.Log("Dash blocked by wall");
                 break;
             }
-
-            player.transform.Translate(dash_Direction * dash_Speed * Time.deltaTime);
 
             if (elapsed % check_Interval < Time.deltaTime)
             {

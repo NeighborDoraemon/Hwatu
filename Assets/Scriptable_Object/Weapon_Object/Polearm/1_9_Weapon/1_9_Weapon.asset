@@ -19,11 +19,13 @@ MonoBehaviour:
   skill_Damage: 0
   skill_Cooldown: 0
   weapon_Prefab: {fileID: 3185155336986206650, guid: 7b8b23a95d9e0e8419168e8209695f08, type: 3}
-  overrideController: {fileID: 22100000, guid: 3733cf225828c894e996dff32fa619fa, type: 2}
+  overrideController: {fileID: 22100000, guid: ac27532acddfac443a1422215d47bef0, type: 2}
   weapon_overrideController: {fileID: 0}
   animation_Pos_Data_List:
   - {fileID: 11400000, guid: 9e23f612a88a02f43b14c00cb8b2acad, type: 2}
   - {fileID: 11400000, guid: 76f1119c10cb57343910955199caf4e6, type: 2}
-  effect_Data: {fileID: 11400000, guid: 0dd1f1221b20f904dafc48d078b8ad1d, type: 2}
+  - {fileID: 11400000, guid: bd8d7b8a1d866b5428cd56b10817252a, type: 2}
+  - {fileID: 11400000, guid: 392d2e1b62607604b9481184bdf551e8, type: 2}
+  effect_Data: {fileID: 11400000, guid: d8259e58355445c41950219db86df055, type: 2}
   attack_Strategy: {fileID: 11400000, guid: 1d7483e863b2fac4e9dbccb8cbbf7d47, type: 2}
   is_HoldAttack_Enabled: 0

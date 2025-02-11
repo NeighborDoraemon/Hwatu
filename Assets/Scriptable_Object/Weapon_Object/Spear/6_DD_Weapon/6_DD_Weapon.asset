@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
+  m_Name: 6_DD_Weapon
+  m_EditorClassIdentifier: 
+  weapon_Name: Canon
+  attack_Damage: 8
+  attack_Cooldown: 2
+  max_Attack_Count: 1
+  skill_Damage: 16
+  skill_Cooldown: 25
+  weapon_Prefab: {fileID: 8321736916034091838, guid: 153836894f114084e8fa7be865f0b33a, type: 3}
+  overrideController: {fileID: 22100000, guid: 9176fe482f9020d4c9d3674105a5ec8e, type: 2}
+  weapon_overrideController: {fileID: 0}
+  animation_Pos_Data_List: []
+  effect_Data: {fileID: 11400000, guid: da546ea96b27b9049a10110ec7d94884, type: 2}
+  attack_Strategy: {fileID: 11400000, guid: 457a6e7e895af6140b15341d0798d50a, type: 2}
+  is_HoldAttack_Enabled: 0

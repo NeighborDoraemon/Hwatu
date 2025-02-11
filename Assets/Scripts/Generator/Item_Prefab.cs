@@ -17,6 +17,6 @@ public class Item_Prefab : MonoBehaviour
     public void Initialize(Item newItemData)
     {
         itemData = newItemData;
-        spriteRenderer.sprite = itemData.icon;  // 아이템의 스프라이트 설정
+        spriteRenderer.sprite = itemData.item_Icon;  // 아이템의 스프라이트 설정
     }
 }

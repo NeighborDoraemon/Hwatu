@@ -15,15 +15,18 @@ MonoBehaviour:
   weapon_Name: PoleArm
   attack_Damage: 4
   attack_Cooldown: 1
-  max_Attack_Count: 1
+  max_Attack_Count: 2
   skill_Damage: 0
   skill_Cooldown: 6
   weapon_Prefab: {fileID: 4987424634841645065, guid: 8201210866927d141b5556492f225c2f, type: 3}
-  overrideController: {fileID: 22100000, guid: 3733cf225828c894e996dff32fa619fa, type: 2}
+  overrideController: {fileID: 22100000, guid: dfc7d1cbf883db04ea9e6486b169712a, type: 2}
   weapon_overrideController: {fileID: 0}
   animation_Pos_Data_List:
   - {fileID: 11400000, guid: 4ab105630b5cbde4c94f831259a5d03e, type: 2}
   - {fileID: 11400000, guid: a62a7cf607ecff44cb01449da237dcb0, type: 2}
-  effect_Data: {fileID: 11400000, guid: 0dd1f1221b20f904dafc48d078b8ad1d, type: 2}
+  - {fileID: 11400000, guid: 42cce92c643d75b4397b8445a62f4437, type: 2}
+  - {fileID: 11400000, guid: ae74b7f7eb50ff9409dadcbf43ef69fc, type: 2}
+  - {fileID: 11400000, guid: c95ba3cc3f857bd47bdd9eeb07006d47, type: 2}
+  effect_Data: {fileID: 11400000, guid: 2ffef6a7ec148b741a30cfd821ca8b60, type: 2}
   attack_Strategy: {fileID: 11400000, guid: c8b3dafacca71984799000a6f187cf46, type: 2}
   is_HoldAttack_Enabled: 0

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9931eede985daa64daadc9c5533b5e0d, type: 3}
   m_Name: DoubleHandsSword_Attack
   m_EditorClassIdentifier: 
-  skill_Projectile_Prefab: {fileID: 4150010414422937313, guid: 062a93e440de44244ab7ea8232fd6926, type: 3}
+  skill_Projectile_Prefab: {fileID: 4150010414422937313, guid: a7f77746d8f4c0b47a1d432cac8b0f31, type: 3}
   projectile_Speed: 10

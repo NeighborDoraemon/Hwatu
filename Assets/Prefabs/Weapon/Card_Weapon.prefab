@@ -143,4 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bde04193bb143aa4da28c4d6b6deaf66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  base_Weapon_Damage: 3
+  crit_Chance: 0.2
+  crit_Multiple: 2
   weapon_Collider: {fileID: 3471636446047068593}

@@ -18,7 +18,10 @@ MonoBehaviour:
   max_Attack_Count: 0
   skill_Damage: 0
   skill_Cooldown: 0
-  attack_Trigger: 
-  skill_Trigger: 
+  weapon_Prefab: {fileID: 7843703564842448239, guid: 665738c1b2f3d1141940e489b7ad0c4d, type: 3}
   overrideController: {fileID: 22100000, guid: 32560cb0b251e0e4d8da42a6456d4d8d, type: 2}
+  weapon_overrideController: {fileID: 0}
+  animation_Pos_Data_List: []
+  effect_Data: {fileID: 0}
   attack_Strategy: {fileID: 11400000, guid: 68b16490c8c32154f8a580b17b1b4888, type: 2}
+  is_HoldAttack_Enabled: 0

@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9355ccc537dbe846a15da7ad6c9234c, type: 3}
+  m_Name: Scythe_Effect_Data
+  m_EditorClassIdentifier: 
+  effects:
+  - motion_Name: PC_Scythe_FirstAtk
+    frame_Effects:
+    - frame_Number: 1
+      effect_Sprites: {fileID: 21300000, guid: 5aaf48389dd7b8e4e85b845aaea07d50, type: 3}
+      effect_Animator: {fileID: 0}
+      position_Offset: {x: 0.072, y: -0.007, z: 0}
+      duration: 0.1
+  - motion_Name: PC_Scythe_SecondAtk
+    frame_Effects:
+    - frame_Number: 1
+      effect_Sprites: {fileID: 21300000, guid: 62976d61f9468e54a957aca8505a3fc1, type: 3}
+      effect_Animator: {fileID: 0}
+      position_Offset: {x: 0.028, y: -0.099, z: 0}
+      duration: 0.1
+  - motion_Name: PC_Scythe_ThirdAtk
+    frame_Effects:
+    - frame_Number: 1
+      effect_Sprites: {fileID: 21300000, guid: 4b97f3bf835f9cd42a73870def573605, type: 3}
+      effect_Animator: {fileID: 0}
+      position_Offset: {x: 0.026, y: -0.056, z: 0}
+      duration: 0.1
+  - motion_Name: PC_Scythe_Skill
+    frame_Effects:
+    - frame_Number: 1
+      effect_Sprites: {fileID: 21300000, guid: 68add8a6356822d4aa9ddea5298e19db, type: 3}
+      effect_Animator: {fileID: 0}
+      position_Offset: {x: 0.324, y: -0.276, z: 0}
+      duration: 0.1

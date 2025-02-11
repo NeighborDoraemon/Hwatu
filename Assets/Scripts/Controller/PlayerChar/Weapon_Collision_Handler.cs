@@ -1,24 +1,48 @@
+using System.Buffers.Text;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Weapon_Collision_Handler : MonoBehaviour
 {
-    [SerializeField] private int attack_Damage;
-    [SerializeField] private Collider2D weapon_Collider;   
+    [SerializeField] private int base_Weapon_Damage;
+    [SerializeField] private float crit_Chance = 0.0f;
+    [SerializeField] private float crit_Multiple = 2.0f;
 
+    [SerializeField] private Collider2D weapon_Collider;
+
+    private PlayerCharacter_Controller player;
+    
     private void Awake()
-    {        
+    {
         if (weapon_Collider == null)
         {
             weapon_Collider = GetComponent<Collider2D>();            
         }
         weapon_Collider.enabled = false;
+
+        player = FindObjectOfType<PlayerCharacter_Controller>();
+        base_Weapon_Damage = player.cur_Weapon_Data.attack_Damage;
     }
 
-    public void Set_Damage(int damage)
+    public int Calculate_Final_Damage()
     {
-        attack_Damage = damage;
+        int playerDamage = player != null ? player.attackDamage : 0;
+
+        int totalDamage = base_Weapon_Damage + playerDamage;
+        
+        bool isCritical = Random.value <= crit_Chance;
+        if (isCritical)
+        {
+            totalDamage = Mathf.RoundToInt(totalDamage * crit_Multiple);
+            Debug.Log($"Critical Hit! Total Damage: {totalDamage}");
+        }
+        else
+        {
+            Debug.Log($"Normal Hit! Total Damage: {totalDamage}");
+        }
+
+        return totalDamage;
     }
 
     public void Enable_Collider(float duration)
@@ -42,8 +66,8 @@ public class Weapon_Collision_Handler : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            other.GetComponent<Enemy_Basic>().TakeDamage(attack_Damage);
-            //Debug.Log("Enemy hit by weapon");
+            int finalDamage = Calculate_Final_Damage();
+            other.GetComponent<Enemy_Basic>().TakeDamage(finalDamage);
         }
     }
 }

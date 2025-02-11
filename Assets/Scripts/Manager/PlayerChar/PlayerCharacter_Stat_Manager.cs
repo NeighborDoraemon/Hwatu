@@ -9,12 +9,17 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     [HideInInspector]
     public Animator animator;
 
-    [Header("플레이어 캐릭터 능력치")]
-    public float movementSpeed = 1.0f; // 이동 속도 조절 변수
-    public float jumpPower = 5.0f; // 점프력 조절 변수
+    [Header("플레이어 기본 능력치")]
+    public float base_MovementSpeed = 1.0f;
+    public float base_JumpPower = 5.0f;
+    public int base_Max_Health = 100;
+
+    [Header("플레이어 현재 능력치")]
+    public float movementSpeed = 1.0f;
+    public float jumpPower = 5.0f;
     public int max_Health = 100;
-    public int health = 100; // 현재 체력
-    public int attackDamage = 25; // 공격 데미지
+    public int health = 100;
+    public int attackDamage = 0; // 공격 데미지
     public int player_Life = 0;
 
     [Header("근접 공격 변수")]
@@ -28,12 +33,7 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     public bool isAttacking = false; // 공격 상태 체크 변수
     public int cur_AttackCount = 0;
     public int max_AttackCount = 0;
-    // 공격 히트 범위 크기 변수
-    [HideInInspector]
-    public float hitCollider_x = 0.2f;
-    [HideInInspector]
-    public float hitCollider_y = 0.4f;
-
+    
     [Header("원거리 공격 변수")]
     public Transform firePoint;
     public float arrowSpeed = 10.0f; // 총알 속도
@@ -44,6 +44,7 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     public bool is_Skill_Active = false;
 
     [Header("텔레포트")]
+    public int max_Teleport_Count = 1;
     public float teleporting_Distance = 3.0f; // 순간이동 거리 변수
     public float teleporting_CoolTime = 3.0f; // 순간이동 쿨타임 변수
 

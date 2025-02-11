@@ -16,5 +16,6 @@ MonoBehaviour:
   second_Projectile_Prefab: {fileID: 4150010414422937313, guid: 062a93e440de44244ab7ea8232fd6926, type: 3}
   skill_Projectile_Prefab: {fileID: 4150010414422937313, guid: 4e1678a9292b0d541b24bb5cf89a1890, type: 3}
   projectile_Speed: 10
-  skill_Projectile_Scale: 0.5
+  skill_Projectile_Speed: 5
+  skill_Projectile_Scale: 2
   scale_Up_Duration: 1.5

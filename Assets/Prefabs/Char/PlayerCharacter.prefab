@@ -64,7 +64,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.003540039, y: -0.46015438}
+  m_Offset: {x: 0.003540039, y: -0.32}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -75,7 +75,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.138628, y: 0.041932404}
+  m_Size: {x: 0.138628, y: 0.31}
   m_EdgeRadius: 0
 --- !u!1 &1274757747135360127
 GameObject:
@@ -464,29 +464,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapon_Manager: {fileID: 0}
   animator: {fileID: 0}
-  movementSpeed: 5
+  base_MovementSpeed: 1
+  base_JumpPower: 5
+  base_Max_Health: 100
+  movementSpeed: 3
   jumpPower: 5
   max_Health: 100
   health: 100
-  attackDamage: 25
+  attackDamage: 0
   player_Life: 0
   attackRange: 0.4
-  comboTime: 0.5
+  comboTime: 0.3
   attack_Cooldown: 1
   last_Attack_Time: 0
   last_ComboAttack_Time: 0
   isAttacking: 0
   cur_AttackCount: 0
   max_AttackCount: 0
-  hitCollider_x: 0.2
-  hitCollider_y: 0.4
   firePoint: {fileID: 5342704663972728764}
   arrowSpeed: 10
   skill_Cooldown: 1
   last_Skill_Time: 0
   is_Skill_Active: 0
-  teleporting_Distance: 3
+  teleporting_Distance: 2
   teleporting_CoolTime: 3
+  i_Money: 0
   card_UI_Manager: {fileID: 0}
   card_Value: {fileID: 0}
   sprite_Renderer: {fileID: 0}
@@ -495,6 +497,13 @@ MonoBehaviour:
   - {fileID: 0}
   is_Start_Spawn: 1
   player_Inventory: []
+  item_Slots:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   inventoryPanel: {fileID: 0}
   rb: {fileID: 3124059131931867968}
   maxJumpCount: 2
@@ -504,9 +513,13 @@ MonoBehaviour:
   canAttack: 1
   weapon_Prefab: {fileID: 0}
   effect_Render: {fileID: 4522405444115821180}
+  effect_Animator: {fileID: 4023915199526736471}
   weapon_Anchor: {fileID: 5342704663972728764}
   effect_Anchor: {fileID: 8832612347482569498}
   is_Facing_Right: 1
+  weapon_Animator: {fileID: 0}
+  isInvincible: 0
+  is_UI_Open: 0
   Player_Health_Bar: {fileID: 0}
   pause_Manager: {fileID: 0}
   player_render: {fileID: 8434130835688464816}
@@ -524,6 +537,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8832612347482569498}
   - component: {fileID: 4522405444115821180}
+  - component: {fileID: 4023915199526736471}
   m_Layer: 10
   m_Name: Weapon_Effect
   m_TagString: Untagged
@@ -586,7 +600,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1375957023
   m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -598,6 +612,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &4023915199526736471
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5417539781672758290}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6830120096207300428
 GameObject:
   m_ObjectHideFlags: 0

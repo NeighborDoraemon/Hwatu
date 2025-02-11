@@ -1,0 +1,13 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: PC_Gayageum_Animation
+  m_Controller: {fileID: 9100000, guid: 6c65eefea63f86e4b80afe8a1bc6af6e, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 8c72a1e9db9f31546ab0d13e15e5afee, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: e535f9c0a65bbd34d8d938c62e617330, type: 2}

@@ -30,7 +30,6 @@ public class Gayageum_Attack_Strategy : ScriptableObject, IAttack_Strategy
     private void Initialize_Weapon_Data()
     {
         player.animator.runtimeAnimatorController = weapon_Data.overrideController;
-        player.attackDamage = weapon_Data.attack_Damage;
         player.attack_Cooldown = weapon_Data.attack_Cooldown;
         player.max_AttackCount = weapon_Data.max_Attack_Count;
         player.skill_Cooldown = weapon_Data.skill_Cooldown;
@@ -60,19 +59,6 @@ public class Gayageum_Attack_Strategy : ScriptableObject, IAttack_Strategy
                 Debug.LogWarning($"Enemy_Basic component not found on : {enemy_Collider.name}");
             }
         }
-
-        Update_Attack_Timers(player);
-    }
-
-    private bool Is_Cooldown_Complete(PlayerCharacter_Controller player)
-    {
-        return Time.time >= player.last_Attack_Time + player.attack_Cooldown;
-    }
-
-    private void Update_Attack_Timers(PlayerCharacter_Controller player)
-    {
-        player.last_ComboAttack_Time = Time.time;
-        player.last_Attack_Time = Time.time;
     }
 
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point)
@@ -80,20 +66,9 @@ public class Gayageum_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     }
 
-    private bool Is_Skill_Cooldown_Complete()
-    {
-        return Time.time >= player.last_Skill_Time + player.skill_Cooldown;
-    }
-
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         if (is_Skill_Active) return;
-
-        if (!Is_Skill_Cooldown_Complete())
-        {
-            Debug.Log("Skill is on Cooldwon.");
-            return;
-        }
 
         is_Skill_Active = true;
         player.last_Skill_Time = Time.time;

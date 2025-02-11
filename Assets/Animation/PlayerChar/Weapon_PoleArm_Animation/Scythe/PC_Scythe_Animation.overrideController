@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: PC_Scythe_Animation
+  m_Controller: {fileID: 9100000, guid: 6c65eefea63f86e4b80afe8a1bc6af6e, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 7481a63663c0d1c4dbc0d8ce3994b488, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 06486442f2f8509479a4440b6ad28892, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: b8091b6eb84f529439b2398989a87703, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 2f2e92cf76a85034abfb552dfbd89b83, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 64a955fcaeea31f4b99922399bbde051, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 64a955fcaeea31f4b99922399bbde051, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 489b42ae306da304b83fdb8656297002, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: b30e42370579ce64484d65ecbbe78476, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: c5b533d7dc28fac4a94073a08809d80c, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: eb951aa966d9c3249bd74bc160911f71, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: dfb560c96ef2de64492b139921310a63, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 7115344e182dd3e4e9d3f9dfd7140c92, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: f38850e1f5c5bf3448729d2d5b6bd6b4, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 285dfce9ed3198e45be6ee5f5dbae925, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: e19f93be974fd1e4b84926e5b17825f5, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 1a06e8825f6a79b449b92b92ca819d71, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: daeba49fe6958be4a8caed02cd03d61f, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 17f310568b2f746468e2071d654437c6, type: 2}

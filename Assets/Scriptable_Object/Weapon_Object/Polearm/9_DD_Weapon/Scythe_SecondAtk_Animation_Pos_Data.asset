@@ -12,17 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e7cc7e5bf5a124f842638c93b025ba, type: 3}
   m_Name: Scythe_SecondAtk_Animation_Pos_Data
   m_EditorClassIdentifier: 
-  animation_Name: PlayerChar_Spear_Atk
+  animation_Name: PC_Scythe_SecondAtk
   frame_Pos:
-  - {x: -0.0457, y: -0.3832, z: 0}
-  - {x: -0.0457, y: -0.3832, z: 0}
-  - {x: -0.0457, y: -0.3832, z: 0}
-  - {x: -0.0457, y: -0.3832, z: 0}
-  - {x: -0.0457, y: -0.3832, z: 0}
-  frame_Rotations: []
+  - {x: 0.113, y: -0.166, z: 0}
+  - {x: 0.017, y: -0.396, z: 0}
+  - {x: 0.017, y: -0.396, z: 0}
+  frame_Rotations:
+  - {x: 0, y: 0, z: -264.788}
+  - {x: 0, y: 0, z: -392.42}
+  - {x: 0, y: 0, z: -392.42}
   frame_Scales:
-  - {x: 1, y: 1, z: 1}
   - {x: -1, y: 1, z: 1}
   - {x: -1, y: 1, z: 1}
-  - {x: 1, y: 1, z: 1}
-  - {x: 1, y: 1, z: 1}
+  - {x: -1, y: 1, z: 1}

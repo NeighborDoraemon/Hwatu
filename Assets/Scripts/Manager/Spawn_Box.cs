@@ -4,14 +4,29 @@ using UnityEngine;
 
 public class Spawn_Box : MonoBehaviour
 {
-    public Transform[] spawnPoints; // 카드 소환 위치
-
+    public Transform[] spawnPoints;            // 카드 소환 위치
     public int number_Of_Objects_To_Spawn = 2; // 카드 소환 갯수
 
     public string itemName_To_Spawn;
     PlayerCharacter_Controller player;
 
-    public void Request_Spawn_Cards() // 카드 소환 요청 함수
+    public float common_DropRates = 80;
+    public float epic_DropRates = 17;
+    public float legendary_DropRates = 3;
+
+    private Dictionary<ItemRarity, float> dropRates;
+
+    private void Awake()
+    {
+        dropRates = new Dictionary<ItemRarity, float>()
+        {
+            { ItemRarity.Common, common_DropRates },
+            { ItemRarity.Epic, epic_DropRates },
+            { ItemRarity.Legendary, legendary_DropRates }
+        };
+    }
+
+    public void Request_Spawn_Cards()
     {
         if (Object_Manager.instance == null)
         {
@@ -19,7 +34,7 @@ public class Spawn_Box : MonoBehaviour
             return;
         }
 
-        int spawnCount = Mathf.Min(number_Of_Objects_To_Spawn, spawnPoints.Length); // 둘 중 더 작은 수로 스폰카운트 반환
+        int spawnCount = Mathf.Min(number_Of_Objects_To_Spawn, spawnPoints.Length);
 
         for (int i = 0; i < spawnCount; i++)
         {
@@ -31,7 +46,7 @@ public class Spawn_Box : MonoBehaviour
             }
             else if (i == 1)
             {
-                Object_Manager.instance.Spawn_Item(itemName_To_Spawn, spawnPos, player);
+                Object_Manager.instance.Spawn_Item(spawnPos, dropRates, player);
             }
         }
 

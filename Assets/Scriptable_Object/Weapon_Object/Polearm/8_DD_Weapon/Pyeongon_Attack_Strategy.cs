@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,10 @@ public class Pyeongon_Attack_Strategy : ScriptableObject, IAttack_Strategy
     private PlayerCharacter_Controller player;
     private Weapon_Data weapon_Data;
 
+    public GameObject cloud_Prefab;
+    
+    public float duration = 1.0f;
+    public float move_Speed = 1.0f;
     private float original_Y_Value = 0;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
@@ -25,8 +30,7 @@ public class Pyeongon_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     private void Initialize_Weapon_Data()
     {
-        player.animator.runtimeAnimatorController = weapon_Data.overrideController;
-        player.attackDamage = weapon_Data.attack_Damage;
+        player.animator.runtimeAnimatorController = weapon_Data.overrideController;        
         player.attack_Cooldown = weapon_Data.attack_Cooldown;
         player.max_AttackCount = weapon_Data.max_Attack_Count;
         player.skill_Cooldown = weapon_Data.skill_Cooldown;
@@ -34,31 +38,9 @@ public class Pyeongon_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
-        if (Is_Cooldown_Complete(player))
-        {
-            Start_Attack(player, weapon_Data);
-        }
+        player.isAttacking = true;        
     }
-
-    private bool Is_Cooldown_Complete(PlayerCharacter_Controller player)
-    {
-        return Time.time >= player.last_Attack_Time + player.attack_Cooldown;
-    }
-
-    private void Start_Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
-    {
-        //player.animator.SetTrigger("Attack");
-        player.isAttacking = true;
-        //player.cur_AttackCount = 1;
-        Update_Attack_Timers(player);
-    }    
-
-    private void Update_Attack_Timers(PlayerCharacter_Controller player)
-    {
-        player.last_ComboAttack_Time = Time.time;
-        player.last_Attack_Time = Time.time;
-    }
-
+    
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point)
     {
 
@@ -66,13 +48,14 @@ public class Pyeongon_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
-        float duration = 1.0f;
-        float move_Speed = 4.0f;
+        
         player.StartCoroutine(Air_Move(player, duration, move_Speed));
     }
 
     private IEnumerator Air_Move(PlayerCharacter_Controller player, float duration, float move_Speed)
     {
+        GameObject cloud = Create_Cloud(player);
+
         Lock_Y_Position(player);
         player.is_Knock_Back = true;
 
@@ -84,16 +67,41 @@ public class Pyeongon_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
         while(elapsed_Time < duration)
         {
-            player.transform.position += new Vector3(move_Speed * diretion * Time.deltaTime, 0, 0);
+            Vector2 target_Position = player.rb.position + new Vector2(move_Speed * diretion * Time.fixedDeltaTime, 0);
+            player.rb.MovePosition(target_Position);
 
-            elapsed_Time += Time.deltaTime;
-            yield return null;
+            elapsed_Time += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
         }
 
         player.rb.velocity = original_Velocity;
 
         Unlock_Y_Position(player);
         player.is_Knock_Back = false;
+
+        if (cloud != null)
+        {
+            Destroy(cloud);
+        }
+    }
+
+    private GameObject Create_Cloud(PlayerCharacter_Controller player)
+    {
+        if (cloud_Prefab == null)
+        {
+            Debug.LogError("Cloud Prefab is not assigned!");
+            return null;
+        }
+
+        GameObject cloud = Instantiate(cloud_Prefab, player.transform.position, Quaternion.identity);
+        cloud.transform.SetParent(player.transform);
+        cloud.transform.localPosition = new Vector3(0.02f, -0.48f, 0);
+
+        Vector3 cloud_Scale = cloud.transform.localScale;
+        cloud_Scale.x = player.is_Facing_Right ? -Mathf.Abs(cloud_Scale.x) : Mathf.Abs(cloud_Scale.x);
+        cloud.transform.localScale = cloud_Scale;
+
+        return cloud;
     }
 
     private void Lock_Y_Position(PlayerCharacter_Controller player)

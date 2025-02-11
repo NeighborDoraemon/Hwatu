@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
+  m_Name: 7_3_Weapon
+  m_EditorClassIdentifier: 
+  weapon_Name: Shield
+  attack_Damage: 50
+  attack_Cooldown: 1
+  max_Attack_Count: 1
+  skill_Damage: 0
+  skill_Cooldown: 0
+  weapon_Prefab: {fileID: 7843703564842448239, guid: 8f036de03469af14cb7727eca85d8a75, type: 3}
+  overrideController: {fileID: 22100000, guid: 03bd57075fafa6a499473c41fb36aa05, type: 2}
+  weapon_overrideController: {fileID: 22100000, guid: c6deda1318e035344a3694e0f693b547, type: 2}
+  animation_Pos_Data_List:
+  - {fileID: 11400000, guid: a2f7e0f0b8bdacc41b2729807a3f7b7b, type: 2}
+  - {fileID: 11400000, guid: 7ca3a40f096474146a8f8b6c2c09152b, type: 2}
+  - {fileID: 11400000, guid: fd0545fe1fa759a4994b70cb8e59ac4e, type: 2}
+  - {fileID: 11400000, guid: 0457b490e295b274aac6ebe5b27e4cdb, type: 2}
+  effect_Data: {fileID: 11400000, guid: ce99f2e6911466a4f9c773e50dc2539a, type: 2}
+  attack_Strategy: {fileID: 11400000, guid: 0a956ea3370cf014280c4d150991f2e9, type: 2}
+  is_HoldAttack_Enabled: 0

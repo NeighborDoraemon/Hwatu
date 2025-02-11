@@ -8,7 +8,6 @@ using UnityEngine.InputSystem;
 using System;
 using Unity.Mathematics;
 
-
 // PlayerCharacter_Controller Created By JBJ, KYH
 public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 {
@@ -42,14 +41,21 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     private Collider2D cur_Cinemachine_Collider;
 
     [Header("Weapon_Data")]
-    public GameObject weapon_Prefab;
-    private Weapon_Collision_Handler weapon_Handler;    
+    private Weapon_Collision_Handler weapon_Handler;
+    private bool is_AtkCoroutine_Running = false;
+    private int cur_Atk_Phase = 0;
+
+    public GameObject weapon_Prefab;    
     public SpriteRenderer effect_Render;
+    public Animator effect_Animator;
     public Transform weapon_Anchor;
     public Transform effect_Anchor;
     public bool is_Facing_Right = true;
-
+    public Animator weapon_Animator;
+    
     public event Action On_Player_Damaged;
+    public bool isInvincible = false;
+    public bool is_UI_Open = false;
 
     //--------------------------------------------------- Created By KYH
     [Header("Player_UI")]
@@ -57,7 +63,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     [SerializeField] private Pause_Manager pause_Manager;
     [SerializeField] private SpriteRenderer player_render;
     
-
     [Header("Map_Manager")]
     [SerializeField]
     private Map_Manager map_Manager;
@@ -116,6 +121,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             Debug.LogError("Inventory Panel is Missing!");
         }
+
+        
     }
     // Update is called once per frame
     void Update()
@@ -138,7 +145,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
             Update_Animation_Parameters();
             HandleCombo();
-            Handle_Teleportation_Time();            
+            Handle_Teleportation_Time();
         }
     }
     private void FixedUpdate()
@@ -150,7 +157,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         bool isMoving = Mathf.Abs(movement.x) > 0.01f;
         animator.SetBool("isMove", isMoving);
-
+        
         animator.SetBool("isGrounded", isGrounded);
 
         if (isGrounded && rb.velocity.y == 0 && this.gameObject.transform.position.y - 0.3f > Now_New_Platform.transform.position.y)
@@ -164,6 +171,19 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     // Move ===========================================================================================
     public void Input_Move(InputAction.CallbackContext ctx)
     {
+        if (is_UI_Open)
+        {
+            if (ctx.phase == InputActionPhase.Performed)
+            {
+                int direction = (int)ctx.ReadValue<Vector2>().x;
+                if (direction != 0)
+                {
+                    Navigate_Inventory(direction);
+                }
+            }
+            return;
+        }
+
         if(ctx.phase == InputActionPhase.Canceled)
         {
             movement = Vector2.zero;
@@ -203,6 +223,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public void Input_Jump(InputAction.CallbackContext ctx)
     {
+        if (is_UI_Open)
+        {
+            return;
+        }
+
         if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
         {
             if (is_Down_Performed)
@@ -226,6 +251,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     
     public void Input_Teleportation(InputAction.CallbackContext ctx)
     {
+        if (is_UI_Open) return;
+
         if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
         {
             if (canTeleporting)
@@ -280,6 +307,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     // Created By KYH ---------------------------------------------------------------
     public void Input_Down_Jump(InputAction.CallbackContext ctx)
     {
+        if (is_UI_Open) return;
+
         if (ctx.phase == InputActionPhase.Performed && Time.timeScale == 1.0f)
         {
             //Debug.Log("Down Input detected");
@@ -300,77 +329,72 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     // InterAction ==========================================================================================
     public void Input_Interaction(InputAction.CallbackContext ctx)
     {
-        // Created By KYH -------------------------------------------------------------------------------------
-        if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
+        if (is_UI_Open) return;
+
+        if (ctx.phase != InputActionPhase.Started || Time.timeScale != 1.0f || is_Player_Dead)
+            return;
+
+        map_Manager.Use_Portal();
+
+        Handle_Npc_Interaction();
+        Handle_Item_Interaction();
+    }
+    private void Handle_Npc_Interaction()
+    {
+        if (!is_Npc_Contack || Now_Contact_Npc == null)
+            return;
+
+        switch (Now_Contact_Npc.gameObject.name)
         {
-            map_Manager.Use_Portal();
-            
-            if (is_Npc_Contack && Now_Contact_Npc != null)
-            {
-                if(Now_Contact_Npc.gameObject.name == "Stat_Npc")
-                {
-                    Debug.Log("Start_Npc");
-                    Now_Contact_Npc.GetComponent<Stat_Npc_Controller>().UI_Start();
-                }
-                else if(Now_Contact_Npc.gameObject.name == "Start_Card_Npc")
-                {
-                    Now_Contact_Npc.GetComponent<Start_Card_Npc>().Request_Spawn_Cards();
-                }                
-            }
-        // ---------------------------------------------------------------------------------------------------
-            if (current_Item != null)
-            {                
-                if (current_Item.tag == "Card")
-                {
-                    if(cardCount == 0)
-                    {
-                        AddCard(current_Item);
-                        current_Item.gameObject.SetActive(false);
-                    }
-                    else if (cardCount < card_Inventory.Length || cardCount == card_Inventory.Length)
-                    {
-                        AddCard(current_Item);
-                    }
-                }
-                else if (current_Item.tag == "Chest")
-                {                    
-                    Spawn_Box chest = current_Item.GetComponent<Spawn_Box>();
-                    Card_Spawn_Box debug_Chest = current_Item.GetComponent<Card_Spawn_Box>();
-                    if (chest != null)
-                    {
-                        chest.Request_Spawn_Cards();
-                    }
-                    else if (debug_Chest != null)
-                    {
-                        debug_Chest.Request_Spawn_Cards();
-                    }
-                }
-                else if (current_Item.tag == "Item")
-                {                    
-                    Item item = current_Item.GetComponent<Item_Prefab>().itemData;
+            case "Stat_Npc":
+                Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.UI_Start();
+                break;
+            case "Start_Card_Npc":
+                Now_Contact_Npc.GetComponent<Start_Card_Npc>()?.Request_Spawn_Cards();
+                break;
+        }        
+    }
+    private void Handle_Item_Interaction()
+    {
+        if (current_Item == null)
+            return;
 
-                    if (item != null)
-                    {                        
-                        if (item.isConsumable)
-                        {                            
-                            if (this != null) 
-                            {
-                                item.ApplyEffect(this);                                
-                            }
-                            Destroy(current_Item);
-                        }
-                        else
-                        {
-                            AddItem(item);
-
-                            Destroy(current_Item);
-                        }
-                    }                    
-                    Object_Manager.instance.Destroy_All_Cards_And_Items();
-                }
-                current_Item = null;
-            }
+        if (current_Item.TryGetComponent(out Spawn_Box chest))
+        {
+            chest.Request_Spawn_Cards();
         }
+        else if (current_Item.TryGetComponent(out Card_Spawn_Box debug_Chest))
+        {
+            debug_Chest.Request_Spawn_Cards();
+        }
+        else if (current_Item.CompareTag("Card"))
+        {
+            AddCard(current_Item);
+            current_Item.gameObject.SetActive(false);
+        }
+        else if (current_Item.TryGetComponent(out Item_Prefab item_Prefab))
+        {
+            Handle_Item(item_Prefab.itemData);
+        }
+
+        current_Item = null;
+    }
+
+    private void Handle_Item(Item item)
+    {
+        if (item == null) return;
+
+        if (item.isConsumable)
+        {
+            item.ApplyEffect(this);
+        }
+        else
+        {
+            AddItem(item);
+        }
+
+        Destroy(current_Item);
+        Object_Manager.instance.Destroy_All_Cards_And_Items();
     }
 
     void Spawn_Chest() // Spawn Debuging Card Chest
@@ -394,6 +418,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             return;
         }
         
+        if (attack_Strategy != null && attack_Strategy is Tiger_Attack_Strategy tiger_Strategy)
+        {
+            tiger_Strategy.Reset_Stats();
+        }
+
         if (weapon_Anchor.childCount > 0)
         {
             foreach(Transform child in weapon_Anchor)
@@ -402,7 +431,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             }
         }
         
-        if (cur_Weapon_Data.weapon_Prefab)
+        if (cur_Weapon_Data.weapon_Prefab != null)
         {
             weapon_Prefab = cur_Weapon_Data.weapon_Prefab;
 
@@ -412,17 +441,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
             weapon_Handler = new_Weapon.GetComponent<Weapon_Collision_Handler>();
 
-            if (weapon_Handler != null)
-            {
-                weapon_Handler.Set_Damage(cur_Weapon_Data.attack_Damage);
-                Debug.Log($"Current Attack Damage : {cur_Weapon_Data.attack_Damage}");
-            }
-            else
-            {
-                Debug.LogError("Weapon_Collision_Handler is Missing");
-            }
-
-            Animator weapon_Animator = new_Weapon.GetComponent<Animator>();
+            weapon_Animator = new_Weapon.GetComponent<Animator>();            
             if (weapon_Animator != null && cur_Weapon_Data.weapon_overrideController != null)
             {
                 weapon_Animator.runtimeAnimatorController = cur_Weapon_Data.weapon_overrideController;
@@ -443,22 +462,19 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     private void Apply_Weapon_Data()
     {
-        if (cur_Weapon_Data != null)
+        if (cur_Weapon_Data == null) return;
+
+        attack_Strategy = cur_Weapon_Data.attack_Strategy as IAttack_Strategy;
+
+        if (cur_Weapon_Data.overrideController != null)
         {
-            attack_Strategy = cur_Weapon_Data.attack_Strategy as IAttack_Strategy;
-
-            if (cur_Weapon_Data.overrideController != null)
-            {
-                animator.runtimeAnimatorController = cur_Weapon_Data.overrideController;                
-            }
-
-            attack_Strategy.Initialize(this, cur_Weapon_Data);
-
-            isAttacking = false;
-            cur_AttackCount = 0;
-
-            animator.SetTrigger("Change_Weapon");
+            animator.runtimeAnimatorController = cur_Weapon_Data.overrideController;
         }
+        attack_Strategy.Initialize(this, cur_Weapon_Data);
+
+        animator.SetInteger("cur_Max_AtkCount", cur_Weapon_Data.max_Attack_Count);
+
+        animator.SetTrigger("Change_Weapon");
     }
 
     void Update_WeaponAnchor_Position()
@@ -533,10 +549,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         string motion_Name = parts[0];
         int frame_Num;
-        if (!int.TryParse(parts[1], out frame_Num))
-        {
-            return;
-        }
+        if (!int.TryParse(parts[1], out frame_Num)) return;
 
         var effect_Info = cur_Weapon_Data.effect_Data.Get_Effect_Info(motion_Name);
         if (effect_Info != null)
@@ -544,19 +557,32 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             var frame_Effect_Info = effect_Info.frame_Effects.Find(fe => fe.frame_Number == frame_Num);
             if (frame_Effect_Info != null)
             {
-                effect_Render.sprite = frame_Effect_Info.effect_Sprites;
-
                 Vector3 effect_Pos = frame_Effect_Info.position_Offset;
-                effect_Pos.x = is_Facing_Right ? effect_Pos.x : -effect_Pos.x;
-                effect_Render.transform.position = transform.position + effect_Pos;
-
+                effect_Pos.x = is_Facing_Right ? Mathf.Abs(effect_Pos.x) : -Mathf.Abs(effect_Pos.x);
+                effect_Render.transform.localPosition = effect_Pos;
                 effect_Render.transform.localScale = new Vector3(is_Facing_Right ? 1 : -1, 1, 1);
+                //Debug.Log($"Saved Offset: {effect_Pos}");
 
-                effect_Render.enabled = true;
-
-                Invoke("HideEffect", frame_Effect_Info.duration);
+                if (frame_Effect_Info.effect_Animator != null)
+                {
+                    effect_Animator.runtimeAnimatorController = frame_Effect_Info.effect_Animator;
+                    effect_Animator.Play("Effect_Start");
+                    StartCoroutine(Reset_Effect_After_Animation(frame_Effect_Info.duration));
+                }
+                else if (frame_Effect_Info.effect_Sprites != null)
+                {
+                    effect_Render.sprite = frame_Effect_Info.effect_Sprites;
+                    effect_Render.enabled = true;
+                    Invoke("HideEffect", frame_Effect_Info.duration);
+                }
             }
         }
+    }
+
+    private IEnumerator Reset_Effect_After_Animation(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        effect_Animator.runtimeAnimatorController = null;
     }
 
     public void HideEffect()
@@ -569,6 +595,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     // Attack And Skill =====================================================================================
     public void Input_Perform_Attack(InputAction.CallbackContext ctx)
     {
+        if (is_UI_Open)
+        {
+            return;
+        }
+
         if (Time.timeScale != 1.0f || is_Player_Dead)
         {
             return;
@@ -585,14 +616,19 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             switch (ctx.phase)
             {
                 case InputActionPhase.Started:
-                    isAttacking = true;
-                    Debug.Log("Attack started, continuous attack enabled");
-                    animator.SetBool("isHoldAtk", true);                    
-                    StartCoroutine(Continuous_Attack());                    
+                    if (!is_AtkCoroutine_Running)
+                    {
+                        isAttacking = true;
+                        animator.SetBool("isHoldAtk", true);
+                        StartCoroutine(Continuous_Attack());
+                    }                    
                     break;
                 case InputActionPhase.Canceled:
+                    if (attack_Strategy is Bow_Attack_Strategy bowAttack)
+                    {
+                        bowAttack.Release_Attack(this);
+                    }
                     isAttacking = false;
-                    Debug.Log("Attack started, continuous attack enabled");
                     animator.SetBool("isHoldAtk", false);
                     break;
             }
@@ -601,35 +637,113 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             if (ctx.phase == InputActionPhase.Performed)
             {
-                if (cur_AttackCount < max_AttackCount)
+                if (Is_Last_Attack())
                 {
-                    attack_Strategy.Attack(this, cur_Weapon_Data);
+                    End_Attack();
+                    return;
                 }
-                else
+
+                if (Is_Cooldown_Complete())
                 {
-                    //Debug.Log("Current Attack Count reached Max!");
+                    Perform_Attack();
+                }
+                else if (Can_Combo_Attack())
+                {
+                    Perform_Attack();
+                }
+                else if (Is_Combo_Complete())
+                {
+                    End_Attack();
                 }
             }
         }
     }
 
+    private void Perform_Attack()
+    {
+        isAttacking = true;
+        animator.SetBool("isAttacking", true);
+        attack_Strategy.Attack(this, cur_Weapon_Data);
+        Update_Attack_Timers();
+
+        if (Is_Last_Attack())
+        {
+            End_Attack();
+        }
+    }
+
+    public void End_Attack()
+    {
+        isAttacking = false;
+        animator.SetBool("isAttacking", false);
+        canAttack = false;
+
+        StartCoroutine(Attack_Cooltime());
+    }
+
+    private IEnumerator Attack_Cooltime()
+    {
+        yield return new WaitForSeconds(cur_Weapon_Data.attack_Cooldown);
+
+        canAttack = true;
+    }
+
+    private bool Is_Cooldown_Complete()
+    {
+        return Time.time >= last_Attack_Time + attack_Cooldown && canAttack == true;
+    }
+    private bool Can_Combo_Attack()
+    {
+        return isAttacking && Time.time - last_Attack_Time <= last_ComboAttack_Time;
+    }
+    private bool Is_Combo_Complete()
+    {
+        return Time.time - last_ComboAttack_Time > comboTime;
+    }
+    private bool Is_Last_Attack()
+    {
+        int max_Atk_Count = animator.GetInteger("cur_Max_AtkCount");
+
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("PlayerChar_Attack_" + max_AttackCount))
+        {
+            Debug.Log("Last Atk True");
+            return true;
+        }
+
+        return false;
+    }
+    
+    private void Update_Attack_Timers()
+    {
+        last_ComboAttack_Time = Time.time;
+        last_Attack_Time = Time.time;
+    }
+
     private IEnumerator Continuous_Attack()
     {
+        is_AtkCoroutine_Running = true;
+
         while (isAttacking)
         {
-            Debug.Log("Continuous_Attack is running");
             if (attack_Strategy != null)
             {
                 attack_Strategy.Attack(this, cur_Weapon_Data);
             }
             else
             {
-                Debug.LogError("Attack Strategy is missing for Hold_Attack");
+                //Debug.LogError("Attack Strategy is missing for Hold_Attack");
                 break;
             }
-            
-            yield return new WaitForSeconds(cur_Weapon_Data.attack_Cooldown);
+
+            yield return new WaitForSeconds(cur_Weapon_Data.attack_Cooldown);            
         }
+
+        is_AtkCoroutine_Running = false;
+    }
+
+    public void On_Last_Attack()
+    {
+        End_Attack();
     }
 
     public void On_Shoot_Projectile()
@@ -653,20 +767,34 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 return;
             }
 
-            if (Time.time - last_ComboAttack_Time > comboTime)
+            if (Is_Combo_Complete())
             {
-                isAttacking = false;
-                cur_AttackCount = 0;
+                End_Attack();
             }
         }
     }
 
     public void Input_Skill_Attack(InputAction.CallbackContext ctx)
     {
-        if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
+        if (is_UI_Open) return;
+
+        if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f 
+            && !is_Player_Dead && Is_Skill_Cooldown_Complete())
         {
+            Debug.Log("Skill Input Detected");
+            animator.SetTrigger("Skill");
             attack_Strategy.Skill(this, cur_Weapon_Data);
+            Update_Skill_Timer();
         }
+    }
+    private bool Is_Skill_Cooldown_Complete()
+    {
+        return Time.time >= last_Skill_Time + skill_Cooldown;
+    }
+
+    private void Update_Skill_Timer()
+    {
+        last_Skill_Time = Time.time;
     }
     // ======================================================================================================
 
@@ -685,6 +813,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             inventoryPanel.SetActive(true);
             isInventory_Visible = true;
+            is_UI_Open = true;
         }
     }
     void HideInventory()
@@ -693,17 +822,33 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             inventoryPanel.SetActive(false);
             isInventory_Visible = false;
+            is_UI_Open = false;
         }
     }
 
     // Created By KYH -------------------------------------------------------------------
     public void Player_Take_Damage(int Damage)
-    {        
+    {
+        if (isInvincible || is_Player_Dead) return;
+
+        if (attack_Strategy is Crow_Card_Attack_Strategy crow_Strategy && crow_Strategy.Crow_Is_Protecting())
+        {
+            Debug.Log("Crow blocked the damage!");
+            crow_Strategy.End_Protection();
+            return;
+        }
+
+        if (attack_Strategy is Shield_Attack_Strategy shield_Startegy && shield_Startegy.isParrying)
+        {
+            shield_Startegy.Detect_EnemyAttack(this);
+            return;
+        }
+
         health = health - Damage;
         Player_Health_Bar.fillAmount = (float)health / max_Health;
 
         if (health <= 0)
-        {            
+        {
             Player_Died();
         }
         else

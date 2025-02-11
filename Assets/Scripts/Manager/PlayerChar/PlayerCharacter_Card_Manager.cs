@@ -97,7 +97,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
         card_UI_Manager.UpdateCardUI(cardSprites);
     }
 
-    public void Card_Combination() // È­Åõ Á¶ÇÕÀ» ÅëÇÑ ´É·ÂÄ¡ º¯°æ ÇÔ¼ö
+    public void Card_Combination()
     {
         isCombDone = false;
 
@@ -125,7 +125,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                 else if ((card_1.Month == 13 && card_2.Month == 18)
                     || (card_1.Month == 18 && card_2.Month == 13))
                 {
-                    Set_Weapon(15);
+                    Set_Weapon(6);
                     Debug.Log("3 8 ±¤¶¯");
                 }
                 isCombDone = true;
@@ -159,6 +159,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                         Debug.Log("6¶¯");
                         break;
                     case 7:
+                        Set_Weapon(24);
                         Debug.Log("7¶¯");
                         break;
                     case 8:
@@ -169,7 +170,8 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                         Set_Weapon(14);
                         Debug.Log("9¶¯");
                         break;
-                    case 10:
+                    case 0:
+                        Set_Weapon(25);
                         Debug.Log("10¶¯");
                         break;
                     default:
@@ -178,7 +180,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                 }
                 isCombDone = true;
             }
-            else if (card_1.Month != card_2.Month) // °°Àº ´ÞÀÌ ¾Æ´Ï¸é ÀÌÂÊÀ¸·Î ³Ñ¾î¿È
+            else if (card_1.Month != card_2.Month)
             {
                 if ((card_1.Month + card_2.Month) % 10 >= 1 && (card_1.Month + card_2.Month) % 10 <= 8)
                 {
@@ -196,7 +198,8 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                     }
                     else if ((card_1.Month % 10 == 1 && card_2.Month == 10)
                         || (card_1.Month == 10 && card_2.Month % 10 == 1))
-                    {                        
+                    {
+                        Set_Weapon(22);
                         Debug.Log("Àå»æ");
                     }
                     else if ((card_1.Month == 10 && card_2.Month == 4)
@@ -217,11 +220,6 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                         Set_Weapon(19);
                         Debug.Log("49ÆÄÅä");
                     }
-                    else if ((card_1.Month == 7 && card_2.Month == 3)
-                        || (card_1.Month == 3 && card_2.Month == 7))
-                    {                        
-                        Debug.Log("49ÆÄÅä");
-                    }                    
                     else
                     {
                         Set_Weapon(2);
@@ -246,6 +244,12 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                     {
                         Set_Weapon(5);
                         Debug.Log("¼¼·ú");
+                    }
+                    else if ((card_1.Month == 7 && card_2.Month % 10 == 3)
+                        || (card_1.Month % 10 == 3 && card_2.Month == 7))
+                    {
+                        Set_Weapon(23);
+                        Debug.Log("¶¯ÀâÀÌ");
                     }
                     else
                     {

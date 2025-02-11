@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
+  m_Name: 7_DD_Weapon
+  m_EditorClassIdentifier: 
+  weapon_Name: Tiger
+  attack_Damage: 7
+  attack_Cooldown: 1
+  max_Attack_Count: 2
+  skill_Damage: 0
+  skill_Cooldown: 7
+  weapon_Prefab: {fileID: 7843703564842448239, guid: 05dc159d24032e140af8b7c5342aac95, type: 3}
+  overrideController: {fileID: 22100000, guid: 8d2a5e3344524b1459a2f535104d2322, type: 2}
+  weapon_overrideController: {fileID: 22100000, guid: 99fca885a676c2a47a6734fc6ccb5036, type: 2}
+  animation_Pos_Data_List:
+  - {fileID: 11400000, guid: 835796f509c04c84eb0cd13ecef46dea, type: 2}
+  effect_Data: {fileID: 11400000, guid: 3d2220b0b5bd85745b6175f3ed02f691, type: 2}
+  attack_Strategy: {fileID: 11400000, guid: 24d47a252d5eabc4f9928028c0041152, type: 2}
+  is_HoldAttack_Enabled: 0

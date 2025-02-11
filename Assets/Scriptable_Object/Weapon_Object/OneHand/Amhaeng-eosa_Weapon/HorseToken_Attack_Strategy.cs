@@ -35,7 +35,6 @@ public class HorseToken_Attack_Strategy : ScriptableObject, IAttack_Strategy
     private void Initialize_Weapon_Data()
     {
         player.animator.runtimeAnimatorController = weapon_Data.overrideController;
-        player.attackDamage = weapon_Data.attack_Damage;
         player.attack_Cooldown = weapon_Data.attack_Cooldown;
         player.max_AttackCount = weapon_Data.max_Attack_Count;
         player.skill_Cooldown = weapon_Data.skill_Cooldown;
@@ -43,48 +42,11 @@ public class HorseToken_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
-        //Debug.Log("카드 공격 실행");
-        if (Is_Cooldown_Complete(player))
-        {
-            Start_Attack(player, weapon_Data);
-            has_Increased_Stack = false;
-        }
-        else if (Is_Combo_Complete(player, weapon_Data))
-        {
-            End_Attack(player);
-        }
-    }
-
-    private bool Is_Cooldown_Complete(PlayerCharacter_Controller player)
-    {
-        return Time.time >= player.last_Attack_Time + player.attack_Cooldown;
-    }
-
-    private bool Is_Combo_Complete(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
-    {
-        return player.cur_AttackCount >= weapon_Data.max_Attack_Count;
-    }
-
-    private void Start_Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
-    {
         player.animator.SetTrigger("Attack");
         player.isAttacking = true;
-        player.cur_AttackCount = 1;
-        Update_Attack_Timers(player);
+        player.cur_AttackCount++;
     }
 
-    private void End_Attack(PlayerCharacter_Controller player)
-    {
-        player.isAttacking = false;
-        player.cur_AttackCount = 0;
-        player.last_Attack_Time = Time.time;
-    }
-
-    private void Update_Attack_Timers(PlayerCharacter_Controller player)
-    {
-        player.last_Attack_Time = Time.time;
-        player.last_ComboAttack_Time = Time.time;
-    }
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point)
     {
         //Debug.Log("cur_Stack : " + cur_Stack);
@@ -110,7 +72,6 @@ public class HorseToken_Attack_Strategy : ScriptableObject, IAttack_Strategy
             yield return new WaitForSeconds(shoot_Delay);
         }
     }
-
     public void Increase_Stack()
     {
         if (cur_Stack < max_Stack && !has_Increased_Stack)
@@ -120,7 +81,6 @@ public class HorseToken_Attack_Strategy : ScriptableObject, IAttack_Strategy
             Debug.Log("Stack increased to : " + cur_Stack);
         }
     }
-
     public void Decrease_Stack()
     {
         if (cur_Stack > 1)
