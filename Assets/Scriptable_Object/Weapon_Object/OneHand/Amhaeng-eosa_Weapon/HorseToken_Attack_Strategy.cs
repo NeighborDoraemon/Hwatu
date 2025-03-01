@@ -44,12 +44,11 @@ public class HorseToken_Attack_Strategy : ScriptableObject, IAttack_Strategy
     {
         player.animator.SetTrigger("Attack");
         player.isAttacking = true;
-        player.cur_AttackCount++;
     }
 
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point)
     {
-        //Debug.Log("cur_Stack : " + cur_Stack);
+        Debug.Log("cur_Stack : " + cur_Stack);
         player.StartCoroutine(Shoot_With_Delay(player, fire_Point));
     }
 
@@ -74,10 +73,9 @@ public class HorseToken_Attack_Strategy : ScriptableObject, IAttack_Strategy
     }
     public void Increase_Stack()
     {
-        if (cur_Stack < max_Stack && !has_Increased_Stack)
+        if (cur_Stack < max_Stack)
         {
             cur_Stack++;
-            has_Increased_Stack = true;
             Debug.Log("Stack increased to : " + cur_Stack);
         }
     }

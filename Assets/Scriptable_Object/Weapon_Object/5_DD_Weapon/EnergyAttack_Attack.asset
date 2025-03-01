@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1efd62e2f269a24ca1c78bd534d93e1, type: 3}
   m_Name: EnergyAttack_Attack
   m_EditorClassIdentifier: 
-  skill_Duration: 1.5
+  skill_Duration: 0.2
   pushBack_Force: 2
   energy_Grow_Rate: 5
   damage_Interval: 0.5

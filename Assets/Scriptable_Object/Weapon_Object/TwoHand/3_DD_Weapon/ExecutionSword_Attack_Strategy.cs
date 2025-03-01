@@ -40,7 +40,6 @@ public class ExecutionSword_Attack_Strategy : ScriptableObject, IAttack_Strategy
     {        
         player.animator.SetTrigger("Attack");
         player.isAttacking = true;
-        player.cur_AttackCount++;
 
         Vector3 target_Pos = player.transform.position +
             (player.is_Facing_Right ? Vector3.right : Vector3.left) * move_Distance;

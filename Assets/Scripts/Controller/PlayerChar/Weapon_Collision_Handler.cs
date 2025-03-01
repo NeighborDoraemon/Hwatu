@@ -6,9 +6,6 @@ using UnityEngine;
 public class Weapon_Collision_Handler : MonoBehaviour
 {
     [SerializeField] private int base_Weapon_Damage;
-    [SerializeField] private float crit_Chance = 0.0f;
-    [SerializeField] private float crit_Multiple = 2.0f;
-
     [SerializeField] private Collider2D weapon_Collider;
 
     private PlayerCharacter_Controller player;
@@ -25,25 +22,25 @@ public class Weapon_Collision_Handler : MonoBehaviour
         base_Weapon_Damage = player.cur_Weapon_Data.attack_Damage;
     }
 
-    public int Calculate_Final_Damage()
-    {
-        int playerDamage = player != null ? player.attackDamage : 0;
+    //public int Calculate_Final_Damage()
+    //{
+    //    int playerDamage = player != null ? player.attackDamage : 0;
 
-        int totalDamage = base_Weapon_Damage + playerDamage;
+    //    int totalDamage = base_Weapon_Damage + playerDamage;
         
-        bool isCritical = Random.value <= crit_Chance;
-        if (isCritical)
-        {
-            totalDamage = Mathf.RoundToInt(totalDamage * crit_Multiple);
-            Debug.Log($"Critical Hit! Total Damage: {totalDamage}");
-        }
-        else
-        {
-            Debug.Log($"Normal Hit! Total Damage: {totalDamage}");
-        }
+    //    bool isCritical = Random.value <= player.crit_Rate;
+    //    if (isCritical)
+    //    {
+    //        totalDamage = Mathf.RoundToInt(totalDamage * player.crit_Dmg);
+    //        Debug.Log($"Critical Hit! Total Damage: {totalDamage}");
+    //    }
+    //    else
+    //    {
+    //        Debug.Log($"Normal Hit! Total Damage: {totalDamage}");
+    //    }
 
-        return totalDamage;
-    }
+    //    return totalDamage;
+    //}
 
     public void Enable_Collider(float duration)
     {
@@ -66,8 +63,10 @@ public class Weapon_Collision_Handler : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            int finalDamage = Calculate_Final_Damage();
+            int finalDamage = player.Calculate_Damage();
             other.GetComponent<Enemy_Basic>().TakeDamage(finalDamage);
+
+            player.Trigger_Enemy_Hit();
         }
     }
 }

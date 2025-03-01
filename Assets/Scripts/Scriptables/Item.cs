@@ -11,7 +11,7 @@ public class Item : ScriptableObject
     public int item_Price;           // 아이템 가격
     public ItemEffect itemEffect;    // 아이템 효과 (스크립터블 오브젝트)
     public bool isConsumable;        // 소모성 아이템 유무
-    public ItemRarity item_Rarity;  // 아이템 등급
+    public ItemRarity item_Rarity;   // 아이템 등급
 
     public void ApplyEffect(PlayerCharacter_Controller player)
     {

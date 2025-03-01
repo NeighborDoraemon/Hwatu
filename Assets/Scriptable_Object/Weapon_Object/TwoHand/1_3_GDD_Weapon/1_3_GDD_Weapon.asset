@@ -26,6 +26,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f0d978ff7a87d1b49bb7cf8957ba98cf, type: 2}
   - {fileID: 11400000, guid: cd60baf2feb844146bd170fc62617491, type: 2}
   - {fileID: 11400000, guid: 6f307b677efd92b4a94a1ad667bf6bab, type: 2}
+  - {fileID: 11400000, guid: 0e069de1853e9064598692d5bd4db6dc, type: 2}
+  - {fileID: 11400000, guid: 966e704bd2a9b0447a69644429818a79, type: 2}
+  - {fileID: 11400000, guid: 95d0d53ba338a2940bacc38809a974de, type: 2}
   effect_Data: {fileID: 11400000, guid: 834030ff6aea48049b0f5996484108b5, type: 2}
   attack_Strategy: {fileID: 11400000, guid: d28f9cf7d1909fc4bae07bbdb562bcd6, type: 2}
   is_HoldAttack_Enabled: 0

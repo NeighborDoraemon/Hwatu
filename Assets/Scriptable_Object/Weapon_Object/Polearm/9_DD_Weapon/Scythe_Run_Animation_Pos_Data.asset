@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e7cc7e5bf5a124f842638c93b025ba, type: 3}
   m_Name: Scythe_Run_Animation_Pos_Data
   m_EditorClassIdentifier: 
-  animation_Name: PlayerChar_Polearm_Run
+  animation_Name: PC_Polearm_Run
   frame_Pos:
-  - {x: -0.0039, y: -0.3635, z: 0}
-  - {x: -0.0039, y: -0.3635, z: 0}
-  - {x: -0.0039, y: -0.37, z: 0}
-  - {x: -0.0039, y: -0.3831, z: 0}
-  - {x: -0.0039, y: -0.3687, z: 0}
-  - {x: -0.0039, y: -0.3569, z: 0}
-  - {x: -0.0039, y: -0.3628, z: 0}
-  - {x: -0.0039, y: -0.3628, z: 0}
+  - {x: -0.0457, y: -0.365, z: 0}
+  - {x: -0.0457, y: -0.373, z: 0}
+  - {x: -0.0457, y: -0.383, z: 0}
+  - {x: -0.0457, y: -0.365, z: 0}
+  - {x: -0.0457, y: -0.365, z: 0}
+  - {x: -0.0457, y: -0.373, z: 0}
+  - {x: -0.0457, y: -0.383, z: 0}
+  - {x: -0.0457, y: -0.365, z: 0}
   frame_Rotations:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}

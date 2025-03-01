@@ -30,5 +30,9 @@ public class Jangtae : MonoBehaviour
             int finalDamage = Calculate_Final_Damage();
             other.GetComponent<Enemy_Basic>().TakeDamage(finalDamage);
         }
+        else if (other.CompareTag("Walls"))
+        {
+            Destroy(this.gameObject);
+        }
     }
 }

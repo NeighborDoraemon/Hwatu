@@ -20,3 +20,37 @@ MonoBehaviour:
       effect_Animator: {fileID: 9100000, guid: c4a71b2f683c1484eb36ce31259df708, type: 2}
       position_Offset: {x: 0.563, y: -0.198, z: 0}
       duration: 0.5
+  - motion_Name: PC_Tiger_FirstAtk
+    frame_Effects:
+    - frame_Number: 1
+      effect_Sprites: {fileID: -768372864, guid: 94964672fae58ff45a0542694c0fe160, type: 3}
+      effect_Animator: {fileID: 0}
+      position_Offset: {x: 0.312, y: -0.158, z: 0}
+      duration: 0.5
+    - frame_Number: 2
+      effect_Sprites: {fileID: 1536775449, guid: 94964672fae58ff45a0542694c0fe160, type: 3}
+      effect_Animator: {fileID: 0}
+      position_Offset: {x: 0.312, y: -0.158, z: 0}
+      duration: 0.5
+    - frame_Number: 3
+      effect_Sprites: {fileID: -2025358611, guid: 94964672fae58ff45a0542694c0fe160, type: 3}
+      effect_Animator: {fileID: 0}
+      position_Offset: {x: 0.312, y: -0.158, z: 0}
+      duration: 0.5
+  - motion_Name: PC_Tiger_SecondAtk
+    frame_Effects:
+    - frame_Number: 1
+      effect_Sprites: {fileID: -1727331554, guid: ad010940f2ce75e43b76f31a973dcf31, type: 3}
+      effect_Animator: {fileID: 0}
+      position_Offset: {x: 0.412, y: -0.2, z: 0}
+      duration: 0.5
+    - frame_Number: 2
+      effect_Sprites: {fileID: 1740398952, guid: ad010940f2ce75e43b76f31a973dcf31, type: 3}
+      effect_Animator: {fileID: 0}
+      position_Offset: {x: 0.412, y: -0.2, z: 0}
+      duration: 0.5
+    - frame_Number: 3
+      effect_Sprites: {fileID: -53327554, guid: ad010940f2ce75e43b76f31a973dcf31, type: 3}
+      effect_Animator: {fileID: 0}
+      position_Offset: {x: 0.412, y: -0.2, z: 0}
+      duration: 0.5

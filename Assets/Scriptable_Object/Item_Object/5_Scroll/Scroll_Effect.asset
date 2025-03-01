@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af1c9cb0da502cd4fb7105730b8b16d1, type: 3}
   m_Name: Scroll_Effect
   m_EditorClassIdentifier: 
-  skill_Cooldown_Reduce_Multiple: 0.9
+  clone_Prefab: {fileID: 5197614902133037781, guid: ebed4ae1f7837224d8610e50db844eb3, type: 3}

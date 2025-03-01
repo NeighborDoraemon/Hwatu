@@ -5,17 +5,23 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Scroll_Effect", menuName = "ItemEffects/Scroll_Effect")]
 public class Scroll_Effect : ItemEffect
 {
-    public float skill_Cooldown_Reduce_Multiple = 0.9f;
+    public GameObject clone_Prefab;
+    private GameObject spawned_Clone;
 
     public override void ApplyEffect(PlayerCharacter_Controller player)
     {
-        player.skill_Cooldown *= skill_Cooldown_Reduce_Multiple;
-        Debug.Log("Skill Cooldown has been reduced");
+        if (clone_Prefab != null && spawned_Clone == null)
+        {
+            spawned_Clone = Instantiate(clone_Prefab, player.transform.position, Quaternion.identity);
+            spawned_Clone.GetComponent<Player_Clone>().Initialize(player);
+        }
     }
 
     public override void RemoveEffect(PlayerCharacter_Controller player)
     {
-        player.skill_Cooldown /= skill_Cooldown_Reduce_Multiple;
-        Debug.Log("Skill cooldown has been restored");
+        if (spawned_Clone != null)
+        {
+            Destroy(spawned_Clone);
+        }
     }
 }

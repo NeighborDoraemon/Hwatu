@@ -138,12 +138,32 @@ public class Object_Manager : MonoBehaviour
             return;
         }
 
+        if (player == null)
+        {
+            Debug.LogError("[ERROR] Player 객체가 null입니다. Spawn_Box에서 올바르게 전달되었는지 확인하세요.");
+            return;
+        }
+
+        if (player.player_Inventory == null)
+        {
+            Debug.LogError("[ERROR] 플레이어 인벤토리가 null입니다.");
+            return;
+        }
+
+        List<Item> player_Items = player.player_Inventory;
+
+        Debug.Log($"[DEBUG] 플레이어 인벤토리 아이템 개수: {player_Items.Count}");
+
         ItemRarity selected_Rarity = Get_Random_Rarity(dropRates);
         Debug.Log($"선택된 아이템 등급 : {selected_Rarity}");
 
-        Item random_Item = Get_Random_Item(selected_Rarity);
+        Item random_Item = Get_Random_Item(selected_Rarity, player_Items);
 
-        if (random_Item == null) return;
+        if (random_Item == null)
+        {
+            Debug.LogWarning("[WARN] 선택된 등급에서 아이템을 찾을 수 없음. 전체 아이템에서 다시 검색.");
+            random_Item = Get_Random_Item_From_All(player_Items);
+        }
 
         Debug.Log($"드롭된 아이템 : {random_Item.itemName} (등급 : {random_Item.item_Rarity})");
 
@@ -181,15 +201,38 @@ public class Object_Manager : MonoBehaviour
         return ItemRarity.Common;
     }
 
-    private Item Get_Random_Item(ItemRarity rarity)
+    private Item Get_Random_Item(ItemRarity rarity, List<Item> player_Items)
     {
-        List<Item> available_Items = item_Database.Get_Items_By_Rarity(rarity);
-        
+        List<Item> available_Items = item_Database.Get_Items_By_Rarity(rarity)
+            .Where(item => !player_Items.Contains(item))
+            .ToList();
+
+        //if (available_Items == null)
+        //{
+        //    Debug.LogError($"[ERROR] {rarity} 등급의 아이템을 가져오는 중 문제가 발생했습니다. 데이터베이스 확인 필요.");
+        //    return null;
+        //}
+
+        //Debug.Log($"[DEBUG] {rarity} 등급의 아이템 개수: {available_Items.Count}");
+
+        available_Items = available_Items.Where(item => !player_Items.Contains(item)).ToList();
+
         if (available_Items.Count == 0)
         {
-            Debug.LogWarning("해당 등급 아이템 없음. 다른 등급 아이템 반환");
-            available_Items = item_Database.Get_All_Items();
-        }        
+            //Debug.LogWarning($"[WARN] {rarity} 등급에서 플레이어가 소지하지 않은 아이템이 없음. 전체 아이템에서 다시 검색.");
+            available_Items = item_Database.Get_All_Items().Where(item => !player_Items.Contains(item)).ToList();
+        }
+
+        //Debug.Log($"[DEBUG] 최종 선택 가능한 아이템 개수: {available_Items.Count}");
+
+        return available_Items.Count > 0 ? available_Items[Random.Range(0, available_Items.Count)] : null;
+    }
+
+    private Item Get_Random_Item_From_All(List<Item> player_Items)
+    {
+        List<Item> available_Items = item_Database.Get_All_Items()
+            .Where(item => !player_Items.Contains(item))
+            .ToList();
 
         return available_Items.Count > 0 ? available_Items[Random.Range(0, available_Items.Count)] : null;
     }

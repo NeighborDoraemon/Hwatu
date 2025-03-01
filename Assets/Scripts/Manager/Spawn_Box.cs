@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Spawn_Box : MonoBehaviour
 {
-    public Transform[] spawnPoints;            // 카드 소환 위치
-    public int number_Of_Objects_To_Spawn = 2; // 카드 소환 갯수
+    public Transform[] spawnPoints;
+    public int number_Of_Objects_To_Spawn = 2;
 
     public string itemName_To_Spawn;
     PlayerCharacter_Controller player;
@@ -24,6 +24,13 @@ public class Spawn_Box : MonoBehaviour
             { ItemRarity.Epic, epic_DropRates },
             { ItemRarity.Legendary, legendary_DropRates }
         };
+
+        GameObject player_Obj = GameObject.FindWithTag("Player");
+
+        if (player_Obj != null)
+        {
+            player = player_Obj.GetComponent<PlayerCharacter_Controller>();
+        }
     }
 
     public void Request_Spawn_Cards()
@@ -31,6 +38,12 @@ public class Spawn_Box : MonoBehaviour
         if (Object_Manager.instance == null)
         {
             Debug.LogError("Card Box에서 Card_Spawner 인스턴스 실종");
+            return;
+        }
+
+        if (player == null)
+        {
+            Debug.LogError("[ERROR] Player 객체가 null입니다. PlayerCharacter_Controller에서 올바르게 전달되었는지 확인하세요.");
             return;
         }
 

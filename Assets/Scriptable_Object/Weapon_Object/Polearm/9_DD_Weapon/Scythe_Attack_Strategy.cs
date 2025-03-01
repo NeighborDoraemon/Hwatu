@@ -28,7 +28,6 @@ public class Scythe_Attack_Strategy : ScriptableObject, IAttack_Strategy
     private void Initialize_Weapon_Data()
     {
         player.animator.runtimeAnimatorController = weapon_Data.overrideController;
-        player.attackDamage = weapon_Data.attack_Damage;
         player.attack_Cooldown = weapon_Data.attack_Cooldown;
         player.max_AttackCount = weapon_Data.max_Attack_Count;
         player.skill_Cooldown = weapon_Data.skill_Cooldown;
