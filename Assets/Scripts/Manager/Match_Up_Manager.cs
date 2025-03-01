@@ -155,6 +155,9 @@ public class Match_Up_Manager : MonoBehaviour
 
     [SerializeField] private PlayerCharacter_Controller p_controller;
 
+    private bool is_damage_up = false;
+    private bool is_damage_down = false;
+
     public void Give_Player_Cards(GameObject card_01, GameObject card_02)
     {
         int i_First = card_01.GetComponent<Card>().cardValue.Month;
@@ -211,9 +214,18 @@ public class Match_Up_Manager : MonoBehaviour
                     map_Higher();
                 }
             }
-            else
+            else    //데미지 정상화
             {
-                //데미지 정상화
+                if (is_damage_up && !is_damage_down)
+                {
+                    p_controller.damage_Mul -= 0.3f;
+                    is_damage_up = false;
+                }
+                else if(!is_damage_up && is_damage_down)
+                {
+                    p_controller.damage_Mul += 0.3f;
+                    is_damage_down = false;
+                }
             }
         }
     }
@@ -221,11 +233,16 @@ public class Match_Up_Manager : MonoBehaviour
     private void player_Higher()
     {
         Debug.Log("Player's Match is Higher!");
+        p_controller.damage_Mul += 0.3f;
 
+        is_damage_up = true;
     }
 
     private void map_Higher()
     {
         Debug.Log("Map's Match is Higher!");
+        p_controller.damage_Mul -= 0.3f;
+
+        is_damage_down = true;
     }
 }
