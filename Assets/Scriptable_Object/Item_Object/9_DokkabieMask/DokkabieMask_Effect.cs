@@ -11,7 +11,7 @@ public class DokkabieMask_Effect : ItemEffect
     public float berserk_Duration = 30f;
     public float cooldown_Duration = 60f;
 
-    public float damage_Mul = 1.5f;
+    public float damage_Mul = 0.5f;
     public float takenDamage_Mul = 1.5f;
     public float attack_Cooldown_Mul = 0.7f;
     public float moveSpeed_Mul = 1.2f;
@@ -67,7 +67,7 @@ public class DokkabieMask_Effect : ItemEffect
         og_AttackCooldown = cur_Player.attack_Cooldown;
 
         cur_Player.movementSpeed = og_MoveSpeed * moveSpeed_Mul;
-        cur_Player.damage_Mul = og_Damage_Mul * damage_Mul;
+        cur_Player.damage_Mul = og_Damage_Mul + damage_Mul;
         cur_Player.takenDamage_Mul = og_TakenDamage_Mul * takenDamage_Mul;
         cur_Player.attack_Cooldown = og_AttackCooldown * attack_Cooldown_Mul;
 
