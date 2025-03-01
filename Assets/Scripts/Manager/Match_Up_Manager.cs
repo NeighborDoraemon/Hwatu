@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -154,6 +153,8 @@ public class Match_Up_Manager : MonoBehaviour
     private Match player_match;
     private Match map_match;
 
+    [SerializeField] private PlayerCharacter_Controller p_controller;
+
     public void Give_Player_Cards(GameObject card_01, GameObject card_02)
     {
         int i_First = card_01.GetComponent<Card>().cardValue.Month;
@@ -220,6 +221,7 @@ public class Match_Up_Manager : MonoBehaviour
     private void player_Higher()
     {
         Debug.Log("Player's Match is Higher!");
+
     }
 
     private void map_Higher()
