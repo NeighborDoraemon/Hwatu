@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Bracelet
   item_Icon: {fileID: 21300000, guid: 8f9a6b14dc7d3b945ac812250c790c62, type: 3}
-  item_Price: 0
+  item_Price: 400
   itemEffect: {fileID: 11400000, guid: a241b1736b3e4e0448dd179891c1c20a, type: 2}
   isConsumable: 0
   item_Rarity: 1

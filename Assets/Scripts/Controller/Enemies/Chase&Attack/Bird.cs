@@ -25,6 +25,7 @@ public class Bird : MonoBehaviour, Enemy_Interface
     [Header("Others")]
     [SerializeField] private GameObject Target_Player;
     [SerializeField] private GameObject Obj_Attack_Box;
+    [SerializeField] private Crash_Box enemy_CB;
 
 
     private bool is_Attacking = false; // 공격 중 범위를 벗어났을 때, 다른 행동을 못하게 설정
@@ -99,6 +100,7 @@ public class Bird : MonoBehaviour, Enemy_Interface
             //is_Attack_Turn = true;
 
             //f_Dash_StartPosition = this.transform.position.x;
+            enemy_CB.Damage_Once = true;
         }
 
         if(Obj_Attack_Box.transform.localPosition.y <= 0.0f && i_For_UpDown == -1) //바닥을 찍었을 때, 다시 올라가게 설정

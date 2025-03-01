@@ -223,4 +223,33 @@ public class Object_Manager : MonoBehaviour
                 Destroy(item);
         }
     }
+
+    //By KYH
+    public GameObject Spawn_Market_Item(Vector3 spawnPos, Item spawn_item, GameObject obj_Parent)
+    {
+        if (item_Database == null || itemPrefab == null)
+        {
+            Debug.LogError("Item Database or Item Prefab is not assigned.");
+            return null;
+        }
+
+        if (spawn_item == null) return null;
+
+        Debug.Log($"드롭된 아이템 : {spawn_item.itemName}");
+
+        GameObject itemInstance = Instantiate(itemPrefab, spawnPos, Quaternion.identity, obj_Parent.transform);
+
+        itemInstance.tag = "Market_Item";
+
+        Item_Prefab itemPrefabScript = itemInstance.GetComponent<Item_Prefab>();
+        itemPrefabScript.Initialize(spawn_item);
+
+        if (!spawn_item.isConsumable)
+        {
+            spawnedItems.Add(spawn_item);
+        }
+        spawned_Item_Instances.Add(itemInstance);
+
+        return itemInstance;
+    }
 }
