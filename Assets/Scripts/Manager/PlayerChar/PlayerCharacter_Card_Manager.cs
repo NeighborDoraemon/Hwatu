@@ -34,6 +34,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                     Object_Manager.instance.Remove_Used_Sprite(cardComponent.selected_Sprite);
                 }
 
+                Debug.Log("0 destroy");
                 Destroy(card_Inventory[0]);
             }
 

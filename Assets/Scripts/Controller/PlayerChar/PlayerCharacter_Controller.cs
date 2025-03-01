@@ -79,6 +79,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     //NPC
     private bool is_Npc_Contack = false;
     private GameObject Now_Contact_Npc;
+
+    //match_manager
+    [SerializeField] private Match_Up_Manager match_manager;
+    
     //---------------------------------------------------
 
     public bool is_Knock_Back = false;
@@ -370,16 +374,47 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         else if (current_Item.CompareTag("Card"))
         {
             AddCard(current_Item);
+
+            //by KYH
+            if (card_Inventory[0] != null && card_Inventory[1] != null)
+            {
+                match_manager.Give_Player_Cards(card_Inventory[0], card_Inventory[1]);
+            }
+
             current_Item.gameObject.SetActive(false);
         }
         else if (current_Item.TryGetComponent(out Item_Prefab item_Prefab))
         {
-            Handle_Item(item_Prefab.itemData);
+            if (current_Item.CompareTag("Market_Item"))  // By KYH - Market Item
+            {
+                Debug.Log("Market Item Interacted!");
+                int current_price = current_Item.GetComponent<Item_Prefab>().itemData.item_Price;
+
+                if (current_price <= i_Money) // Player's Money is more than price
+                {
+                    i_Money -= current_price;
+                    Debug.Log(i_Money);
+
+                    Handle_Item(item_Prefab.itemData);
+
+                    Debug.Log("After Call");
+                    Market_Destroy_Manager.On_Item_Destroyed?.Invoke(item_Prefab.gameObject);
+                }
+                else
+                {
+                    Debug.Log("Not Enough Money!");
+                }
+
+            }
+            else // Default Item 
+            {
+                Handle_Item(item_Prefab.itemData);
+            }
         }
 
         current_Item = null;
     }
-
+     
     private void Handle_Item(Item item)
     {
         if (item == null) return;
@@ -392,6 +427,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             AddItem(item);
         }
+        Debug.Log("Item Destroy");
 
         Destroy(current_Item);
         Object_Manager.instance.Destroy_All_Cards_And_Items();
@@ -957,7 +993,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Item" || other.gameObject.tag == "Card" || other.gameObject.tag == "Chest")
+        if (other.gameObject.tag == "Item" || other.gameObject.tag == "Card" || other.gameObject.tag == "Chest" || other.gameObject.tag == "Market_Item")
         {
             current_Item = other.gameObject;
         }
@@ -972,7 +1008,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             use_Portal = false;
         }
 
-        if (other.gameObject.tag == "Item" || other.gameObject.tag == "Card" || other.gameObject.tag == "Chest")
+        if (other.gameObject.tag == "Item" || other.gameObject.tag == "Card" || other.gameObject.tag == "Chest" || other.gameObject.tag == "Market_Item")
         {
             current_Item = null;
         }

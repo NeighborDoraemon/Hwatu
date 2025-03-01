@@ -16,6 +16,7 @@ TagManager:
   - NPC
   - Boundary
   - CM_Boundary
+  - Market_Item
   layers:
   - Default
   - TransparentFX

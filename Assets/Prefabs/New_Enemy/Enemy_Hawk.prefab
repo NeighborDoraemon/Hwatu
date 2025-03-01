@@ -151,6 +151,7 @@ MonoBehaviour:
     constantValue: 0
   Target_Player: {fileID: 0}
   Obj_Attack_Box: {fileID: 7828112140264504557}
+  enemy_CB: {fileID: 533184294156890444}
   f_Attack_Move_Speed: 0.7
   f_Attack_Down_Speed: 0.7
 --- !u!1 &4372213776660757167

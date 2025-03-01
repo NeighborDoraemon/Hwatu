@@ -63,4 +63,11 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
 
         item_Slots[selected_Slot_Index].Set_Selected(true);
     }
+
+
+    //By KYH    Give inventory data to Market Stall
+    public Item[] Give_Inventory_Data()
+    {
+        return player_Inventory.ToArray();
+    }
 }
