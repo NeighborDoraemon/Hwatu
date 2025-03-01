@@ -1124,7 +1124,14 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public int Calculate_Skill_Damage()
     {
-        int total_Dmg = cur_Weapon_Data.skill_Damage + item_Skill_Damage;
+        int base_Dmg = cur_Weapon_Data.skill_Damage + item_Skill_Damage;
+        int total_Dmg = Mathf.RoundToInt(base_Dmg * damage_Mul);
+
+        bool is_Critical = UnityEngine.Random.value <= crit_Rate;
+        if (is_Critical)
+        {
+            total_Dmg = Mathf.RoundToInt(total_Dmg * crit_Dmg);
+        }
 
         return total_Dmg;
     }
