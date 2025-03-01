@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e7cc7e5bf5a124f842638c93b025ba, type: 3}
   m_Name: LongBlade_Run_Animation_Pos_Data
   m_EditorClassIdentifier: 
-  animation_Name: PlayerChar_Polearm_Run
+  animation_Name: PC_Polearm_Run
   frame_Pos:
-  - {x: -0.0125, y: -0.2892, z: 0}
-  - {x: -0.0125, y: -0.2892, z: 0}
-  - {x: -0.0061, y: -0.3015, z: 0}
-  - {x: 0.0084, y: -0.3115, z: 0}
-  - {x: -0.008, y: -0.2969, z: 0}
-  - {x: -0.0103, y: -0.2778, z: 0}
-  - {x: -0.0076, y: -0.2851, z: 0}
-  - {x: -0.009, y: -0.2846, z: 0}
+  - {x: -0.023, y: -0.293, z: 0}
+  - {x: -0.023, y: -0.302, z: 0}
+  - {x: -0.023, y: -0.315, z: 0}
+  - {x: -0.023, y: -0.296, z: 0}
+  - {x: -0.023, y: -0.296, z: 0}
+  - {x: -0.023, y: -0.306, z: 0}
+  - {x: -0.023, y: -0.306, z: 0}
+  - {x: -0.023, y: -0.297, z: 0}
   frame_Rotations:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}

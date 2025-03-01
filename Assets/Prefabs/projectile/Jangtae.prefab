@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 368389863960997796}
   - component: {fileID: 2587817630832772935}
   - component: {fileID: 1077052708616395537}
+  - component: {fileID: -2598552060460482317}
   m_Layer: 0
   m_Name: Jangtae
   m_TagString: Untagged
@@ -178,3 +179,16 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-2598552060460482317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335327918262151755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38401aea628f3204c87af3c5aa2bf854, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  base_Weapon_Damage: 0

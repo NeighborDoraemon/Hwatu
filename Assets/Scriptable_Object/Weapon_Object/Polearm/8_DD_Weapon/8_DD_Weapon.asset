@@ -22,13 +22,11 @@ MonoBehaviour:
   overrideController: {fileID: 22100000, guid: 2382773f13047924180a43fdc5520ac4, type: 2}
   weapon_overrideController: {fileID: 0}
   animation_Pos_Data_List:
-  - {fileID: 11400000, guid: ff67be93a3e412a44b5930622a92fdcb, type: 2}
-  - {fileID: 11400000, guid: f71a8f9ac0fb23643ba3a594bb69777f, type: 2}
-  - {fileID: 11400000, guid: d77ce020e338e704dbad076396677776, type: 2}
-  - {fileID: 11400000, guid: 4bc0d93fcef1c73478aa48fc2a98a19f, type: 2}
-  - {fileID: 11400000, guid: 6a3dc710fe02fc14e9b64cbc4f6cf96f, type: 2}
-  - {fileID: 11400000, guid: d18790152d5ad8f4dacc27b1fc018c35, type: 2}
-  - {fileID: 11400000, guid: 60d057dcf3491f240a45729a2086be57, type: 2}
+  - {fileID: 11400000, guid: 91d2305294cc8b746a8c3150f3b7a5ef, type: 2}
+  - {fileID: 11400000, guid: 22fe28c58f999ac4ab37265e447ed0ea, type: 2}
+  - {fileID: 11400000, guid: 47454b16debeb04458ea3be79d4d5df8, type: 2}
+  - {fileID: 11400000, guid: c5f1fc657bd144345bf46e681f843139, type: 2}
+  - {fileID: 11400000, guid: ea2ea1a6905f2464799189a9c8563e19, type: 2}
   effect_Data: {fileID: 11400000, guid: da546ea96b27b9049a10110ec7d94884, type: 2}
   attack_Strategy: {fileID: 11400000, guid: f6d172f6dab1d9c4a934bf56ad80274a, type: 2}
   is_HoldAttack_Enabled: 1

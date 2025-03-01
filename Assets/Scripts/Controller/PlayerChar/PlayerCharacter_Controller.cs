@@ -25,6 +25,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     [Header("Teleport")]
     bool canTeleporting = true;
+    private int cur_Teleport_Count;
+    public float teleporting_Cooltime_Timer;
 
     [Header("DebugChest")]
     public GameObject chestPrefab;
@@ -43,7 +45,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     [Header("Weapon_Data")]
     private Weapon_Collision_Handler weapon_Handler;
     private bool is_AtkCoroutine_Running = false;
-    private int cur_Atk_Phase = 0;
 
     public GameObject weapon_Prefab;    
     public SpriteRenderer effect_Render;
@@ -54,6 +55,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     public Animator weapon_Animator;
     
     public event Action On_Player_Damaged;
+    public event Action On_Enemy_Hit;
+    public event Action<PlayerCharacter_Controller> On_Teleport;
     public bool isInvincible = false;
     public bool is_UI_Open = false;
 
@@ -161,15 +164,18 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         bool isMoving = Mathf.Abs(movement.x) > 0.01f;
         animator.SetBool("isMove", isMoving);
-        
         animator.SetBool("isGrounded", isGrounded);
+        animator.SetFloat("vertical_Velocity", rb.velocity.y);
+
+        if (weapon_Animator != null)
+        {
+            weapon_Animator.SetBool("isMove", isMoving);
+        }
 
         if (isGrounded && rb.velocity.y == 0 && this.gameObject.transform.position.y - 0.3f > Now_New_Platform.transform.position.y)
         {
             jumpCount = 0;
         }
-
-        animator.SetFloat("vertical_Velocity", rb.velocity.y);
     }
 
     // Move ===========================================================================================
@@ -255,56 +261,64 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     
     public void Input_Teleportation(InputAction.CallbackContext ctx)
     {
-        if (is_UI_Open) return;
+        if (is_UI_Open || is_Player_Dead) return;
 
-        if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
+        if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && canTeleporting)
         {
-            if (canTeleporting)
+            float adjusted_Distance = teleporting_Distance;
+
+            Vector2 top_Pos = new Vector2(transform.position.x, transform.position.y + GetComponent<Collider2D>().bounds.extents.y);
+            Vector2 bottom_Pos = new Vector2(transform.position.x, transform.position.y - GetComponent<Collider2D>().bounds.extents.y);
+
+            Vector2 direction = is_Facing_Right ? Vector2.right : Vector2.left;
+
+            RaycastHit2D topHit = Physics2D.Raycast(top_Pos, direction, teleporting_Distance, LayerMask.GetMask("Walls"));
+            RaycastHit2D bottomHit = Physics2D.Raycast(bottom_Pos, direction, teleporting_Distance, LayerMask.GetMask("Walls"));
+
+            if (topHit.collider != null)
             {
-                float adjusted_Distance = teleporting_Distance;
+                adjusted_Distance = Mathf.Min(adjusted_Distance, topHit.distance);
+            }
+            if (bottomHit.collider != null)
+            {
+                adjusted_Distance = Mathf.Min(adjusted_Distance, bottomHit.distance);
+            }
 
-                Vector2 top_Pos = new Vector2(transform.position.x, transform.position.y + GetComponent<Collider2D>().bounds.extents.y);
-                Vector2 bottom_Pos = new Vector2(transform.position.x, transform.position.y - GetComponent<Collider2D>().bounds.extents.y);
+            if (!is_Facing_Right)
+            {
+                transform.Translate(Vector2.left * adjusted_Distance);
+            }
+            else
+            {
+                transform.Translate(Vector2.right * adjusted_Distance);
+            }
 
-                Vector2 direction = is_Facing_Right ? Vector2.right : Vector2.left;
+            animator.SetTrigger("Teleport");
+            cur_Teleport_Count--;
 
-                RaycastHit2D topHit = Physics2D.Raycast(top_Pos, direction, teleporting_Distance, LayerMask.GetMask("Walls"));
-                RaycastHit2D bottomHit = Physics2D.Raycast(bottom_Pos, direction, teleporting_Distance, LayerMask.GetMask("Walls"));
-
-                if (topHit.collider != null)
-                {
-                    adjusted_Distance = Mathf.Min(adjusted_Distance, topHit.distance);
-                }
-                if (bottomHit.collider != null)
-                {
-                    adjusted_Distance = Mathf.Min(adjusted_Distance, bottomHit.distance);
-                }
-
-                if (!is_Facing_Right)
-                {
-                    transform.Translate(Vector2.left * adjusted_Distance);
-                }
-                else
-                {
-                    transform.Translate(Vector2.right * adjusted_Distance);
-                }
-
-                animator.SetTrigger("Teleport");
+            if (cur_Teleport_Count <= 0)
+            {
                 canTeleporting = false;
             }
+
+            On_Teleport?.Invoke(this);
         }
     }
 
     void Handle_Teleportation_Time()
     {
-        if (!canTeleporting)
+        if (cur_Teleport_Count < max_Teleport_Count)
         {
-            teleporting_CoolTime -= Time.deltaTime;
-            if (teleporting_CoolTime <= 0.0f)
+            teleporting_Cooltime_Timer -= Time.deltaTime;
+            if (teleporting_Cooltime_Timer <= 0.0f)
             {
-                teleporting_CoolTime = 3.0f;
-                canTeleporting = true;
-                //Debug.Log("Can Teleport");
+                teleporting_Cooltime_Timer = teleporting_CoolTime;
+                cur_Teleport_Count++;
+
+                if (cur_Teleport_Count > 0)
+                {
+                    canTeleporting = true;
+                }
             }
         }
     }
@@ -494,6 +508,18 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }        
         
         Apply_Weapon_Data();
+
+        Re_Apply_All_Effects();
+
+        GameObject clone_Obj = GameObject.FindWithTag("PlayerClone");
+        if (clone_Obj != null)
+        {
+            Player_Clone player_Clone = clone_Obj.GetComponent<Player_Clone>();
+            if (player_Clone != null)
+            {
+                player_Clone.Copy_Player_Weapon();
+            }
+        }
     }
 
     private void Apply_Weapon_Data()
@@ -782,6 +808,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         End_Attack();
     }
 
+    public void Trigger_Enemy_Hit()
+    {
+        On_Enemy_Hit?.Invoke();
+    }
+
     public void On_Shoot_Projectile()
     {
         if (attack_Strategy != null)
@@ -880,7 +911,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             return;
         }
 
-        health = health - Damage;
+        int total_Dmg = Mathf.RoundToInt(Damage * takenDamage_Mul);
+        health = health - total_Dmg;
         Player_Health_Bar.fillAmount = (float)health / max_Health;
 
         if (health <= 0)
@@ -1075,6 +1107,27 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         is_Knock_Back = false;
     }
     // =========================================================================================================
+
+    public int Calculate_Damage()
+    {
+        int base_Dmg = cur_Weapon_Data.attack_Damage + attackDamage + item_Damage;
+        int total_Dmg = Mathf.RoundToInt(base_Dmg * damage_Mul);
+
+        bool is_Critical = UnityEngine.Random.value <= crit_Rate;
+        if (is_Critical)
+        {
+            total_Dmg = Mathf.RoundToInt(total_Dmg * crit_Dmg);
+        }
+        
+        return total_Dmg;
+    }
+
+    public int Calculate_Skill_Damage()
+    {
+        int total_Dmg = cur_Weapon_Data.skill_Damage + item_Skill_Damage;
+
+        return total_Dmg;
+    }
 
     public void Add_Player_Money(int Income) // Money Method
     {

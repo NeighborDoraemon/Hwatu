@@ -6,8 +6,7 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
 {
     public IAttack_Strategy attack_Strategy;
     public Weapon_Manager weapon_Manager;
-    [HideInInspector]
-    public Animator animator;
+    [HideInInspector] public Animator animator;
 
     [Header("플레이어 기본 능력치")]
     public float base_MovementSpeed = 1.0f;
@@ -15,28 +14,31 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     public int base_Max_Health = 100;
 
     [Header("플레이어 현재 능력치")]
-    public float movementSpeed = 1.0f;
-    public float jumpPower = 5.0f;
-    public int max_Health = 100;
-    public int health = 100;
-    public int attackDamage = 0; // 공격 데미지
-    public int player_Life = 0;
+    public float movementSpeed = 1.0f;          // 이동속도
+    public float jumpPower = 5.0f;              // 점프 가중치
+    public int max_Health = 100;                // 최대 체력
+    public int health = 100;                    // 현재 체력
+    public int attackDamage = 0;                // 플레이어 공격력
+    public int item_Damage = 0;                 // 아이템으로 인한 추가 공격력
+    public int item_Skill_Damage = 0;           // 아이템으로 인한 추가 스킬 공격력
+    public float damage_Mul = 1f;               // 주는 데미지 증가 배율
+    public float takenDamage_Mul = 1f;          // 받는 데미지 증가 배율
+    public float crit_Rate = 0;                 // 치명타 확률
+    public float crit_Dmg = 0;                  // 치명타 배율
+    public int player_Life = 0;                 // 플레이어 현재 목숨
 
     [Header("근접 공격 변수")]
-    public float attackRange = 0.5f; // 플레이어와 공격 범위 간 거리 설정 변수
-    public float comboTime = 0.5f; // 콤보 공격 제한시간
-    public float attack_Cooldown = 1.0f; // 공격 쿨타임 변수
-    [HideInInspector]
-    public float last_Attack_Time = 0f; // 마지막 공격 시점 기록 변수
-    [HideInInspector]
-    public float last_ComboAttack_Time = 0f; // 마지막 콤보어택 시점 기록 변수
-    public bool isAttacking = false; // 공격 상태 체크 변수
+    public float attackRange = 0.5f;
+    public float comboTime = 0.5f;
+    public float attack_Cooldown = 1.0f;
+    [HideInInspector] public float last_Attack_Time = 0f;
+    [HideInInspector] public float last_ComboAttack_Time = 0f;
+    public bool isAttacking = false;
     public int cur_AttackCount = 0;
     public int max_AttackCount = 0;
     
     [Header("원거리 공격 변수")]
     public Transform firePoint;
-    public float arrowSpeed = 10.0f; // 총알 속도
     
     [Header("스킬 변수")]
     public float skill_Cooldown = 1.0f;
@@ -45,8 +47,8 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
 
     [Header("텔레포트")]
     public int max_Teleport_Count = 1;
-    public float teleporting_Distance = 3.0f; // 순간이동 거리 변수
-    public float teleporting_CoolTime = 3.0f; // 순간이동 쿨타임 변수
+    public float teleporting_Distance = 3.0f;
+    public float teleporting_CoolTime = 3.0f;
 
     [Header("Money")]
     public int i_Money = 0;

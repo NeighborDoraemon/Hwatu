@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e7cc7e5bf5a124f842638c93b025ba, type: 3}
   m_Name: GreatAxe_Run_Animation_Pos_Data
   m_EditorClassIdentifier: 
-  animation_Name: PlayerChar_Polearm_Run
+  animation_Name: PC_Polearm_Run
   frame_Pos:
-  - {x: -0.0432, y: -0.2632, z: 0}
-  - {x: -0.0432, y: -0.2632, z: 0}
-  - {x: -0.0432, y: -0.2726, z: 0}
-  - {x: -0.0432, y: -0.2836, z: 0}
-  - {x: -0.0432, y: -0.2632, z: 0}
-  - {x: -0.0432, y: -0.2483, z: 0}
-  - {x: -0.0432, y: -0.2562, z: 0}
-  - {x: -0.0432, y: -0.2562, z: 0}
+  - {x: -0.034, y: -0.275, z: 0}
+  - {x: -0.034, y: -0.284, z: 0}
+  - {x: -0.034, y: -0.292, z: 0}
+  - {x: -0.034, y: -0.272, z: 0}
+  - {x: -0.034, y: -0.272, z: 0}
+  - {x: -0.034, y: -0.281, z: 0}
+  - {x: -0.034, y: -0.293, z: 0}
+  - {x: -0.034, y: -0.277, z: 0}
   frame_Rotations:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}

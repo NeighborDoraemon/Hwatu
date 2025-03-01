@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.2688679, g: 0.5144542, b: 1, a: 1}
+  m_Color: {r: 0.4738341, g: 0.8301887, b: 0.4994049, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -178,6 +178,9 @@ MonoBehaviour:
   - {fileID: 2612317259100176737}
   number_Of_Objects_To_Spawn: 2
   itemName_To_Spawn: 
+  common_DropRates: 80
+  epic_DropRates: 17
+  legendary_DropRates: 3
 --- !u!1 &5424636938484077589
 GameObject:
   m_ObjectHideFlags: 0

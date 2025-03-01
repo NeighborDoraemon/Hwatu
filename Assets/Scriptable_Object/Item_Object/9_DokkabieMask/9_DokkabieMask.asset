@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86385ed30deb3bf4094345f126ce6a87, type: 3}
+  m_Name: 9_DokkabieMask
+  m_EditorClassIdentifier: 
+  itemName: DokkabieMask
+  item_Icon: {fileID: 21300000, guid: 7fecda89fb9c2e447a0ffffbaf4b5da6, type: 3}
+  item_Price: 0
+  itemEffect: {fileID: 11400000, guid: f6f63c64713415c4c87d3ad21c057efe, type: 2}
+  isConsumable: 0
+  item_Rarity: 2

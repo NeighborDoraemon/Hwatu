@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e7cc7e5bf5a124f842638c93b025ba, type: 3}
   m_Name: GreatAxe_Idle_Animation_Pos_Data
   m_EditorClassIdentifier: 
-  animation_Name: PlayerChar_Polearm_Idle
+  animation_Name: PC_Polearm_Idle
   frame_Pos:
   - {x: -0.0322, y: -0.2931, z: 0}
   - {x: -0.0322, y: -0.2931, z: 0}

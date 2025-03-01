@@ -9,6 +9,7 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
     private Weapon_Data weapon_Data;
 
     public GameObject jangtae_Prefab;
+    public GameObject explosion_Effect_Prefab;
     public float roll_Speed = 5.0f;
     public float explosion_Radius = 3.0f;
 
@@ -57,6 +58,14 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
                 return;
             }
         }
+        else
+        {
+            if (cur_Jangtae != null)
+            {
+                Debug.Log("필드 상에 장태 존재하므로 리턴.");
+                return;
+            }
+        }
 
         player.StartCoroutine(Mount_Jangtae(player, 0.3f));
     }
@@ -67,37 +76,30 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
     }
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
-        Jangtae[] all_Jangtae = FindObjectsOfType<Jangtae>();
-
-        if (all_Jangtae == null || all_Jangtae.Length == 0)
+        if (cur_Jangtae == null)
         {
             return;
         }
 
-        foreach (Jangtae jangtae in all_Jangtae)
+        if (explosion_Effect_Prefab != null)
         {
-            if (jangtae == null)
-            {
-                Debug.LogWarning("Found a null Jangtae object. Skipping");
-                continue;
-            }
-
-            Collider2D[] enemies = Physics2D.OverlapCircleAll(cur_Jangtae.transform.position, explosion_Radius, LayerMask.GetMask("Enemy"));
-
-            foreach (Collider2D enemy in enemies)
-            {
-                Enemy_Basic enemyController = enemy.GetComponent<Enemy_Basic>();
-                if (enemyController != null)
-                {
-                    enemyController.TakeDamage(weapon_Data.skill_Damage);
-                }
-            }
-
-            Destroy(jangtae.gameObject);
+            Instantiate(explosion_Effect_Prefab, cur_Jangtae.transform.position, Quaternion.identity);
         }
 
-        //cur_Jangtae = null;
-        //isRiding = false;
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(cur_Jangtae.transform.position, explosion_Radius, LayerMask.GetMask("Enemy"));
+
+        foreach (Collider2D enemy in enemies)
+        {
+            Enemy_Basic enemyController = enemy.GetComponent<Enemy_Basic>();
+            if (enemyController != null)
+            {
+                enemyController.TakeDamage(weapon_Data.skill_Damage);
+            }
+        }
+
+        Destroy(cur_Jangtae);
+        cur_Jangtae = null;
+        isRiding = false;
     }
 
     private IEnumerator Mount_Jangtae(PlayerCharacter_Controller player, float delay)

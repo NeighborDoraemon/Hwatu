@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,16 +11,19 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
 
     private int selected_Slot_Index = 0;
 
+    private Dictionary<ItemEffect, int> active_Effects = new Dictionary<ItemEffect, int>();
+
+    private void Start()
+    {
+        
+    }
+
     public void AddItem(Item newItem)
     {
         if (!newItem.isConsumable)
         {
-            player_Inventory.Add(newItem);  // 아이템 추가
-            PlayerCharacter_Controller player = this.GetComponent<PlayerCharacter_Controller>();
-            if (player != null) 
-            {
-                newItem.ApplyEffect(this.GetComponent<PlayerCharacter_Controller>());
-            }
+            player_Inventory.Add(newItem);
+            Apply_Item_Effect(newItem);
         }
 
         Update_Inventory();
@@ -29,6 +33,50 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
     {
         player_Inventory.Remove(item);
         Update_Inventory();
+    }
+
+    private void Apply_Item_Effect(Item new_Item)
+    {
+        PlayerCharacter_Controller player = this.GetComponent<PlayerCharacter_Controller>();
+        if (player == null || new_Item.itemEffect == null) return;
+
+        if (!active_Effects.ContainsKey(new_Item.itemEffect))
+        {
+            active_Effects[new_Item.itemEffect] = 1;
+            new_Item.itemEffect.ApplyEffect(player);
+        }
+        else
+        {
+            active_Effects[new_Item.itemEffect]++;
+        }
+    }
+
+    private void Remove_Item_Effect(Item item)
+    {
+        PlayerCharacter_Controller player = this.GetComponent<PlayerCharacter_Controller>();
+        if (player == null || item.itemEffect == null) return;
+
+        if (active_Effects.ContainsKey(item.itemEffect))
+        {
+            active_Effects[item.itemEffect]--;
+
+            if (active_Effects[item.itemEffect] <= 0)
+            {
+                active_Effects.Remove(item.itemEffect);
+                item.itemEffect.RemoveEffect(player);
+            }
+        }
+    }
+
+    public void Re_Apply_All_Effects()
+    {
+        PlayerCharacter_Controller player = this.GetComponent<PlayerCharacter_Controller>();
+        if (player == null) return;
+        
+        foreach (var effect in active_Effects.Keys)
+        {
+            effect.ApplyEffect(player);
+        }
     }
 
     public void Update_Inventory()
