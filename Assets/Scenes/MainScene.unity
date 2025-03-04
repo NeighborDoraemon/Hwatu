@@ -5660,7 +5660,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bind_spot: {fileID: 881590687}
-  bind_time: 2
+  bind_time: 0
 --- !u!61 &422122501
 BoxCollider2D:
   m_ObjectHideFlags: 0

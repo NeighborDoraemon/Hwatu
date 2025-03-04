@@ -14,7 +14,7 @@ public class Noose_Trap : MonoBehaviour
         {
             collision.GetComponent<Rigidbody2D>().gravityScale = 0.0f;
             collision.gameObject.transform.position = bind_spot.transform.position;
-            collision.GetComponent<PlayerCharacter_Controller>().Player_Trap_Stun(false, bind_time, () =>
+            collision.GetComponent<PlayerCharacter_Controller>().Player_Trap_Stun(false, () =>
             {
                 StartCoroutine(Reset_Values(collision.gameObject));
             });

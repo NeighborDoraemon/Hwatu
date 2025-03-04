@@ -195,6 +195,7 @@ public class Map_Manager : MonoBehaviour
         if (Map_Shuffled_Queue.Count <= 0) // Goto Boss Stage
         {
             v_Next_SpawnPoint = FB_Map_Data[Boss_map_Index].v_Map_Spawnpoint;
+            is_Boss_Stage = true;
         }
         else
         {

@@ -87,11 +87,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     [SerializeField] private Match_Up_Manager match_manager;
 
     //Escape Minigame Values
-    private float require_gauge = 100.0f;
-    private float decrease_rate = 3.0f;
-    private float increase_rate = 7.0f;
+    private int require_gauge = 100;
+    private int decrease_rate = 5;
+    private int increase_rate = 10;
 
-    private float current_gauge = 0.0f;
+    private int current_gauge = 0;
     private bool is_Minigame = false;
 
     //---------------------------------------------------
@@ -206,14 +206,19 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             movement = Vector2.zero;
         }
-        else
+        else if(ctx.phase == InputActionPhase.Started)
         {
             movement = ctx.action.ReadValue<Vector2>();
 
             if(is_Minigame)
             {
                 current_gauge += increase_rate;
+                Debug.Log("게이지 증가" + current_gauge);
             }
+        }
+        else
+        {
+            movement = ctx.action.ReadValue<Vector2>();
         }
     }
 
@@ -1167,7 +1172,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     }
 
-    public void Player_Trap_Stun(bool is_Can_Jump, float Bind_Time, System.Action onComplete = null)
+    public void Player_Trap_Stun(bool is_Can_Jump, System.Action onComplete = null)
     {
         is_Knock_Back = true;
         rb.velocity = Vector2.zero;
@@ -1179,25 +1184,33 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
 
         //Invoke("Knock_Back_End", Bind_Time);
-        StartCoroutine(Escape_Coroutine(Bind_Time, onComplete));
+        StartCoroutine(Escape_Coroutine(onComplete));
     }
 
-    public IEnumerator Escape_Coroutine(float Bind_Time, System.Action onComplete)
+    public IEnumerator Escape_Coroutine(System.Action onComplete)
     {
-        current_gauge = 0.0f;
+        float time = 0.0f;
+        current_gauge = 0;
 
         is_Minigame = true;
 
         while (current_gauge <= require_gauge)
         {
-            current_gauge -= decrease_rate * Time.deltaTime;
-            current_gauge = Mathf.Clamp(current_gauge, 0.0f, require_gauge);
+            time += Time.deltaTime;
+
+            if (time >= 1.0f)
+            {
+                current_gauge -= decrease_rate;
+                current_gauge = Mathf.Clamp(current_gauge, 0, require_gauge);
+
+                time = 0.0f;
+            }
 
             yield return null;
         }
 
         is_Minigame = false;
-        Invoke("Knock_Back_End", Bind_Time);
+        Knock_Back_End();
         onComplete?.Invoke();
     }
 
