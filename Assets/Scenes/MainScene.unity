@@ -40877,8 +40877,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a2bbe2570237074f812489ecc967931, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enemy_Prefab: {fileID: 1912712739062854426, guid: 57b553f5dd8fa2244902dd9d0a663fe9, type: 3}
-  CardBox_Prefab: {fileID: 939207004396396238, guid: b0cb8abd034624a47ba1914858bd75b8, type: 3}
+  Box_Prefabs:
+  - {fileID: 939207004396396238, guid: b0cb8abd034624a47ba1914858bd75b8, type: 3}
+  - {fileID: 939207004396396238, guid: aeb925d3a5ce77842a744770fc54cc20, type: 3}
+  - {fileID: 939207004396396238, guid: db84938f29620534f89e6ad20f2a15a3, type: 3}
   p_Controller: {fileID: 1097749508849876877}
   Enemy_Prefabs:
   - {fileID: 4371916878449458698, guid: 74972263fa2feef4fa440e6bd6cc1a3a, type: 3}
