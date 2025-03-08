@@ -17,4 +17,4 @@ MonoBehaviour:
   item_Price: 0
   itemEffect: {fileID: 11400000, guid: 2b67139c80cf62440af0a4a3af721360, type: 2}
   isConsumable: 0
-  item_Rarity: 1
+  item_Rarity: 0

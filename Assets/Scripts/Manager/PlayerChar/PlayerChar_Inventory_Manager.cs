@@ -13,6 +13,11 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
 
     private Dictionary<ItemEffect, int> active_Effects = new Dictionary<ItemEffect, int>();
 
+    public bool has_BowSheath_Effect = false;
+    public bool has_EarRing_Effect = false;
+
+    [HideInInspector] public GameObject earRing_Explosion_Prefab;
+
     private void Start()
     {
         

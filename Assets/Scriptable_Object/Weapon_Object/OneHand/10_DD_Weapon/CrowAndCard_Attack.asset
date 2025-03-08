@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 576e35e1053c8d64d99223f036f6d3c1, type: 3}
-  m_Name: Crow_Card_Attack
+  m_Name: CrowAndCard_Attack
   m_EditorClassIdentifier: 
   crow_Prefab: {fileID: 1335327918262151755, guid: 058387335e8cdba47b853b551af8f099, type: 3}
   attack_Range: 5

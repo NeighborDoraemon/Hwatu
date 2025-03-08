@@ -17,6 +17,6 @@ MonoBehaviour:
     frame_Effects:
     - frame_Number: 1
       effect_Sprites: {fileID: 0}
-      effect_Animator: {fileID: 0}
-      position_Offset: {x: 0, y: 0, z: 0}
+      effect_Animator: {fileID: 9100000, guid: 685ec28691367d14da1bd448d912a0f3, type: 2}
+      position_Offset: {x: 0, y: -0.326, z: 0}
       duration: 0.4

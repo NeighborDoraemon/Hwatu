@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class Horse_Projectile : MonoBehaviour
 {
-    public int damage = 5; // 스킬데미지
+    private PlayerCharacter_Controller player;
+    [SerializeField] private int final_Damage;
+
     public delegate void Projectile_Event();
     public event Projectile_Event OnHitEnemy;
     public event Projectile_Event OnMiss;
 
     private Rigidbody2D rb;
+
+    private void Awake()
+    {
+        player = FindObjectOfType<PlayerCharacter_Controller>();
+        final_Damage = player.Calculate_Damage();
+    }
 
     public void Initialized(HorseToken_Attack_Strategy attack_Strategy, Vector2 direction, float speed)
     {
@@ -33,13 +41,21 @@ public class Horse_Projectile : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            other.GetComponent<Enemy_Basic>().TakeDamage(damage);
+            other.GetComponent<Enemy_Basic>().TakeDamage(final_Damage);
+            if (player.has_EarRing_Effect && player.earRing_Explosion_Prefab != null)
+            {
+                Instantiate(player.earRing_Explosion_Prefab, transform.position, transform.rotation);
+            }
             OnHitEnemy?.Invoke();
             Destroy(gameObject);
         }
         else if(other.CompareTag("Walls"))
         {
             OnMiss?.Invoke();
+            if (player.has_EarRing_Effect && player.earRing_Explosion_Prefab != null)
+            {
+                Instantiate(player.earRing_Explosion_Prefab, transform.position, transform.rotation);
+            }
             Destroy(gameObject);
         }
     }

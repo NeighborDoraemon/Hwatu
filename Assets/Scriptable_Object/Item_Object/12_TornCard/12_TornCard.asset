@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: 12_TornCard
   m_EditorClassIdentifier: 
   itemName: TornCard
-  item_Icon: {fileID: 0}
+  item_Icon: {fileID: 21300000, guid: f08d6288bdfd2894095c7bf57a0ddc1e, type: 3}
   item_Price: 0
-  itemEffect: {fileID: 0}
+  itemEffect: {fileID: 11400000, guid: c0ffdc210dcd75f428cadbbddbff09ee, type: 2}
   isConsumable: 0
-  item_Rarity: 0
+  item_Rarity: 1

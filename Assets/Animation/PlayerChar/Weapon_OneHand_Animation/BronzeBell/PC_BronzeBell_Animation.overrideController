@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: PC_BronzeBell_Animation
+  m_Controller: {fileID: 9100000, guid: 6c65eefea63f86e4b80afe8a1bc6af6e, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 8c72a1e9db9f31546ab0d13e15e5afee, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 2edc1bc83df59fa4eb32ea7cd3139c84, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 7481a63663c0d1c4dbc0d8ce3994b488, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 73d8fe1fd8577374da8a18e83d3c89f7, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 489b42ae306da304b83fdb8656297002, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 5c5d1e0d4a2119640b8f7b926faccd9e, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 67f8faec550932b48b143ba1d579ebc6, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: a5e95bb4ee14a0048890787fd17e4ee7, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: b8091b6eb84f529439b2398989a87703, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 08a47686611c51c4191b170390bb0ad2, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 63d06b6f6fb88934c8df60e0c15e4969, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: db7b13a1bb430f44a8f94c7db26edef4, type: 2}

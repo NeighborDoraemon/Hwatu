@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animation_Name: PC_Bow_Charging
   frame_Pos:
-  - {x: 0.12, y: -0.294, z: 0}
-  - {x: 0.12, y: -0.294, z: 0}
-  - {x: 0.12, y: -0.294, z: 0}
-  - {x: 0.12, y: -0.294, z: 0}
-  - {x: 0.12, y: -0.294, z: 0}
+  - {x: 0.131, y: -0.259, z: 0}
+  - {x: 0.131, y: -0.259, z: 0}
+  - {x: 0.131, y: -0.259, z: 0}
+  - {x: 0.131, y: -0.259, z: 0}
+  - {x: 0.131, y: -0.259, z: 0}
   frame_Rotations: []
   frame_Scales: []

@@ -328,7 +328,7 @@ AnimatorStateMachine:
     m_Position: {x: 900, y: -180, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2328783937712429189}
-    m_Position: {x: -70, y: 240, z: 0}
+    m_Position: {x: 0, y: 320, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1071427065230105328}
     m_Position: {x: 630, y: 320, z: 0}
@@ -355,7 +355,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PC_HoldAtk
-  m_Speed: 1
+  m_Speed: 0.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -4835024156890220653}
@@ -1150,7 +1150,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 711e83a4a37e4ee41ba41688d839ba99, type: 2}
+  m_Motion: {fileID: 7400000, guid: 63d06b6f6fb88934c8df60e0c15e4969, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

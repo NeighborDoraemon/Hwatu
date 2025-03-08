@@ -911,7 +911,16 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             return;
         }
 
-        int total_Dmg = Mathf.RoundToInt(Damage * takenDamage_Mul);
+        if (UnityEngine.Random.value < defend_Attack_Rate)
+        {
+            Debug.Log("방어 성공, 데미지 차단.");
+            return;
+        }
+
+        int damage_Reduction = UnityEngine.Random.Range(damage_Reduce_Min, damage_Reduce_Max + 1);
+        int reduced_Damage = Mathf.Max(0, Damage - damage_Reduction);
+
+        int total_Dmg = Mathf.RoundToInt(reduced_Damage * takenDamage_Mul);
         health = health - total_Dmg;
         Player_Health_Bar.fillAmount = (float)health / max_Health;
 
@@ -1110,7 +1119,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public int Calculate_Damage()
     {
-        int base_Dmg = cur_Weapon_Data.attack_Damage + attackDamage + item_Damage;
+        int base_Dmg = cur_Weapon_Data.attack_Damage + attackDamage;
         int total_Dmg = Mathf.RoundToInt(base_Dmg * damage_Mul);
 
         bool is_Critical = UnityEngine.Random.value <= crit_Rate;
@@ -1124,7 +1133,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public int Calculate_Skill_Damage()
     {
-        int base_Dmg = cur_Weapon_Data.skill_Damage + item_Skill_Damage;
+        int base_Dmg = cur_Weapon_Data.skill_Damage + skill_Damage;
         int total_Dmg = Mathf.RoundToInt(base_Dmg * damage_Mul);
 
         bool is_Critical = UnityEngine.Random.value <= crit_Rate;
