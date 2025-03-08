@@ -24,6 +24,8 @@ MonoBehaviour:
   animation_Pos_Data_List:
   - {fileID: 11400000, guid: 15e2a5eff2eda5e48a087a07d60a4d44, type: 2}
   - {fileID: 11400000, guid: b0fb0b1d6eb182246ae4c3a3efbb4281, type: 2}
+  - {fileID: 11400000, guid: 515ede1816ef5d34d9f68d2e50e96429, type: 2}
+  - {fileID: 11400000, guid: 1b6746d9c747f154eaad1f345ee64e31, type: 2}
   effect_Data: {fileID: 11400000, guid: 0dd1f1221b20f904dafc48d078b8ad1d, type: 2}
   attack_Strategy: {fileID: 11400000, guid: 966503d850c49a04a8fc725e0cbb7aad, type: 2}
   is_HoldAttack_Enabled: 0

@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81f0fd05e94d7f64cbedd1f4f732b4ee, type: 3}
   m_Name: EarRing_Effect
   m_EditorClassIdentifier: 
-  skill_Cooldown_Reduce_Multiple: 0.9
+  explosion_Prefab: {fileID: 2072432503961053385, guid: 4babe9424d9b38145b982375cb652d6e, type: 3}

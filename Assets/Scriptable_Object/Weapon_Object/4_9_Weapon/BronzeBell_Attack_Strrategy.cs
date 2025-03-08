@@ -47,7 +47,7 @@ public class BronzeBell_Attack_Strrategy : ScriptableObject, IAttack_Strategy
             Enemy_Basic enemy = enemy_Collider.GetComponent<Enemy_Basic>();
             if (enemy != null)
             {
-                enemy.TakeDamage(player.attackDamage);
+                enemy.TakeDamage(player.Calculate_Damage());
                 Debug.Log("Enemy hit by hold attack, Damage : " + player.attackDamage);
             }
             else

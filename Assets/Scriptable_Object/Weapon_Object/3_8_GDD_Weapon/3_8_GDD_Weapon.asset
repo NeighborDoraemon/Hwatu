@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: 3_8_GDD_Weapon
   m_EditorClassIdentifier: 
   weapon_Name: Bow
-  attack_Damage: 0
+  attack_Damage: 20
   attack_Cooldown: 0.5
-  max_Attack_Count: 2
+  max_Attack_Count: 1
   skill_Damage: 200
   skill_Cooldown: 2
   weapon_Prefab: {fileID: 7843703564842448239, guid: 665738c1b2f3d1141940e489b7ad0c4d, type: 3}

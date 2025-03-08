@@ -5,7 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     private PlayerCharacter_Controller player;
-    private int final_Damage;
+    [SerializeField] private int final_Damage;
 
     private void Awake()
     {
@@ -23,10 +23,18 @@ public class Projectile : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             other.GetComponent<Enemy_Basic>().TakeDamage(final_Damage);
+            if (player.has_EarRing_Effect && player.earRing_Explosion_Prefab != null)
+            {
+                Instantiate(player.earRing_Explosion_Prefab, transform.position, transform.rotation);
+            }
             Destroy(gameObject);
         }
-        else if (other.CompareTag("Walls")/* || other.CompareTag("Platform") || other.CompareTag("OneWayPlatform")*/)
+        else if (other.CompareTag("Walls"))
         {
+            if (player.has_EarRing_Effect && player.earRing_Explosion_Prefab != null)
+            {
+                Instantiate(player.earRing_Explosion_Prefab, transform.position, transform.rotation);
+            }
             Destroy(gameObject);
         }
     }

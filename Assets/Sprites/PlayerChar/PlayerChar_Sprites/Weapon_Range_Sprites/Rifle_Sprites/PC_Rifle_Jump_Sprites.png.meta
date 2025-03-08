@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d7e0521d4b6d71c42ae4509fb188a164
+guid: abb208401d005ab4e8cd6f133047111c
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -95,7 +95,70 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: PC_Rifle_Jump_Sprites_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d76901c7e99a70a47ae14c1b984fd46d
+      internalID: 268343557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Rifle_Jump_Sprites_1
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb21a96d6eb362b40aa9d098565e109e
+      internalID: -1330372161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Rifle_Jump_Sprites_2
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 449d0c99b4b03ee49ba5b9dfd549f698
+      internalID: -1164733473
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -106,7 +169,10 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      PC_Rifle_Jump_Sprites_0: 268343557
+      PC_Rifle_Jump_Sprites_1: -1330372161
+      PC_Rifle_Jump_Sprites_2: -1164733473
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

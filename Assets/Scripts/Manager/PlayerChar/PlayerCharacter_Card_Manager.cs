@@ -49,15 +49,15 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
             cardCount++;
             Debug.Log("카드 추가" + card.name);
 
-            if (cardCount == card_Inventory.Length)
-            {
-                is_Start_Spawn = false;
-            }
+            //if (cardCount == card_Inventory.Length)
+            //{
+            //    is_Start_Spawn = false;
+            //}
         }
         UpdateCardUI();
         Card_Combination();
         
-        if (Object_Manager.instance != null && !is_Start_Spawn)
+        if (Object_Manager.instance != null /*&& !is_Start_Spawn*/)
         {
             Sprite collected_Sprite = card.GetComponent<SpriteRenderer>().sprite;
 

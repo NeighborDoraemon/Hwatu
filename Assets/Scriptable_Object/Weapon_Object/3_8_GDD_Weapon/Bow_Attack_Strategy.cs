@@ -44,9 +44,8 @@ public class Bow_Attack_Strategy : ScriptableObject, IAttack_Strategy
     {
         if (is_Charging) return;
 
-        is_Charging = true;        
+        is_Charging = true;
         charge_Start_Time = Time.time;
-        //player.animator.SetTrigger("Attack");
     }
 
     public void Release_Attack(PlayerCharacter_Controller player)
@@ -57,17 +56,20 @@ public class Bow_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
             float charge_Time = Time.time - charge_Start_Time;
 
-            //Debug.Log($"Charge Start Time: {charge_Start_Time}, Current Time: {Time.time}, Charge Time: {charge_Time}");
-
             bool is_Charged_Shot = charge_Time >= charge_Time_Threshold;
             GameObject arrow_Prefab = is_Charged_Shot ? charged_Arrow_Prefab : normal_Arrow_Prefab;
+
+            weapon_Data.attack_Damage = Get_Charge_Damage(charge_Time);
 
             Transform fire_Point = player.weapon_Anchor;
             Fire_Arrow(player, arrow_Prefab, fire_Point, is_Charged_Shot);
 
-            player.animator.SetTrigger("Attack");
+            if (player.has_BowSheath_Effect)
+            {
+                player.StartCoroutine(Fire_Arrow_With_Delay(player, arrow_Prefab, fire_Point, is_Charged_Shot));
+            }
 
-            //Debug.Log($"Charge Time: {charge_Time}, Threshold: {charge_Time_Threshold}, Is Charged Shot: {is_Charged_Shot}");
+            player.animator.SetTrigger("Attack");
         }
     }
     
@@ -83,11 +85,18 @@ public class Bow_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
         Vector2 shoot_Direction = player.is_Facing_Right ? Vector2.right : Vector2.left;
         rb.velocity = shoot_Direction * (is_Charged_Shot ? charge_Projectile_Speed : projectile_Speed);
-
-        //Debug.Log(is_Charged_Shot ? "Charged Shot Fired!" : "Normal Shot Fired!");
     }
 
-    
+    private IEnumerator Fire_Arrow_With_Delay(PlayerCharacter_Controller player, GameObject projectile_Prefab, Transform fire_Point, bool is_Charged_Shot)
+    {
+        yield return new WaitForSeconds(0.1f);
+        Fire_Arrow(player, projectile_Prefab, fire_Point, is_Charged_Shot);
+    }
+
+    private int Get_Charge_Damage(float charge_Time)
+    {
+        return charge_Time >= charge_Time_Threshold ? 20 : 10;
+    }
 
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
