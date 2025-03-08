@@ -85,7 +85,15 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     //match_manager
     [SerializeField] private Match_Up_Manager match_manager;
-    
+
+    //Escape Minigame Values
+    private int require_gauge = 100;
+    private int decrease_rate = 5;
+    private int increase_rate = 10;
+
+    private int current_gauge = 0;
+    private bool is_Minigame = false;
+
     //---------------------------------------------------
 
     public bool is_Knock_Back = false;
@@ -197,6 +205,16 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         if(ctx.phase == InputActionPhase.Canceled)
         {
             movement = Vector2.zero;
+        }
+        else if(ctx.phase == InputActionPhase.Started)
+        {
+            movement = ctx.action.ReadValue<Vector2>();
+
+            if(is_Minigame)
+            {
+                current_gauge += increase_rate;
+                Debug.Log("게이지 증가" + current_gauge);
+            }
         }
         else
         {
@@ -1147,6 +1165,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         Debug.Log("Player Money : " + i_Money);
     }
 
+    //=============== 속박, 기절계열
     public void Player_Bind(float Bind_Time)
     {
         is_Knock_Back = true;
@@ -1158,6 +1177,48 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     public void Player_Stun()
     {
 
+    }
+
+    public void Player_Trap_Stun(bool is_Can_Jump, System.Action onComplete = null)
+    {
+        is_Knock_Back = true;
+        rb.velocity = Vector2.zero;
+
+        if(!is_Can_Jump)
+        {
+            isGrounded = false;
+            jumpCount = 2;
+        }
+
+        //Invoke("Knock_Back_End", Bind_Time);
+        StartCoroutine(Escape_Coroutine(onComplete));
+    }
+
+    public IEnumerator Escape_Coroutine(System.Action onComplete)
+    {
+        float time = 0.0f;
+        current_gauge = 0;
+
+        is_Minigame = true;
+
+        while (current_gauge <= require_gauge)
+        {
+            time += Time.deltaTime;
+
+            if (time >= 1.0f)
+            {
+                current_gauge -= decrease_rate;
+                current_gauge = Mathf.Clamp(current_gauge, 0, require_gauge);
+
+                time = 0.0f;
+            }
+
+            yield return null;
+        }
+
+        is_Minigame = false;
+        Knock_Back_End();
+        onComplete?.Invoke();
     }
 
     public void Start_Tick_Damage(float Tick_Time, int Tick_Damage, int Tick_Count)
