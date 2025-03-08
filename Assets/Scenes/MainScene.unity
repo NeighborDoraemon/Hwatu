@@ -5578,7 +5578,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &422122498
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -41487,6 +41487,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Trap_Arrow
       objectReference: {fileID: 0}
+    - target: {fileID: 5620829995640993702, guid: dbdefe691f1cf5c49af0cb8790dee8aa, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -41986,6 +41990,10 @@ PrefabInstance:
     - target: {fileID: 2118871839302444804, guid: d768968abc7fcc84a87aa0c961c6fec2, type: 3}
       propertyPath: m_Name
       value: Springboard
+      objectReference: {fileID: 0}
+    - target: {fileID: 2118871839302444804, guid: d768968abc7fcc84a87aa0c961c6fec2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
