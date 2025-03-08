@@ -221,12 +221,6 @@ MonoBehaviour:
     blackboard: {fileID: 2963058167193352549}
     key: is_Stunned
     constantValue: 0
-  BR_Not_Attacking:
-    useConstant: 0
-    mode: 0
-    blackboard: {fileID: 2963058167193352549}
-    key: is_Not_Attacking
-    constantValue: 0
   Target_Player: {fileID: 0}
   Bullet_Prefab: {fileID: 8333097592702568372, guid: 11ba6240cc42a0243a0641d2fc307506, type: 3}
 --- !u!95 &3050924242845109254
@@ -384,8 +378,6 @@ GameObject:
   - component: {fileID: 7178832960913433242}
   - component: {fileID: 3049140515160344409}
   - component: {fileID: 4050860983270022169}
-  - component: {fileID: 6335841896926589783}
-  - component: {fileID: 3335583549529515151}
   m_Layer: 0
   m_Name: Acher_Behavior
   m_TagString: Untagged
@@ -448,7 +440,6 @@ MonoBehaviour:
   - {fileID: 2532859368303627537}
   - {fileID: 7178832960913433242}
   - {fileID: 3049140515160344409}
-  - {fileID: 3335583549529515151}
   masterBlackboard: {fileID: 0}
 --- !u!114 &7690636277992644717
 MonoBehaviour:
@@ -577,7 +568,6 @@ MonoBehaviour:
   parent: {fileID: 2195434286245895410}
   children:
   - {fileID: 4050860983270022169}
-  - {fileID: 6335841896926589783}
   - {fileID: 8277430724074581987}
   - {fileID: 3111510522288312603}
   - {fileID: 2080723554975587683}
@@ -666,7 +656,7 @@ MonoBehaviour:
   rect:
     serializedVersion: 2
     x: 420
-    y: 339.2
+    y: 340
     width: 160
     height: 44
   parent: {fileID: 3111510522288312603}
@@ -932,7 +922,7 @@ MonoBehaviour:
   title: BH_Check_Bool
   rect:
     serializedVersion: 2
-    x: -200
+    x: -60
     y: 240
     width: 160
     height: 44
@@ -951,54 +941,6 @@ MonoBehaviour:
     key: is_Stunned
     constantValue: 0
   Boolean: 0
---- !u!114 &6335841896926589783
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7875893978766043934}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3702a634de274fe47b0b9e5ff37c881f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  title: BH_Check_Bool
-  rect:
-    serializedVersion: 2
-    x: -40
-    y: 240
-    width: 160
-    height: 44
-  parent: {fileID: 20402302700234494}
-  children: []
-  behaviourTree: {fileID: 0}
-  runtimePriority: 0
-  breakpoint: 0
-  interval: 1
-  randomDeviation: 0
-  callOnEnter: 1
-  BR_To_Check:
-    useConstant: 0
-    mode: 0
-    blackboard: {fileID: 2963058167193352549}
-    key: is_Not_Attacking
-    constantValue: 0
-  Boolean: 1
---- !u!114 &3335583549529515151
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7875893978766043934}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ae15c5e6bcb1714080f2e8296c3d17a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  key: is_Not_Attacking
-  val: 1
 --- !u!1 &7934362307330029101
 GameObject:
   m_ObjectHideFlags: 0
@@ -1075,7 +1017,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 15, y: 1}
+  m_Size: {x: 25, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &5125838540993975703
 MonoBehaviour:

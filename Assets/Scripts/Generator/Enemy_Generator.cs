@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,9 @@ using UnityEngine.SceneManagement;
 public class Enemy_Generator : MonoBehaviour
 {
     [SerializeField]
-    private GameObject[] Box_Prefabs;
+    private GameObject Enemy_Prefab;
+    [SerializeField]
+    private GameObject CardBox_Prefab;
     [SerializeField] private PlayerCharacter_Controller p_Controller;
 
     [Header("Array")]
@@ -38,16 +39,7 @@ public class Enemy_Generator : MonoBehaviour
     public static Enemy_Generator Instance { get; private set; }
     [HideInInspector]
     public static int i_Enemy_Count = 0;
-    
 
-    //Box Enum
-    private enum Box_Rate
-    {
-        Cummon_Box = 70,
-        Rare_Box = 25,
-        Legendary_Box = 5,
-        Max_Rate = 101
-    }
 
     private void Awake()
     {
@@ -152,7 +144,7 @@ public class Enemy_Generator : MonoBehaviour
                 if (is_Now_Started) // 게임 시작 시 바로 스폰되는걸 방지
                 {
                     Vector3 cardBox_SpawnPoint = Map_Manager.Map_Shuffled_List[i_Map_Count].v_CardBox_SpawnPoint;
-                    Instantiate(Box_Random(), cardBox_SpawnPoint, Quaternion.identity);
+                    Instantiate(CardBox_Prefab, cardBox_SpawnPoint, Quaternion.identity);
                 }
 
                 Is_Room_Clear = true;
@@ -183,26 +175,5 @@ public class Enemy_Generator : MonoBehaviour
     public void From_Other_Add_Enemy()
     {
         i_Enemy_Count++;
-    }
-
-    private GameObject Box_Random()
-    {
-        int index = 0;
-        int rand = UnityEngine.Random.Range(1, (int)Box_Rate.Max_Rate);
-
-        if (rand <= (int)Box_Rate.Cummon_Box)
-        {
-            index = 0;
-        }
-        else if (rand <= (int)Box_Rate.Rare_Box)
-        {
-            index = 1;
-        }
-        else
-        {
-            index = 2;
-        }
-
-        return Box_Prefabs[index];
     }
 }

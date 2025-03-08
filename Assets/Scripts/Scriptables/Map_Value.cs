@@ -12,10 +12,10 @@ public class Map_Value : ScriptableObject
 
 
     [Header("New Enemy Spawn Points")]
-    public List<Vectors> v_New_Spawn_Points = new List<Vectors>();
+    public List<Vectors> v_New_Spawn_Points;
 
     [Header("New Enemy Spawn Data")]
-    public List<e_Numbers> i_Enemy_Index = new List<e_Numbers>();
+    public List<e_Numbers> i_Enemy_Index;
 
     [Header("New Enemy Wave Count")]
     public int i_How_Many_Wave;
@@ -30,11 +30,11 @@ public class Map_Value : ScriptableObject
 [System.Serializable]
 public class Vectors
 {
-    public List<Vector3> v_Dataes = new List<Vector3>();
+    public List<Vector3> v_Dataes;
 }
 
 [System.Serializable]
 public class e_Numbers
 {
-    public List<int> i_enemy_Index = new List<int>();
+    public List<int> i_enemy_Index;
 }

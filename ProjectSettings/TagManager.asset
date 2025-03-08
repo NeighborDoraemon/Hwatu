@@ -17,8 +17,6 @@ TagManager:
   - Boundary
   - CM_Boundary
   - Market_Item
-  - PlayerClone
-  - Wave
   layers:
   - Default
   - TransparentFX

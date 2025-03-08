@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5313491308360479529}
   - component: {fileID: 352331248721844048}
   - component: {fileID: 5209044997296530952}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Trap_Spike
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -145,4 +145,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Trap_Damage: 5
   f_Attack_Delay: 2
-  Obj_Player: {fileID: 0}
