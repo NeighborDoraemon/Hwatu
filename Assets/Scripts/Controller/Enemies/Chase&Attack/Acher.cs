@@ -22,6 +22,7 @@ public class Acher : MonoBehaviour, Enemy_Interface
     //[SerializeField] private FloatReference FR_Attack_Range;
     [SerializeField] private IntReference IR_Attack_Damage;
     [SerializeField] private BoolReference BR_Stunned;
+    [SerializeField] private BoolReference BR_Not_Attacking;
 
     [Header("Others")]
     [SerializeField] private GameObject Target_Player;
@@ -73,6 +74,7 @@ public class Acher : MonoBehaviour, Enemy_Interface
 
             is_Attacking = true;
             is_Attack_Turn = true;
+            BR_Not_Attacking.Value = false;
         }
 
         if (Attack_Time >= f_Before_Delay && !is_Attack_Complete) // Attack
@@ -92,9 +94,12 @@ public class Acher : MonoBehaviour, Enemy_Interface
         //Call After Delay Method
         if (Attack_Time >= f_Before_Delay + f_After_Delay)
         {
+            Debug.Log("Archer Turn");
+
             is_Attack_Turn = false;
             is_Attacking = false;
             is_Attack_Complete = false;
+            BR_Not_Attacking.Value = true;
 
             Attack_Time = 0.0f;
         }
