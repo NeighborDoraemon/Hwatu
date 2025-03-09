@@ -639,10 +639,10 @@ MonoBehaviour:
     constantValue: 0
   Target_Player: {fileID: 0}
   Summon_Position: {fileID: 3528760516356842291}
-  e_Generator: {fileID: 0}
   enemy_Hog: {fileID: 362895113993197914, guid: 3b36c711410824740812ebfbea927d8e, type: 3}
-  enem_Bird: {fileID: 119715352043712820, guid: 70a66c6e314511343a11edb39177ffaf, type: 3}
-  enem_Magpie: {fileID: 2120112856537873307, guid: 4bc5ddba295284848932df048d668e66, type: 3}
+  enemy_Bird: {fileID: 119715352043712820, guid: 70a66c6e314511343a11edb39177ffaf, type: 3}
+  enemy_Magpie: {fileID: 2120112856537873307, guid: 4bc5ddba295284848932df048d668e66, type: 3}
+  enemy_Wolf: {fileID: 6888356697249192122, guid: 1b04da6e633e8a746b7ba4733d6d19be, type: 3}
 --- !u!1 &3528760516356842291
 GameObject:
   m_ObjectHideFlags: 0
