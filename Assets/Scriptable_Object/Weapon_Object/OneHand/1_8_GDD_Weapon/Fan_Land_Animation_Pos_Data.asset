@@ -10,15 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c8e7cc7e5bf5a124f842638c93b025ba, type: 3}
-  m_Name: Fan_Jump_Animation_Pos_Data
+  m_Name: Fan_Land_Animation_Pos_Data
   m_EditorClassIdentifier: 
-  animation_Name: PC_OH_Jump
+  animation_Name: PC_OH_Land
   frame_Pos:
-  - {x: 0.045, y: -0.381, z: 0}
-  - {x: 0.045, y: -0.381, z: 0}
-  - {x: 0.045, y: -0.381, z: 0}
-  frame_Rotations:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
+  - {x: 0.032, y: -0.363, z: 0}
+  - {x: 0.038, y: -0.376, z: 0}
+  - {x: 0.053, y: -0.406, z: 0}
+  frame_Rotations: []
   frame_Scales: []

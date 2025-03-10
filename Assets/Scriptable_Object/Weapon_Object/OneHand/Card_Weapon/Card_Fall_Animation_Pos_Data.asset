@@ -14,11 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animation_Name: PC_OH_Fall
   frame_Pos:
-  - {x: 0.036, y: -0.2734, z: 0}
-  - {x: 0.0322, y: -0.2922, z: 0}
-  - {x: 0.0514, y: -0.3558, z: 0}
+  - {x: 0.034, y: -0.331, z: 0}
+  - {x: 0.034, y: -0.331, z: 0}
   frame_Rotations:
-  - {x: 0, y: 0, z: -24.468}
-  - {x: 0, y: 0, z: -69.294}
-  - {x: 0, y: 0, z: -90.455}
+  - {x: 0, y: 0, z: -90}
+  - {x: 0, y: 0, z: -90}
   frame_Scales: []

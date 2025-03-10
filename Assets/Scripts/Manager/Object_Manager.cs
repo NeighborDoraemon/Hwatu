@@ -54,7 +54,7 @@ public class Object_Manager : MonoBehaviour
         return spawnedCard;
     }
 
-    public void Spawn_Cards(Vector2 spawnPosition)
+    public GameObject Spawn_Cards(Vector2 spawnPosition)
     {
         Card_Value selected_Card = null;
         Sprite selected_Sprite = null;
@@ -80,12 +80,13 @@ public class Object_Manager : MonoBehaviour
         if (!found_Valid_Card)
         {
             Debug.LogWarning("더 이상 카드 탐색 불가능");
-            return;
+            return null;
         }
 
         used_Card_Sprite.Add(selected_Sprite);
 
-        Making_Card(spawnPosition, selected_Card, selected_Sprite);
+        GameObject new_Card = Making_Card(spawnPosition, selected_Card, selected_Sprite);
+        return new_Card;
     }
 
     public void Destroy_All_Cards(GameObject card_To_Keep = null)

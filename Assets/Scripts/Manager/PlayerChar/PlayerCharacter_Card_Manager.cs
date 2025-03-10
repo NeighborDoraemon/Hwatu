@@ -7,18 +7,18 @@ using UnityEngine;
 public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
 {
     [Header("Card_Manager")]
-    public Card_UI_Manager card_UI_Manager; // 화투 UI 매니저 변수
+    public Card_UI_Manager card_UI_Manager;                         // 화투 UI 매니저 변수
     [HideInInspector]
-    public Card_Value card_Value; // 카드 스크립터블 오브젝트
+    public Card_Value card_Value;                                   // 카드 스크립터블 오브젝트
     [HideInInspector]
     public SpriteRenderer sprite_Renderer;
 
-    public GameObject[] card_Inventory = new GameObject[2]; // 화투 오브젝트 저장 공간 배열
-    protected int cardCount = 0; // 화투 갯수 카운트 변수
+    public GameObject[] card_Inventory = new GameObject[2];         // 화투 오브젝트 저장 공간 배열
+    protected int cardCount = 0;                                    // 화투 갯수 카운트 변수
 
-    protected bool isCombDone = false; // 화투 조합이 이루어졌는지 체크하는 변수
+    protected bool isCombDone = false;                              // 화투 조합이 이루어졌는지 체크하는 변수
 
-    [HideInInspector] public bool is_Start_Spawn = true; // 시작 지급인지 확인하는 변수 (윤혁)
+    [HideInInspector] public bool is_Start_Spawn = true;            // 시작 지급인지 확인하는 변수 (윤혁)
 
     public void AddCard(GameObject card)
     {
@@ -40,8 +40,6 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
 
             card_Inventory[0] = card_Inventory[1];
             card_Inventory[1] = card;
-
-            //Debug.Log("Card Changed");
         }
         else
         {
@@ -57,7 +55,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
         UpdateCardUI();
         Card_Combination();
         
-        if (Object_Manager.instance != null /*&& !is_Start_Spawn*/)
+        if (Object_Manager.instance != null)
         {
             Sprite collected_Sprite = card.GetComponent<SpriteRenderer>().sprite;
 
@@ -70,7 +68,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
         else { Debug.LogWarning("Object Manager is missing"); }
     }
 
-    void UpdateCardUI() // 화투 UI 스프라이트 업데이트 함수
+    void UpdateCardUI()
     {
         Sprite[] cardSprites = new Sprite[card_Inventory.Length];
 
@@ -131,7 +129,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                 }
                 isCombDone = true;
             }
-            else if ((card_1.Month % 10) == (card_2.Month % 10)) // 서로 같은 달인지 확인
+            else if ((card_1.Month % 10) == (card_2.Month % 10))
             {
                 switch (card_1.Month % 10)
                 {

@@ -14,11 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animation_Name: PC_OH_Jump
   frame_Pos:
-  - {x: 0.1166, y: -0.3894, z: 0}
-  - {x: 0.1166, y: -0.3894, z: 0}
-  - {x: 0.098, y: -0.365, z: 0}
+  - {x: -0.106, y: -0.392, z: 0}
+  - {x: -0.106, y: -0.392, z: 0}
+  - {x: -0.106, y: -0.392, z: 0}
   frame_Rotations:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  frame_Scales: []
+  - {x: 0, y: 0, z: 12.085}
+  - {x: 0, y: 0, z: 12.085}
+  - {x: 0, y: 0, z: 12.085}
+  frame_Scales:
+  - {x: -1, y: 1, z: 1}
+  - {x: -1, y: 1, z: 1}
+  - {x: -1, y: 1, z: 1}
