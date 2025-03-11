@@ -19,14 +19,14 @@ public class Enemy_Projectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (is_Left)
-        {
-            projec_Rigid.AddForce(new Vector2(-f_moveSpeed, 0.0f));
-        }
-        else
-        {
-            projec_Rigid.AddForce(new Vector2(f_moveSpeed, 0.0f));
-        }
+        //if (is_Left)
+        //{
+        //    projec_Rigid.AddForce(new Vector2(-f_moveSpeed, 0.0f));
+        //}
+        //else
+        //{
+        //    projec_Rigid.AddForce(new Vector2(f_moveSpeed, 0.0f));
+        //}
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
