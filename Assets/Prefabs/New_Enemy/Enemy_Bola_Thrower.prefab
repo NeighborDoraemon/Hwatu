@@ -32,8 +32,10 @@ GameObject:
   - component: {fileID: 8196398557444052188}
   - component: {fileID: 2495288418125044934}
   - component: {fileID: 8385782819387469743}
+  - component: {fileID: 4986517811737636168}
+  - component: {fileID: 6033289254371316762}
   m_Layer: 0
-  m_Name: Acher_Behavior
+  m_Name: Bola_Thrower_Behavior
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,7 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b25af8627659c6949b60949c3aa8d91d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedEditorNode: {fileID: 1048075162561978193}
+  selectedEditorNode: {fileID: 6033289254371316762}
   repeatOnFinish: 0
   maxExecutionsPerTick: 1000
   parent: {fileID: 0}
@@ -94,6 +96,7 @@ MonoBehaviour:
   - {fileID: 8566475137239092041}
   - {fileID: 8196398557444052188}
   - {fileID: 2495288418125044934}
+  - {fileID: 4986517811737636168}
   masterBlackboard: {fileID: 0}
 --- !u!114 &2207499421353361621
 MonoBehaviour:
@@ -222,6 +225,7 @@ MonoBehaviour:
   parent: {fileID: 4923562488592253640}
   children:
   - {fileID: 8385782819387469743}
+  - {fileID: 6033289254371316762}
   - {fileID: 1048075162561978193}
   - {fileID: 7137585390232074233}
   - {fileID: 7767428714107642253}
@@ -576,7 +580,7 @@ MonoBehaviour:
   title: BH_Check_Bool
   rect:
     serializedVersion: 2
-    x: -60
+    x: -200
     y: 240
     width: 160
     height: 44
@@ -595,6 +599,54 @@ MonoBehaviour:
     key: is_Stunned
     constantValue: 0
   Boolean: 0
+--- !u!114 &4986517811737636168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3837923817709053099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ae15c5e6bcb1714080f2e8296c3d17a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: is_Not_Attacking
+  val: 1
+--- !u!114 &6033289254371316762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3837923817709053099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3702a634de274fe47b0b9e5ff37c881f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: BH_Check_Bool
+  rect:
+    serializedVersion: 2
+    x: -40
+    y: 240
+    width: 160
+    height: 44
+  parent: {fileID: 7958780450292377378}
+  children: []
+  behaviourTree: {fileID: 0}
+  runtimePriority: 0
+  breakpoint: 0
+  interval: 1
+  randomDeviation: 0
+  callOnEnter: 1
+  BR_To_Check:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 1976585048853693248}
+    key: is_Not_Attacking
+    constantValue: 0
+  Boolean: 1
 --- !u!1 &4693279408524258291
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,7 +659,7 @@ GameObject:
   - component: {fileID: 7768005775273201505}
   - component: {fileID: 9093989512065532791}
   m_Layer: 9
-  m_Name: Archer_Text
+  m_Name: Bola_Thrower_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -987,6 +1039,12 @@ MonoBehaviour:
     blackboard: {fileID: 1976585048853693248}
     key: is_Stunned
     constantValue: 0
+  BR_Not_Attacking:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 1976585048853693248}
+    key: is_Not_Attacking
+    constantValue: 0
   Target_Player: {fileID: 0}
   Bullet_Prefab: {fileID: 8122953524587504345, guid: 5798f54eddb5b4f4cb85eca5bf678ec1, type: 3}
 --- !u!95 &5353913321886603706
@@ -1022,7 +1080,7 @@ GameObject:
   - component: {fileID: 4231134993508169547}
   - component: {fileID: 4464830237832976734}
   m_Layer: 12
-  m_Name: Acher_ChaseBox
+  m_Name: Bola_Thrower_ChaseBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1124,7 +1182,7 @@ GameObject:
   - component: {fileID: 8057186986298494403}
   - component: {fileID: 8205694674369692386}
   m_Layer: 12
-  m_Name: Acher_PlatformBox
+  m_Name: Bola_Thrower_PlatformBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

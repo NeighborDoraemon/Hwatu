@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5431924598441017619}
   - component: {fileID: 3706375700033700141}
   m_Layer: 12
-  m_Name: WideSword_AttackBox
+  m_Name: Axe_AttackBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 6376385042775441180}
   - component: {fileID: 2096964246435390083}
   m_Layer: 12
-  m_Name: WideSword_PlatformBox
+  m_Name: Axe_PlatformBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 5313680075559245708}
   - component: {fileID: 8493215699372668814}
   m_Layer: 0
-  m_Name: WideSword_Behavior
+  m_Name: Axe_Behavior
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -814,7 +814,7 @@ GameObject:
   - component: {fileID: 5967090291493693992}
   - component: {fileID: 6902743794511999771}
   m_Layer: 12
-  m_Name: WideSword_ChaseBox
+  m_Name: Axe_ChaseBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

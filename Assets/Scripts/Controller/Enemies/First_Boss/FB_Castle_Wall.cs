@@ -205,7 +205,8 @@ public class FB_Castle_Wall : MonoBehaviour
                     }
                 case Attack_State.Rock:
                     {
-                        Instantiate(Prfb_Rock, Obj_Rock_Position.gameObject.transform.position, Obj_Rock_Position.gameObject.transform.rotation);
+                        GameObject rock_fr = Instantiate(Prfb_Rock, Obj_Rock_Position.gameObject.transform.position, Obj_Rock_Position.gameObject.transform.rotation);
+                        rock_fr.GetComponent<Rigidbody2D>().velocity = new Vector2(-3.0f, 0.0f);
 
                         is_Once_Attacked = true;
                         Rock_CoolDown = true;
