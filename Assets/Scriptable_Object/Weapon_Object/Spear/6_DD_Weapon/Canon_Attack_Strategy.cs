@@ -37,13 +37,16 @@ public class Canon_Attack_Strategy : ScriptableObject, IAttack_Strategy
     {
         player.animator.SetTrigger("Attack");
         player.isAttacking = true;
-
-        player.weapon_Animator.SetTrigger("Attack");
     }
 
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point)
     {
-        GameObject projectile = Instantiate(projectile_Prefab, fire_Point.position, fire_Point.rotation);
+        float y_Offset = 0.5f;
+
+        Vector3 spawn_Position = fire_Point.position;
+        spawn_Position.y -= y_Offset;
+
+        GameObject projectile = Instantiate(projectile_Prefab, spawn_Position, Quaternion.identity);
         Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
 
         rb.gravityScale = 1.0f;

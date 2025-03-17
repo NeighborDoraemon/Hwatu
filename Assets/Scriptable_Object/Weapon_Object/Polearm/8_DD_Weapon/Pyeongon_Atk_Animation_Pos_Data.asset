@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8e7cc7e5bf5a124f842638c93b025ba, type: 3}
+  m_Name: Pyeongon_Atk_Animation_Pos_Data
+  m_EditorClassIdentifier: 
+  animation_Name: PC_Pyeongon_Atk
+  frame_Pos:
+  - {x: -0.06, y: -0.298, z: 0}
+  - {x: -0.06, y: -0.276, z: 0}
+  - {x: 0.058, y: -0.378, z: 0}
+  - {x: 0.077, y: -0.317, z: 0}
+  - {x: 0.069, y: -0.295, z: 0}
+  - {x: -0.023, y: -0.382, z: 0}
+  - {x: -0.06, y: -0.364, z: 0}
+  frame_Rotations:
+  - {x: 0, y: 0, z: -29.406}
+  - {x: 0, y: 0, z: -36.757}
+  - {x: 0, y: 0, z: -389.97}
+  - {x: 0, y: 0, z: -344.876}
+  - {x: 0, y: 0, z: -335.939}
+  - {x: 0, y: 0, z: -322.17}
+  - {x: 0, y: 0, z: -351.044}
+  frame_Scales:
+  - {x: 1, y: 1, z: 1}
+  - {x: 1, y: 1, z: 1}
+  - {x: -1, y: 1, z: 1}
+  - {x: -1, y: 1, z: 1}
+  - {x: -1, y: 1, z: 1}
+  - {x: 1, y: 1, z: 1}
+  - {x: 1, y: 1, z: 1}

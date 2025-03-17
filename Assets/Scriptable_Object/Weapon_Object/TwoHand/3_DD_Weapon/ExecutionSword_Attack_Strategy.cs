@@ -41,13 +41,16 @@ public class ExecutionSword_Attack_Strategy : ScriptableObject, IAttack_Strategy
         player.animator.SetTrigger("Attack");
         player.isAttacking = true;
 
-        Vector3 target_Pos = player.transform.position +
-            (player.is_Facing_Right ? Vector3.right : Vector3.left) * move_Distance;
-        moveQueue.Enqueue(target_Pos);
-
-        if (!is_Moveing_Forward)
+        if (player.isGrounded)
         {
-            player.StartCoroutine(MoveForward_While_Attacking(player));
+            Vector3 target_Pos = player.transform.position +
+            (player.is_Facing_Right ? Vector3.right : Vector3.left) * move_Distance;
+            moveQueue.Enqueue(target_Pos);
+
+            if (!is_Moveing_Forward)
+            {
+                player.StartCoroutine(MoveForward_While_Attacking(player));
+            }
         }
 
         Apply_Stack_Effects();

@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e7cc7e5bf5a124f842638c93b025ba, type: 3}
   m_Name: Shield_Fall_Animation_Pos_Data
   m_EditorClassIdentifier: 
-  animation_Name: 
-  frame_Pos: []
+  animation_Name: PC_Spear_Fall
+  frame_Pos:
+  - {x: 0.067, y: -0.329, z: 0}
+  - {x: 0.067, y: -0.329, z: 0}
   frame_Rotations: []
   frame_Scales: []

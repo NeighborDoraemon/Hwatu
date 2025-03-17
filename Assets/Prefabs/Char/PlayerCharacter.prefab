@@ -445,6 +445,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 7592c333-04fc-4c13-8e46-05039ec065e2
     m_ActionName: Player/Inventory[/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 88e59d06-e290-402c-9567-9f763e36345f
+    m_ActionName: Player/Change_FirstCard[/Keyboard/s]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 959ab392-253e-470e-9d8e-96b55dca27db
+    m_ActionName: Player/Change_SecondCard[/Keyboard/d]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -472,7 +480,17 @@ MonoBehaviour:
   max_Health: 100
   health: 100
   attackDamage: 0
+  skill_Damage: 0
+  crit_Rate: 0
+  crit_Dmg: 0
   player_Life: 0
+  damage_Mul: 1
+  takenDamage_Mul: 1
+  defend_Attack_Rate: 0
+  movementSpeed_Mul: 1
+  health_Mul: 1
+  damage_Reduce_Min: 0
+  damage_Reduce_Max: 0
   attackRange: 0.4
   comboTime: 0.3
   attack_Cooldown: 1
@@ -482,10 +500,10 @@ MonoBehaviour:
   cur_AttackCount: 0
   max_AttackCount: 0
   firePoint: {fileID: 5342704663972728764}
-  arrowSpeed: 10
   skill_Cooldown: 1
   last_Skill_Time: 0
   is_Skill_Active: 0
+  max_Teleport_Count: 1
   teleporting_Distance: 2
   teleporting_CoolTime: 3
   i_Money: 0
@@ -493,6 +511,7 @@ MonoBehaviour:
   card_Value: {fileID: 0}
   sprite_Renderer: {fileID: 0}
   card_Inventory:
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   is_Start_Spawn: 1
@@ -504,9 +523,13 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  has_BowSheath_Effect: 0
+  has_EarRing_Effect: 0
+  earRing_Explosion_Prefab: {fileID: 0}
   inventoryPanel: {fileID: 0}
   rb: {fileID: 3124059131931867968}
   maxJumpCount: 2
+  teleporting_Cooltime_Timer: 0
   chestPrefab: {fileID: 939207004396396238, guid: 24e05632e72d6ba48a45d86a62edfa62, type: 3}
   spawnPoint: {fileID: 7421354220885094674}
   isGrounded: 0
@@ -526,6 +549,7 @@ MonoBehaviour:
   map_Manager: {fileID: 0}
   use_Portal: 0
   player_Collider: {fileID: 3641037530319108596}
+  match_manager: {fileID: 0}
   is_Knock_Back: 0
 --- !u!1 &5417539781672758290
 GameObject:

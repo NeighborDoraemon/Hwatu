@@ -19,7 +19,7 @@ MonoBehaviour:
   skill_Damage: 26
   skill_Cooldown: 5
   weapon_Prefab: {fileID: 1581338231440821477, guid: f87e208329356244d812404a3b7c4108, type: 3}
-  overrideController: {fileID: 22100000, guid: 137439b4adeb6ad4fab7c3bb56acb336, type: 2}
+  overrideController: {fileID: 22100000, guid: 49d96c0573d45094db6ce074ccfb4510, type: 2}
   weapon_overrideController: {fileID: 0}
   animation_Pos_Data_List:
   - {fileID: 11400000, guid: 9d60fd9c869c4914f8d3849be286a4b9, type: 2}

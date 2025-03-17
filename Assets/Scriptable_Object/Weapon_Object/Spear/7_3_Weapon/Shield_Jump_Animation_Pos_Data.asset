@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e7cc7e5bf5a124f842638c93b025ba, type: 3}
   m_Name: Shield_Jump_Animation_Pos_Data
   m_EditorClassIdentifier: 
-  animation_Name: PC_Shield_Jump
+  animation_Name: PC_Spear_Jump
   frame_Pos:
   - {x: 0.07, y: -0.281, z: 0}
   - {x: 0.07, y: -0.281, z: 0}

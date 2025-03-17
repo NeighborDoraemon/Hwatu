@@ -116,6 +116,24 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Change_FirstCard"",
+                    ""type"": ""Button"",
+                    ""id"": ""88e59d06-e290-402c-9567-9f763e36345f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Change_SecondCard"",
+                    ""type"": ""Button"",
+                    ""id"": ""959ab392-253e-470e-9d8e-96b55dca27db"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -250,6 +268,28 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Inventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""779a26b9-2cc4-4ddc-91f0-f9077876165e"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change_FirstCard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""66e7e627-aa3b-4b81-a109-d1a85ac45a90"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change_SecondCard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -274,6 +314,8 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         m_Player_DownJump = m_Player.FindAction("DownJump", throwIfNotFound: true);
         m_Player_Game_Pause = m_Player.FindAction("Game_Pause", throwIfNotFound: true);
         m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
+        m_Player_Change_FirstCard = m_Player.FindAction("Change_FirstCard", throwIfNotFound: true);
+        m_Player_Change_SecondCard = m_Player.FindAction("Change_SecondCard", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
     }
@@ -347,6 +389,8 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_DownJump;
     private readonly InputAction m_Player_Game_Pause;
     private readonly InputAction m_Player_Inventory;
+    private readonly InputAction m_Player_Change_FirstCard;
+    private readonly InputAction m_Player_Change_SecondCard;
     public struct PlayerActions
     {
         private @Player_InputActions m_Wrapper;
@@ -361,6 +405,8 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         public InputAction @DownJump => m_Wrapper.m_Player_DownJump;
         public InputAction @Game_Pause => m_Wrapper.m_Player_Game_Pause;
         public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
+        public InputAction @Change_FirstCard => m_Wrapper.m_Player_Change_FirstCard;
+        public InputAction @Change_SecondCard => m_Wrapper.m_Player_Change_SecondCard;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -400,6 +446,12 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
             @Inventory.started += instance.OnInventory;
             @Inventory.performed += instance.OnInventory;
             @Inventory.canceled += instance.OnInventory;
+            @Change_FirstCard.started += instance.OnChange_FirstCard;
+            @Change_FirstCard.performed += instance.OnChange_FirstCard;
+            @Change_FirstCard.canceled += instance.OnChange_FirstCard;
+            @Change_SecondCard.started += instance.OnChange_SecondCard;
+            @Change_SecondCard.performed += instance.OnChange_SecondCard;
+            @Change_SecondCard.canceled += instance.OnChange_SecondCard;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -434,6 +486,12 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
             @Inventory.started -= instance.OnInventory;
             @Inventory.performed -= instance.OnInventory;
             @Inventory.canceled -= instance.OnInventory;
+            @Change_FirstCard.started -= instance.OnChange_FirstCard;
+            @Change_FirstCard.performed -= instance.OnChange_FirstCard;
+            @Change_FirstCard.canceled -= instance.OnChange_FirstCard;
+            @Change_SecondCard.started -= instance.OnChange_SecondCard;
+            @Change_SecondCard.performed -= instance.OnChange_SecondCard;
+            @Change_SecondCard.canceled -= instance.OnChange_SecondCard;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -501,6 +559,8 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         void OnDownJump(InputAction.CallbackContext context);
         void OnGame_Pause(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
+        void OnChange_FirstCard(InputAction.CallbackContext context);
+        void OnChange_SecondCard(InputAction.CallbackContext context);
     }
     public interface IMenuActions
     {

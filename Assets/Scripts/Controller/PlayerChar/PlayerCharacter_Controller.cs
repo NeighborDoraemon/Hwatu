@@ -20,6 +20,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     GameObject current_Item;
 
     Vector2 movement = new Vector2();
+    public bool isMoving;
     int jumpCount = 0;
     public int maxJumpCount = 2;
 
@@ -59,6 +60,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     public event Action<PlayerCharacter_Controller> On_Teleport;
     public bool isInvincible = false;
     public bool is_UI_Open = false;
+
+    [SerializeField] private float card_Change_Cooldown = 2.0f;
+    private bool can_Card_Change = true;
 
     //--------------------------------------------------- Created By KYH
     [Header("Player_UI")]
@@ -170,7 +174,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     void Update_Animation_Parameters()
     {
-        bool isMoving = Mathf.Abs(movement.x) > 0.01f;
+        isMoving = Mathf.Abs(movement.x) > 0.01f;
         animator.SetBool("isMove", isMoving);
         animator.SetBool("isGrounded", isGrounded);
         animator.SetFloat("vertical_Velocity", rb.velocity.y);
@@ -347,12 +351,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         if (ctx.phase == InputActionPhase.Performed && Time.timeScale == 1.0f)
         {
-            //Debug.Log("Down Input detected");
             is_Down_Performed = true;
-            //if (current_Platform != null)
-            //{
-            //    StartCoroutine(DisableCollision());
-            //}
         }
         else if (ctx.phase == InputActionPhase.Canceled)
         {
@@ -468,6 +467,33 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     void Spawn_Chest() // Spawn Debuging Card Chest
     {
         GameObject chest = Instantiate(chestPrefab, spawnPoint.position, spawnPoint.rotation);
+    }
+
+    public void Input_Change_FirstCard(InputAction.CallbackContext ctx)
+    {
+        if (ctx.phase != InputActionPhase.Started || Time.timeScale != 1.0f || is_Player_Dead || !can_Card_Change)
+            return;
+
+        Change_FirstAndThird_Card();
+
+        StartCoroutine(Card_Change_Cooldown_Routine());
+    }
+
+    public void Input_Change_SecondCard(InputAction.CallbackContext ctx)
+    {
+        if (ctx.phase != InputActionPhase.Started || Time.timeScale != 1.0f || is_Player_Dead || !can_Card_Change)
+            return;
+
+        Change_SecondAndThird_Card();
+
+        StartCoroutine(Card_Change_Cooldown_Routine());
+    }
+
+    private IEnumerator Card_Change_Cooldown_Routine()
+    {
+        can_Card_Change = false;
+        yield return new WaitForSeconds(card_Change_Cooldown);
+        can_Card_Change = true;
     }
     // ======================================================================================================
 
@@ -599,7 +625,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 weapon_Anchor.localPosition = is_Facing_Right ? new_Pos : new Vector3(-new_Pos.x, new_Pos.y, new_Pos.z);
                 weapon_Anchor.localRotation = is_Facing_Right ? new_Rotation : Quaternion.Inverse(new_Rotation);
                 weapon_Anchor.localScale = is_Facing_Right ?
-                    new_Scale : new Vector3(-new_Scale.x, new_Scale.y, new_Scale.z);                
+                    new_Scale : new Vector3(-new_Scale.x, new_Scale.y, new_Scale.z);
             }            
         }        
     }
@@ -638,7 +664,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             if (frame_Effect_Info != null)
             {
                 Vector3 effect_Pos = frame_Effect_Info.position_Offset;
-                effect_Pos.x = is_Facing_Right ? Mathf.Abs(effect_Pos.x) : -Mathf.Abs(effect_Pos.x);
+                if (!is_Facing_Right)
+                {
+                    effect_Pos.x = -effect_Pos.x;
+                }
                 effect_Render.transform.localPosition = effect_Pos;
                 effect_Render.transform.localScale = new Vector3(is_Facing_Right ? 1 : -1, 1, 1);
                 //Debug.Log($"Saved Offset: {effect_Pos}");
@@ -836,7 +865,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         if (attack_Strategy != null)
         {
             attack_Strategy.Shoot(this, firePoint);
-        }        
+        }
         else
         {
             Debug.LogError("Weapon Projectile is Missing!");
@@ -863,10 +892,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (is_UI_Open) return;
 
-        if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f 
+        if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f
             && !is_Player_Dead && Is_Skill_Cooldown_Complete())
         {
-            Debug.Log("Skill Input Detected");
+            //Debug.Log("Skill Input Detected");
             animator.SetTrigger("Skill");
             attack_Strategy.Skill(this, cur_Weapon_Data);
             Update_Skill_Timer();

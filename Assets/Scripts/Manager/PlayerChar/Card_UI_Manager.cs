@@ -22,6 +22,5 @@ public class Card_UI_Manager : MonoBehaviour
                 cardSlots[i].color = new Color(1, 1, 1, 0);
             }
         }
-
     }
 }
