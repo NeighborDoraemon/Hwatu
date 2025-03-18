@@ -94,9 +94,17 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     private int current_gauge = 0;
     private bool is_Minigame = false;
 
-    //---------------------------------------------------
+    [HideInInspector] public bool is_Knock_Back = false;
 
-    public bool is_Knock_Back = false;
+    public enum Player_State
+    {
+        Normal,
+        Mini_Hunt,
+        Dialogue
+    }
+
+    private Player_State Current_State;
+    //---------------------------------------------------
 
     
     private void Awake()
@@ -109,6 +117,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         inputActions.Player.SpawnChest.performed += ctx => Spawn_Chest();
 
         Set_Weapon(0);
+
+        Current_State = Player_State.Normal; // 플레이어 현재상태 초기화 KYH
     }
     private void OnEnable()
     {
@@ -150,7 +160,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             }
             else
             {
-                Move();
+                if (Current_State == Player_State.Normal) // For Minigame & Dialogue (KYH)
+                {
+                    Move();
+                }
             }
 
             if (!isCombDone)
@@ -1243,6 +1256,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             yield return new WaitForSeconds(Tick_Time);
             Player_Take_Damage(Tick_Damage);
         }
+    }
+
+    public void State_Change(Player_State state)
+    {
+        Current_State = state;
     }
 }
 
