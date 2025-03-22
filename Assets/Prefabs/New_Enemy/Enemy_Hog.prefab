@@ -587,6 +587,7 @@ GameObject:
   - component: {fileID: 5662621090711114038}
   - component: {fileID: 1296218170073598151}
   - component: {fileID: 7780137179482500586}
+  - component: {fileID: 1682329773576614292}
   m_Layer: 0
   m_Name: Hog_Behavior
   m_TagString: Untagged
@@ -775,7 +776,7 @@ MonoBehaviour:
     height: 44
   parent: {fileID: 5139872722475941293}
   children:
-  - {fileID: 7780137179482500586}
+  - {fileID: 1682329773576614292}
   - {fileID: 1534228618265668135}
   - {fileID: 1084707367798450103}
   - {fileID: 2916854173321974604}
@@ -1116,11 +1117,11 @@ MonoBehaviour:
   title: BH_Check_Bool
   rect:
     serializedVersion: 2
-    x: -80
-    y: 260
+    x: -171.2
+    y: 342.4
     width: 160
     height: 44
-  parent: {fileID: 8802557079258297723}
+  parent: {fileID: 1682329773576614292}
   children: []
   behaviourTree: {fileID: 0}
   runtimePriority: 0
@@ -1135,6 +1136,32 @@ MonoBehaviour:
     key: is_Stunned
     constantValue: 0
   Boolean: 0
+--- !u!114 &1682329773576614292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5725202305076103074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c78c7da6b00e1b46bad07949050f82f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: Sequence
+  rect:
+    serializedVersion: 2
+    x: -80
+    y: 260
+    width: 160
+    height: 44
+  parent: {fileID: 8802557079258297723}
+  children:
+  - {fileID: 7780137179482500586}
+  behaviourTree: {fileID: 0}
+  runtimePriority: 0
+  breakpoint: 0
+  random: 0
 --- !u!1 &7350023019205906952
 GameObject:
   m_ObjectHideFlags: 0
