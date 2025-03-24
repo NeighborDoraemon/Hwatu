@@ -15,6 +15,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     [SerializeField]
     private GameObject inventoryPanel;
     private bool isInventory_Visible = false;
+    public bool is_StatUI_Visible = false;
 
     public Rigidbody2D rb;
     GameObject current_Item;
@@ -46,7 +47,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     [Header("Weapon_Data")]
     private Weapon_Collision_Handler weapon_Handler;
     private bool is_AtkCoroutine_Running = false;
-
     public GameObject weapon_Prefab;    
     public SpriteRenderer effect_Render;
     public Animator effect_Animator;
@@ -54,12 +54,15 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     public Transform effect_Anchor;
     public bool is_Facing_Right = true;
     public Animator weapon_Animator;
-    
+
     public event Action On_Player_Damaged;
     public event Action On_Enemy_Hit;
     public event Action<PlayerCharacter_Controller> On_Teleport;
     public bool isInvincible = false;
+
+    private Item pending_SwapItem = null;
     public bool is_UI_Open = false;
+    public bool is_Item_Change = false;
 
     [SerializeField] private float card_Change_Cooldown = 2.0f;
     private bool can_Card_Change = true;
@@ -101,7 +104,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     //---------------------------------------------------
 
     public bool is_Knock_Back = false;
-
     
     private void Awake()
     {
@@ -152,6 +154,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
             }
+            else if (is_UI_Open)
+            {
+                rb.velocity = Vector2.zero;
+            }
             else
             {
                 Move();
@@ -197,10 +203,18 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             if (ctx.phase == InputActionPhase.Performed)
             {
-                int direction = (int)ctx.ReadValue<Vector2>().x;
-                if (direction != 0)
+                Vector2 input = ctx.ReadValue<Vector2>();
+                if (isInventory_Visible)
                 {
-                    Navigate_Inventory(direction);
+                    if (Mathf.Abs(input.x) > 0.1f)
+                    {
+                        Navigate_Inventory((int)input.x);
+                    }
+                }
+                else if (is_StatUI_Visible)
+                {
+                    Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.Navigate_Stats(input);
+                    return;
                 }
             }
             return;
@@ -364,13 +378,27 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     // InterAction ==========================================================================================
     public void Input_Interaction(InputAction.CallbackContext ctx)
     {
-        if (is_UI_Open) return;
-
         if (ctx.phase != InputActionPhase.Started || Time.timeScale != 1.0f || is_Player_Dead)
             return;
 
-        map_Manager.Use_Portal();
+        if (isInventory_Visible && is_Item_Change && pending_SwapItem != null)
+        {
+            SwapItem(pending_SwapItem);
+            pending_SwapItem = null;
+            is_Item_Change = false;
+            HideInventory();
+            return;
+        }
 
+        if (is_StatUI_Visible)
+        {
+            Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.Confirm_Selection();
+            return;
+        }
+
+        if (is_UI_Open) return;
+
+        map_Manager.Use_Portal();
         Handle_Npc_Interaction();
         Handle_Item_Interaction();
     }
@@ -443,7 +471,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             }
         }
 
-        current_Item = null;
+        if (!is_Item_Change)
+        {
+            current_Item = null;
+        }
     }
      
     private void Handle_Item(Item item)
@@ -456,9 +487,16 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
         else
         {
-            AddItem(item);
+            if (player_Inventory.Count < max_Inventory_Size)
+            {
+                AddItem(item);
+            }
+            else
+            {
+                pending_SwapItem = item;
+                Shift_Selected_Item();
+            }
         }
-        Debug.Log("Item Destroy");
 
         Destroy(current_Item);
         Object_Manager.instance.Destroy_All_Cards_And_Items();
@@ -940,6 +978,12 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
     }
 
+    private void Shift_Selected_Item()
+    {
+        is_Item_Change = true;
+        ShowInventory();
+    }
+
     // Created By KYH -------------------------------------------------------------------
     public void Player_Take_Damage(int Damage)
     {
@@ -1113,15 +1157,14 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             transform.position = closet_Point;
         }
 
-
-        if (other.gameObject.tag == "NPC")
-        {
-            is_Npc_Contack = false;
-            if (Now_Contact_Npc.gameObject.name == "Stat_Npc")
-            { 
-                Now_Contact_Npc.GetComponent<Stat_Npc_Controller>().Btn_Exit(); 
-            }
-        }
+        //if (other.gameObject.tag == "NPC")
+        //{
+        //    is_Npc_Contack = false;
+        //    if (Now_Contact_Npc.gameObject.name == "Stat_Npc")
+        //    { 
+        //        Now_Contact_Npc.GetComponent<Stat_Npc_Controller>().Btn_Exit(); 
+        //    }
+        //}
     }
 
     private Vector2 Get_Closet_Point(Vector2 position)

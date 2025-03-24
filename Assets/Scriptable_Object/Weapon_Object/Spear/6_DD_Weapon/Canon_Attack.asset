@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Canon_Attack
   m_EditorClassIdentifier: 
   projectile_Prefab: {fileID: 1335327918262151755, guid: bff67f89b82a8f6429d6e967b54bed81, type: 3}
+  skill_Projectile_Prefab: {fileID: 7493873690815829983, guid: 1809842942821b24095e634ac176c4f5, type: 3}
   projectile_Speed: 10
   shoot_Angle: 30

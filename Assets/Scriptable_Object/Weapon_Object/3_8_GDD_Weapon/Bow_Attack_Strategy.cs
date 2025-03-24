@@ -15,6 +15,8 @@ public class Bow_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public GameObject normal_Arrow_Prefab;
     public GameObject charged_Arrow_Prefab;
+    public GameObject skillTarget_Effect_Prefab;
+    public GameObject skill_Effect_Prefab;
    
     private bool is_Charging = false;
     public float charge_Start_Time = 0.0f;
@@ -121,13 +123,32 @@ public class Bow_Attack_Strategy : ScriptableObject, IAttack_Strategy
                 Enemy_Basic enemy = enemyCollider.GetComponent<Enemy_Basic>();
                 if (enemy != null)
                 {
-                    enemy.TakeDamage(weapon_Data.skill_Damage);
-
-                    Debug.Log($"Enemy {enemy.name} hit by Bow Skill!");
+                    player.StartCoroutine(Skill_Effect_Coroutine(enemy, player));
                 }
             }
         }
 
         player.animator.SetTrigger("Skill");
+    }
+
+    private IEnumerator Skill_Effect_Coroutine(Enemy_Basic enemy, PlayerCharacter_Controller player)
+    {
+        if (skillTarget_Effect_Prefab != null)
+        {
+            GameObject target_Effect = Instantiate(skillTarget_Effect_Prefab, enemy.transform.position, Quaternion.identity, enemy.transform);
+            Destroy(target_Effect, 0.4f);
+        }
+
+        yield return new WaitForSeconds(0.3f);
+
+        if (skill_Effect_Prefab != null)
+        {
+            GameObject skill_Effect = Instantiate(skill_Effect_Prefab, enemy.transform.position, Quaternion.identity, enemy.transform);
+            Destroy(skill_Effect, 0.6f);
+        }
+
+        yield return new WaitForSeconds(0.2f);
+
+        enemy.TakeDamage(player.Calculate_Skill_Damage());
     }
 }

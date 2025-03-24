@@ -4,19 +4,27 @@ using UnityEngine;
 
 public class Canonball_Projectile : MonoBehaviour
 {
-    public int damage = 100;
+    PlayerCharacter_Controller player;
+
+    public int damage;
     public float explosion_Radius = 2.0f;
     public LayerMask enemy_Layer;
+    public GameObject explosion_Prefab;
 
     public void Initialized(Rigidbody2D rb, Vector2 direction, float speed)
     {
         rb.velocity = direction * speed;
+        player = FindObjectOfType<PlayerCharacter_Controller>();
+
+        damage = player.Calculate_Damage();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Enemy") || other.CompareTag("Walls") || other.CompareTag("Platform") || other.CompareTag("OneWayPlatform"))
         {
+            Instantiate(explosion_Prefab, transform.position, transform.rotation);
+
             Explode();
         }
     }

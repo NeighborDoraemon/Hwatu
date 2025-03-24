@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
 {
+    public const int max_Inventory_Size = 6;
+
     public List<Item> player_Inventory = new List<Item>();
     [SerializeField] private List<Item_Slot> item_Slots;
 
@@ -18,11 +20,6 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
 
     [HideInInspector] public GameObject earRing_Explosion_Prefab;
 
-    private void Start()
-    {
-        
-    }
-
     public void AddItem(Item newItem)
     {
         if (!newItem.isConsumable)
@@ -32,6 +29,21 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
         }
 
         Update_Inventory();
+    }
+
+    public void SwapItem(Item newItem)
+    {
+        if (player_Inventory.Count >= max_Inventory_Size)
+        {
+            Remove_Item_Effect(player_Inventory[selected_Slot_Index]);
+            player_Inventory[selected_Slot_Index] = newItem;
+            Apply_Item_Effect(newItem);
+            Update_Inventory();
+        }
+        else
+        {
+            Debug.LogWarning("Inventory is not full, can't swap the item.");
+        }
     }
     
     public void RemoveItem(Item item)
