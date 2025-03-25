@@ -12,13 +12,14 @@ GameObject:
   - component: {fileID: 7060569377396280705}
   - component: {fileID: 6577037561413610095}
   - component: {fileID: 4790303878559532788}
+  - component: {fileID: 5168308784830333224}
   m_Layer: 0
   m_Name: Event_Bird_Big
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5780094909509148552
 Transform:
   m_ObjectHideFlags: 0
@@ -148,3 +149,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &5168308784830333224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6868822880612232635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06f95312c8aaaf24fb729767a533aa42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Move_Speed: 3
+  Move_Area: 5
+  is_Facing_Left: 0

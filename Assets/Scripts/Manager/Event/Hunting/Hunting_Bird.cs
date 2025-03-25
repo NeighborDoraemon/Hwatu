@@ -42,11 +42,11 @@ public class Hunting_Bird : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if(this.transform.position.x >= Max_Position || this.transform.position.x <= Min_Position)
-        //{
-        //    is_Facing_Left = !is_Facing_Left;
-        //}
-        //Bird_Move();
+        if ((this.transform.position.x >= Max_Position && !is_Facing_Left) || (this.transform.position.x <= Min_Position && is_Facing_Left))
+        {
+            is_Facing_Left = !is_Facing_Left;
+        }
+        Bird_Move();
     }
 
     private void Bird_Move()
@@ -57,9 +57,9 @@ public class Hunting_Bird : MonoBehaviour
     private void Set_Area()
     {
         Max_Position = Spawned_Position + Move_Area;
-        Debug.Log(Max_Position);
+        //Debug.Log(Max_Position);
         Min_Position = Spawned_Position - Move_Area;
-        Debug.Log(Min_Position);
+        //Debug.Log(Min_Position);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -76,6 +76,6 @@ public class Hunting_Bird : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = gizmo_color;
-        Gizmos.DrawWireCube(this.transform.position, new Vector2(Move_Area, 1.0f));
+        Gizmos.DrawWireCube(this.transform.position, new Vector2(Move_Area * 2.0f, 1.0f));
     }
 }
