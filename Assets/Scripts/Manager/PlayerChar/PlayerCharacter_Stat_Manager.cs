@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -60,6 +61,8 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     [Header("Money")]
     public int i_Money = 0;
 
+    public TextMeshProUGUI comb_Text;
+
     public Weapon_Data cur_Weapon_Data { get; private set; }
 
     public virtual void Set_Weapon(int weaponIndex)
@@ -71,8 +74,9 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
         if (new_Weapon != null)
         {            
             cur_Weapon_Data = new_Weapon;
-            //Debug.Log("무기 변경");            
         }
+
+        comb_Text.text = new_Weapon.comb_Name;
     }
 
     public void Increase_Health(int value)

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
   m_Name: 1_8_GDD_Weapon
   m_EditorClassIdentifier: 
-  weapon_Name: Fan
+  weapon_Name: "\uBD80\uCC44"
+  comb_Name: "1 8 \uAD11\uB561"
   attack_Damage: 15
   attack_Cooldown: 1.5
   max_Attack_Count: 2

@@ -554,6 +554,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             tiger_Strategy.Reset_Stats();
         }
+        else if (attack_Strategy != null && attack_Strategy is Crow_Card_Attack_Strategy crow_Strategy)
+        {
+            crow_Strategy.Reset_Stats();
+        }
 
         if (weapon_Anchor.childCount > 0)
         {
@@ -1145,35 +1149,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             current_Item = null;
         }
 
-        if (other.CompareTag("Boundary"))
+        if (other.gameObject.tag == "NPC")
         {
-            if (use_Portal)
-            {
-                return;
-            }
-
-            Debug.Log("맵 벗어나려 함! 가까운 위치로 이동");
-            Vector2 closet_Point = Get_Closet_Point(transform.position);
-            transform.position = closet_Point;
+            is_Npc_Contack = false;
         }
-
-        //if (other.gameObject.tag == "NPC")
-        //{
-        //    is_Npc_Contack = false;
-        //    if (Now_Contact_Npc.gameObject.name == "Stat_Npc")
-        //    { 
-        //        Now_Contact_Npc.GetComponent<Stat_Npc_Controller>().Btn_Exit(); 
-        //    }
-        //}
-    }
-
-    private Vector2 Get_Closet_Point(Vector2 position)
-    {
-        if (cur_Boundary_Collider != null)
-        {
-            return cur_Boundary_Collider.ClosestPoint(position);
-        }
-        return position;
     }
 
     private IEnumerator DisableCollision()

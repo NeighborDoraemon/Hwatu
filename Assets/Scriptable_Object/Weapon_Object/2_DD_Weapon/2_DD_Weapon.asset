@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
   m_Name: 2_DD_Weapon
   m_EditorClassIdentifier: 
-  weapon_Name: Musket
+  weapon_Name: "\uC870\uCD1D"
+  comb_Name: "2 \uB561"
   attack_Damage: 15
   attack_Cooldown: 4
   max_Attack_Count: 1

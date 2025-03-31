@@ -446,11 +446,35 @@ MonoBehaviour:
     m_ActionId: 7592c333-04fc-4c13-8e46-05039ec065e2
     m_ActionName: Player/Inventory[/Keyboard/tab]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5418104219592675981}
+        m_TargetAssemblyTypeName: PlayerCharacter_Controller, Assembly-CSharp
+        m_MethodName: Input_Change_FirstCard
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 88e59d06-e290-402c-9567-9f763e36345f
     m_ActionName: Player/Change_FirstCard[/Keyboard/s]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5418104219592675981}
+        m_TargetAssemblyTypeName: PlayerCharacter_Controller, Assembly-CSharp
+        m_MethodName: Input_Change_SecondCard
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 959ab392-253e-470e-9d8e-96b55dca27db
     m_ActionName: Player/Change_SecondCard[/Keyboard/d]
   m_NeverAutoSwitchControlSchemes: 0
@@ -514,7 +538,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  is_Start_Spawn: 1
+  comb_Text: {fileID: 0}
   player_Inventory: []
   item_Slots:
   - {fileID: 0}
@@ -527,7 +551,9 @@ MonoBehaviour:
   has_EarRing_Effect: 0
   earRing_Explosion_Prefab: {fileID: 0}
   inventoryPanel: {fileID: 0}
+  is_StatUI_Visible: 0
   rb: {fileID: 3124059131931867968}
+  isMoving: 0
   maxJumpCount: 2
   teleporting_Cooltime_Timer: 0
   chestPrefab: {fileID: 939207004396396238, guid: 24e05632e72d6ba48a45d86a62edfa62, type: 3}
@@ -543,6 +569,8 @@ MonoBehaviour:
   weapon_Animator: {fileID: 0}
   isInvincible: 0
   is_UI_Open: 0
+  is_Item_Change: 0
+  card_Change_Cooldown: 2
   Player_Health_Bar: {fileID: 0}
   pause_Manager: {fileID: 0}
   player_render: {fileID: 8434130835688464816}
@@ -578,7 +606,7 @@ Transform:
   m_GameObject: {fileID: 5417539781672758290}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.06000042, y: -0.36, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

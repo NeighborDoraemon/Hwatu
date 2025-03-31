@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
   m_Name: 8_DD_Weapon
   m_EditorClassIdentifier: 
-  weapon_Name: Pyeongon
+  weapon_Name: "\uD3B8\uACE4"
+  comb_Name: "8 \uB561"
   attack_Damage: 8
   attack_Cooldown: 0
   max_Attack_Count: 1

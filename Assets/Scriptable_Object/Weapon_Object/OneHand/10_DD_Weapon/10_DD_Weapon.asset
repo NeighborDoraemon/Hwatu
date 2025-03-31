@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
   m_Name: 10_DD_Weapon
   m_EditorClassIdentifier: 
-  weapon_Name: Crow_Card
+  weapon_Name: "\uAE4C\uB9C8\uADC0\uC640 \uD654\uD22C\uD328"
+  comb_Name: "\uC7A5 \uB561"
   attack_Damage: 10
   attack_Cooldown: 0.5
   max_Attack_Count: 3

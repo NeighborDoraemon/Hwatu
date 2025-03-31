@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
   m_Name: 1_2_Weapon
   m_EditorClassIdentifier: 
-  weapon_Name: Sechongtong
+  weapon_Name: "\uC138\uCD1D\uD1B5"
+  comb_Name: "\uC54C \uB9AC"
   attack_Damage: 1
   attack_Cooldown: 0.5
   max_Attack_Count: 1

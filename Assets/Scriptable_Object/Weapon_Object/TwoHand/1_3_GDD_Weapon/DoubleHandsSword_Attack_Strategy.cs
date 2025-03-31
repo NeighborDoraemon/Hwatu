@@ -74,7 +74,11 @@ public class DoubleHandsSword_Attack_Strategy : ScriptableObject, IAttack_Strate
         player.animator.SetTrigger("Skill");
         GameObject skill_Projectile = Instantiate(skill_Projectile_Prefab, spawn_Pos, player.transform.rotation);
         Rigidbody2D rb = skill_Projectile.GetComponent<Rigidbody2D>();
-        Vector2 shoot_Direction = (player.weapon_Anchor.transform.localScale.x < 0) ? Vector2.left : Vector2.right;
+        Vector2 shoot_Direction = (player.is_Facing_Right) ? Vector2.right : Vector2.left;
+        Vector3 projectile_Scale = skill_Projectile.transform.localScale;
+        projectile_Scale.x = (player.is_Facing_Right) ? Mathf.Abs(projectile_Scale.x) : -Mathf.Abs(projectile_Scale.x);
+        skill_Projectile.transform.localScale = projectile_Scale;
+
         rb.velocity = shoot_Direction * projectile_Speed;
 
         Destroy(skill_Projectile, 3.0f);

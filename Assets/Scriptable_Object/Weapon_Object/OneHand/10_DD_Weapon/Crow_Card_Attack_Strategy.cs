@@ -31,7 +31,6 @@ public class Crow_Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
         if (crow_Prefab != null)
         {
             crow = Instantiate(crow_Prefab, player.transform.position, Quaternion.identity);
-            crow.transform.SetParent(player.transform);
             crow_Controller = crow.GetComponent<Crow_Controller>();
 
             if (crow_Controller != null)
@@ -56,6 +55,8 @@ public class Crow_Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
         if (crow != null)
         {
             Destroy(crow);
+            crow = null;
+            crow_Controller = null;
         }
     }
 

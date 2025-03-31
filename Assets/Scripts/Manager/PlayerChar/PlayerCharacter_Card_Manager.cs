@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
@@ -18,7 +19,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
 
     protected bool isCombDone = false;                              // 화투 조합이 이루어졌는지 체크하는 변수
 
-    [HideInInspector] public bool is_Start_Spawn = true;            // 시작 지급인지 확인하는 변수 (윤혁)
+    //[HideInInspector] public bool is_Start_Spawn = true;            // 시작 지급인지 확인하는 변수 (윤혁)
 
     public void AddCard(GameObject card)
     {
@@ -241,6 +242,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                     else
                     {
                         Set_Weapon(2);
+                        comb_Text.text = ((card_1.Month + card_2.Month) % 10) + " " + cur_Weapon_Data.comb_Name;
                         Debug.Log((card_1.Month + card_2.Month) % 10 + "끗");
                     }
                 }

@@ -88,20 +88,17 @@ public class Stat_Npc_Controller : MonoBehaviour
 
         switch (button_Name)
         {
-            case "Stat_Health":
+            case "Stat_AttackDamage":
                 player?.Increase_Health(health_Inc_Value);
                 break;
-            case "Stat_MoveSpeed":
+            case "Stat_Health":
                 player?.Increase_MoveSpeed(moveSpeed_Inc_Value);
                 break;
-            case "Stat_AttackDamage":
+            case "Stat_AttacSpeed":
                 player?.Increase_AttackDamage(atkDmg_Inc_Value);
                 break;
-            case "Stat_CritRate":
+            case "Stat_MoveSpeed":
                 player?.Increase_CritRate(critRate_Inc_Value);
-                break;
-            case "Stat_CritDamage":
-                player?.Increase_CritDamage(critDmg_Inc_Value);
                 break;
             default:
                 Debug.Log($"[{button_Name}] is null");

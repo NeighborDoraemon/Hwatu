@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
   m_Name: 6_DD_Weapon
   m_EditorClassIdentifier: 
-  weapon_Name: Canon
+  weapon_Name: "\uBE44\uACA9\uC9C4\uCC9C\uB8B0"
+  comb_Name: "6 \uB561"
   attack_Damage: 8
   attack_Cooldown: 2
   max_Attack_Count: 1

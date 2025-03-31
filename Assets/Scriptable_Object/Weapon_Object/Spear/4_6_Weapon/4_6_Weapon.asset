@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
   m_Name: 4_6_Weapon
   m_EditorClassIdentifier: 
-  weapon_Name: Dangpa
+  weapon_Name: "\uB2F9\uD30C"
+  comb_Name: "\uC138 \uB959"
   attack_Damage: 3
   attack_Cooldown: 1
   max_Attack_Count: 1
