@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a0ab8aaa10ed3c469323a621fc4d81e, type: 3}
+  m_Name: Real_Level_08
+  m_EditorClassIdentifier: 
+  v_Map_Spawnpoint: {x: 133, y: -86, z: 0}
+  v_New_Spawn_Points:
+  - v_Dataes:
+    - {x: 167.01407, y: -87.18363, z: -0.23088965}
+  - v_Dataes:
+    - {x: 160.37407, y: -82.06363, z: -0.23088965}
+  - v_Dataes:
+    - {x: 143.02406, y: -80.06363, z: -0.23088965}
+    - {x: 144.07407, y: -80.06363, z: -0.23088965}
+    - {x: 145.28406, y: -80.06363, z: -0.23088965}
+    - {x: 141.43407, y: -80.06363, z: -0.23088965}
+  - v_Dataes:
+    - {x: 134.91376, y: -78.060486, z: -0.23088965}
+  - v_Dataes:
+    - {x: 150.93375, y: -76.980484, z: -0.23088965}
+    - {x: 161.92375, y: -76.060486, z: -0.23088965}
+  - v_Dataes:
+    - {x: 144.63889, y: -86.06812, z: -0.23088965}
+    - {x: 143.1489, y: -86.06812, z: -0.23088965}
+    - {x: 143.62889, y: -86.06812, z: -0.23088965}
+  - v_Dataes:
+    - {x: 156.91136, y: -85.086494, z: -0.23088965}
+    - {x: 155.29137, y: -85.086494, z: -0.23088965}
+  i_Enemy_Index:
+  - i_enemy_Index: 0c000000
+  - i_enemy_Index: 06000000
+  - i_enemy_Index: 00000000000000000000000001000000
+  - i_enemy_Index: 0a000000
+  - i_enemy_Index: 0a0000000a000000
+  - i_enemy_Index: 020000000700000008000000
+  - i_enemy_Index: 020000000b000000
+  i_How_Many_Wave: 7
+  v_CardBox_SpawnPoint: {x: 166, y: -76.5, z: 0}
+  Collider: {fileID: 0}
