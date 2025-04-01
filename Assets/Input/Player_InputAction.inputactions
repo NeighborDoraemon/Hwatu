@@ -112,6 +112,13 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                    "name": "UpDown",
+                    "type": "Value",
+                    "id": "e811147c-3dd4-4e18-916f-d975d0274ca4",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -268,6 +275,37 @@
                     "action": "Change_SecondCard",
                     "isComposite": false,
                     "isPartOfComposite": false
+                    "name": "UpDown",
+                    "id": "fc2d16c6-5ee0-45fc-9213-4f7af52ab8a3",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UpDown",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "64e6857a-e06c-45c8-839e-6462001a13af",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UpDown",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "976f0fbd-2bf7-4d74-b7ef-415f79511291",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UpDown",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },

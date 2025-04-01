@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b25af8627659c6949b60949c3aa8d91d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedEditorNode: {fileID: 1702752818525257210}
+  selectedEditorNode: {fileID: 3026766014613941829}
   repeatOnFinish: 0
   maxExecutionsPerTick: 1000
   parent: {fileID: 0}
@@ -371,6 +371,8 @@ MonoBehaviour:
     blackboard: {fileID: 1680579883527586225}
     key: f_Moving_Random
     constantValue: 0
+  Random_Min: 2
+  Random_Max: 6
   is_Facing_Left:
     useConstant: 0
     mode: 0
@@ -1031,12 +1033,6 @@ MonoBehaviour:
     blackboard: {fileID: 1680579883527586225}
     key: i_Health
     constantValue: 0
-  BR_Stunned:
-    useConstant: 0
-    mode: 0
-    blackboard: {fileID: 1680579883527586225}
-    key: is_Stunned
-    constantValue: 0
   is_Boos_Object: 0
   scarecrow: {fileID: 0}
   min_Money_Drop: 5
@@ -1053,6 +1049,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ae3fd4396b2450459d85c4a4d7eed9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Target_Player: {fileID: 0}
+  BR_Facing_Left:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 1680579883527586225}
+    key: is_Facing_Left
+    constantValue: 0
+  BR_Stunned:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 1680579883527586225}
+    key: is_Stunned
+    constantValue: 0
   f_Chasing_Speed: 3
   f_Before_Delay: 0.5
   f_After_Delay: 2
@@ -1062,23 +1071,11 @@ MonoBehaviour:
     blackboard: {fileID: 1680579883527586225}
     key: is_Chasing
     constantValue: 0
-  BR_Facing_Left:
-    useConstant: 0
-    mode: 0
-    blackboard: {fileID: 1680579883527586225}
-    key: is_Facing_Left
-    constantValue: 0
   BR_Not_Attacking:
     useConstant: 0
     mode: 0
     blackboard: {fileID: 1680579883527586225}
     key: is_Not_Attacking
-    constantValue: 0
-  BR_Stunned:
-    useConstant: 0
-    mode: 0
-    blackboard: {fileID: 1680579883527586225}
-    key: is_Stunned
     constantValue: 0
   FR_Attack_Range:
     useConstant: 0
@@ -1092,7 +1089,6 @@ MonoBehaviour:
     blackboard: {fileID: 1680579883527586225}
     key: i_Attack_Damage
     constantValue: 0
-  Target_Player: {fileID: 0}
   Enemy_CB: {fileID: 513880655908747955}
   ShortSword_Animator: {fileID: 8073398816592558685}
 --- !u!70 &8893720031332451141

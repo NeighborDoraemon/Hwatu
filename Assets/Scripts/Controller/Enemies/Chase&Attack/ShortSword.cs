@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShortSword : MonoBehaviour, Enemy_Interface
+public class ShortSword : Enemy_Parent, Enemy_Interface
 {
     [Header("Float Values")]
     [SerializeField] private float f_Chasing_Speed = 4.0f;
@@ -16,16 +16,16 @@ public class ShortSword : MonoBehaviour, Enemy_Interface
 
     [Header("BB_Value")]
     [SerializeField] private BoolReference BR_Chasing;
-    [SerializeField] private BoolReference BR_Facing_Left;
+    //[SerializeField] private BoolReference BR_Facing_Left;
     //[SerializeField] private GameObjectReference OR_Player;
     [SerializeField] private BoolReference BR_Not_Attacking;
-    [SerializeField] private BoolReference BR_Stunned;
+    //[SerializeField] private BoolReference BR_Stunned;
 
     [SerializeField] private FloatReference FR_Attack_Range;
     [SerializeField] private IntReference IR_Attack_Damage;
 
     [Header("Others")]
-    [SerializeField] private GameObject Target_Player;
+    //[SerializeField] private GameObject Target_Player;
     [SerializeField] private Crash_Box Enemy_CB;
     [SerializeField] private Animator ShortSword_Animator;
     private float Distance = 0.0f;
@@ -51,11 +51,7 @@ public class ShortSword : MonoBehaviour, Enemy_Interface
     {
         Distance = Mathf.Abs(this.gameObject.transform.position.x - Target_Player.transform.position.x);
 
-        if (BR_Stunned.Value)
-        {
-            Stunned();
-        }
-        else
+        if (!BR_Stunned.Value)
         {
             if ((BR_Chasing.Value && Distance <= FR_Attack_Range.Value) || is_Attacking)
             {
@@ -145,28 +141,28 @@ public class ShortSword : MonoBehaviour, Enemy_Interface
         }
     }
 
-    private void TurnAround()
-    {
-        Quaternion quater = this.gameObject.transform.rotation;
+    //private void TurnAround()
+    //{
+    //    Quaternion quater = this.gameObject.transform.rotation;
 
-        if (this.gameObject.transform.position.x <= Target_Player.transform.position.x && BR_Facing_Left.Value) // 좌측 보는중 & 플레이어가 우측
-        {
-            BR_Facing_Left.Value = false;
-            quater.y = 180.0f;
+    //    if (this.gameObject.transform.position.x <= Target_Player.transform.position.x && BR_Facing_Left.Value) // 좌측 보는중 & 플레이어가 우측
+    //    {
+    //        BR_Facing_Left.Value = false;
+    //        quater.y = 180.0f;
 
-            this.gameObject.transform.rotation = quater;
-        }
-        else if (this.gameObject.transform.position.x > Target_Player.transform.position.x && !BR_Facing_Left.Value)
-        {
-            BR_Facing_Left.Value = true;
-            //Obj_Enemy.gameObject.transform.rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
-            quater.y = 0.0f;
+    //        this.gameObject.transform.rotation = quater;
+    //    }
+    //    else if (this.gameObject.transform.position.x > Target_Player.transform.position.x && !BR_Facing_Left.Value)
+    //    {
+    //        BR_Facing_Left.Value = true;
+    //        //Obj_Enemy.gameObject.transform.rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
+    //        quater.y = 0.0f;
 
-            this.gameObject.transform.rotation = quater;
-        }
-    }
+    //        this.gameObject.transform.rotation = quater;
+    //    }
+    //}
 
-    private void Stunned()
+    public void Enemy_Stun(float Duration)
     {
 
     }

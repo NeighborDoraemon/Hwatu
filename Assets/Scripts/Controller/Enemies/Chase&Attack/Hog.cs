@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hog : MonoBehaviour,Enemy_Interface
+public class Hog : Enemy_Parent, Enemy_Interface
 {
     [Header("Float Values")]
     [SerializeField] private float f_Chasing_Speed = 15.0f;
@@ -17,15 +17,15 @@ public class Hog : MonoBehaviour,Enemy_Interface
 
     [Header("BB_Value")]
     [SerializeField] private BoolReference BR_Chasing;
-    [SerializeField] private BoolReference BR_Facing_Left;
+    //[SerializeField] private BoolReference BR_Facing_Left;
     [SerializeField] private BoolReference BR_At_End;
     [SerializeField] private BoolReference BR_Not_Attacking;
-    [SerializeField] private BoolReference BR_Stunned;
+    //[SerializeField] private BoolReference BR_Stunned;
 
     [SerializeField] private IntReference IR_Attack_Damage;
 
     [Header("Others")]
-    [SerializeField] private GameObject Target_Player;
+    //[SerializeField] private GameObject Target_Player;
     [SerializeField] private Animator Hog_Animator;
     [SerializeField] private Animator Hog_Effect_Animator;
     [SerializeField] private Crash_Box enemy_CB;
@@ -53,12 +53,8 @@ public class Hog : MonoBehaviour,Enemy_Interface
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (BR_Stunned.Value)
-        {
-            Stunned();
-        }
-        else
-        {
+        if(!BR_Stunned.Value)
+        { 
             if (BR_Chasing.Value || is_Attacking)
             {
                 Attack_Call();
@@ -144,28 +140,28 @@ public class Hog : MonoBehaviour,Enemy_Interface
         }
     }
 
-    private void TurnAround()
-    {
-        Quaternion quater = this.gameObject.transform.rotation;
+    //private void TurnAround()
+    //{
+    //    Quaternion quater = this.gameObject.transform.rotation;
 
-        if (this.gameObject.transform.position.x <= Target_Player.transform.position.x && BR_Facing_Left.Value) // 좌측 보는중 & 플레이어가 우측
-        {
-            BR_Facing_Left.Value = false;
-            quater.y = 180.0f;
+    //    if (this.gameObject.transform.position.x <= Target_Player.transform.position.x && BR_Facing_Left.Value) // 좌측 보는중 & 플레이어가 우측
+    //    {
+    //        BR_Facing_Left.Value = false;
+    //        quater.y = 180.0f;
 
-            this.gameObject.transform.rotation = quater;
-        }
-        else if (this.gameObject.transform.position.x > Target_Player.transform.position.x && !BR_Facing_Left.Value)
-        {
-            BR_Facing_Left.Value = true;
-            //Obj_Enemy.gameObject.transform.rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
-            quater.y = 0.0f;
+    //        this.gameObject.transform.rotation = quater;
+    //    }
+    //    else if (this.gameObject.transform.position.x > Target_Player.transform.position.x && !BR_Facing_Left.Value)
+    //    {
+    //        BR_Facing_Left.Value = true;
+    //        //Obj_Enemy.gameObject.transform.rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
+    //        quater.y = 0.0f;
 
-            this.gameObject.transform.rotation = quater;
-        }
-    }
+    //        this.gameObject.transform.rotation = quater;
+    //    }
+    //}
 
-    private void Stunned()
+    public void Enemy_Stun(float Duration)
     {
         Hog_Animator.SetBool("is_Delay_End", false);
         Hog_Animator.SetBool("is_Attacking", false);
@@ -182,5 +178,7 @@ public class Hog : MonoBehaviour,Enemy_Interface
         Attack_Time = 0.0f;
 
         is_Attack_Once = false;
+
+        Take_Stun(Duration);
     }
 }

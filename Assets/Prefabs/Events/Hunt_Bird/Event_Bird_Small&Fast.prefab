@@ -12,13 +12,14 @@ GameObject:
   - component: {fileID: 2078456369222680741}
   - component: {fileID: 563455543603053037}
   - component: {fileID: 4531347863444751374}
+  - component: {fileID: 3353394919584741321}
   m_Layer: 0
   m_Name: Event_Bird_Small&Fast
-  m_TagString: Untagged
+  m_TagString: Event
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7062953850639485011
 Transform:
   m_ObjectHideFlags: 0
@@ -148,3 +149,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &3353394919584741321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 726845130816828452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06f95312c8aaaf24fb729767a533aa42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Move_Speed: 8
+  Move_Area: 4
+  is_Facing_Left: 0

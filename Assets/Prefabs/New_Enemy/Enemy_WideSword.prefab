@@ -194,12 +194,6 @@ MonoBehaviour:
     blackboard: {fileID: 4843434418119999694}
     key: i_Health
     constantValue: 0
-  BR_Stunned:
-    useConstant: 0
-    mode: 0
-    blackboard: {fileID: 4843434418119999694}
-    key: is_Stunned
-    constantValue: 0
   is_Boos_Object: 0
   scarecrow: {fileID: 0}
   min_Money_Drop: 10
@@ -216,6 +210,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa3f154eef04cca46b7aa9c536f15cea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Target_Player: {fileID: 0}
+  BR_Facing_Left:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 4843434418119999694}
+    key: is_Facing_Left
+    constantValue: 0
+  BR_Stunned:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 4843434418119999694}
+    key: is_Stunned
+    constantValue: 0
   f_Chasing_Speed: 2
   f_Before_Delay: 2
   f_After_Delay: 0.5
@@ -224,12 +231,6 @@ MonoBehaviour:
     mode: 0
     blackboard: {fileID: 4843434418119999694}
     key: is_Chasing
-    constantValue: 0
-  BR_Facing_Left:
-    useConstant: 0
-    mode: 0
-    blackboard: {fileID: 4843434418119999694}
-    key: is_Facing_Left
     constantValue: 0
   FR_Attack_Range:
     useConstant: 0
@@ -249,13 +250,6 @@ MonoBehaviour:
     blackboard: {fileID: 4843434418119999694}
     key: is_Not_Attacking
     constantValue: 0
-  BR_Stunned:
-    useConstant: 0
-    mode: 0
-    blackboard: {fileID: 4843434418119999694}
-    key: is_Stunned
-    constantValue: 0
-  Target_Player: {fileID: 0}
   Enemy_Crash_Box: {fileID: 7252858169000148663}
   Wide_Animator: {fileID: 575172417556235026}
 --- !u!1 &7252858169000148663
@@ -526,7 +520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b25af8627659c6949b60949c3aa8d91d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedEditorNode: {fileID: 5926901979950054617}
+  selectedEditorNode: {fileID: 8688103075874769746}
   repeatOnFinish: 0
   maxExecutionsPerTick: 1000
   parent: {fileID: 0}
@@ -705,7 +699,7 @@ MonoBehaviour:
   rect:
     serializedVersion: 2
     x: 200
-    y: 320
+    y: 319.2
     width: 160
     height: 44
   parent: {fileID: 4671441239727917433}
@@ -734,6 +728,8 @@ MonoBehaviour:
     blackboard: {fileID: 4843434418119999694}
     key: f_Moving_Random
     constantValue: 0
+  Random_Min: 3
+  Random_Max: 6
   is_Facing_Left:
     useConstant: 0
     mode: 0

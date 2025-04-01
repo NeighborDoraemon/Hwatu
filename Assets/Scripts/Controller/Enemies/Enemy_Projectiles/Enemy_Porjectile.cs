@@ -10,7 +10,7 @@ public class Enemy_Porjectile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Time_Destroy();
     }
 
     // Update is called once per frame
@@ -36,5 +36,11 @@ public class Enemy_Porjectile : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private IEnumerator Time_Destroy()
+    {
+        yield return new WaitForSeconds(10.0f);
+        Destroy(this.gameObject);
     }
 }

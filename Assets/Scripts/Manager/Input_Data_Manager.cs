@@ -6,7 +6,19 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 
-public enum Key_Enum { Left = 0, Right = 1, Jump = 2, Teleport = 3, Attack = 4, Skill = 5, Interaction = 6, KeyCount = 7 }
+public enum Key_Enum 
+{
+    Left = 0, 
+    Right = 1, 
+    Jump = 2, 
+    Teleport = 3, 
+    Attack = 4, 
+    Skill = 5, 
+    Interaction = 6,
+    Up = 7,
+    Down = 8,
+    KeyCount = 9 
+}
 
 
 public class Input_Data_Manager : MonoBehaviour
@@ -64,6 +76,13 @@ public class Input_Data_Manager : MonoBehaviour
                 Input_Text[i].text = InputControlPath.ToHumanReadableString(
                     Player_Input_List[1].action.bindings[i + 1].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
             }
+            else if(i == 7 || i == 8)
+            {
+                int bindingIndex = Player_Input_List[i].action.GetBindingIndexForControl(Player_Input_List[i].action.controls[i - 7]);
+
+                Input_Text[i].text = InputControlPath.ToHumanReadableString(
+                    Player_Input_List[7].action.bindings[i - 6].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
+            }
             else
             {
                 int bindingIndex = Player_Input_List[i].action.GetBindingIndexForControl(Player_Input_List[i].action.controls[0]);
@@ -101,6 +120,17 @@ public class Input_Data_Manager : MonoBehaviour
                   .OnComplete(operation => RebinComplete(i_key_count))
                   .Start();
         }
+        else if(i_key_count == 7 || i_key_count == 8)
+        {
+            int bindingIndex = Player_Input_List[i_key_count].action.GetBindingIndexForControl(Player_Input_List[i_key_count].action.controls[i_key_count - 7]);
+            player_Input.SwitchCurrentActionMap("Menu");
+
+            rebindingOperation = Player_Input_List[i_key_count].action.PerformInteractiveRebinding(bindingIndex)
+                  .WithControlsExcluding("Mouse")
+                  .OnMatchWaitForAnother(0.1f)
+                  .OnComplete(operation => RebinComplete(i_key_count))
+                  .Start();
+        }
         else
         {
             player_Input.SwitchCurrentActionMap("Menu");
@@ -123,6 +153,13 @@ public class Input_Data_Manager : MonoBehaviour
 
                 Input_Text[i].text = InputControlPath.ToHumanReadableString(
                     Player_Input_List[i].action.bindings[i + 1].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
+            }
+            else if(i == 7 || i == 8)
+            {
+                int bindingIndex = Player_Input_List[i].action.GetBindingIndexForControl(Player_Input_List[i].action.controls[i - 7]);
+
+                Input_Text[i].text = InputControlPath.ToHumanReadableString(
+                    Player_Input_List[i].action.bindings[i - 6].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
             }
             else
             {

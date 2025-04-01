@@ -19,6 +19,7 @@ TagManager:
   - Market_Item
   - PlayerClone
   - Wave
+  - Event
   layers:
   - Default
   - TransparentFX

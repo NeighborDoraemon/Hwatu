@@ -13,6 +13,8 @@ public class BH_Patrol : Service
     [SerializeField] private FloatReference e_Move_Speed;
     [SerializeField] private FloatReference e_Moving_Time;
     [SerializeField] private FloatReference e_Moving_Random;
+    [SerializeField] private float Random_Min;
+    [SerializeField] private float Random_Max;
 
 
 
@@ -27,7 +29,7 @@ public class BH_Patrol : Service
 
     private void Reset_Random()
     {
-        e_Moving_Random.Value = Random.Range(2.0f, 5.0f);
+        e_Moving_Random.Value = Random.Range(Random_Min, Random_Max);
         e_Moving_Time.Value = 0.0f;
     }
     public override NodeResult Execute()
@@ -54,6 +56,7 @@ public class BH_Patrol : Service
         else if (e_Moving_Time.Value >= e_Moving_Random.Value) // 이동 시간 종료
         {
             Reset_Random();
+            e_Moving_Time.Value = 0.0f;
             Enemy_Animator.SetBool("is_Moving", false);
             return NodeResult.success;
         }
