@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
   m_Name: 3_DD_Weapon
   m_EditorClassIdentifier: 
-  weapon_Name: ExecutionSword
+  weapon_Name: "\uB9DD\uB098\uB2C8\uC758 \uCE7C"
+  comb_Name: "3 \uB561"
   attack_Damage: 3
   attack_Cooldown: 1.5
   max_Attack_Count: 2

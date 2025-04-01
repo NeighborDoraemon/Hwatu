@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9355ccc537dbe846a15da7ad6c9234c, type: 3}
+  m_Name: Pyeongon_Effect_Data
+  m_EditorClassIdentifier: 
+  effects:
+  - motion_Name: PC_Pyeongon_Atk
+    frame_Effects:
+    - frame_Number: 1
+      effect_Sprites: {fileID: 1684630491, guid: 53b37d612f46e6246844a3470f47af84, type: 3}
+      effect_Animator: {fileID: 0}
+      position_Offset: {x: 0.022, y: -0.11, z: 0}
+      duration: 0.1
+    - frame_Number: 2
+      effect_Sprites: {fileID: -1085596873, guid: 53b37d612f46e6246844a3470f47af84, type: 3}
+      effect_Animator: {fileID: 0}
+      position_Offset: {x: 0, y: -0.084, z: 0}
+      duration: 0.1
+    - frame_Number: 3
+      effect_Sprites: {fileID: 543804803, guid: 53b37d612f46e6246844a3470f47af84, type: 3}
+      effect_Animator: {fileID: 0}
+      position_Offset: {x: -0.023, y: -0.077, z: 0}
+      duration: 0.1
+    - frame_Number: 4
+      effect_Sprites: {fileID: -1915875181, guid: 53b37d612f46e6246844a3470f47af84, type: 3}
+      effect_Animator: {fileID: 0}
+      position_Offset: {x: -0.018, y: -0.117, z: 0}
+      duration: 0.1

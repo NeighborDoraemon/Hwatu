@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
   m_Name: 4_9_Weapon
   m_EditorClassIdentifier: 
-  weapon_Name: BrozeBell
+  weapon_Name: "\uD314\uC8FC\uB839"
+  comb_Name: "\uAD6C \uC0AC"
   attack_Damage: 1
   attack_Cooldown: 3
   max_Attack_Count: 1

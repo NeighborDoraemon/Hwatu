@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
@@ -13,12 +14,12 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
     [HideInInspector]
     public SpriteRenderer sprite_Renderer;
 
-    public GameObject[] card_Inventory = new GameObject[2];         // 화투 오브젝트 저장 공간 배열
+    public GameObject[] card_Inventory = new GameObject[3];         // 화투 오브젝트 저장 공간 배열
     protected int cardCount = 0;                                    // 화투 갯수 카운트 변수
 
     protected bool isCombDone = false;                              // 화투 조합이 이루어졌는지 체크하는 변수
 
-    [HideInInspector] public bool is_Start_Spawn = true;            // 시작 지급인지 확인하는 변수 (윤혁)
+    //[HideInInspector] public bool is_Start_Spawn = true;            // 시작 지급인지 확인하는 변수 (윤혁)
 
     public void AddCard(GameObject card)
     {
@@ -26,19 +27,17 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
 
         if (cardCount == card_Inventory.Length)
         {
-            if (card_Inventory[0] != null)
+            if (card_Inventory[1] != null)
             {
-                Card cardComponent = card_Inventory[0].GetComponent<Card>();
+                Card cardComponent = card_Inventory[1].GetComponent<Card>();
                 if (cardComponent != null && cardComponent.selected_Sprite != null)
                 {
                     Object_Manager.instance.Remove_Used_Sprite(cardComponent.selected_Sprite);
                 }
 
-                Debug.Log("0 destroy");
-                Destroy(card_Inventory[0]);
+                Destroy(card_Inventory[1]);
             }
 
-            card_Inventory[0] = card_Inventory[1];
             card_Inventory[1] = card;
         }
         else
@@ -46,11 +45,6 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
             card_Inventory[cardCount] = card;
             cardCount++;
             Debug.Log("카드 추가" + card.name);
-
-            //if (cardCount == card_Inventory.Length)
-            //{
-            //    is_Start_Spawn = false;
-            //}
         }
         UpdateCardUI();
         Card_Combination();
@@ -94,6 +88,32 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
         }
 
         card_UI_Manager.UpdateCardUI(cardSprites);
+    }
+
+    public void Change_FirstAndThird_Card()
+    {
+        if (card_Inventory[2] != null)
+        {
+            GameObject temp = card_Inventory[0];
+            card_Inventory[0] = card_Inventory[2];
+            card_Inventory[2] = temp;
+        }
+
+        UpdateCardUI();
+        Card_Combination();
+    }
+
+    public void Change_SecondAndThird_Card()
+    {
+        if (card_Inventory[2] != null)
+        {
+            GameObject temp = card_Inventory[1];
+            card_Inventory[1] = card_Inventory[2];
+            card_Inventory[2] = temp;
+        }
+
+        UpdateCardUI();
+        Card_Combination();
     }
 
     public void Card_Combination()
@@ -222,6 +242,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                     else
                     {
                         Set_Weapon(2);
+                        comb_Text.text = ((card_1.Month + card_2.Month) % 10) + " " + cur_Weapon_Data.comb_Name;
                         Debug.Log((card_1.Month + card_2.Month) % 10 + "끗");
                     }
                 }

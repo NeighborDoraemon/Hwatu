@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [CreateAssetMenu(fileName = "Shield_Attack", menuName = "Weapon/Attack Strategy/Shield")]
 public class Shield_Attack_Strategy : ScriptableObject, IAttack_Strategy
@@ -34,9 +35,27 @@ public class Shield_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
-        if (isParrying) return;
+        if (player.isGrounded)
+        {
+            if (isParrying) return;
 
-        Activate_Parry(player);
+            Activate_Parry(player);
+        }
+        else if (!player.isGrounded)
+        {
+            player.animator.SetTrigger("Attack");
+            player.isAttacking = true;
+            player.StartCoroutine(Shield_Layer_Change());
+        }
+    }
+
+    private IEnumerator Shield_Layer_Change()
+    {
+        player.weapon_Animator.SetBool("Is_Attacking", true);
+
+        yield return new WaitForSeconds(0.5f);
+
+        player.weapon_Animator.SetBool("Is_Attacking", false);
     }
 
     private void Activate_Parry(PlayerCharacter_Controller player)

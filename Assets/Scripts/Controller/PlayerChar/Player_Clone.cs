@@ -9,6 +9,8 @@ public class Player_Clone : MonoBehaviour
     public SpriteRenderer effect_Render;
     public Animator effect_Animator;
     public Weapon_Data cur_Weapon_Data;
+    public IAttack_Strategy attack_Strategy;
+    public Transform fire_Point;
 
     public float follow_Speed = 10.0f;
     public float attack_Delay = 0.2f;
@@ -42,6 +44,8 @@ public class Player_Clone : MonoBehaviour
         effect_Render = effectRenderObj.AddComponent<SpriteRenderer>();
         effect_Animator = effectRenderObj.AddComponent<Animator>();
 
+        fire_Point = weapon_Holder;
+
         Copy_Player_Weapon();
     }
 
@@ -65,22 +69,9 @@ public class Player_Clone : MonoBehaviour
             return;
         }
 
-        Vector3 new_Pos = player.weapon_Anchor.localPosition;
-        Quaternion new_Rotation = player.weapon_Anchor.localRotation;
-        Vector3 new_Scale = player.weapon_Anchor.localScale;
-
-        if (player.is_Facing_Right)
-        {
-            weapon_Holder.localPosition = new_Pos;
-            weapon_Holder.localRotation = new_Rotation;
-            weapon_Holder.localScale = new_Scale;
-        }
-        else
-        {
-            weapon_Holder.localPosition = new Vector3(-new_Pos.x, new_Pos.y, new_Pos.z);
-            weapon_Holder.localRotation = Quaternion.Inverse(new_Rotation);
-            weapon_Holder.localScale = new Vector3(-new_Scale.x, new_Scale.y, new_Scale.z);
-        }
+        weapon_Holder.localPosition = player.weapon_Anchor.localPosition;
+        weapon_Holder.localRotation = player.weapon_Anchor.localRotation;
+        weapon_Holder.localScale = player.weapon_Anchor.localScale;
     }
 
     public void Activate_WeaponCollider(float duration)
@@ -111,7 +102,10 @@ public class Player_Clone : MonoBehaviour
             if (frame_Effect_Info != null)
             {
                 Vector3 effect_Pos = frame_Effect_Info.position_Offset;
-                effect_Pos.x = is_Facing_Right ? Mathf.Abs(effect_Pos.x) : -Mathf.Abs(effect_Pos.x);
+                if (!is_Facing_Right)
+                {
+                    effect_Pos.x = -effect_Pos.x;
+                }
 
                 if (effect_Render != null)
                 {
@@ -159,7 +153,13 @@ public class Player_Clone : MonoBehaviour
         Vector3 target_Pos = player.transform.position + new Vector3(-0.5f * (player.is_Facing_Right ? 1 : -1), 0, 0);
         transform.position = Vector3.Lerp(transform.position, target_Pos, follow_Speed * Time.deltaTime);
 
-        transform.localScale = new Vector3(player.is_Facing_Right ? 2 : -2, 2, 1);
+        transform.localScale = new Vector3(2, 2, 1);
+
+        SpriteRenderer clone_SR = GetComponent<SpriteRenderer>();
+        if (clone_SR != null)
+        {
+            clone_SR.flipX = !is_Facing_Right;
+        }
     }
 
     private void Sync_Animation()
@@ -229,6 +229,25 @@ public class Player_Clone : MonoBehaviour
             {
                 weapon_Animator.runtimeAnimatorController = player.cur_Weapon_Data.overrideController;
             }
+        }
+
+        attack_Strategy = cur_Weapon_Data.attack_Strategy as IAttack_Strategy;
+        if (attack_Strategy == null)
+        {
+            Debug.LogError($"{cur_Weapon_Data.weapon_Name} Weapon Copy Fail!");
+            return;
+        }
+    }
+
+    public void On_Shoot_Projectile()
+    {
+        if (attack_Strategy != null)
+        {
+            attack_Strategy.Shoot(player, fire_Point);
+        }
+        else
+        {
+            Debug.LogError("Weapon Projectile is Missing!");
         }
     }
 }

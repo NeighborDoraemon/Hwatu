@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
   m_Name: AmhaengEosa_Weapon
   m_EditorClassIdentifier: 
-  weapon_Name: HorseToken
+  weapon_Name: "\uB9C8\uD328"
+  comb_Name: "\uC554\uD589\uC5B4\uC0AC"
   attack_Damage: 5
   attack_Cooldown: 1
   max_Attack_Count: 1

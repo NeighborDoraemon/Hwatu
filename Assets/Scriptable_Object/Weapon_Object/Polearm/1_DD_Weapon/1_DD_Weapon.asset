@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
   m_Name: 1_DD_Weapon
   m_EditorClassIdentifier: 
-  weapon_Name: PoleArm
+  weapon_Name: "\uC7A5\uAC80"
+  comb_Name: "1 \uB561"
   attack_Damage: 4
   attack_Cooldown: 1
   max_Attack_Count: 2

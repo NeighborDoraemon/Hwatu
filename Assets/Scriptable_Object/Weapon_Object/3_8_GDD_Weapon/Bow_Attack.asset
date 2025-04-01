@@ -17,3 +17,6 @@ MonoBehaviour:
   charge_Time_Threshold: 1.5
   normal_Arrow_Prefab: {fileID: 4150010414422937313, guid: 2cb1bbff4bae34649a65a571fdb13ade, type: 3}
   charged_Arrow_Prefab: {fileID: 4150010414422937313, guid: 062e0f649e2bca44085e4cb915f8b695, type: 3}
+  skillTarget_Effect_Prefab: {fileID: 8476071273048089524, guid: 0afffb0d13803394ca3ae14e8ca42a83, type: 3}
+  skill_Effect_Prefab: {fileID: 7648235017673624035, guid: bc67d1bd7c0d2074ea7dd26c573d2a25, type: 3}
+  charge_Start_Time: 0

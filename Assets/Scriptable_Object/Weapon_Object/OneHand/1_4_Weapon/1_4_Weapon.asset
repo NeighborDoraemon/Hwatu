@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
+  m_Name: 1_4_Weapon
+  m_EditorClassIdentifier: 
+  weapon_Name: "\uBC40\uD56D\uC544\uB9AC"
+  comb_Name: "\uB3C5 \uC0AC"
+  attack_Damage: 3
+  attack_Cooldown: 1
+  max_Attack_Count: 1
+  skill_Damage: -15
+  skill_Cooldown: 3
+  weapon_Prefab: {fileID: 7843703564842448239, guid: cc8cf3880c9d6634f9f26da12a813d58, type: 3}
+  overrideController: {fileID: 22100000, guid: cf27bac6ce395fd4b8ec3af39a7fcd61, type: 2}
+  weapon_overrideController: {fileID: 22100000, guid: 6ffcb2919db719b41805994c6c5bc8aa, type: 2}
+  animation_Pos_Data_List:
+  - {fileID: 11400000, guid: bacd55d76c856f24989fa4c32344a9c0, type: 2}
+  - {fileID: 11400000, guid: 766851b9cb6679841aea76460be67f19, type: 2}
+  - {fileID: 11400000, guid: 120d7d4c0f7b18c48adfe2f2f78db44b, type: 2}
+  - {fileID: 11400000, guid: e75eaa3b75bcd2049b0fc557078b3e79, type: 2}
+  - {fileID: 11400000, guid: b288a53322d75e1419e0922a384d9d4e, type: 2}
+  - {fileID: 11400000, guid: 9d3b7ee7c89ac0348b3796b55b51b8a9, type: 2}
+  - {fileID: 11400000, guid: b29abb85e943fb24cb927aec881811ca, type: 2}
+  effect_Data: {fileID: 11400000, guid: 0dd1f1221b20f904dafc48d078b8ad1d, type: 2}
+  attack_Strategy: {fileID: 11400000, guid: 657170e14d9c4c5458bbc33a94ea1890, type: 2}
+  is_HoldAttack_Enabled: 0

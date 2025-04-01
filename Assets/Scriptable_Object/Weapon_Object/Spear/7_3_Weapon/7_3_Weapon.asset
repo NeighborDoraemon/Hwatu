@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
   m_Name: 7_3_Weapon
   m_EditorClassIdentifier: 
-  weapon_Name: Shield
-  attack_Damage: 50
+  weapon_Name: "\uBC29\uD328"
+  comb_Name: "\uB561\uC7A1\uC774"
+  attack_Damage: 3
   attack_Cooldown: 1
   max_Attack_Count: 1
   skill_Damage: 0
@@ -28,7 +29,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0457b490e295b274aac6ebe5b27e4cdb, type: 2}
   - {fileID: 11400000, guid: 2c02c81ba2ea13145ad5449f5389d6b9, type: 2}
   - {fileID: 11400000, guid: 0764e72e22d6090449954fe1c8426c0d, type: 2}
-  - {fileID: 11400000, guid: 6a59beb74da25004baf1aa9413e0bb45, type: 2}
+  - {fileID: 11400000, guid: e496203114fc3a64099d5e746787c04f, type: 2}
   effect_Data: {fileID: 11400000, guid: ce99f2e6911466a4f9c773e50dc2539a, type: 2}
   attack_Strategy: {fileID: 11400000, guid: 0a956ea3370cf014280c4d150991f2e9, type: 2}
   is_HoldAttack_Enabled: 0

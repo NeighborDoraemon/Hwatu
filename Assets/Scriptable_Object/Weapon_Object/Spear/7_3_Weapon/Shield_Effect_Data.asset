@@ -20,3 +20,15 @@ MonoBehaviour:
       effect_Animator: {fileID: 9100000, guid: 68301f1746791cc4baae644fadcf6720, type: 2}
       position_Offset: {x: 0.162, y: -0.317, z: 0}
       duration: 0.4
+  - motion_Name: PC_Shield_JumpAtk
+    frame_Effects:
+    - frame_Number: 1
+      effect_Sprites: {fileID: 1774535177, guid: 67c461dbf7f78fc409e828a64eb5f788, type: 3}
+      effect_Animator: {fileID: 0}
+      position_Offset: {x: -0.046, y: -0.009, z: 0}
+      duration: 0.1
+    - frame_Number: 2
+      effect_Sprites: {fileID: 997323611, guid: 67c461dbf7f78fc409e828a64eb5f788, type: 3}
+      effect_Animator: {fileID: 0}
+      position_Offset: {x: -0.046, y: -0.0144, z: 0}
+      duration: 0.1

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
   m_Name: 1_10_Weapon
   m_EditorClassIdentifier: 
-  weapon_Name: JangTae
+  weapon_Name: "\uC7A5\uD0DC"
+  comb_Name: "\uC7A5 \uC0A5"
   attack_Damage: 5
   attack_Cooldown: 1
   max_Attack_Count: 1

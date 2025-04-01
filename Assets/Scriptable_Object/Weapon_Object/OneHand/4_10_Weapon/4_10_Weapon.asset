@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
   m_Name: 4_10_Weapon
   m_EditorClassIdentifier: 
-  weapon_Name: DokkaebiBat
+  weapon_Name: "\uB3C4\uAE68\uBE44 \uBC29\uB9DD\uC774"
+  comb_Name: "\uC7A5 \uC0AC"
   attack_Damage: 4
   attack_Cooldown: 1.5
   max_Attack_Count: 2

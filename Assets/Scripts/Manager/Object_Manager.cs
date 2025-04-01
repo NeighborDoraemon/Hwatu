@@ -49,7 +49,7 @@ public class Object_Manager : MonoBehaviour
         spawnedCard.tag = "Card";
 
         current_Spawned_Card.Add(spawnedCard);
-        used_Card_Sprite.Add(selected_Sprite);
+        //used_Card_Sprite.Add(selected_Sprite);
 
         return spawnedCard;
     }
@@ -249,6 +249,8 @@ public class Object_Manager : MonoBehaviour
         {
             if (card.CompareTag("Card") && card.activeSelf)
             {
+                Sprite cardSprite = card.GetComponent<SpriteRenderer>().sprite;
+                Remove_Used_Sprite(cardSprite);
                 Destroy(card);
             }
         }

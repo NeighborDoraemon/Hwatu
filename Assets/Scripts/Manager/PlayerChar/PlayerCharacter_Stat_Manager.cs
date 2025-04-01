@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -22,7 +23,7 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     public int attackDamage = 0;                // 플레이어 추가 공격력
     public int skill_Damage = 0;                // 추가 스킬 공격력
     public float crit_Rate = 0;                 // 치명타 확률
-    public float crit_Dmg = 0;                  // 치명타 배율
+    public float crit_Dmg = 2;                  // 치명타 배율
     public int player_Life = 0;                 // 플레이어 현재 목숨
 
     [Header("능력치 증감 및 변화치")]
@@ -60,6 +61,8 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     [Header("Money")]
     public int i_Money = 0;
 
+    public TextMeshProUGUI comb_Text;
+
     public Weapon_Data cur_Weapon_Data { get; private set; }
 
     public virtual void Set_Weapon(int weaponIndex)
@@ -71,7 +74,39 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
         if (new_Weapon != null)
         {            
             cur_Weapon_Data = new_Weapon;
-            //Debug.Log("무기 변경");            
         }
+
+        comb_Text.text = new_Weapon.comb_Name;
+    }
+
+    public void Increase_Health(int value)
+    {
+        max_Health += value;
+        health += value;
+        Debug.Log($"Max Health {value} Increase! And current health {value} heal.");
+    }
+
+    public void Increase_MoveSpeed(float value)
+    {
+        movementSpeed += value;
+        Debug.Log($"Move Speed {value} Increased!");
+    }
+
+    public void Increase_AttackDamage(int value)
+    {
+        attackDamage += value;
+        Debug.Log($"Attack Damage {value} Increased!");
+    }
+
+    public void Increase_CritRate(float value)
+    {
+        crit_Rate += value;
+        Debug.Log($"Crit Rate {value} Increased!");
+    }
+
+    public void Increase_CritDamage(float value)
+    {
+        crit_Dmg += value;
+        Debug.Log($"Crit Damage {value} Increased!");
     }
 }
