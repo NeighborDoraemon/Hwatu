@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Hunting_Bird : MonoBehaviour
 {
-    private GameObject Event_Manager;
+    private GameObject Hunting_Manager;
 
     private float Spawned_Position;
     private float Max_Position;
@@ -17,11 +17,11 @@ public class Hunting_Bird : MonoBehaviour
     private Color gizmo_color = Color.red;
 
     private Rigidbody2D bird_rigid;
-    [SerializeField] private bool is_Facing_Left; //시작 방향
+    [SerializeField] public bool is_Facing_Left; //시작 방향
 
     public void Set_Manager(GameObject Object)
     {
-        Event_Manager = Object;
+        Hunting_Manager = Object;
     }
 
     public void Set_Position(Vector3 vector)
@@ -64,13 +64,11 @@ public class Hunting_Bird : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //if(true)
-        //{
-
-        //}
-
-        //Event_Manager.GetComponent<Hunting_Event>().Prf_Count--;
-        //Destroy(this.gameObject);
+        if (collision.CompareTag("Attack"))
+        {
+            Hunting_Manager.GetComponent<Hunting_Npc>().bird_Count--;
+            Destroy(this.gameObject);
+        }
     }
 
     private void OnDrawGizmos()

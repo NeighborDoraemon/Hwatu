@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 using System.Linq;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using UnityEngine.InputSystem.XR;
 
 public class Dialogue_Manager : MonoBehaviour
 {
@@ -16,11 +17,14 @@ public class Dialogue_Manager : MonoBehaviour
 
     private Queue<string> called_Name = new Queue<string>();
     private Queue<string> called_Script = new Queue<string>();
+    private bool called_is_Choice;
 
     [Header("Objects")]
     [SerializeField] private Text Name_Text;
     [SerializeField] private Text Script_Text;
     [SerializeField] private GameObject Dialogue_Canvas;
+    [SerializeField] private GameObject UI_Canvas;
+    [SerializeField] private PlayerCharacter_Controller p_Controller;
 
     [Header("Choose Object")]
     [SerializeField] private GameObject Chose_Cursor_01;
@@ -33,8 +37,7 @@ public class Dialogue_Manager : MonoBehaviour
 
     private bool is_Dialogue = false;
 
-    [Header("NPCs")]
-    [SerializeField] private GameObject Event_NPC;
+    private GameObject Event_NPC;
 
     private void Awake()
     {
@@ -70,21 +73,10 @@ public class Dialogue_Manager : MonoBehaviour
         //    Chose_Cursor_Move();
         //}
     }
-    public void Start_Dialogue(int Num)
-    {
-        Call_Dialogue(Num);
-        Dialogue_Canvas.SetActive(true);
-
-        Chose_Text_01.SetActive(false);
-        Chose_Text_02.SetActive(false);
-        Chose_Cursor_01.SetActive(false);
-        Chose_Cursor_02.SetActive(false);
-    }
-
     private void Dialogue_Pharsing()
     {
         int? Lastkey = null;
-        string path = Path.Combine(Application.streamingAssetsPath, "Hwatu" + ".csv"); // 파일 이름 넣기
+        string path = Path.Combine(Application.streamingAssetsPath, "Hwatu_Dialogue" + ".csv"); // 파일 이름 넣기
 
 
         if (!File.Exists(path))
@@ -134,6 +126,8 @@ public class Dialogue_Manager : MonoBehaviour
                     Temp_Data.Character_Name.Add(data[1]);
                     Temp_Data.Scripts.Add(data[2]);
 
+                    bool.TryParse(data[3], out Temp_Data.is_Choice);    //bool 데이터 파싱 성공시 데이터 입력. 실패시 false 입력
+
                     Dialogue_Dict.Add(Keyvalue, Temp_Data);
                 }
             }
@@ -151,30 +145,45 @@ public class Dialogue_Manager : MonoBehaviour
         {
             called_Script.Enqueue(beta);
         }
+        called_is_Choice = Dialogue_Dict[Key].is_Choice;
+
         Print_Next_Dialogue();
     }
-    private void Print_Next_Dialogue()
+
+    public void Print_Next_Dialogue()
     {
         if (called_Script.Count > 0)
         {
 
             Dialogue_Canvas.SetActive(true);
+            UI_Canvas.SetActive(false);
             Name_Text.text = called_Name.Dequeue();
             Script_Text.text = called_Script.Dequeue();
         }
         else    //대화 완료 이후 선택지 실행문 (선택지 있는지 검사 필요!!) else if로 실행하고 이거 밑으로 내려서 else로 연결
         {
-            //is_Chose_Waiting = true;
+            if (called_is_Choice)   //선택지 실행
+            {
+                Chose_Text_01.SetActive(true);
+                Chose_Text_02.SetActive(true);
+                Chose_Cursor_01.SetActive(true);
 
-            //Dialogue_Canvas.SetActive(false);
-            Chose_Text_01.SetActive(true);
-            Chose_Text_02.SetActive(true);
-            Chose_Cursor_01.SetActive(true);
+                p_Controller.State_Change(PlayerCharacter_Controller.Player_State.Dialogue_Choice);
 
-            is_Dialogue = false;
+                is_First_Chosing = true;
+                is_Dialogue = false;
+
+                is_Chose_Waiting = true;
+            }
+            else
+            {
+                Dialogue_Canvas.SetActive(false);
+                UI_Canvas.SetActive(true);
+                Event_NPC.GetComponent<Npc_Interface>().Npc_Interaction_End();
+            }
         }
     }
-    private void Chose_Cursor_Move()
+    public void Chose_Cursor_Move()
     {
         if (is_First_Chosing)
         {
@@ -190,18 +199,36 @@ public class Dialogue_Manager : MonoBehaviour
         }
     }
 
-    private void Chose_Complete()
+    public void Start_Dialogue(int Num)
+    {
+        Call_Dialogue(Num);
+        Dialogue_Canvas.SetActive(true);
+        UI_Canvas.SetActive(false);
+
+        Chose_Text_01.SetActive(false);
+        Chose_Text_02.SetActive(false);
+        Chose_Cursor_01.SetActive(false);
+        Chose_Cursor_02.SetActive(false);
+    }
+    public void Chose_Complete()
     {
         if (is_First_Chosing)
         {
             Debug.Log("First Choice Debug");
-            //Event_NPC.GetComponent<Dialogue_Choose_Manager>().Event_Start();
+            Event_NPC.GetComponent<Npc_Interface>().Event_Start();
         }
         else
         {
             Debug.Log("Second Choice Debug");
+            Event_NPC.GetComponent<Npc_Interface>().Npc_Interaction_End();
         }
         Dialogue_Canvas.SetActive(false);
+        UI_Canvas.SetActive(true);
+    }
+
+    public void Get_Npc_Data(GameObject npc)
+    {
+        Event_NPC = npc;
     }
 }
 
@@ -211,6 +238,8 @@ public class Dialogue_Data
 
     public List<string> Character_Name = new List<string>();
     public List<string> Scripts = new List<string>();
+
+    public bool is_Choice;
 }
 
 public class Item_Data

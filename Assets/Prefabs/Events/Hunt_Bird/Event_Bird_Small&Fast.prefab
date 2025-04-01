@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3353394919584741321}
   m_Layer: 0
   m_Name: Event_Bird_Small&Fast
-  m_TagString: Untagged
+  m_TagString: Event
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
