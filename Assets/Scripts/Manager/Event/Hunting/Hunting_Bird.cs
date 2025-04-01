@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Hunting_Bird : MonoBehaviour
 {
-    private GameObject Hunting_Manager;
+    private GameObject Event_Manager;
 
     private float Spawned_Position;
     private float Max_Position;
@@ -17,11 +17,11 @@ public class Hunting_Bird : MonoBehaviour
     private Color gizmo_color = Color.red;
 
     private Rigidbody2D bird_rigid;
-    [SerializeField] public bool is_Facing_Left; //시작 방향
+    [SerializeField] private bool is_Facing_Left; //시작 방향
 
     public void Set_Manager(GameObject Object)
     {
-        Hunting_Manager = Object;
+        Event_Manager = Object;
     }
 
     public void Set_Position(Vector3 vector)
@@ -42,11 +42,11 @@ public class Hunting_Bird : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ((this.transform.position.x >= Max_Position && !is_Facing_Left) || (this.transform.position.x <= Min_Position && is_Facing_Left))
-        {
-            is_Facing_Left = !is_Facing_Left;
-        }
-        Bird_Move();
+        //if(this.transform.position.x >= Max_Position || this.transform.position.x <= Min_Position)
+        //{
+        //    is_Facing_Left = !is_Facing_Left;
+        //}
+        //Bird_Move();
     }
 
     private void Bird_Move()
@@ -57,23 +57,25 @@ public class Hunting_Bird : MonoBehaviour
     private void Set_Area()
     {
         Max_Position = Spawned_Position + Move_Area;
-        //Debug.Log(Max_Position);
+        Debug.Log(Max_Position);
         Min_Position = Spawned_Position - Move_Area;
-        //Debug.Log(Min_Position);
+        Debug.Log(Min_Position);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Attack"))
-        {
-            Hunting_Manager.GetComponent<Hunting_Npc>().bird_Count--;
-            Destroy(this.gameObject);
-        }
+        //if(true)
+        //{
+
+        //}
+
+        //Event_Manager.GetComponent<Hunting_Event>().Prf_Count--;
+        //Destroy(this.gameObject);
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = gizmo_color;
-        Gizmos.DrawWireCube(this.transform.position, new Vector2(Move_Area * 2.0f, 1.0f));
+        Gizmos.DrawWireCube(this.transform.position, new Vector2(Move_Area, 1.0f));
     }
 }

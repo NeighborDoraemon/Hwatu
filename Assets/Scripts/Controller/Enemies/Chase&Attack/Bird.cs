@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MBT;
 
-public class Bird : Enemy_Parent, Enemy_Interface
+public class Bird : MonoBehaviour, Enemy_Interface
 {
     [Header("Attack Delay")]
     [SerializeField] private float f_Before_Delay = 0.3f;
@@ -14,16 +14,16 @@ public class Bird : Enemy_Parent, Enemy_Interface
 
     [Header("BB_Value")]
     [SerializeField] private BoolReference BR_Chasing;
-    //[SerializeField] private BoolReference BR_Facing_Left;
+    [SerializeField] private BoolReference BR_Facing_Left;
     [SerializeField] private BoolReference BR_At_End;
     [SerializeField] private BoolReference BR_Not_Attacking;
 
     [SerializeField] private IntReference IR_Attack_Damage;
 
-    //[SerializeField] private BoolReference BR_Stunned;
+    [SerializeField] private BoolReference BR_Stunned;
 
     [Header("Others")]
-    //[SerializeField] private GameObject Target_Player;
+    [SerializeField] private GameObject Target_Player;
     [SerializeField] private GameObject Obj_Attack_Box;
     [SerializeField] private Crash_Box enemy_CB;
 
@@ -54,7 +54,11 @@ public class Bird : Enemy_Parent, Enemy_Interface
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!BR_Stunned.Value)
+        if (BR_Stunned.Value)
+        {
+            Stunned();
+        }
+        else
         {
             if (BR_Chasing.Value || is_Attacking)
             {
@@ -88,7 +92,7 @@ public class Bird : Enemy_Parent, Enemy_Interface
         {
             Debug.Log("Attack_Called");
             BR_Not_Attacking.Value = false;
-            TurnAround();
+            //TurnAround();
 
             Attack_Time = 0.0f;
 
@@ -153,43 +157,31 @@ public class Bird : Enemy_Parent, Enemy_Interface
         }
     }
 
-    //private void TurnAround()
-    //{
-    //    Debug.Log("Turn Called");
-
-    //    Quaternion quater = this.gameObject.transform.rotation;
-
-    //    if (this.gameObject.transform.position.x <= Target_Player.transform.position.x && BR_Facing_Left.Value) // 좌측 보는중 & 플레이어가 우측
-    //    {
-    //        BR_Facing_Left.Value = false;
-    //        quater.y = 180.0f;
-
-    //        this.gameObject.transform.rotation = quater;
-    //    }
-    //    else if (this.gameObject.transform.position.x > Target_Player.transform.position.x && !BR_Facing_Left.Value)
-    //    {
-    //        BR_Facing_Left.Value = true;
-    //        //Obj_Enemy.gameObject.transform.rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
-    //        quater.y = 0.0f;
-
-    //        this.gameObject.transform.rotation = quater;
-    //    }
-    //}
-
-    public void Enemy_Stun(float Duration)
+    private void TurnAround()
     {
-        //is_Attack_Turn = false;
-        //is_Attacking = false;
-        //is_Attack_Complete = false;
+        Debug.Log("Turn Called");
 
-        //is_First_End = false;
+        Quaternion quater = this.gameObject.transform.rotation;
 
-        //BR_Not_Attacking.Value = true;
+        if (this.gameObject.transform.position.x <= Target_Player.transform.position.x && BR_Facing_Left.Value) // 좌측 보는중 & 플레이어가 우측
+        {
+            BR_Facing_Left.Value = false;
+            quater.y = 180.0f;
 
-        //Attack_Time = 0.0f;
+            this.gameObject.transform.rotation = quater;
+        }
+        else if (this.gameObject.transform.position.x > Target_Player.transform.position.x && !BR_Facing_Left.Value)
+        {
+            BR_Facing_Left.Value = true;
+            //Obj_Enemy.gameObject.transform.rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
+            quater.y = 0.0f;
 
-        //is_Attack_Once = false;
+            this.gameObject.transform.rotation = quater;
+        }
+    }
 
-        Take_Stun(Duration);
+    private void Stunned()
+    {
+
     }
 }

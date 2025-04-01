@@ -14,7 +14,6 @@ public class Enemy_Projectile : MonoBehaviour
     void Start()
     {
         projec_Rigid = this.gameObject.GetComponent<Rigidbody2D>();
-        Time_Destroy();
     }
 
     // Update is called once per frame
@@ -53,11 +52,5 @@ public class Enemy_Projectile : MonoBehaviour
 
             Destroy(gameObject);
         }
-    }
-
-    private IEnumerator Time_Destroy()
-    {
-        yield return new WaitForSeconds(10.0f);
-        Destroy(this.gameObject);
     }
 }

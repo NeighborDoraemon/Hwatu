@@ -175,6 +175,12 @@ MonoBehaviour:
     blackboard: {fileID: 2792283785755650094}
     key: i_Health
     constantValue: 0
+  BR_Stunned:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 2792283785755650094}
+    key: is_Stunned
+    constantValue: 0
   is_Boos_Object: 0
   scarecrow: {fileID: 0}
   min_Money_Drop: 15
@@ -191,19 +197,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9afc63a7090ede4792f7514f4dc40e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Target_Player: {fileID: 0}
-  BR_Facing_Left:
-    useConstant: 0
-    mode: 0
-    blackboard: {fileID: 2792283785755650094}
-    key: is_Facing_Left
-    constantValue: 0
-  BR_Stunned:
-    useConstant: 0
-    mode: 0
-    blackboard: {fileID: 2792283785755650094}
-    key: is_Stunned
-    constantValue: 0
   f_Chasing_Speed: 8
   f_Before_Delay: 1.5
   f_After_Delay: 0.5
@@ -213,6 +206,12 @@ MonoBehaviour:
     mode: 0
     blackboard: {fileID: 2792283785755650094}
     key: is_Chasing
+    constantValue: 0
+  BR_Facing_Left:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 2792283785755650094}
+    key: is_Facing_Left
     constantValue: 0
   BR_At_End:
     useConstant: 0
@@ -226,12 +225,19 @@ MonoBehaviour:
     blackboard: {fileID: 2792283785755650094}
     key: is_Not_Attacking
     constantValue: 0
+  BR_Stunned:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 2792283785755650094}
+    key: is_Stunned
+    constantValue: 0
   IR_Attack_Damage:
     useConstant: 0
     mode: 0
     blackboard: {fileID: 2792283785755650094}
     key: i_Attack_Damage
     constantValue: 0
+  Target_Player: {fileID: 0}
   Hog_Animator: {fileID: 6863468945306204544}
   Hog_Effect_Animator: {fileID: 2146850831946901140}
   enemy_CB: {fileID: 8586810206639760400}
@@ -616,7 +622,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b25af8627659c6949b60949c3aa8d91d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedEditorNode: {fileID: 8221639563359780340}
+  selectedEditorNode: {fileID: 7780137179482500586}
   repeatOnFinish: 0
   maxExecutionsPerTick: 1000
   parent: {fileID: 0}
@@ -823,8 +829,6 @@ MonoBehaviour:
     blackboard: {fileID: 2792283785755650094}
     key: f_Moving_Random
     constantValue: 0
-  Random_Min: 2
-  Random_Max: 6
   is_Facing_Left:
     useConstant: 0
     mode: 0

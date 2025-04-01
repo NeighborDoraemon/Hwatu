@@ -7,7 +7,7 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
 {
     [Header("BB")]
     [SerializeField] public IntReference IR_Health;
-    //[SerializeField] private BoolReference BR_Stunned;
+    [SerializeField] private BoolReference BR_Stunned;
 
     [Header("Bool")]
     [SerializeField] private bool is_Boos_Object = false;
@@ -61,14 +61,14 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
         }
     }
 
-    //public void Take_Stun(float duration)
-    //{
-    //    if (!is_Boos_Object)
-    //    { 
-    //        BR_Stunned.Value = true; 
-    //    }
-    //    StartCoroutine(Stun_Durable(duration));
-    //}
+    public void Take_Stun(float duration)
+    {
+        if (!is_Boos_Object)
+        { 
+            BR_Stunned.Value = true; 
+        }
+        StartCoroutine(Stun_Durable(duration));
+    }
 
 
     private void Die() 
@@ -95,13 +95,9 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
         }
     }
 
-    //IEnumerator Stun_Durable(float Duration)
-    //{
-    //    yield return new WaitForSeconds(Duration);
-    //    BR_Stunned.Value = false;
-    //}
-
-    public void Enemy_Stun(float Duration)
-    { 
+    IEnumerator Stun_Durable(float Duration)
+    {
+        yield return new WaitForSeconds(Duration);
+        BR_Stunned.Value = false;
     }
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grenadier : Enemy_Parent, Enemy_Interface
+public class Grenadier : MonoBehaviour,Enemy_Interface
 {
     [Header("Float Values")]
     
@@ -16,15 +16,15 @@ public class Grenadier : Enemy_Parent, Enemy_Interface
 
     [Header("BB_Value")]
     [SerializeField] private BoolReference BR_Chasing;
-    //[SerializeField] private BoolReference BR_Facing_Left;
+    [SerializeField] private BoolReference BR_Facing_Left;
     [SerializeField] private BoolReference BR_Not_Attacking;
 
     [SerializeField] private FloatReference FR_Attack_Range;
     [SerializeField] private IntReference IR_Attack_Damage;
-    //[SerializeField] private BoolReference BR_Stunned;
+    [SerializeField] private BoolReference BR_Stunned;
 
     [Header("Others")]
-    //[SerializeField] private GameObject Target_Player;
+    [SerializeField] private GameObject Target_Player;
 
     [Header("Grenader")]
     [SerializeField] private Transform player;       // 플레이어의 Transform
@@ -50,7 +50,11 @@ public class Grenadier : Enemy_Parent, Enemy_Interface
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!BR_Stunned.Value)
+        if (BR_Stunned.Value)
+        {
+            Stunned();
+        }
+        else
         {
             if (is_Attacking || BR_Chasing.Value)
             {
@@ -126,28 +130,28 @@ public class Grenadier : Enemy_Parent, Enemy_Interface
         grenadeInstance.velocity = initialVelocity;          // 속도 부여
     }
 
-    //private void TurnAround()
-    //{
-    //    Quaternion quater = this.gameObject.transform.rotation;
+    private void TurnAround()
+    {
+        Quaternion quater = this.gameObject.transform.rotation;
 
-    //    if (this.gameObject.transform.position.x <= Target_Player.transform.position.x && BR_Facing_Left.Value) // 좌측 보는중 & 플레이어가 우측
-    //    {
-    //        BR_Facing_Left.Value = false;
-    //        quater.y = 180.0f;
+        if (this.gameObject.transform.position.x <= Target_Player.transform.position.x && BR_Facing_Left.Value) // 좌측 보는중 & 플레이어가 우측
+        {
+            BR_Facing_Left.Value = false;
+            quater.y = 180.0f;
 
-    //        this.gameObject.transform.rotation = quater;
-    //    }
-    //    else if (this.gameObject.transform.position.x > Target_Player.transform.position.x && !BR_Facing_Left.Value)
-    //    {
-    //        BR_Facing_Left.Value = true;
-    //        //Obj_Enemy.gameObject.transform.rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
-    //        quater.y = 0.0f;
+            this.gameObject.transform.rotation = quater;
+        }
+        else if (this.gameObject.transform.position.x > Target_Player.transform.position.x && !BR_Facing_Left.Value)
+        {
+            BR_Facing_Left.Value = true;
+            //Obj_Enemy.gameObject.transform.rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
+            quater.y = 0.0f;
 
-    //        this.gameObject.transform.rotation = quater;
-    //    }
-    //}
+            this.gameObject.transform.rotation = quater;
+        }
+    }
 
-    public void Enemy_Stun(float Duration)
+    private void Stunned()
     {
 
     }
