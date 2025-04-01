@@ -106,11 +106,19 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     public enum Player_State
     {
         Normal,
-        Mini_Hunt,
-        Dialogue
+        Dialogue,
+        Dialogue_Choice,
+        Event_Doing
     }
 
-    private Player_State Current_State;
+    public enum Event_State
+    {
+        None,
+        Bird_Hunting
+    }
+
+    private Player_State Current_Player_State;
+    private Event_State Current_Event_State;
     //---------------------------------------------------
     
     private void Awake()
@@ -124,7 +132,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         Set_Weapon(0);
 
-        Current_State = Player_State.Normal; // 플레이어 현재상태 초기화 KYH
+        Current_Player_State = Player_State.Normal; // 플레이어 현재상태 초기화 KYH
+        Current_Event_State = Event_State.None; //이벤트 상태 초기화
     }
     private void OnEnable()
     {
@@ -170,7 +179,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             }
             else
             {
-                if (Current_State == Player_State.Normal) // For Minigame & Dialogue (KYH)
+                if (Current_Player_State == Player_State.Normal) // For Minigame & Dialogue (KYH)
                 {
                     Move();
                 }
@@ -282,27 +291,30 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public void Input_Jump(InputAction.CallbackContext ctx)
     {
-        if (is_UI_Open)
+        if (Current_Player_State == Player_State.Normal)    //상태조건
         {
-            return;
-        }
-
-        if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
-        {
-            if (is_Down_Performed)
+            if (is_UI_Open)
             {
-                if (current_Platform != null)
-                {
-                    StartCoroutine(DisableCollision());
-                }
+                return;
             }
-            else
-            {                
-                if (jumpCount < maxJumpCount)
+
+            if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
+            {
+                if (is_Down_Performed)
                 {
-                    rb.velocity = new Vector2(rb.velocity.x, 0);
-                    rb.AddForce(new Vector2(0, jumpPower), ForceMode2D.Impulse);
-                    jumpCount++;
+                    if (current_Platform != null)
+                    {
+                        StartCoroutine(DisableCollision());
+                    }
+                }
+                else
+                {
+                    if (jumpCount < maxJumpCount)
+                    {
+                        rb.velocity = new Vector2(rb.velocity.x, 0);
+                        rb.AddForce(new Vector2(0, jumpPower), ForceMode2D.Impulse);
+                        jumpCount++;
+                    }
                 }
             }
         }
@@ -310,47 +322,50 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     
     public void Input_Teleportation(InputAction.CallbackContext ctx)
     {
-        if (is_UI_Open || is_Player_Dead) return;
-
-        if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && canTeleporting)
+        if (Current_Player_State == Player_State.Normal)    //상태조건
         {
-            float adjusted_Distance = teleporting_Distance;
+            if (is_UI_Open || is_Player_Dead) return;
 
-            Vector2 top_Pos = new Vector2(transform.position.x, transform.position.y + GetComponent<Collider2D>().bounds.extents.y);
-            Vector2 bottom_Pos = new Vector2(transform.position.x, transform.position.y - GetComponent<Collider2D>().bounds.extents.y);
-
-            Vector2 direction = is_Facing_Right ? Vector2.right : Vector2.left;
-
-            RaycastHit2D topHit = Physics2D.Raycast(top_Pos, direction, teleporting_Distance, LayerMask.GetMask("Walls"));
-            RaycastHit2D bottomHit = Physics2D.Raycast(bottom_Pos, direction, teleporting_Distance, LayerMask.GetMask("Walls"));
-
-            if (topHit.collider != null)
+            if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && canTeleporting)
             {
-                adjusted_Distance = Mathf.Min(adjusted_Distance, topHit.distance);
-            }
-            if (bottomHit.collider != null)
-            {
-                adjusted_Distance = Mathf.Min(adjusted_Distance, bottomHit.distance);
-            }
+                float adjusted_Distance = teleporting_Distance;
 
-            if (!is_Facing_Right)
-            {
-                transform.Translate(Vector2.left * adjusted_Distance);
-            }
-            else
-            {
-                transform.Translate(Vector2.right * adjusted_Distance);
-            }
+                Vector2 top_Pos = new Vector2(transform.position.x, transform.position.y + GetComponent<Collider2D>().bounds.extents.y);
+                Vector2 bottom_Pos = new Vector2(transform.position.x, transform.position.y - GetComponent<Collider2D>().bounds.extents.y);
 
-            animator.SetTrigger("Teleport");
-            cur_Teleport_Count--;
+                Vector2 direction = is_Facing_Right ? Vector2.right : Vector2.left;
 
-            if (cur_Teleport_Count <= 0)
-            {
-                canTeleporting = false;
+                RaycastHit2D topHit = Physics2D.Raycast(top_Pos, direction, teleporting_Distance, LayerMask.GetMask("Walls"));
+                RaycastHit2D bottomHit = Physics2D.Raycast(bottom_Pos, direction, teleporting_Distance, LayerMask.GetMask("Walls"));
+
+                if (topHit.collider != null)
+                {
+                    adjusted_Distance = Mathf.Min(adjusted_Distance, topHit.distance);
+                }
+                if (bottomHit.collider != null)
+                {
+                    adjusted_Distance = Mathf.Min(adjusted_Distance, bottomHit.distance);
+                }
+
+                if (!is_Facing_Right)
+                {
+                    transform.Translate(Vector2.left * adjusted_Distance);
+                }
+                else
+                {
+                    transform.Translate(Vector2.right * adjusted_Distance);
+                }
+
+                animator.SetTrigger("Teleport");
+                cur_Teleport_Count--;
+
+                if (cur_Teleport_Count <= 0)
+                {
+                    canTeleporting = false;
+                }
+
+                On_Teleport?.Invoke(this);
             }
-
-            On_Teleport?.Invoke(this);
         }
     }
 
@@ -391,30 +406,48 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     // InterAction ==========================================================================================
     public void Input_Interaction(InputAction.CallbackContext ctx)
     {
-        if (ctx.phase != InputActionPhase.Started || Time.timeScale != 1.0f || is_Player_Dead)
-            return;
-
-        if (isInventory_Visible && is_Item_Change && pending_SwapItem != null)
+        if (Current_Player_State == Player_State.Normal)
         {
-            SwapItem(pending_SwapItem);
-            pending_SwapItem = null;
-            is_Item_Change = false;
-            HideInventory();
-            return;
-        }
+            if (ctx.phase != InputActionPhase.Started || Time.timeScale != 1.0f || is_Player_Dead)
+                return;
 
-        if (is_StatUI_Visible)
+            if (isInventory_Visible && is_Item_Change && pending_SwapItem != null)
+            {
+                SwapItem(pending_SwapItem);
+                pending_SwapItem = null;
+                is_Item_Change = false;
+                HideInventory();
+                return;
+            }
+
+            if (is_StatUI_Visible)
+            {
+                Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.Confirm_Selection();
+                return;
+            }
+
+            if (is_UI_Open) return;
+
+            map_Manager.Use_Portal();
+            Handle_Npc_Interaction();
+            Handle_Item_Interaction();
+        }
+        else if (Current_Player_State == Player_State.Dialogue)
         {
-            Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.Confirm_Selection();
-            return;
+            if (ctx.phase == InputActionPhase.Started)
+            {
+                Dialogue_Manager.instance.Print_Next_Dialogue();
+            }
         }
-
-        if (is_UI_Open) return;
-
-        map_Manager.Use_Portal();
-        Handle_Npc_Interaction();
-        Handle_Item_Interaction();
+        else if (Current_Player_State == Player_State.Dialogue_Choice)
+        {
+            if (ctx.phase == InputActionPhase.Started)
+            {
+                Dialogue_Manager.instance.Chose_Complete();
+            }
+        }
     }
+
     private void Handle_Npc_Interaction()
     {
         if (!is_Npc_Contack || Now_Contact_Npc == null)
@@ -425,9 +458,17 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             case "Stat_Npc":
                 Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.UI_Start();
                 break;
+
             case "Start_Card_Npc":
                 Now_Contact_Npc.GetComponent<Start_Card_Npc>()?.Request_Spawn_Cards();
                 break;
+
+            default:
+                {
+                    Now_Contact_Npc.GetComponent<Npc_Interface>().Npc_Interaction_Start();
+                    Dialogue_Manager.instance.Get_Npc_Data(Now_Contact_Npc);
+                    break;
+                }
         }        
     }
     private void Handle_Item_Interaction()
@@ -759,65 +800,68 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     // Attack And Skill =====================================================================================
     public void Input_Perform_Attack(InputAction.CallbackContext ctx)
     {
-        if (is_UI_Open)
+        if (Current_Player_State == Player_State.Normal)    //평소에만 공격 가능하도록 설정
         {
-            return;
-        }
-
-        if (Time.timeScale != 1.0f || is_Player_Dead)
-        {
-            return;
-        }
-
-        if (attack_Strategy == null)
-        {
-            Debug.LogError("Attack Strategy Data is Missing");
-            return;
-        }
-
-        if (cur_Weapon_Data.is_HoldAttack_Enabled)
-        {
-            switch (ctx.phase)
+            if (is_UI_Open)
             {
-                case InputActionPhase.Started:
-                    if (!is_AtkCoroutine_Running)
-                    {
-                        isAttacking = true;
-                        animator.SetBool("isHoldAtk", true);
-                        StartCoroutine(Continuous_Attack());
-                    }                    
-                    break;
-                case InputActionPhase.Canceled:
-                    if (attack_Strategy is Bow_Attack_Strategy bowAttack)
-                    {
-                        bowAttack.Release_Attack(this);
-                    }
-                    isAttacking = false;
-                    animator.SetBool("isHoldAtk", false);
-                    break;
+                return;
             }
-        }
-        else
-        {
-            if (ctx.phase == InputActionPhase.Performed)
-            {
-                if (Is_Last_Attack())
-                {
-                    End_Attack();
-                    return;
-                }
 
-                if (Is_Cooldown_Complete())
+            if (Time.timeScale != 1.0f || is_Player_Dead)
+            {
+                return;
+            }
+
+            if (attack_Strategy == null)
+            {
+                Debug.LogError("Attack Strategy Data is Missing");
+                return;
+            }
+
+            if (cur_Weapon_Data.is_HoldAttack_Enabled)
+            {
+                switch (ctx.phase)
                 {
-                    Perform_Attack();
+                    case InputActionPhase.Started:
+                        if (!is_AtkCoroutine_Running)
+                        {
+                            isAttacking = true;
+                            animator.SetBool("isHoldAtk", true);
+                            StartCoroutine(Continuous_Attack());
+                        }
+                        break;
+                    case InputActionPhase.Canceled:
+                        if (attack_Strategy is Bow_Attack_Strategy bowAttack)
+                        {
+                            bowAttack.Release_Attack(this);
+                        }
+                        isAttacking = false;
+                        animator.SetBool("isHoldAtk", false);
+                        break;
                 }
-                else if (Can_Combo_Attack())
+            }
+            else
+            {
+                if (ctx.phase == InputActionPhase.Performed)
                 {
-                    Perform_Attack();
-                }
-                else if (Is_Combo_Complete())
-                {
-                    End_Attack();
+                    if (Is_Last_Attack())
+                    {
+                        End_Attack();
+                        return;
+                    }
+
+                    if (Is_Cooldown_Complete())
+                    {
+                        Perform_Attack();
+                    }
+                    else if (Can_Combo_Attack())
+                    {
+                        Perform_Attack();
+                    }
+                    else if (Is_Combo_Complete())
+                    {
+                        End_Attack();
+                    }
                 }
             }
         }
@@ -945,17 +989,28 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public void Input_Skill_Attack(InputAction.CallbackContext ctx)
     {
-        if (is_UI_Open) return;
-
-        if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f
-            && !is_Player_Dead && Is_Skill_Cooldown_Complete())
+        if (Current_Player_State == Player_State.Normal)    //상태조건
         {
-            //Debug.Log("Skill Input Detected");
-            animator.SetTrigger("Skill");
-            attack_Strategy.Skill(this, cur_Weapon_Data);
-            Update_Skill_Timer();
+            if (is_UI_Open) return;
+
+            if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f
+                && !is_Player_Dead && Is_Skill_Cooldown_Complete())
+            {
+                animator.SetTrigger("Skill");
+                attack_Strategy.Skill(this, cur_Weapon_Data);
+                Update_Skill_Timer();
+            }
         }
     }
+
+    public void Input_UpDown(InputAction.CallbackContext ctx)
+    {
+        if(ctx.phase == InputActionPhase.Started && Current_Player_State == Player_State.Dialogue_Choice)
+        {
+            Dialogue_Manager.instance.Chose_Cursor_Move();
+        }
+    }
+
     private bool Is_Skill_Cooldown_Complete()
     {
         return Time.time >= last_Skill_Time + skill_Cooldown;
@@ -1311,7 +1366,12 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public void State_Change(Player_State state)
     {
-        Current_State = state;
+        Current_Player_State = state;
+    }
+
+    public void Event_State_Change(Event_State state)
+    {
+        Current_Event_State = state;
     }
 }
 

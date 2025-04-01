@@ -6,6 +6,11 @@ public class Arrow_Trap_Projectile : MonoBehaviour
 {
     public int Arrow_Damage = 5;
 
+    private void Start()
+    {
+        Time_Destroy();
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Player"))
@@ -34,5 +39,11 @@ public class Arrow_Trap_Projectile : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+    }
+
+    private IEnumerator Time_Destroy()
+    {
+        yield return new WaitForSeconds(10.0f);
+        Destroy(this.gameObject);
     }
 }

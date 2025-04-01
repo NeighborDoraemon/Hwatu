@@ -134,6 +134,15 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UpDown"",
+                    ""type"": ""Value"",
+                    ""id"": ""e811147c-3dd4-4e18-916f-d975d0274ca4"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -290,6 +299,39 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Change_SecondCard"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""UpDown"",
+                    ""id"": ""fc2d16c6-5ee0-45fc-9213-4f7af52ab8a3"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UpDown"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""64e6857a-e06c-45c8-839e-6462001a13af"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UpDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""976f0fbd-2bf7-4d74-b7ef-415f79511291"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UpDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -316,6 +358,7 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
         m_Player_Change_FirstCard = m_Player.FindAction("Change_FirstCard", throwIfNotFound: true);
         m_Player_Change_SecondCard = m_Player.FindAction("Change_SecondCard", throwIfNotFound: true);
+        m_Player_UpDown = m_Player.FindAction("UpDown", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
     }
@@ -391,6 +434,7 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Inventory;
     private readonly InputAction m_Player_Change_FirstCard;
     private readonly InputAction m_Player_Change_SecondCard;
+    private readonly InputAction m_Player_UpDown;
     public struct PlayerActions
     {
         private @Player_InputActions m_Wrapper;
@@ -407,6 +451,7 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
         public InputAction @Change_FirstCard => m_Wrapper.m_Player_Change_FirstCard;
         public InputAction @Change_SecondCard => m_Wrapper.m_Player_Change_SecondCard;
+        public InputAction @UpDown => m_Wrapper.m_Player_UpDown;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -452,6 +497,9 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
             @Change_SecondCard.started += instance.OnChange_SecondCard;
             @Change_SecondCard.performed += instance.OnChange_SecondCard;
             @Change_SecondCard.canceled += instance.OnChange_SecondCard;
+            @UpDown.started += instance.OnUpDown;
+            @UpDown.performed += instance.OnUpDown;
+            @UpDown.canceled += instance.OnUpDown;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -492,6 +540,9 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
             @Change_SecondCard.started -= instance.OnChange_SecondCard;
             @Change_SecondCard.performed -= instance.OnChange_SecondCard;
             @Change_SecondCard.canceled -= instance.OnChange_SecondCard;
+            @UpDown.started -= instance.OnUpDown;
+            @UpDown.performed -= instance.OnUpDown;
+            @UpDown.canceled -= instance.OnUpDown;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -561,6 +612,7 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         void OnInventory(InputAction.CallbackContext context);
         void OnChange_FirstCard(InputAction.CallbackContext context);
         void OnChange_SecondCard(InputAction.CallbackContext context);
+        void OnUpDown(InputAction.CallbackContext context);
     }
     public interface IMenuActions
     {

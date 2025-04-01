@@ -33,6 +33,15 @@ public class Chase_Box : MonoBehaviour
             //Debug.Log("플레이어 감지");
         }
     }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            BR_Chasing.Value = true;
+        }
+    }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
