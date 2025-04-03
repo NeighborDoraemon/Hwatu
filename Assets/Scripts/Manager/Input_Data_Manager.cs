@@ -17,7 +17,9 @@ public enum Key_Enum
     Interaction = 6,
     Up = 7,
     Down = 8,
-    KeyCount = 9 
+    Change_First = 9,
+    Change_Second = 10,
+    KeyCount = 11
 }
 
 
@@ -114,6 +116,8 @@ public class Input_Data_Manager : MonoBehaviour
             int bindingIndex = Player_Input_List[i_key_count].action.GetBindingIndexForControl(Player_Input_List[i_key_count].action.controls[i_key_count]);
             player_Input.SwitchCurrentActionMap("Menu");
 
+            //Player_Input_List[i_key_count].action.Disable();
+
             rebindingOperation = Player_Input_List[i_key_count].action.PerformInteractiveRebinding(bindingIndex)
                   .WithControlsExcluding("Mouse")
                   .OnMatchWaitForAnother(0.1f)
@@ -125,6 +129,8 @@ public class Input_Data_Manager : MonoBehaviour
             int bindingIndex = Player_Input_List[i_key_count].action.GetBindingIndexForControl(Player_Input_List[i_key_count].action.controls[i_key_count - 7]);
             player_Input.SwitchCurrentActionMap("Menu");
 
+            //Player_Input_List[i_key_count].action.Disable();
+
             rebindingOperation = Player_Input_List[i_key_count].action.PerformInteractiveRebinding(bindingIndex)
                   .WithControlsExcluding("Mouse")
                   .OnMatchWaitForAnother(0.1f)
@@ -134,6 +140,8 @@ public class Input_Data_Manager : MonoBehaviour
         else
         {
             player_Input.SwitchCurrentActionMap("Menu");
+
+            //Player_Input_List[i_key_count].action.Disable();
 
             rebindingOperation = Player_Input_List[i_key_count].action.PerformInteractiveRebinding()
                   .WithControlsExcluding("Mouse")
@@ -145,6 +153,8 @@ public class Input_Data_Manager : MonoBehaviour
 
     private void RebinComplete(int alpha)
     {
+        //Player_Input_List[alpha].action.ApplyBindingOverride("");
+
         for (int i = 0; i < (int)Key_Enum.KeyCount; i++)
         {
             if (i == 0 || i == 1)
@@ -169,7 +179,7 @@ public class Input_Data_Manager : MonoBehaviour
                     Player_Input_List[i].action.bindings[0].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
             }
         }
-
+        //Player_Input_List[alpha].action.Enable();
         rebindingOperation.Dispose();
 
         player_Input.SwitchCurrentActionMap("Player");

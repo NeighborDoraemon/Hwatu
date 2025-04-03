@@ -179,10 +179,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             }
             else
             {
-                if (Current_Player_State == Player_State.Normal) // For Minigame & Dialogue (KYH)
-                {
-                    Move();
-                }
+                Move();
             }
 
             if (!isCombDone)
@@ -221,44 +218,51 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     // Move ===========================================================================================
     public void Input_Move(InputAction.CallbackContext ctx)
     {
-        if (is_UI_Open)
+        if (Current_Player_State == Player_State.Normal)    //State Check
         {
-            if (ctx.phase == InputActionPhase.Performed)
+            if (is_UI_Open)
             {
-                Vector2 input = ctx.ReadValue<Vector2>();
-                if (isInventory_Visible)
+                if (ctx.phase == InputActionPhase.Performed)
                 {
-                    if (Mathf.Abs(input.x) > 0.1f)
+                    Vector2 input = ctx.ReadValue<Vector2>();
+                    if (isInventory_Visible)
                     {
-                        Navigate_Inventory((int)input.x);
+                        if (Mathf.Abs(input.x) > 0.1f)
+                        {
+                            Navigate_Inventory((int)input.x);
+                        }
+                    }
+                    else if (is_StatUI_Visible)
+                    {
+                        Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.Navigate_Stats(input);
+                        return;
                     }
                 }
-                else if (is_StatUI_Visible)
+                return;
+            }
+
+            if (ctx.phase == InputActionPhase.Canceled)
+            {
+                movement = Vector2.zero;
+            }
+            else if (ctx.phase == InputActionPhase.Started)
+            {
+                movement = ctx.action.ReadValue<Vector2>();
+
+                if (is_Minigame)
                 {
-                    Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.Navigate_Stats(input);
-                    return;
+                    current_gauge += increase_rate;
+                    Debug.Log("게이지 증가" + current_gauge);
                 }
             }
-            return;
-        }
-
-        if(ctx.phase == InputActionPhase.Canceled)
-        {
-            movement = Vector2.zero;
-        }
-        else if(ctx.phase == InputActionPhase.Started)
-        {
-            movement = ctx.action.ReadValue<Vector2>();
-
-            if(is_Minigame)
+            else
             {
-                current_gauge += increase_rate;
-                Debug.Log("게이지 증가" + current_gauge);
+                movement = ctx.action.ReadValue<Vector2>();
             }
         }
-        else
+        else if(Current_Player_State == Player_State.Event_Doing)
         {
-            movement = ctx.action.ReadValue<Vector2>();
+            Now_Contact_Npc.GetComponent<Npc_Interface>().Event_Move(ctx);
         }
     }
 
@@ -864,6 +868,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                     }
                 }
             }
+        }
+        else if(Current_Player_State == Player_State.Event_Doing)
+        {
+            Now_Contact_Npc.GetComponent<Npc_Interface>().Event_Attack(ctx);
         }
     }
 

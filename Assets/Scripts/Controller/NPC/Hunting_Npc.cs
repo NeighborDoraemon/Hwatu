@@ -161,7 +161,7 @@ public class Hunting_Npc : MonoBehaviour, Npc_Interface
 
     //}
 
-    public void Hunting_Moving(InputAction.CallbackContext ctx)
+    public void Event_Move(InputAction.CallbackContext ctx)
     {
         if (is_Event_Acting)
         {
@@ -174,7 +174,7 @@ public class Hunting_Npc : MonoBehaviour, Npc_Interface
         }
     }
 
-    public void Hunting_Attacking(InputAction.CallbackContext ctx)
+    public void Event_Attack(InputAction.CallbackContext ctx)
     {
         if (is_Event_Acting && ctx.phase == InputActionPhase.Started)
         {
