@@ -41,7 +41,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     
     [Header("Cinemachine")]
     private Camera_Manager camera_Manager;
-    private Collider2D cur_Boundary_Collider;
     private Collider2D cur_Cinemachine_Collider;
 
     [Header("Weapon_Data")]
@@ -57,6 +56,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public event Action On_Player_Damaged;
     public event Action On_Enemy_Hit;
+    public event Action On_Enemy_Killed;
     public event Action<PlayerCharacter_Controller> On_Teleport;
     public bool isInvincible = false;
 
@@ -161,8 +161,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             Debug.LogError("Inventory Panel is Missing!");
         }
-
-        
     }
     // Update is called once per frame
     void Update()
@@ -627,11 +625,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         
         if (cur_Weapon_Data.weapon_Prefab != null)
         {
-            weapon_Prefab = cur_Weapon_Data.weapon_Prefab;
-
             GameObject new_Weapon = Instantiate(cur_Weapon_Data.weapon_Prefab, weapon_Anchor);
             new_Weapon.transform.localPosition = Vector3.zero;
             new_Weapon.transform.localRotation = Quaternion.identity;
+
+            weapon_Prefab = new_Weapon;
 
             weapon_Handler = new_Weapon.GetComponent<Weapon_Collision_Handler>();
 
@@ -967,6 +965,12 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         On_Enemy_Hit?.Invoke();
     }
 
+    public void Enemy_Killed()
+    {
+        On_Enemy_Killed?.Invoke();
+        Debug.Log("Enemy Killed Event has call");
+    }
+
     public void On_Shoot_Projectile()
     {
         if (attack_Strategy != null)
@@ -1185,11 +1189,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             use_Portal = true;
         }
 
-        if (other.CompareTag("Boundary"))
-        {
-            cur_Boundary_Collider = other;            
-        }
-        
         if (other.CompareTag("CM_Boundary"))
         {
             cur_Cinemachine_Collider = other;

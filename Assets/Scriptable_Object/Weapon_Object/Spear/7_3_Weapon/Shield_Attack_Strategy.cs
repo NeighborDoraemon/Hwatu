@@ -43,10 +43,23 @@ public class Shield_Attack_Strategy : ScriptableObject, IAttack_Strategy
         }
         else if (!player.isGrounded)
         {
-            player.animator.SetTrigger("Attack");
-            player.isAttacking = true;
+            player.StartCoroutine(Jump_Attack(player));
             player.StartCoroutine(Shield_Layer_Change());
         }
+    }
+
+    private IEnumerator Jump_Attack(PlayerCharacter_Controller player)
+    {
+        while (!player.isGrounded)
+        {
+            player.is_Knock_Back = true;
+
+            player.animator.SetTrigger("Attack");
+            player.rb.velocity = new Vector2(player.rb.velocity.x, -2f);
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        player.is_Knock_Back = false;
     }
 
     private IEnumerator Shield_Layer_Change()

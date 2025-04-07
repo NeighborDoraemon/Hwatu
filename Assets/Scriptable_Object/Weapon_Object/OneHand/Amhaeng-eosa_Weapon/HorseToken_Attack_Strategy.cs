@@ -15,8 +15,6 @@ public class HorseToken_Attack_Strategy : ScriptableObject, IAttack_Strategy
     public int max_Stack = 5;
     private int cur_Stack = 1;
 
-    private bool has_Increased_Stack = false;
-
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         if (player == null || weapon_Data == null)

@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class Item_Slot : MonoBehaviour
 {
     [SerializeField] private Image itemIcon;
-    [SerializeField] private Text item_Name_Text;
     [SerializeField] private GameObject selection_Border;
     private Item stored_Item;
 
@@ -18,12 +17,10 @@ public class Item_Slot : MonoBehaviour
         {
             itemIcon.sprite = stored_Item.item_Icon;
             itemIcon.enabled = true;
-            item_Name_Text.text = stored_Item.itemName;
         }
         else
         {
             itemIcon.enabled = false;
-            item_Name_Text.text = "";
         }
 
         Set_Selected(false);

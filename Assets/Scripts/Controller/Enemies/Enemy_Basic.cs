@@ -82,8 +82,9 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
         }
 
         int DropMoney = Random.Range(min_Money_Drop, Max_Money_Drop);
-
         player_Con.Add_Player_Money(DropMoney);
+
+        player_Con.Enemy_Killed();
 
         if (this.transform.parent != null)
         {

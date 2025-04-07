@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [CreateAssetMenu(fileName = "DoubleHandsSword_Attack", menuName = "Weapon/Attack Strategy/DoubleHandsSword")]
 public class DoubleHandsSword_Attack_Strategy : ScriptableObject, IAttack_Strategy
@@ -69,12 +70,19 @@ public class DoubleHandsSword_Attack_Strategy : ScriptableObject, IAttack_Strate
 
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
-        Vector3 spawn_Pos = new Vector3(player.transform.position.x, player.transform.position.y - 0.5f, player.transform.position.z);
-
         player.animator.SetTrigger("Skill");
+        player.StartCoroutine(Skill_Coroutine(player));
+    }
+
+    private IEnumerator Skill_Coroutine(PlayerCharacter_Controller player)
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        Vector3 spawn_Pos = new Vector3(player.transform.position.x, player.transform.position.y - 0.5f, player.transform.position.z);
         GameObject skill_Projectile = Instantiate(skill_Projectile_Prefab, spawn_Pos, player.transform.rotation);
         Rigidbody2D rb = skill_Projectile.GetComponent<Rigidbody2D>();
         Vector2 shoot_Direction = (player.is_Facing_Right) ? Vector2.right : Vector2.left;
+        
         Vector3 projectile_Scale = skill_Projectile.transform.localScale;
         projectile_Scale.x = (player.is_Facing_Right) ? Mathf.Abs(projectile_Scale.x) : -Mathf.Abs(projectile_Scale.x);
         skill_Projectile.transform.localScale = projectile_Scale;

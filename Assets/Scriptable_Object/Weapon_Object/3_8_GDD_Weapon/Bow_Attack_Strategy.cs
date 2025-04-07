@@ -11,13 +11,21 @@ public class Bow_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public float projectile_Speed = 10.0f;
     public float charge_Projectile_Speed = 20.0f;
-    public float charge_Time_Threshold = 1.5f;
+    public float charge_Time_Threshold = 4.0f;
+
+    public int min_Damage = 5;
+    public int max_Damage = 20;
 
     public GameObject normal_Arrow_Prefab;
     public GameObject charged_Arrow_Prefab;
     public GameObject skillTarget_Effect_Prefab;
     public GameObject skill_Effect_Prefab;
-   
+
+    public GameObject bow_Charging_Effect_Prefab;
+    public float charging_Effect_Duration = 1.0f;
+
+    private GameObject cur_Charging_Effect;
+
     private bool is_Charging = false;
     public float charge_Start_Time = 0.0f;
 
@@ -48,6 +56,22 @@ public class Bow_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
         is_Charging = true;
         charge_Start_Time = Time.time;
+        player.StartCoroutine(Check_Charge_Effect());
+    }
+
+    private IEnumerator Check_Charge_Effect()
+    {
+        while (is_Charging && (Time.time - charge_Start_Time) < charge_Time_Threshold)
+        {
+            yield return null;
+        }
+
+        if (is_Charging && bow_Charging_Effect_Prefab != null && cur_Charging_Effect == null)
+        {
+            Vector3 spawn_Pos = player.weapon_Anchor.position + Vector3.up * 0.5f;
+            cur_Charging_Effect = Instantiate(bow_Charging_Effect_Prefab, spawn_Pos, Quaternion.identity, player.weapon_Anchor);
+            Destroy(cur_Charging_Effect, charging_Effect_Duration);
+        }
     }
 
     public void Release_Attack(PlayerCharacter_Controller player)
@@ -57,7 +81,6 @@ public class Bow_Attack_Strategy : ScriptableObject, IAttack_Strategy
             is_Charging = false;
 
             float charge_Time = Time.time - charge_Start_Time;
-
             bool is_Charged_Shot = charge_Time >= charge_Time_Threshold;
             GameObject arrow_Prefab = is_Charged_Shot ? charged_Arrow_Prefab : normal_Arrow_Prefab;
 
@@ -97,7 +120,8 @@ public class Bow_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     private int Get_Charge_Damage(float charge_Time)
     {
-        return charge_Time >= charge_Time_Threshold ? 20 : 10;
+        int calculated_Damage = min_Damage + ((int)charge_Time * 3);
+        return Mathf.Clamp(calculated_Damage, min_Damage, max_Damage);
     }
 
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)

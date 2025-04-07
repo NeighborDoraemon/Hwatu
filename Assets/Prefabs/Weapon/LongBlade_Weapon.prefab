@@ -133,8 +133,10 @@ PolygonCollider2D:
     - - {x: -0.20517232, y: 0.05318951}
       - {x: -0.19267254, y: 0.02094799}
       - {x: -0.1564654, y: 0.008189056}
+      - {x: -0.1383171, y: 0.00035253726}
       - {x: -0.1041357, y: -0.00017320737}
-      - {x: -0.09697742, y: 0.008016288}
+      - {x: 0.10171357, y: -0.036411516}
+      - {x: 0.099903464, y: -0.012333324}
       - {x: -0.09611538, y: 0.028533712}
       - {x: -0.1447386, y: 0.037672542}
   m_UseDelaunayMesh: 0
@@ -150,5 +152,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bde04193bb143aa4da28c4d6b6deaf66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack_Damage: 0
+  base_Weapon_Damage: 0
   weapon_Collider: {fileID: 1786481839326233987}

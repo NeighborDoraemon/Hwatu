@@ -13,3 +13,10 @@ MonoBehaviour:
   m_Name: ExecutionSword_Attack_Strategy
   m_EditorClassIdentifier: 
   move_Distance: 0.4
+  move_Delay: 0.1
+  zeroStack_Weapon_Sprite: {fileID: 21300000, guid: 44000be3dd6d44642a1fe3a7342b740d, type: 3}
+  halfStack_Weapon_Sprite: {fileID: 21300000, guid: a4e2f7958a3fbfe47acc6a75a4abe447, type: 3}
+  fullStack_Weapon_Sprite: {fileID: 21300000, guid: 531256898b9670142ac279ded1ceaf68, type: 3}
+  zeroStack_Effect_Data: {fileID: 11400000, guid: ed3e10da9ae984b42ab2106e0cf62a00, type: 2}
+  halfStack_Effect_Data: {fileID: 11400000, guid: 8558636002a3ef04689fafb4d695085a, type: 2}
+  fullStack_Effect_Data: {fileID: 11400000, guid: 527618648564e59489c2cd6d33480b15, type: 2}
