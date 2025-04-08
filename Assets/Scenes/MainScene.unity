@@ -46632,11 +46632,11 @@ MonoBehaviour:
   Rotation_Speed: 100
   Event_Time: 60
   Max_Bullet: 15
-  Interaction_start: 1001
+  Interaction_start: 1201
   Choice_Yes: 0
   Choice_No: 0
-  Event_Complete: 1002
-  After_Event: 1002
+  Event_Complete: 1202
+  After_Event: 1203
   Bird_Prefabs:
   - {fileID: 6868822880612232635, guid: 679d9c69277e3db489be5801f7817ec2, type: 3}
   - {fileID: 5117443526655701492, guid: 1ec4b47c4705c5d479b3db4f3a0b5512, type: 3}
@@ -48440,6 +48440,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 386249085}
   - {fileID: 432110543}
   - {fileID: 721779989}
   - {fileID: 1103233407}
@@ -48449,7 +48450,6 @@ Transform:
   - {fileID: 2061893191}
   - {fileID: 815513716}
   - {fileID: 832256056}
-  - {fileID: 386249085}
   - {fileID: 1753652051}
   - {fileID: 1976052531}
   - {fileID: 2039427986}
@@ -59898,7 +59898,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 78038fd00b6f742469fefd6e72e70581, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

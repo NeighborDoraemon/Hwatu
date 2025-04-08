@@ -114,7 +114,7 @@ public class Grenadier : Enemy_Parent, Enemy_Interface
     private void Throw_Attack()
     {
         Vector2 startPosition = transform.position;          // 척탄병 위치
-        Vector2 targetPosition = player.position;            // 플레이어 위치
+        Vector2 targetPosition = Target_Player.transform.position;            // 플레이어 위치
         Vector2 displacement = targetPosition - startPosition; // 거리 계산
 
         float t = flightTime;                                // 비행 시간
