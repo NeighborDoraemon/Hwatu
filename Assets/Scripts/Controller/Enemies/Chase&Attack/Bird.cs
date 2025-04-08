@@ -47,8 +47,7 @@ public class Bird : Enemy_Parent, Enemy_Interface
     // Start is called before the first frame update
     void Start()
     {
-        //Target_Player = OR_Player.Value;
-        //Target_Player = FindObjectOfType<PlayerCharacter_Controller>().gameObject;
+
     }
 
     // Update is called once per frame
@@ -63,23 +62,6 @@ public class Bird : Enemy_Parent, Enemy_Interface
         }
     }
 
-    //private void Chasing()
-    //{
-    //    if (!is_Attacking)
-    //    {
-    //        TurnAround();
-
-    //        if (BR_Facing_Left.Value)
-    //        {
-    //            this.transform.Translate(Vector3.left * f_Chasing_Speed * Time.deltaTime);
-    //        }
-    //        else
-    //        {
-    //            this.transform.Translate(Vector3.right * -f_Chasing_Speed * Time.deltaTime);
-    //        }
-    //    }
-    //}
-
     private void Attack_Call()
     {
         Attack_Time += Time.deltaTime;
@@ -93,9 +75,7 @@ public class Bird : Enemy_Parent, Enemy_Interface
             Attack_Time = 0.0f;
 
             is_Attacking = true;
-            //is_Attack_Turn = true;
 
-            //f_Dash_StartPosition = this.transform.position.x;
             enemy_CB.Damage_Once = true;
         }
 
@@ -112,15 +92,11 @@ public class Bird : Enemy_Parent, Enemy_Interface
 
             if (BR_Facing_Left.Value) //Attack Left
             {
-                //this.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(-1.0f * f_Attack_Move_Speed, 0.0f);
-                //Obj_Attack_Box.GetComponent<Rigidbody2D>().velocity = new Vector2(-1.0f * f_Attack_Move_Speed, 0.0f);
                 this.transform.Translate(new Vector3(-0.2f * f_Attack_Move_Speed, 0.0f));
                 Obj_Attack_Box.transform.Translate(new Vector3(0.0f, 0.1f * f_Attack_Down_Speed * i_For_UpDown));
             }
             else //Attack Right
             {
-                //this.transform.Translate(Vector3.right * -f_Down_Speed * Time.deltaTime);
-
                 this.transform.Translate(new Vector3(-0.2f * f_Attack_Move_Speed, 0.0f));
                 Obj_Attack_Box.transform.Translate(new Vector3(0.0f, 0.1f * f_Attack_Down_Speed * i_For_UpDown));
 
@@ -153,42 +129,14 @@ public class Bird : Enemy_Parent, Enemy_Interface
         }
     }
 
-    //private void TurnAround()
-    //{
-    //    Debug.Log("Turn Called");
-
-    //    Quaternion quater = this.gameObject.transform.rotation;
-
-    //    if (this.gameObject.transform.position.x <= Target_Player.transform.position.x && BR_Facing_Left.Value) // 좌측 보는중 & 플레이어가 우측
-    //    {
-    //        BR_Facing_Left.Value = false;
-    //        quater.y = 180.0f;
-
-    //        this.gameObject.transform.rotation = quater;
-    //    }
-    //    else if (this.gameObject.transform.position.x > Target_Player.transform.position.x && !BR_Facing_Left.Value)
-    //    {
-    //        BR_Facing_Left.Value = true;
-    //        //Obj_Enemy.gameObject.transform.rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
-    //        quater.y = 0.0f;
-
-    //        this.gameObject.transform.rotation = quater;
-    //    }
-    //}
-
     public void Enemy_Stun(float Duration)
     {
-        //is_Attack_Turn = false;
-        //is_Attacking = false;
+        is_Attacking = false;
         //is_Attack_Complete = false;
 
-        //is_First_End = false;
+        BR_Not_Attacking.Value = true;
 
-        //BR_Not_Attacking.Value = true;
-
-        //Attack_Time = 0.0f;
-
-        //is_Attack_Once = false;
+        Attack_Time = 0.0f;
 
         Take_Stun(Duration);
     }

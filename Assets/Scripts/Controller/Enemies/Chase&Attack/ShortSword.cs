@@ -42,8 +42,7 @@ public class ShortSword : Enemy_Parent, Enemy_Interface
     // Start is called before the first frame update
     void Start()
     {
-        //Target_Player = OR_Player.Value;
-        //Target_Player = FindObjectOfType<PlayerCharacter_Controller>().gameObject;
+
     }
 
     // Update is called once per frame
@@ -141,29 +140,19 @@ public class ShortSword : Enemy_Parent, Enemy_Interface
         }
     }
 
-    //private void TurnAround()
-    //{
-    //    Quaternion quater = this.gameObject.transform.rotation;
-
-    //    if (this.gameObject.transform.position.x <= Target_Player.transform.position.x && BR_Facing_Left.Value) // 좌측 보는중 & 플레이어가 우측
-    //    {
-    //        BR_Facing_Left.Value = false;
-    //        quater.y = 180.0f;
-
-    //        this.gameObject.transform.rotation = quater;
-    //    }
-    //    else if (this.gameObject.transform.position.x > Target_Player.transform.position.x && !BR_Facing_Left.Value)
-    //    {
-    //        BR_Facing_Left.Value = true;
-    //        //Obj_Enemy.gameObject.transform.rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
-    //        quater.y = 0.0f;
-
-    //        this.gameObject.transform.rotation = quater;
-    //    }
-    //}
-
     public void Enemy_Stun(float Duration)
     {
+        ShortSword_Animator.SetBool("is_Delay_End", false);
+        ShortSword_Animator.SetBool("is_Attacking", false);
 
+        is_Attack_Turn = false;
+        is_Attacking = false;
+        is_Attack_Complete = false;
+
+        BR_Not_Attacking.Value = true;
+
+        Attack_Time = 0.0f;
+
+        Take_Stun(Duration);
     }
 }
