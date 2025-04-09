@@ -149,30 +149,14 @@ public class Grenadier : Enemy_Parent, Enemy_Interface
 
     public void Enemy_Stun(float Duration)
     {
+        is_Attack_Turn = false;
+        is_Attacking = false;
+        is_Attack_Complete = false;
 
+        BR_Not_Attacking.Value = true;
+
+        Attack_Time = 0.0f;
+
+        Take_Stun(Duration);
     }
-
-    //private void OnDrawGizmos()
-    //{
-    //    if (player == null) return;
-
-    //    Vector2 startPosition = transform.position;
-    //    Vector2 targetPosition = player.position;
-    //    Vector2 displacement = targetPosition - startPosition;
-
-    //    float t = flightTime;
-    //    float vx = displacement.x / t;
-    //    float vy = (displacement.y + 0.5f * gravity * t * t) / t;
-
-    //    Vector2 velocity = new Vector2(vx, vy);
-    //    Vector2 currentPosition = startPosition;
-
-    //    Gizmos.color = Color.red;
-    //    for (float time = 0; time < t; time += 0.1f)
-    //    {
-    //        Vector2 nextPosition = startPosition + velocity * time + 0.5f * Physics2D.gravity * time * time;
-    //        Gizmos.DrawLine(currentPosition, nextPosition);
-    //        currentPosition = nextPosition;
-    //    }
-    //}
 }
