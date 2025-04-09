@@ -61784,6 +61784,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7813225147008665994, guid: 6fcf02aff3d936e4fa602b4505f8caa7, type: 3}
+      propertyPath: Interaction_start
+      value: 1003
+      objectReference: {fileID: 0}
     - target: {fileID: 8625986892818212280, guid: 6fcf02aff3d936e4fa602b4505f8caa7, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -61868,6 +61872,14 @@ PrefabInstance:
     - target: {fileID: 4186141830005783541, guid: b6150fc733a82b94e868a2baeec999bf, type: 3}
       propertyPath: m_Name
       value: Start_Card_Npc
+      objectReference: {fileID: 0}
+    - target: {fileID: 9068324115057203900, guid: b6150fc733a82b94e868a2baeec999bf, type: 3}
+      propertyPath: After_Event
+      value: 1002
+      objectReference: {fileID: 0}
+    - target: {fileID: 9068324115057203900, guid: b6150fc733a82b94e868a2baeec999bf, type: 3}
+      propertyPath: Interaction_start
+      value: 1001
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -459,13 +459,13 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         switch (Now_Contact_Npc.gameObject.name)
         {
-            case "Stat_Npc":
-                Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.UI_Start();
-                break;
+            //case "Stat_Npc":
+            //    Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.UI_Start();
+            //    break;
 
-            case "Start_Card_Npc":
-                Now_Contact_Npc.GetComponent<Start_Card_Npc>()?.Request_Spawn_Cards();
-                break;
+            //case "Start_Card_Npc":
+            //    Now_Contact_Npc.GetComponent<Start_Card_Npc>()?.Request_Spawn_Cards();
+            //    break;
 
             default:
                 {
