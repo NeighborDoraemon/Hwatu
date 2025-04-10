@@ -9,6 +9,9 @@ using UnityEngine.SceneManagement;
 //¸Ê ÀÌµ¿ ÃÑ°ý ¸Å´ÏÀú #±èÀ±Çõ
 public class Map_Manager : MonoBehaviour
 {
+    [Header("Start")]
+    [SerializeField] private Map_Value Map_Start;
+
     [Header("Values")]
     [SerializeField] private int i_Using_Map_Count;
 
@@ -37,6 +40,7 @@ public class Map_Manager : MonoBehaviour
     [SerializeField] private Enemy_Generator Obj_e_Generator;
     [SerializeField] private New_Fade_Controller new_Fade;
     [SerializeField] private Object_Manager obj_manager;
+    [SerializeField] private GameObject Minimap_Camera;
 
     [SerializeField]
     private Camera_Manager camera_Manager;
@@ -67,6 +71,8 @@ public class Map_Manager : MonoBehaviour
 
     private bool is_Card_Set = true;    // map card boolean
     [SerializeField] private Match_Up_Manager match_manager;
+
+    private Map_Value mv_Next_Map;
 
     // Start is called before the first frame update
     void Start()
@@ -194,30 +200,27 @@ public class Map_Manager : MonoBehaviour
 
         if (Map_Shuffled_Queue.Count <= 0) // Goto Boss Stage
         {
-            v_Next_SpawnPoint = FB_Map_Data[Boss_map_Index].v_Map_Spawnpoint;
+            mv_Next_Map = FB_Map_Data[Boss_map_Index];
+            v_Next_SpawnPoint = mv_Next_Map.v_Map_Spawnpoint;
             is_Boss_Stage = true;
         }
         else
         {
             if (Map_Shuffled_Queue.Count <= i_Using_Map_Count / 2 && !is_take_Market) // Goto Market
             {
-                v_Next_SpawnPoint = Market_Data.v_Map_Spawnpoint;
+                mv_Next_Map = Market_Data;
+                v_Next_SpawnPoint = mv_Next_Map.v_Map_Spawnpoint;
                 is_take_Market = true;
                 is_Market_Now = true;
             }
             else // Goto Next Map
             {
-                v_Next_SpawnPoint = Map_Shuffled_Queue.Dequeue().v_Map_Spawnpoint;
+                mv_Next_Map = Map_Shuffled_Queue.Dequeue();
+                v_Next_SpawnPoint = mv_Next_Map.v_Map_Spawnpoint;
                 is_Market_Now = false;
 
                 is_Card_Set = false;
             }
-        }
-
-        // Remove Used Maps
-        {
-            //Map_Shuffled_Queue.Dequeue();
-            Debug.Log(Map_Shuffled_Queue.Count);
         }
 
         ///////////////////////////////////////////////////////////
@@ -291,4 +294,10 @@ public class Map_Manager : MonoBehaviour
         Debug.Log(map_Card_01);
         Debug.Log(map_Card_02);
     }
+
+    //private void Set_Minimap_Position()
+    //{
+    //    Minimap_Camera.transform.position = mv_Next_Map.v_Minimap_Point;
+    //    Minimap_Camera.GetComponent<Camera>().orthographicSize = mv_Next_Map.f_Minimap_Size;
+    //}
 }

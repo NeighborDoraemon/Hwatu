@@ -25,6 +25,10 @@ public class Map_Value : ScriptableObject
 
     [Header("Boundary")]
     public Collider2D Collider;
+
+    [Header("Minimap")]
+    public Vector3 v_Minimap_Point;
+    public float f_Minimap_Size;
 }
 
 [System.Serializable]

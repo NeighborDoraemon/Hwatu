@@ -471,6 +471,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 {
                     Now_Contact_Npc.GetComponent<Npc_Interface>().Npc_Interaction_Start();
                     Dialogue_Manager.instance.Get_Npc_Data(Now_Contact_Npc);
+                    movement = Vector2.zero;
                     break;
                 }
         }        
