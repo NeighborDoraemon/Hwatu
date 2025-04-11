@@ -55,7 +55,7 @@ public class Map_Manager : MonoBehaviour
 
 
     // Map_Move Values
-    private int map_Index = 0;
+    private int map_Index = -1;
     private int Boss_map_Index = 0;
     private bool is_Tutorial_Cleared = false;
 
@@ -96,6 +96,7 @@ public class Map_Manager : MonoBehaviour
         Map_Shuffled_List.Clear();
 
         Map_Shuffled_Queue.Clear(); // Queue Clear
+        Event_Map_Shuffled_Queue.Clear();
 
         Shuffle_Maps();
 
@@ -190,6 +191,12 @@ public class Map_Manager : MonoBehaviour
 
             Map_Data.RemoveAt(Index);
         }
+
+        for(int i = 0; i < Event_Map_Data.Count; i++)   //Event Map Shuffle
+        {
+            int Index = Random.Range(0, Event_Map_Data.Count);
+            Event_Map_Shuffled_Queue.Enqueue(Event_Map_Data[Index]);
+        }
         Debug.Log(string.Join(", ", Map_Shuffled_Queue)); // Queue Debug
     }
 
@@ -205,15 +212,7 @@ public class Map_Manager : MonoBehaviour
         }
         else
         {
-            if(map_Index >=3 && map_Index <=5)
-            {
-                is_Event_Next();
-                is_Market_Now = false;
-
-                is_Card_Set = false;
-                return;
-            }
-            else if (Map_Shuffled_Queue.Count <= i_Using_Map_Count / 2 && !is_take_Market) // Goto Market
+            if (Map_Shuffled_Queue.Count <= i_Using_Map_Count / 2 && !is_take_Market) // Goto Market
             {
                 mv_Next_Map = Market_Data;
                 v_Next_SpawnPoint = mv_Next_Map.v_Map_Spawnpoint;
@@ -222,11 +221,28 @@ public class Map_Manager : MonoBehaviour
             }
             else // Goto Next Map
             {
-                mv_Next_Map = Map_Shuffled_Queue.Dequeue();
-                v_Next_SpawnPoint = mv_Next_Map.v_Map_Spawnpoint;
-                is_Market_Now = false;
+                int rand = 10;
+                if (map_Index >= 3 && map_Index <= 5)
+                {
+                    rand = Random.Range(1, 11);
+                    Debug.Log("Event Random Index : " + rand);
+                }
 
-                is_Card_Set = false;
+                if (rand < 4 && Event_Map_Shuffled_Queue.Count != 0)
+                {
+                    Set_Event_Next();
+                    is_Market_Now = true;
+
+                    is_Card_Set = false;
+                }
+                else
+                {
+                    mv_Next_Map = Map_Shuffled_Queue.Dequeue();
+                    v_Next_SpawnPoint = mv_Next_Map.v_Map_Spawnpoint;
+                    is_Market_Now = false;
+
+                    is_Card_Set = false;
+                }
             }
         }
     }
@@ -267,16 +283,14 @@ public class Map_Manager : MonoBehaviour
             map_Card_02 = obj_manager.card_Values[rand].Month;
         } while (map_Card_02 == player_card_Value_01 || map_Card_02 == player_card_Value_02 || map_Card_02 == map_Card_01);
 
-        Debug.Log(map_Card_01);
-        Debug.Log(map_Card_02);
+        //Debug.Log(map_Card_01);
+        //Debug.Log(map_Card_02);
     }
 
-    private void is_Event_Next()
+    private void Set_Event_Next()
     {
-        if (Random.Range(1, 11) < 4)
-        {
-            mv_Next_Map = Event_Map_Data[0];
-            v_Next_SpawnPoint = mv_Next_Map.v_Map_Spawnpoint;
-        }
+        mv_Next_Map = Event_Map_Shuffled_Queue.Dequeue();
+        v_Next_SpawnPoint = mv_Next_Map.v_Map_Spawnpoint;
+        Debug.Log("Event Map Next!");
     }
 }
