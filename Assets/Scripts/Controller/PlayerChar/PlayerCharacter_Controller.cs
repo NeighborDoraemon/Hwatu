@@ -573,6 +573,12 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         Change_FirstAndThird_Card();
 
+        if (card_Inventory[0] != null && card_Inventory[1] != null) //Match Up Call
+        {
+            match_manager.Give_Player_Cards(card_Inventory[0], card_Inventory[1]);
+            match_manager.Start_Match();
+        }
+
         StartCoroutine(Card_Change_Cooldown_Routine());
     }
 
@@ -582,6 +588,12 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             return;
 
         Change_SecondAndThird_Card();
+
+        if (card_Inventory[0] != null && card_Inventory[1] != null) //Match Up Call
+        {
+            match_manager.Give_Player_Cards(card_Inventory[0], card_Inventory[1]);
+            match_manager.Start_Match();
+        }
 
         StartCoroutine(Card_Change_Cooldown_Routine());
     }
