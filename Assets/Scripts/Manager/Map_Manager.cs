@@ -9,18 +9,17 @@ using UnityEngine.SceneManagement;
 //¸Ê ÀÌµ¿ ÃÑ°ý ¸Å´ÏÀú #±èÀ±Çõ
 public class Map_Manager : MonoBehaviour
 {
-    [Header("Start")]
-    [SerializeField] private Map_Value Map_Start;
-
     [Header("Values")]
     [SerializeField] private int i_Using_Map_Count;
 
     [Header("Lists")]
     [SerializeField] private List<Map_Value> Map_Data;
     [SerializeField] private List<Map_Value> FB_Map_Data;
+    [SerializeField] private List<Map_Value> Event_Map_Data;
 
     [HideInInspector] public static List<Map_Value> Map_Shuffled_List = new List<Map_Value>();
     [HideInInspector] public static Queue<Map_Value> Map_Shuffled_Queue = new Queue<Map_Value>(); // new Shuffled
+    [HideInInspector] public static Queue<Map_Value> Event_Map_Shuffled_Queue = new Queue<Map_Value>(); // Event Shuffled
 
     [SerializeField] private Vector3 FB_Boss_Point;
     [SerializeField] private Map_Value Map_Tutorial;
@@ -40,7 +39,6 @@ public class Map_Manager : MonoBehaviour
     [SerializeField] private Enemy_Generator Obj_e_Generator;
     [SerializeField] private New_Fade_Controller new_Fade;
     [SerializeField] private Object_Manager obj_manager;
-    [SerializeField] private GameObject Minimap_Camera;
 
     [SerializeField]
     private Camera_Manager camera_Manager;
@@ -164,6 +162,7 @@ public class Map_Manager : MonoBehaviour
         {
             Obj_e_Generator.Set_Next();
             Obj_e_Generator.New_Enemy_Spawn(); // First Spawn in map
+            map_Index++;    // Plus map's Index when the map is Battle map
         }
 
         Set_Next_Point();
@@ -206,7 +205,15 @@ public class Map_Manager : MonoBehaviour
         }
         else
         {
-            if (Map_Shuffled_Queue.Count <= i_Using_Map_Count / 2 && !is_take_Market) // Goto Market
+            if(map_Index >=3 && map_Index <=5)
+            {
+                is_Event_Next();
+                is_Market_Now = false;
+
+                is_Card_Set = false;
+                return;
+            }
+            else if (Map_Shuffled_Queue.Count <= i_Using_Map_Count / 2 && !is_take_Market) // Goto Market
             {
                 mv_Next_Map = Market_Data;
                 v_Next_SpawnPoint = mv_Next_Map.v_Map_Spawnpoint;
@@ -222,37 +229,6 @@ public class Map_Manager : MonoBehaviour
                 is_Card_Set = false;
             }
         }
-
-        ///////////////////////////////////////////////////////////
-        // Map Index Check
-        //if (Boss_map_Index == Map_Shuffled_List.Count) // Reset Another List Index
-        //{
-        //    map_Index = 0;
-        //    is_Boss_Stage = false;
-        //}
-
-        //if (map_Index == Map_Shuffled_List.Count)
-        //{
-        //    Boss_map_Index = 0;
-        //    is_Boss_Stage = true;
-        //}
-
-
-
-        //// Map Index Plus
-        //if (map_Index < Map_Shuffled_List.Count && !is_Boss_Stage)
-        //{
-        //    v_Next_SpawnPoint = Map_Shuffled_List[map_Index].v_Map_Spawnpoint;
-
-        //    map_Index++;
-
-        //}
-        
-        //if (Boss_map_Index < Map_Shuffled_List.Count && is_Boss_Stage)
-        //{
-        //    v_Next_SpawnPoint = FB_Map_Data[Boss_map_Index].v_Map_Spawnpoint;
-        //    Boss_map_Index++;
-        //}
     }
 
     public bool Check_Boss_Stage()
@@ -295,9 +271,12 @@ public class Map_Manager : MonoBehaviour
         Debug.Log(map_Card_02);
     }
 
-    //private void Set_Minimap_Position()
-    //{
-    //    Minimap_Camera.transform.position = mv_Next_Map.v_Minimap_Point;
-    //    Minimap_Camera.GetComponent<Camera>().orthographicSize = mv_Next_Map.f_Minimap_Size;
-    //}
+    private void is_Event_Next()
+    {
+        if (Random.Range(1, 11) < 4)
+        {
+            mv_Next_Map = Event_Map_Data[0];
+            v_Next_SpawnPoint = mv_Next_Map.v_Map_Spawnpoint;
+        }
+    }
 }
