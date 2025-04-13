@@ -111,7 +111,6 @@ public class Map_Manager : MonoBehaviour
 
         //Update_Map_Boundary();
         IsOnPortal = false;
-        Debug.Log(i_Using_Map_Count / 2);
     }
 
     // Update is called once per frame
@@ -123,29 +122,32 @@ public class Map_Manager : MonoBehaviour
     public void Use_Portal()
     {
         {
-            if (IsOnPortal && Enemy_Generator.Is_Room_Clear == true) //맵 클리어시에만 이동 가능하도록 변경
+            if (Obj_Player.GetComponent<PlayerCharacter_Card_Manager>().card_Inventory[1] != null)  //시작시 카드가 최소 2장이 있어야 이동 가능하게 변경
             {
-                if(!is_Card_Set)
+                if (IsOnPortal && Enemy_Generator.Is_Room_Clear == true) //맵 클리어시에만 이동 가능하도록 변경
                 {
-                    Get_Random_Cards();
-
-                    match_manager.Give_Map_Cards(map_Card_01, map_Card_02);
-                    match_manager.Start_Match();
-                }
-
-                player_Input.SwitchCurrentActionMap("Menu");
-                new_Fade.Fade_Out(() =>
-                {
-                    Portal_Method();
-                    Debug.Log("Fade Out Complete");
-
-
-                    new_Fade.Fade_In(() =>
+                    if (!is_Card_Set)
                     {
-                        player_Input.SwitchCurrentActionMap("Player");
-                        Debug.Log("Fade In Complete");
+                        Get_Random_Cards();
+
+                        match_manager.Give_Map_Cards(map_Card_01, map_Card_02);
+                        match_manager.Start_Match();
+                    }
+
+                    player_Input.SwitchCurrentActionMap("Menu");
+                    new_Fade.Fade_Out(() =>
+                    {
+                        Portal_Method();
+                        Debug.Log("Fade Out Complete");
+
+
+                        new_Fade.Fade_In(() =>
+                        {
+                            player_Input.SwitchCurrentActionMap("Player");
+                            Debug.Log("Fade In Complete");
+                        });
                     });
-                });
+                }
             }
         }
     }
@@ -282,9 +284,6 @@ public class Map_Manager : MonoBehaviour
 
             map_Card_02 = obj_manager.card_Values[rand].Month;
         } while (map_Card_02 == player_card_Value_01 || map_Card_02 == player_card_Value_02 || map_Card_02 == map_Card_01);
-
-        //Debug.Log(map_Card_01);
-        //Debug.Log(map_Card_02);
     }
 
     private void Set_Event_Next()
