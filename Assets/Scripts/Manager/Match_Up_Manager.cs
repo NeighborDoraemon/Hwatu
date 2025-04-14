@@ -245,4 +245,18 @@ public class Match_Up_Manager : MonoBehaviour
 
         is_damage_down = true;
     }
+
+    public void Match_Reset()
+    {
+        if (is_damage_up && !is_damage_down)
+        {
+            p_controller.damage_Mul -= 0.3f;
+            is_damage_up = false;
+        }
+        else if (!is_damage_up && is_damage_down)
+        {
+            p_controller.damage_Mul += 0.3f;
+            is_damage_down = false;
+        }
+    }
 }

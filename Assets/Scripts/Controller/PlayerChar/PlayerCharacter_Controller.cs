@@ -576,6 +576,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         if (card_Inventory[0] != null && card_Inventory[1] != null) //Match Up Call
         {
             match_manager.Give_Player_Cards(card_Inventory[0], card_Inventory[1]);
+            match_manager.Match_Reset();
             match_manager.Start_Match();
         }
 
@@ -592,6 +593,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         if (card_Inventory[0] != null && card_Inventory[1] != null) //Match Up Call
         {
             match_manager.Give_Player_Cards(card_Inventory[0], card_Inventory[1]);
+            match_manager.Match_Reset();
             match_manager.Start_Match();
         }
 

@@ -99,8 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ddb5d24017d9e543bdd89e52d49aa64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tick_Time: 2
-  Damage_Per_Tick: 10
+  Tick_Time: 1
+  Damage_Per_Tick: 2
   Tick_Count: 5
 --- !u!61 &6084742412018728808
 BoxCollider2D:

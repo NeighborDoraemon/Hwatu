@@ -27,6 +27,7 @@ public class Map_Manager : MonoBehaviour
     [Header("Market")]
     [SerializeField] private Vector3 Market_Point;
     [SerializeField] private Map_Value Market_Data;
+    [SerializeField] private GameObject Market_Stall;
     private bool is_take_Market = false;
     private bool is_Market_Now = false;
 
@@ -131,6 +132,7 @@ public class Map_Manager : MonoBehaviour
                         Get_Random_Cards();
 
                         match_manager.Give_Map_Cards(map_Card_01, map_Card_02);
+                        match_manager.Match_Reset();
                         match_manager.Start_Match();
                     }
 
@@ -166,6 +168,11 @@ public class Map_Manager : MonoBehaviour
             Obj_e_Generator.Set_Next();
             Obj_e_Generator.New_Enemy_Spawn(); // First Spawn in map
             map_Index++;    // Plus map's Index when the map is Battle map
+        }
+
+        if(is_Market_Now)
+        {
+            Market_Stall.GetComponent<Obj_Market_Stall>().Market_Call();
         }
 
         Set_Next_Point();
