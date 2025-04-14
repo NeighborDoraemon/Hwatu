@@ -143,6 +143,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 735775677eb5c4c46ac55c79ee29c321, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Trap_Damage: 5
-  f_Attack_Delay: 2
+  Trap_Damage: 10
+  f_Attack_Delay: 1
   Obj_Player: {fileID: 0}
