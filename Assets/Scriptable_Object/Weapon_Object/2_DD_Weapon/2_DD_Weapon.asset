@@ -15,7 +15,7 @@ MonoBehaviour:
   weapon_Name: "\uC870\uCD1D"
   comb_Name: "2 \uB561"
   attack_Damage: 15
-  attack_Cooldown: 4
+  attack_Cooldown: 2
   max_Attack_Count: 1
   skill_Damage: 0
   skill_Cooldown: 0
