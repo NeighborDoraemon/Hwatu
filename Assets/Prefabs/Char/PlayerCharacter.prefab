@@ -442,9 +442,37 @@ MonoBehaviour:
     m_ActionId: 807241ba-1172-4f3f-8525-02e76598c311
     m_ActionName: Player/Game_Pause[/Keyboard/escape]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 7592c333-04fc-4c13-8e46-05039ec065e2
     m_ActionName: Player/Inventory[/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5418104219592675981}
+        m_TargetAssemblyTypeName: PlayerCharacter_Controller, Assembly-CSharp
+        m_MethodName: Input_UpDown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: e811147c-3dd4-4e18-916f-d975d0274ca4
+    m_ActionName: Player/UpDown[/Keyboard/upArrow,/Keyboard/downArrow]
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5418104219592675981}
@@ -531,6 +559,7 @@ MonoBehaviour:
   teleporting_Distance: 2
   teleporting_CoolTime: 3
   i_Money: 0
+  comb_Text: {fileID: 0}
   card_UI_Manager: {fileID: 0}
   card_Value: {fileID: 0}
   sprite_Renderer: {fileID: 0}
@@ -538,7 +567,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  comb_Text: {fileID: 0}
   player_Inventory: []
   item_Slots:
   - {fileID: 0}

@@ -35,8 +35,7 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     public int damage_Reduce_Min = 0;           // 데미지 감소 최소치
     public int damage_Reduce_Max = 0;           // 데미지 감소 최대치
 
-    [Header("근접 공격 변수")]
-    public float attackRange = 0.5f;
+    [Header("공격 관련 변수")]
     public float comboTime = 0.5f;
     public float attack_Cooldown = 1.0f;
     [HideInInspector] public float last_Attack_Time = 0f;
@@ -44,13 +43,24 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     public bool isAttacking = false;
     public int cur_AttackCount = 0;
     public int max_AttackCount = 0;
-    
-    [Header("원거리 공격 변수")]
-    public Transform firePoint;
+
+    [HideInInspector] public int cur_AttackInc_Phase = 1;
+    [HideInInspector] public int cur_HealthInc_Phase = 1;
+    [HideInInspector] public int cur_AttackCoolTimeInc_Phase = 1;
+    [HideInInspector] public int cur_MoveSpeedInc_Phase = 1;
+
+    [HideInInspector] public int cur_Inc_AttackDamage = 0;
+
+    [HideInInspector] public int cur_Inc_Health = 0;
+    [HideInInspector] public int cur_Inc_DamageReduction = 0;
+
+    [HideInInspector] public float cur_Dec_AttackCoolTime = 0;
+
+    [HideInInspector] public float cur_Inc_MoveSpeed = 0;
     
     [Header("스킬 변수")]
     public float skill_Cooldown = 1.0f;
-    public float last_Skill_Time = 0f;
+    [HideInInspector]public float last_Skill_Time = 0f;
     public bool is_Skill_Active = false;
 
     [Header("텔레포트")]
@@ -61,7 +71,9 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     [Header("Money")]
     public int i_Money = 0;
 
+    [Header("UI_Text")]
     public TextMeshProUGUI comb_Text;
+    public TextMeshProUGUI money_Text;
 
     public Weapon_Data cur_Weapon_Data { get; private set; }
 
@@ -79,34 +91,132 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
         comb_Text.text = new_Weapon.comb_Name;
     }
 
-    public void Increase_Health(int value)
+    public void Increase_AttackDamage()
     {
-        max_Health += value;
-        health += value;
-        Debug.Log($"Max Health {value} Increase! And current health {value} heal.");
+        if (cur_AttackInc_Phase == 1)
+        {
+            if (cur_Inc_AttackDamage < 10)
+            {
+                cur_Inc_AttackDamage++;
+                attackDamage += 1;
+                Debug.Log("Attack Damage Enhanced (Phase 1) : Current Attack Damage " + attackDamage);
+            }
+
+            if (cur_Inc_AttackDamage >= 10)
+            {
+                cur_AttackInc_Phase = 2;
+                Debug.Log("Phase 1 Completed. Phase 2 Start.");
+            }
+        }
+
+        if (cur_AttackInc_Phase == 2)
+        {
+
+        }
+
+        if (cur_AttackInc_Phase == 3)
+        {
+
+        }
     }
 
-    public void Increase_MoveSpeed(float value)
+    public void Increase_Health()
     {
-        movementSpeed += value;
-        Debug.Log($"Move Speed {value} Increased!");
+        if (cur_HealthInc_Phase == 1)
+        {
+            if (cur_Inc_Health < 50)
+            {
+                cur_Inc_Health += 5;
+                max_Health += 5;
+                health += 5;
+                Debug.Log("Health Enhanced (Phase 1) : Current Max Health " + max_Health);
+            }
+
+            if (cur_Inc_Health >= 50)
+            {
+                cur_HealthInc_Phase = 2;
+                Debug.Log("Phase 1 Completed. Phase 2 Start.");
+            }
+        }
+
+        if (cur_HealthInc_Phase == 2)
+        {
+            if (cur_Inc_DamageReduction < 3)
+            {
+                cur_Inc_DamageReduction += 1;
+                damage_Reduce_Min += 1;
+                damage_Reduce_Max += 1;
+                Debug.Log("Health Enhanced (Phase 2) : Current DamageReduction " + damage_Reduce_Min + "," + damage_Reduce_Max);
+            }
+
+            if (cur_Inc_DamageReduction >= 3)
+            {
+                cur_HealthInc_Phase = 3;
+                Debug.Log("Phase 2 Completed. Phase 3 Start.");
+            }
+        }
+
+        if (cur_HealthInc_Phase == 3)
+        {
+
+        }
     }
 
-    public void Increase_AttackDamage(int value)
+    public void Increase_AttackCoolTime()
     {
-        attackDamage += value;
-        Debug.Log($"Attack Damage {value} Increased!");
+        if (cur_AttackCoolTimeInc_Phase == 1)
+        {
+            if (cur_Dec_AttackCoolTime < 1.0f)
+            {
+                cur_Dec_AttackCoolTime += 0.1f;
+                attack_Cooldown -= 0.1f;
+                Debug.Log("Attack CoolTime Enhanced (Phase 1) : Current Attack CoolTime " + attack_Cooldown);
+            }
+
+            if (cur_Dec_AttackCoolTime >= 1.0f)
+            {
+                cur_AttackCoolTimeInc_Phase = 2;
+                Debug.Log("Phase 1 Completed. Phase 2 Start.");
+            }
+        }
+
+        if (cur_AttackCoolTimeInc_Phase == 2)
+        {
+
+        }
+
+        if (cur_AttackCoolTimeInc_Phase == 3)
+        {
+
+        }
     }
 
-    public void Increase_CritRate(float value)
+    public void Increase_MoveSpeed()
     {
-        crit_Rate += value;
-        Debug.Log($"Crit Rate {value} Increased!");
-    }
+        if (cur_MoveSpeedInc_Phase == 1)
+        {
+            if (cur_Inc_MoveSpeed < 1.0f)
+            {
+                cur_Inc_MoveSpeed += 0.1f;
+                movementSpeed += 0.1f;
+                Debug.Log("Move Speed Enhanced (Phase 1) : Current Move Speed " + movementSpeed);
+            }
 
-    public void Increase_CritDamage(float value)
-    {
-        crit_Dmg += value;
-        Debug.Log($"Crit Damage {value} Increased!");
+            if (cur_Inc_MoveSpeed >= 1.0f)
+            {
+                cur_MoveSpeedInc_Phase = 2;
+                Debug.Log("Phase 1 Completed. Phase 2 Start.");
+            }
+        }
+
+        if (cur_MoveSpeedInc_Phase == 2)
+        {
+
+        }
+
+        if (cur_MoveSpeedInc_Phase == 3)
+        {
+
+        }
     }
 }

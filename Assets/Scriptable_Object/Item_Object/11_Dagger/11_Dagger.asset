@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86385ed30deb3bf4094345f126ce6a87, type: 3}
   m_Name: 11_Dagger
   m_EditorClassIdentifier: 
-  itemName: Dagger
+  itemName: "\uC7A5\uB3C4"
+  item_Description: "\uCE58\uBA85\uD0C0 \uD655\uB960 5% \uC99D\uAC00"
   item_Icon: {fileID: 21300000, guid: c5c443552493e2d44bdb6f1155243e6c, type: 3}
   item_Price: 0
   itemEffect: {fileID: 11400000, guid: 4db9eba3e86cc4d45a0de4a40406d291, type: 2}

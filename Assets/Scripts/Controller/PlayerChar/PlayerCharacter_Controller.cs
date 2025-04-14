@@ -410,7 +410,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (Current_Player_State == Player_State.Normal)
         {
-            if (ctx.phase != InputActionPhase.Started || Time.timeScale != 1.0f || is_Player_Dead)
+            if (ctx.phase != InputActionPhase.Started || is_Player_Dead)
                 return;
 
             if (isInventory_Visible && is_Item_Change && pending_SwapItem != null)
@@ -565,7 +565,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public void Input_Change_FirstCard(InputAction.CallbackContext ctx)
     {
-        if (ctx.phase != InputActionPhase.Started || Time.timeScale != 1.0f || is_Player_Dead || !can_Card_Change)
+        if (ctx.phase != InputActionPhase.Started || Time.timeScale != 1.0f || is_Player_Dead || !can_Card_Change || isAttacking)
             return;
 
         Change_FirstAndThird_Card();
@@ -575,7 +575,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public void Input_Change_SecondCard(InputAction.CallbackContext ctx)
     {
-        if (ctx.phase != InputActionPhase.Started || Time.timeScale != 1.0f || is_Player_Dead || !can_Card_Change)
+        if (ctx.phase != InputActionPhase.Started || Time.timeScale != 1.0f || is_Player_Dead || !can_Card_Change || isAttacking)
             return;
 
         Change_SecondAndThird_Card();
@@ -828,6 +828,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                         if (!is_AtkCoroutine_Running)
                         {
                             isAttacking = true;
+                            can_Card_Change = false;
                             animator.SetBool("isHoldAtk", true);
                             StartCoroutine(Continuous_Attack());
                         }
@@ -839,6 +840,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                         }
                         isAttacking = false;
                         animator.SetBool("isHoldAtk", false);
+                        can_Card_Change = true;
                         break;
                 }
             }
@@ -942,6 +944,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             if (attack_Strategy != null)
             {
                 attack_Strategy.Attack(this, cur_Weapon_Data);
+                can_Card_Change = false;
             }
             else
             {
@@ -975,7 +978,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (attack_Strategy != null)
         {
-            attack_Strategy.Shoot(this, firePoint);
+            attack_Strategy.Shoot(this, weapon_Anchor);
         }
         else
         {
@@ -1038,10 +1041,12 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     void OnInventory_Pressed(InputAction.CallbackContext context)
     {
         ShowInventory();
+        Time.timeScale = 0.0f;
     }
     void OnInventory_Released(InputAction.CallbackContext context)
     {
         HideInventory();
+        Time.timeScale = 1.0f;
     }
     void ShowInventory()
     {
@@ -1297,7 +1302,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             i_Money = 0;
         }
-        Debug.Log("Player Money : " + i_Money);
+
+        money_Text.text = i_Money.ToString();
+
+        //Debug.Log("Player Money : " + i_Money);
     }
 
     //=============== 속박, 기절계열

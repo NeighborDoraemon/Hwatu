@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86385ed30deb3bf4094345f126ce6a87, type: 3}
   m_Name: 7_Ddidon
   m_EditorClassIdentifier: 
-  itemName: Ddidon
+  itemName: "\uB760\uB3C8"
+  item_Description: "\uC774\uB3D9\uC18D\uB3C4 10% \uAC10\uC18C, \uACF5\uACA9 \uCFE8\uD0C0\uC784
+    10% \uAC10\uC18C"
   item_Icon: {fileID: 21300000, guid: 36a625988bc10384e84fb02bb1c8c26a, type: 3}
   item_Price: 700
   itemEffect: {fileID: 11400000, guid: 85435ef1740401e4ba227da2f4077ed3, type: 2}

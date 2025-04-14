@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7744226479381433081}
   - component: {fileID: 523025914981271775}
   - component: {fileID: 1973879340841274005}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Bullet_Projectile
   m_TagString: Attack
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10dc13abdcb00304a929cdc4671990f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
+  final_Damage: 0
 --- !u!61 &1973879340841274005
 BoxCollider2D:
   m_ObjectHideFlags: 0

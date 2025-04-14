@@ -10,6 +10,7 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
 
     public List<Item> player_Inventory = new List<Item>();
     [SerializeField] private List<Item_Slot> item_Slots;
+    [SerializeField] private Item_Description item_Description_UI;
 
     private int selected_Slot_Index = 0;
 
@@ -111,6 +112,8 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
 
             item_Slots[i].Set_Selected(i == selected_Slot_Index);
         }
+
+        Update_ItemDescription();
     }
 
     public void Navigate_Inventory(int direction)
@@ -127,8 +130,20 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
             selected_Slot_Index = 0;
 
         item_Slots[selected_Slot_Index].Set_Selected(true);
+
+        Update_ItemDescription();
     }
 
+    private void Update_ItemDescription()
+    {
+        if (item_Description_UI != null)
+        {
+            if (player_Inventory.Count > 0)
+                item_Description_UI.Show_Item_Info(player_Inventory[selected_Slot_Index]);
+            else
+                item_Description_UI.Show_Item_Info(null);
+        }
+    }
 
     //By KYH    Give inventory data to Market Stall
     public Item[] Give_Inventory_Data()

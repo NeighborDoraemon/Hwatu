@@ -37,6 +37,7 @@ public class Stat_Npc_Controller : MonoBehaviour
         is_StatUI_Open = true;
         player.is_UI_Open = true;
         player.is_StatUI_Visible = true;
+        Time.timeScale = 0.0f;
         cur_Index = 0;
         Update_Select_Border();
     }
@@ -53,6 +54,7 @@ public class Stat_Npc_Controller : MonoBehaviour
         is_StatUI_Open = false;
         player.is_UI_Open = false;
         player.is_StatUI_Visible = false;
+        Time.timeScale = 1.0f;
     }
 
     public void Navigate_Stats(Vector2 input_Dir)
@@ -89,16 +91,16 @@ public class Stat_Npc_Controller : MonoBehaviour
         switch (button_Name)
         {
             case "Stat_AttackDamage":
-                player?.Increase_Health(health_Inc_Value);
+                player?.Increase_AttackDamage();
                 break;
             case "Stat_Health":
-                player?.Increase_MoveSpeed(moveSpeed_Inc_Value);
+                player?.Increase_Health();
                 break;
             case "Stat_AttacSpeed":
-                player?.Increase_AttackDamage(atkDmg_Inc_Value);
+                player?.Increase_AttackCoolTime();
                 break;
             case "Stat_MoveSpeed":
-                player?.Increase_CritRate(critRate_Inc_Value);
+                player?.Increase_MoveSpeed();
                 break;
             default:
                 Debug.Log($"[{button_Name}] is null");

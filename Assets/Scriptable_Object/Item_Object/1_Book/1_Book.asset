@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86385ed30deb3bf4094345f126ce6a87, type: 3}
   m_Name: 1_Book
   m_EditorClassIdentifier: 
-  itemName: Book
+  itemName: "\uCC45"
+  item_Description: "\uC2A4\uD0AC \uCFE8\uD0C0\uC784 10% \uAC10\uC18C"
   item_Icon: {fileID: 21300000, guid: 969b484b9e3ada14da3b970812f35143, type: 3}
   item_Price: 100
   itemEffect: {fileID: 11400000, guid: f122a202a27e8b845bd303a25366f367, type: 2}

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 42b9bd2822e840146b23a9e397f4263e
+guid: 80c67cef5e77e9b48a23e27e6b7a56fc
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,8 +48,8 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
-  spriteBorder: {x: 34, y: 116, z: 33, w: 116}
+  spritePixelsToUnits: 128
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -100,10 +100,10 @@ TextureImporter:
       name: Inventory_Panel_0
       rect:
         serializedVersion: 2
-        x: 34
-        y: 115
-        width: 932
-        height: 319
+        x: 314
+        y: 641
+        width: 877
+        height: 296
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,8 +111,239 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 20583334e0a723e48af7ed834ba0381e
-      internalID: -1201080824
+      spriteID: 02c475df5d9644c47b885aea2a5047b4
+      internalID: -501283412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Inventory_Panel_1
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 419
+        width: 367
+        height: 205
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c385cbef8bb665144a218b011783dd3a
+      internalID: 1688736241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Inventory_Panel_2
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 413
+        width: 394
+        height: 204
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7bb5a056197b0894b8b27924e8d8ac3b
+      internalID: -1502170037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Inventory_Panel_3
+      rect:
+        serializedVersion: 2
+        x: 354
+        y: 286
+        width: 237
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d698be5a61e8b394d8c1200781b67613
+      internalID: -488273378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Inventory_Panel_4
+      rect:
+        serializedVersion: 2
+        x: 608
+        y: 273
+        width: 109
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5415324b2bb5bf04d9b6cf2e5e2fb3f8
+      internalID: 286914663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Inventory_Panel_5
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 158
+        width: 109
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 503c7081c2c3c6747be5cf664936a3e6
+      internalID: 2144835762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Inventory_Panel_6
+      rect:
+        serializedVersion: 2
+        x: 482
+        y: 158
+        width: 109
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5441e8cbe38b6243b1880a805bca67d
+      internalID: -136675880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Inventory_Panel_7
+      rect:
+        serializedVersion: 2
+        x: 608
+        y: 158
+        width: 109
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea44d8b7aad99314999308cfb862be3e
+      internalID: 1216151002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Inventory_Panel_8
+      rect:
+        serializedVersion: 2
+        x: 735
+        y: 158
+        width: 109
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78ffd35642b4ca04091a723e78240d4c
+      internalID: -1502329600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Inventory_Panel_9
+      rect:
+        serializedVersion: 2
+        x: 861
+        y: 158
+        width: 109
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83715c5f9f4c1ea4e930cf5192103f08
+      internalID: 114483646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Inventory_Panel_10
+      rect:
+        serializedVersion: 2
+        x: 987
+        y: 158
+        width: 109
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 080d47c107939ab448b9c1e6a06d2c17
+      internalID: -364616402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Inventory_Panel_11
+      rect:
+        serializedVersion: 2
+        x: 354
+        y: 62
+        width: 740
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad2c4e7d8e19b3844a795d62d89cc9c8
+      internalID: -477366125
       vertices: []
       indices: 
       edges: []
@@ -121,14 +352,25 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Inventory_Panel_0: -1201080824
+      Inventory_Panel_0: -501283412
+      Inventory_Panel_1: 1688736241
+      Inventory_Panel_10: -364616402
+      Inventory_Panel_11: -477366125
+      Inventory_Panel_2: -1502170037
+      Inventory_Panel_3: -488273378
+      Inventory_Panel_4: 286914663
+      Inventory_Panel_5: 2144835762
+      Inventory_Panel_6: -136675880
+      Inventory_Panel_7: 1216151002
+      Inventory_Panel_8: -1502329600
+      Inventory_Panel_9: 114483646
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

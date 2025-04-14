@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86385ed30deb3bf4094345f126ce6a87, type: 3}
   m_Name: 8_BowSheath
   m_EditorClassIdentifier: 
-  itemName: BowSheath
+  itemName: "\uD65C\uC9D1"
+  item_Description: "\uACF5\uACA9 \uCFE8\uD0C0\uC784 \uAC10\uC18C, \uB2E8 \uD3B8\uC804
+    \uC0AC\uC6A9 \uC2DC \uD654\uC0B4 \uCD94\uAC00\uB85C \uBC1C\uC0AC"
   item_Icon: {fileID: 21300000, guid: 43ed5cec9a7d5bd44b36806d1938742b, type: 3}
   item_Price: 800
   itemEffect: {fileID: 11400000, guid: 8cb067a978486844e95ca8f1e1ffeb59, type: 2}

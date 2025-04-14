@@ -9,18 +9,24 @@ public class Item_Slot : MonoBehaviour
     [SerializeField] private GameObject selection_Border;
     private Item stored_Item;
 
+    private void Awake()
+    {
+        itemIcon.enabled = false;
+        selection_Border.SetActive(false);
+    }
+
     public void Setup_Slot(Item newItem)
     {
         stored_Item = newItem;
 
-        if (stored_Item != null)
+        if (stored_Item == null)
         {
-            itemIcon.sprite = stored_Item.item_Icon;
-            itemIcon.enabled = true;
+            itemIcon.enabled = false;
         }
         else
         {
-            itemIcon.enabled = false;
+            itemIcon.sprite = stored_Item.item_Icon;
+            itemIcon.enabled = true;
         }
 
         Set_Selected(false);

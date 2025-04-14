@@ -7,6 +7,7 @@ using UnityEngine;
 public class Item : ScriptableObject
 {
     public string itemName;          // 아이템 이름
+    public string item_Description;  // 아이템 설명
     public Sprite item_Icon;         // 아이템 아이콘 (스프라이트)
     public int item_Price;           // 아이템 가격
     public ItemEffect itemEffect;    // 아이템 효과 (스크립터블 오브젝트)
