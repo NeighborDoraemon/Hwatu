@@ -5,10 +5,17 @@ using UnityEngine;
 public class Arrow_Trap_Projectile : MonoBehaviour
 {
     public int Arrow_Damage = 5;
+    private float time = 0.0f;
 
     private void Start()
     {
         Time_Destroy();
+        time = 0.0f;
+    }
+
+    private void Update()
+    {
+        time += Time.deltaTime;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -37,13 +44,16 @@ public class Arrow_Trap_Projectile : MonoBehaviour
         }
         else if(collision.CompareTag("Walls"))
         {
-            Destroy(this.gameObject);
+            if (time > 1.0f)
+            {
+                Destroy(this.gameObject);
+            }
         }
     }
 
     private IEnumerator Time_Destroy()
     {
-        yield return new WaitForSeconds(10.0f);
+        yield return new WaitForSeconds(7.0f);
         Destroy(this.gameObject);
     }
 }
