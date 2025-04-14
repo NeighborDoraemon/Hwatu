@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapon_Name: "\uAE30\uACF5\uC220"
   comb_Name: "5 \uB561"
-  attack_Damage: 4
+  attack_Damage: 8
   attack_Cooldown: 1
   max_Attack_Count: 1
   skill_Damage: 10
-  skill_Cooldown: 5
+  skill_Cooldown: 15
   weapon_Prefab: {fileID: 4783793673759612592, guid: 1c0ac8585cd489e468c5223ba043ca35, type: 3}
   overrideController: {fileID: 22100000, guid: ffabe0f5d4c3bb64aaa376769591425c, type: 2}
   weapon_overrideController: {fileID: 0}
