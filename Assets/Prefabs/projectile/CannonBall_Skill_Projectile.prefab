@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4913993018494280235}
   - component: {fileID: 8880424148215380621}
   - component: {fileID: 3596371818135333111}
-  - component: {fileID: 2121424417849244313}
+  - component: {fileID: 7508223216361006620}
   m_Layer: 13
   m_Name: CannonBall_Skill_Projectile
   m_TagString: Attack
@@ -149,7 +149,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.125
---- !u!114 &2121424417849244313
+--- !u!114 &7508223216361006620
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,12 +158,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7493873690815829983}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f07b267fa45e14e428637818ce74eb15, type: 3}
+  m_Script: {fileID: 11500000, guid: cecc93c70118f844d912047f9cae63eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 100
+  damage: 0
   explosion_Radius: 2
   enemy_Layer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   explosion_Prefab: {fileID: 2072432503961053385, guid: 49dceac48854f7f4985884345ebfb3df, type: 3}

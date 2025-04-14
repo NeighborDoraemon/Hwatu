@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Canonball_Projectile : MonoBehaviour
+public class Canon_Skill_Projectile : MonoBehaviour
 {
     PlayerCharacter_Controller player;
 
@@ -15,13 +15,12 @@ public class Canonball_Projectile : MonoBehaviour
     {
         player = FindObjectOfType<PlayerCharacter_Controller>();
 
-        damage = player.Calculate_Damage();
+        damage = player.Calculate_Skill_Damage();
     }
 
     public void Initialized(Rigidbody2D rb, Vector2 direction, float speed)
     {
         rb.velocity = direction * speed;
-        
     }
 
     private void OnTriggerEnter2D(Collider2D other)
