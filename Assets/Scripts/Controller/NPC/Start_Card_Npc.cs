@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class Start_Card_Npc : MonoBehaviour
+public class Start_Card_Npc : MonoBehaviour, Npc_Interface
 {
     [SerializeField] private Transform[] Card_Spawn_Points;
     [SerializeField] private Animator npc_Animator;
@@ -16,6 +17,10 @@ public class Start_Card_Npc : MonoBehaviour
 
     [SerializeField] private float random_Motion_Interval_Min = 3.0f;
     [SerializeField] private float random_Motion_Interval_Max = 7.0f;
+
+    [Header("Dialogue Index")]
+    [SerializeField] private int Interaction_start;
+    [SerializeField] private int After_Event;
 
     private void Awake()
     {
@@ -54,6 +59,7 @@ public class Start_Card_Npc : MonoBehaviour
         give_Card = true;
     }
 
+
     private IEnumerator Random_Motion_Routine()
     {
         while (true)
@@ -72,5 +78,42 @@ public class Start_Card_Npc : MonoBehaviour
                 npc_Animator.SetTrigger("Pose_Trigger");
             }
         }
+    }
+
+    public void Npc_Interaction_Start()
+    {
+        if (player != null && !give_Card)
+        {
+            player.State_Change(PlayerCharacter_Controller.Player_State.Dialogue);
+            Dialogue_Manager.instance.Start_Dialogue(Interaction_start);
+        }
+        else if (player != null && give_Card)
+        {
+            player.State_Change(PlayerCharacter_Controller.Player_State.Dialogue);
+            Dialogue_Manager.instance.Start_Dialogue(After_Event);
+        }
+    }
+    public void Event_Start()   //Not used
+    {
+    }
+    public void Npc_Interaction_End()
+    {
+        if (player != null)
+        {
+            player.State_Change(PlayerCharacter_Controller.Player_State.Normal);
+            player.Event_State_Change(PlayerCharacter_Controller.Event_State.None);
+
+            if (!give_Card)
+            {
+                Request_Spawn_Cards();
+            }
+        }
+    }
+
+    public void Event_Move(InputAction.CallbackContext ctx) //Not used
+    {
+    }
+    public void Event_Attack(InputAction.CallbackContext ctx)   //Not used
+    {
     }
 }

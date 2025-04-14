@@ -48,6 +48,7 @@ public class Healer : Enemy_Parent, Enemy_Interface
 
     public void Enemy_Stun(float Duration)
     {
-
+        f_Attack_Time = 0.0f;
+        Take_Stun(Duration);
     }
 }

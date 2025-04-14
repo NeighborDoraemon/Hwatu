@@ -96,13 +96,27 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
         }
     }
 
+    public void Bleeding_Attack(int Tick_Damage, int Count, float Delay)
+    {
+        StartCoroutine(Bleeding_Coroutine(Tick_Damage, Count, Delay));
+    }
+
+    private IEnumerator Bleeding_Coroutine(int Tick_Damage, int Count, float Delay)
+    {
+        for (int i = 0; i < Count; i++)
+        {
+            yield return new WaitForSeconds(Delay);
+            TakeDamage(Tick_Damage);
+        }
+    }
+
     //IEnumerator Stun_Durable(float Duration)
     //{
     //    yield return new WaitForSeconds(Duration);
     //    BR_Stunned.Value = false;
     //}
 
-    public void Enemy_Stun(float Duration)
+    public void Enemy_Stun(float Duration)  //Do not use This Method
     { 
     }
 }

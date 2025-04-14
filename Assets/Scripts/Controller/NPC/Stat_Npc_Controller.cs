@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
-public class Stat_Npc_Controller : MonoBehaviour
+public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
 {
     [SerializeField] private PlayerCharacter_Controller player;
 
@@ -19,12 +20,17 @@ public class Stat_Npc_Controller : MonoBehaviour
     public float critRate_Inc_Value = 0.1f;
     public float critDmg_Inc_Value = 0.1f;
 
+    [Header("Dialogue Index")]
+    [SerializeField] private int Interaction_start;
+    private bool Dialogue_Once = false;
+
     private int cur_Index = 0;
     private bool is_StatUI_Open = false;
 
     private void Awake()
     {
         player = FindObjectOfType<PlayerCharacter_Controller>();
+        Dialogue_Once = false;
     }
 
     public void UI_Start()
@@ -123,5 +129,43 @@ public class Stat_Npc_Controller : MonoBehaviour
     public bool Is_StatUI_Open()
     {
         return is_StatUI_Open;
+    }
+
+    //Interface Method=====================================================================
+
+    public void Npc_Interaction_Start()
+    {
+        if (player != null && !Dialogue_Once)
+        {
+            player.State_Change(PlayerCharacter_Controller.Player_State.Dialogue);
+            Dialogue_Manager.instance.Start_Dialogue(Interaction_start);
+        }
+        else if (player != null && Dialogue_Once)
+        {
+            Npc_Interaction_End();
+        }
+    }
+    public void Event_Start()   //Not used
+    {
+    }
+    public void Npc_Interaction_End()
+    {
+        if (player != null)
+        {
+            if(!Dialogue_Once)
+            {
+                player.State_Change(PlayerCharacter_Controller.Player_State.Normal);
+                player.Event_State_Change(PlayerCharacter_Controller.Event_State.None);
+                Dialogue_Once = true;
+            }
+            UI_Start();
+        }
+    }
+
+    public void Event_Move(InputAction.CallbackContext ctx) //Not used
+    {
+    }
+    public void Event_Attack(InputAction.CallbackContext ctx)   //Not used
+    {
     }
 }

@@ -43,19 +43,19 @@ public class Obj_Market_Stall : MonoBehaviour
     void Start()
     {
         //Market_Reset();
-        Market_On_Sale();
-
-        //Debug.Log(Market_Slot_List.Count);
-        //Debug.Log(Market_List.Count);
-
-        Set_Item_Slots();
-        Set_Price_Slot();
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void Market_Call()
+    {
+        Market_On_Sale();
+        Set_Item_Slots();
+        Set_Price_Slot();
     }
 
     private void Market_Reset()

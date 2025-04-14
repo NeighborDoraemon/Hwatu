@@ -15,9 +15,11 @@ public class Map_Manager : MonoBehaviour
     [Header("Lists")]
     [SerializeField] private List<Map_Value> Map_Data;
     [SerializeField] private List<Map_Value> FB_Map_Data;
+    [SerializeField] private List<Map_Value> Event_Map_Data;
 
     [HideInInspector] public static List<Map_Value> Map_Shuffled_List = new List<Map_Value>();
     [HideInInspector] public static Queue<Map_Value> Map_Shuffled_Queue = new Queue<Map_Value>(); // new Shuffled
+    [HideInInspector] public static Queue<Map_Value> Event_Map_Shuffled_Queue = new Queue<Map_Value>(); // Event Shuffled
 
     [SerializeField] private Vector3 FB_Boss_Point;
     [SerializeField] private Map_Value Map_Tutorial;
@@ -25,6 +27,7 @@ public class Map_Manager : MonoBehaviour
     [Header("Market")]
     [SerializeField] private Vector3 Market_Point;
     [SerializeField] private Map_Value Market_Data;
+    [SerializeField] private GameObject Market_Stall;
     private bool is_take_Market = false;
     private bool is_Market_Now = false;
 
@@ -53,7 +56,7 @@ public class Map_Manager : MonoBehaviour
 
 
     // Map_Move Values
-    private int map_Index = 0;
+    private int map_Index = -1;
     private int Boss_map_Index = 0;
     private bool is_Tutorial_Cleared = false;
 
@@ -67,6 +70,8 @@ public class Map_Manager : MonoBehaviour
 
     private bool is_Card_Set = true;    // map card boolean
     [SerializeField] private Match_Up_Manager match_manager;
+
+    private Map_Value mv_Next_Map;
 
     // Start is called before the first frame update
     void Start()
@@ -92,6 +97,7 @@ public class Map_Manager : MonoBehaviour
         Map_Shuffled_List.Clear();
 
         Map_Shuffled_Queue.Clear(); // Queue Clear
+        Event_Map_Shuffled_Queue.Clear();
 
         Shuffle_Maps();
 
@@ -106,7 +112,6 @@ public class Map_Manager : MonoBehaviour
 
         //Update_Map_Boundary();
         IsOnPortal = false;
-        Debug.Log(i_Using_Map_Count / 2);
     }
 
     // Update is called once per frame
@@ -118,29 +123,33 @@ public class Map_Manager : MonoBehaviour
     public void Use_Portal()
     {
         {
-            if (IsOnPortal && Enemy_Generator.Is_Room_Clear == true) //맵 클리어시에만 이동 가능하도록 변경
+            if (Obj_Player.GetComponent<PlayerCharacter_Card_Manager>().card_Inventory[1] != null)  //시작시 카드가 최소 2장이 있어야 이동 가능하게 변경
             {
-                if(!is_Card_Set)
+                if (IsOnPortal && Enemy_Generator.Is_Room_Clear == true) //맵 클리어시에만 이동 가능하도록 변경
                 {
-                    Get_Random_Cards();
-
-                    match_manager.Give_Map_Cards(map_Card_01, map_Card_02);
-                    match_manager.Start_Match();
-                }
-
-                player_Input.SwitchCurrentActionMap("Menu");
-                new_Fade.Fade_Out(() =>
-                {
-                    Portal_Method();
-                    Debug.Log("Fade Out Complete");
-
-
-                    new_Fade.Fade_In(() =>
+                    if (!is_Card_Set)
                     {
-                        player_Input.SwitchCurrentActionMap("Player");
-                        Debug.Log("Fade In Complete");
+                        Get_Random_Cards();
+
+                        match_manager.Give_Map_Cards(map_Card_01, map_Card_02);
+                        match_manager.Match_Reset();
+                        match_manager.Start_Match();
+                    }
+
+                    player_Input.SwitchCurrentActionMap("Menu");
+                    new_Fade.Fade_Out(() =>
+                    {
+                        Portal_Method();
+                        Debug.Log("Fade Out Complete");
+
+
+                        new_Fade.Fade_In(() =>
+                        {
+                            player_Input.SwitchCurrentActionMap("Player");
+                            Debug.Log("Fade In Complete");
+                        });
                     });
-                });
+                }
             }
         }
     }
@@ -158,6 +167,12 @@ public class Map_Manager : MonoBehaviour
         {
             Obj_e_Generator.Set_Next();
             Obj_e_Generator.New_Enemy_Spawn(); // First Spawn in map
+            map_Index++;    // Plus map's Index when the map is Battle map
+        }
+
+        if(is_Market_Now)
+        {
+            Market_Stall.GetComponent<Obj_Market_Stall>().Market_Call();
         }
 
         Set_Next_Point();
@@ -185,6 +200,12 @@ public class Map_Manager : MonoBehaviour
 
             Map_Data.RemoveAt(Index);
         }
+
+        for(int i = 0; i < Event_Map_Data.Count; i++)   //Event Map Shuffle
+        {
+            int Index = Random.Range(0, Event_Map_Data.Count);
+            Event_Map_Shuffled_Queue.Enqueue(Event_Map_Data[Index]);
+        }
         Debug.Log(string.Join(", ", Map_Shuffled_Queue)); // Queue Debug
     }
 
@@ -194,62 +215,45 @@ public class Map_Manager : MonoBehaviour
 
         if (Map_Shuffled_Queue.Count <= 0) // Goto Boss Stage
         {
-            v_Next_SpawnPoint = FB_Map_Data[Boss_map_Index].v_Map_Spawnpoint;
+            mv_Next_Map = FB_Map_Data[Boss_map_Index];
+            v_Next_SpawnPoint = mv_Next_Map.v_Map_Spawnpoint;
             is_Boss_Stage = true;
         }
         else
         {
             if (Map_Shuffled_Queue.Count <= i_Using_Map_Count / 2 && !is_take_Market) // Goto Market
             {
-                v_Next_SpawnPoint = Market_Data.v_Map_Spawnpoint;
+                mv_Next_Map = Market_Data;
+                v_Next_SpawnPoint = mv_Next_Map.v_Map_Spawnpoint;
                 is_take_Market = true;
                 is_Market_Now = true;
             }
             else // Goto Next Map
             {
-                v_Next_SpawnPoint = Map_Shuffled_Queue.Dequeue().v_Map_Spawnpoint;
-                is_Market_Now = false;
+                int rand = 10;
+                if (map_Index >= 3 && map_Index <= 5)
+                {
+                    rand = Random.Range(1, 11);
+                    Debug.Log("Event Random Index : " + rand);
+                }
 
-                is_Card_Set = false;
+                if (rand < 4 && Event_Map_Shuffled_Queue.Count != 0)
+                {
+                    Set_Event_Next();
+                    is_Market_Now = true;
+
+                    is_Card_Set = false;
+                }
+                else
+                {
+                    mv_Next_Map = Map_Shuffled_Queue.Dequeue();
+                    v_Next_SpawnPoint = mv_Next_Map.v_Map_Spawnpoint;
+                    is_Market_Now = false;
+
+                    is_Card_Set = false;
+                }
             }
         }
-
-        // Remove Used Maps
-        {
-            //Map_Shuffled_Queue.Dequeue();
-            Debug.Log(Map_Shuffled_Queue.Count);
-        }
-
-        ///////////////////////////////////////////////////////////
-        // Map Index Check
-        //if (Boss_map_Index == Map_Shuffled_List.Count) // Reset Another List Index
-        //{
-        //    map_Index = 0;
-        //    is_Boss_Stage = false;
-        //}
-
-        //if (map_Index == Map_Shuffled_List.Count)
-        //{
-        //    Boss_map_Index = 0;
-        //    is_Boss_Stage = true;
-        //}
-
-
-
-        //// Map Index Plus
-        //if (map_Index < Map_Shuffled_List.Count && !is_Boss_Stage)
-        //{
-        //    v_Next_SpawnPoint = Map_Shuffled_List[map_Index].v_Map_Spawnpoint;
-
-        //    map_Index++;
-
-        //}
-        
-        //if (Boss_map_Index < Map_Shuffled_List.Count && is_Boss_Stage)
-        //{
-        //    v_Next_SpawnPoint = FB_Map_Data[Boss_map_Index].v_Map_Spawnpoint;
-        //    Boss_map_Index++;
-        //}
     }
 
     public bool Check_Boss_Stage()
@@ -287,8 +291,12 @@ public class Map_Manager : MonoBehaviour
 
             map_Card_02 = obj_manager.card_Values[rand].Month;
         } while (map_Card_02 == player_card_Value_01 || map_Card_02 == player_card_Value_02 || map_Card_02 == map_Card_01);
+    }
 
-        Debug.Log(map_Card_01);
-        Debug.Log(map_Card_02);
+    private void Set_Event_Next()
+    {
+        mv_Next_Map = Event_Map_Shuffled_Queue.Dequeue();
+        v_Next_SpawnPoint = mv_Next_Map.v_Map_Spawnpoint;
+        Debug.Log("Event Map Next!");
     }
 }

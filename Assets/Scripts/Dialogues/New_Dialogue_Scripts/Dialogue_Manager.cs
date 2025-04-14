@@ -154,7 +154,6 @@ public class Dialogue_Manager : MonoBehaviour
     {
         if (called_Script.Count > 0)
         {
-
             Dialogue_Canvas.SetActive(true);
             UI_Canvas.SetActive(false);
             Name_Text.text = called_Name.Dequeue();

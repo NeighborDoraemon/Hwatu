@@ -457,18 +457,19 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         switch (Now_Contact_Npc.gameObject.name)
         {
-            case "Stat_Npc":
-                Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.UI_Start();
-                break;
+            //case "Stat_Npc":
+            //    Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.UI_Start();
+            //    break;
 
-            case "Start_Card_Npc":
-                Now_Contact_Npc.GetComponent<Start_Card_Npc>()?.Request_Spawn_Cards();
-                break;
+            //case "Start_Card_Npc":
+            //    Now_Contact_Npc.GetComponent<Start_Card_Npc>()?.Request_Spawn_Cards();
+            //    break;
 
             default:
                 {
                     Now_Contact_Npc.GetComponent<Npc_Interface>().Npc_Interaction_Start();
                     Dialogue_Manager.instance.Get_Npc_Data(Now_Contact_Npc);
+                    movement = Vector2.zero;
                     break;
                 }
         }        
@@ -570,6 +571,13 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         Change_FirstAndThird_Card();
 
+        if (card_Inventory[0] != null && card_Inventory[1] != null) //Match Up Call
+        {
+            match_manager.Give_Player_Cards(card_Inventory[0], card_Inventory[1]);
+            match_manager.Match_Reset();
+            match_manager.Start_Match();
+        }
+
         StartCoroutine(Card_Change_Cooldown_Routine());
     }
 
@@ -579,6 +587,13 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             return;
 
         Change_SecondAndThird_Card();
+
+        if (card_Inventory[0] != null && card_Inventory[1] != null) //Match Up Call
+        {
+            match_manager.Give_Player_Cards(card_Inventory[0], card_Inventory[1]);
+            match_manager.Match_Reset();
+            match_manager.Start_Match();
+        }
 
         StartCoroutine(Card_Change_Cooldown_Routine());
     }

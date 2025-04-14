@@ -164,6 +164,14 @@ public class Wolf : Enemy_Parent, Enemy_Interface
 
     public void Enemy_Stun(float Duration)
     {
+        is_Attack_Turn = false;
+        is_Attacking = false;
+        is_Attack_Complete = false;
 
+        BR_Not_Attacking.Value = true;
+
+        Attack_Time = 0.0f;
+
+        Take_Stun(Duration);
     }
 }

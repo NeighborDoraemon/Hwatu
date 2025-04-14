@@ -72,7 +72,7 @@ public class Hog : Enemy_Parent, Enemy_Interface
     private void Attack_Call()
     {
         Attack_Time += Time.deltaTime;
-        BR_Not_Attacking.Value = false;
+        //BR_Not_Attacking.Value = false;
 
         if (!is_Attack_Turn && !is_Attack_Complete) // 공격 시작 시, 플레이어 방향 보게하기
         {
@@ -93,6 +93,7 @@ public class Hog : Enemy_Parent, Enemy_Interface
         {
             if(!is_Attack_Once)//Damaging Only Once
             {
+                BR_Not_Attacking.Value = false;
                 is_Attack_Once = true;
                 enemy_CB.Damage_Once = true;
             }
