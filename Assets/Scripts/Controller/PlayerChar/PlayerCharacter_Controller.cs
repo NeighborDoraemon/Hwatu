@@ -467,9 +467,12 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
             default:
                 {
-                    Now_Contact_Npc.GetComponent<Npc_Interface>().Npc_Interaction_Start();
-                    Dialogue_Manager.instance.Get_Npc_Data(Now_Contact_Npc);
-                    movement = Vector2.zero;
+                    if (Time.timeScale != 0.0f)
+                    {
+                        Now_Contact_Npc.GetComponent<Npc_Interface>().Npc_Interaction_Start();
+                        Dialogue_Manager.instance.Get_Npc_Data(Now_Contact_Npc);
+                        movement = Vector2.zero;
+                    }
                     break;
                 }
         }        
@@ -1141,7 +1144,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (ctx.phase == InputActionPhase.Started)
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) && Current_Player_State == Player_State.Normal)
             {
                 if (Time.timeScale == 0.0f)
                 {

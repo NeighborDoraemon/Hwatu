@@ -28,7 +28,7 @@ public class Fall_Platform_Object : MonoBehaviour
 
         if(collision.gameObject.CompareTag("Enemy"))
         {
-            collision.gameObject.GetComponent<Enemy_Basic>().TakeDamage(99999);
+            collision.gameObject.GetComponentInChildren<Enemy_Basic>().TakeDamage(99999);
         }
     }
 }
