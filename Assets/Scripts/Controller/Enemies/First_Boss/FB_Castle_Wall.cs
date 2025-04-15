@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FB_Castle_Wall : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class FB_Castle_Wall : MonoBehaviour
     [SerializeField] private GameObject Prfb_FB_Peasent;
     [SerializeField] private bool is_Started = false;
     [SerializeField] private bool is_Second_Phase = false;
+    [SerializeField] private GameObject Boss_Canvas;
 
     [Header("Value")]
     [SerializeField] private IntReference IR_Health;
@@ -36,6 +38,9 @@ public class FB_Castle_Wall : MonoBehaviour
     [Header("Boss_Boundary")]
     [SerializeField] private PolygonCollider2D boundary_01;
     [SerializeField] private PolygonCollider2D boundary_02;
+
+    [Header("Boss Canvas")]
+    [SerializeField] private Image Health_Image;
 
 
     // LandMine Mechanism needs to be fixed
@@ -91,7 +96,8 @@ public class FB_Castle_Wall : MonoBehaviour
 
     private void Update()
     {
-        if(is_Started)
+        Health_Image.fillAmount = (float)IR_Health.Value / 500;
+        if (is_Started)
         {
             f_Pattern_Time += Time.deltaTime;
 
@@ -300,6 +306,7 @@ public class FB_Castle_Wall : MonoBehaviour
     private void Start_Pattern()
     {
         is_Started = true;
+        Boss_Canvas.SetActive(true);
     }
 
 
