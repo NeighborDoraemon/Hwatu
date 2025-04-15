@@ -39,6 +39,7 @@ public class Input_Data_Manager : MonoBehaviour
     private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
 
     private const string RebindsKey = "Rebinds";
+    private bool is_Rebinding_Now = false;
 
 
     [Header("Canvas")]
@@ -106,7 +107,11 @@ public class Input_Data_Manager : MonoBehaviour
 
     public void Btn_Key_Change(int alpha)
     {
-        StartRebinding(alpha);
+        if (!is_Rebinding_Now)
+        {
+            is_Rebinding_Now = true;
+            StartRebinding(alpha);
+        }
     }
 
     public void StartRebinding(int i_key_count)
@@ -180,6 +185,7 @@ public class Input_Data_Manager : MonoBehaviour
             }
         }
         //Player_Input_List[alpha].action.Enable();
+        is_Rebinding_Now = false;
         rebindingOperation.Dispose();
 
         player_Input.SwitchCurrentActionMap("Player");
@@ -225,5 +231,10 @@ public class Input_Data_Manager : MonoBehaviour
         {
             g_Obj.GetComponent<Obj_KeyBoard>().Call_KeyObjects();
         }
+    }
+
+    private void Check_Same()
+    {
+
     }
 }
