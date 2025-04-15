@@ -25,6 +25,7 @@ public class Grenadier : Enemy_Parent, Enemy_Interface
 
     [Header("Others")]
     //[SerializeField] private GameObject Target_Player;
+    [SerializeField] private Animator Grenadier_Animator;
 
     [Header("Grenader")]
     [SerializeField] private Transform player;       // 플레이어의 Transform
@@ -74,11 +75,10 @@ public class Grenadier : Enemy_Parent, Enemy_Interface
     private void Attack_Call()
     {
         Attack_Time += Time.deltaTime;
-
+        TurnAround();
         if (!is_Attack_Turn) // 공격 시작 시, 플레이어 방향 보게하기
         {
-            TurnAround();
-
+            //TurnAround();
             Attack_Time = 0.0f;
 
             is_Attacking = true;
@@ -87,16 +87,11 @@ public class Grenadier : Enemy_Parent, Enemy_Interface
 
         if (Attack_Time >= f_Before_Delay && !is_Attack_Complete) // Attack
         {
-            if (BR_Facing_Left.Value) //Attack Left
-            {
-                is_Attack_Complete = true;
-                Throw_Attack();
-            }
-            else //Attack Right
-            {
-                is_Attack_Complete = true;
-                Throw_Attack();
-            }
+            //is_Attack_Turn = true;
+
+            is_Attack_Complete = true;
+            Grenadier_Animator.SetTrigger("is_Attacking");
+            //Throw_Attack();
         }
 
         //Call After Delay Method
@@ -111,7 +106,7 @@ public class Grenadier : Enemy_Parent, Enemy_Interface
         }
     }
 
-    private void Throw_Attack()
+    public void Throw_Attack()
     {
         Vector2 startPosition = transform.position;          // 척탄병 위치
         Vector2 targetPosition = Target_Player.transform.position;            // 플레이어 위치
@@ -125,27 +120,6 @@ public class Grenadier : Enemy_Parent, Enemy_Interface
         Rigidbody2D grenadeInstance = Instantiate(grenade, startPosition, Quaternion.identity); // 포탄 생성
         grenadeInstance.velocity = initialVelocity;          // 속도 부여
     }
-
-    //private void TurnAround()
-    //{
-    //    Quaternion quater = this.gameObject.transform.rotation;
-
-    //    if (this.gameObject.transform.position.x <= Target_Player.transform.position.x && BR_Facing_Left.Value) // 좌측 보는중 & 플레이어가 우측
-    //    {
-    //        BR_Facing_Left.Value = false;
-    //        quater.y = 180.0f;
-
-    //        this.gameObject.transform.rotation = quater;
-    //    }
-    //    else if (this.gameObject.transform.position.x > Target_Player.transform.position.x && !BR_Facing_Left.Value)
-    //    {
-    //        BR_Facing_Left.Value = true;
-    //        //Obj_Enemy.gameObject.transform.rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
-    //        quater.y = 0.0f;
-
-    //        this.gameObject.transform.rotation = quater;
-    //    }
-    //}
 
     public void Enemy_Stun(float Duration)
     {

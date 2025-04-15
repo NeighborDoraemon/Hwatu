@@ -7,9 +7,15 @@ public class Healer : Enemy_Parent, Enemy_Interface
 {
     [Header("Delay")]
     [SerializeField] private float f_Delay = 3.0f;
+    [SerializeField] private float f_After_Delay = 0.0f;
 
 
     [SerializeField] private GameObject Obj_HealBox;
+
+    [Header("Animator")]
+    [SerializeField] private Animator Healer_Animator;
+
+    private bool is_First_End = false;
     //[SerializeField] private BoolReference BR_Stunned;
 
     private float f_Attack_Time = 0.0f;
@@ -38,17 +44,28 @@ public class Healer : Enemy_Parent, Enemy_Interface
 
     private void Call_Heal()
     {
-        if(f_Attack_Time >= f_Delay)
+        if(f_Attack_Time >= f_Delay && !is_First_End)
         {
             Debug.Log("Heal Called");
+            Healer_Animator.SetBool("is_Attacking",true);
             Obj_HealBox.GetComponent<Heal_Box>().Heal();
+            //f_Attack_Time = 0.0f;
+            is_First_End = true;
+        }
+
+        if (f_Attack_Time >= f_After_Delay + f_Delay && is_First_End)
+        {
+            Healer_Animator.SetBool("is_Attacking", false);
             f_Attack_Time = 0.0f;
+            is_First_End = false;
         }
     }
 
     public void Enemy_Stun(float Duration)
     {
+        Healer_Animator.SetBool("is_Attacking", false);
         f_Attack_Time = 0.0f;
         Take_Stun(Duration);
+        is_First_End = false;
     }
 }

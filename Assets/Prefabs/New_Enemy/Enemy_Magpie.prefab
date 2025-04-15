@@ -257,7 +257,7 @@ MonoBehaviour:
     constantValue: 0
   Obj_Attack_Box: {fileID: 8735019349033385115}
   Feather_Projectile: {fileID: 2291396877956805838, guid: e39fbd49cd13c6f48823c1f892f388c9, type: 3}
-  f_Projectile_Speed: 5
+  f_Projectile_Speed: 8
 --- !u!1 &2802684632574341055
 GameObject:
   m_ObjectHideFlags: 0
