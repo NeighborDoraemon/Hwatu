@@ -666,7 +666,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8859319251436329861
 RectTransform:
   m_ObjectHideFlags: 0
@@ -833,7 +833,7 @@ GameObject:
   - component: {fileID: 6142687935570316557}
   - component: {fileID: 5048892940823762804}
   - component: {fileID: 749184903287345303}
-  - component: {fileID: 8318535865946322406}
+  - component: {fileID: 5845493041463788730}
   - component: {fileID: 5353913321886603706}
   m_Layer: 9
   m_Name: Enemy_Bola_Thrower
@@ -903,12 +903,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
-  m_Color: {r: 0.2830189, g: 0.2830189, b: 0.2830189, a: 1}
+  m_Sprite: {fileID: -812543838, guid: eb3ed613c6cbba345a48bd23ba133a52, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_DrawMode: 1
+  m_Size: {x: 4, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -947,7 +947,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.8}
   m_Direction: 0
 --- !u!50 &5048892940823762804
 Rigidbody2D:
@@ -998,7 +998,7 @@ MonoBehaviour:
   scarecrow: {fileID: 0}
   min_Money_Drop: 2
   Max_Money_Drop: 15
---- !u!114 &8318535865946322406
+--- !u!114 &5845493041463788730
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1007,7 +1007,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4731985901941664976}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1f4da6713958ac49a4f018560294b46, type: 3}
+  m_Script: {fileID: 11500000, guid: d3b30319d2b62b841abeff15b5728715, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Target_Player: {fileID: 0}
@@ -1044,6 +1044,7 @@ MonoBehaviour:
     key: is_Not_Attacking
     constantValue: 0
   Bullet_Prefab: {fileID: 8122953524587504345, guid: 5798f54eddb5b4f4cb85eca5bf678ec1, type: 3}
+  Bola_Animator: {fileID: 5353913321886603706}
 --- !u!95 &5353913321886603706
 Animator:
   serializedVersion: 5
@@ -1054,7 +1055,7 @@ Animator:
   m_GameObject: {fileID: 4731985901941664976}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c411dbfc9910f7447bed08cca975b907, type: 2}
+  m_Controller: {fileID: 9100000, guid: 81c47bbfc24035e47bee33fcdf979dee, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2663770788491156977
 RectTransform:
   m_ObjectHideFlags: 0
@@ -566,8 +566,8 @@ GameObject:
   - component: {fileID: 2056791566716770318}
   - component: {fileID: 4241603848801176815}
   - component: {fileID: 2020747765564492344}
-  - component: {fileID: 7680133026911164852}
   - component: {fileID: 1626734228443647797}
+  - component: {fileID: 7680133026911164852}
   m_Layer: 9
   m_Name: Enemy_Summoner
   m_TagString: Enemy
@@ -637,12 +637,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
-  m_Color: {r: 0.4490565, g: 0, b: 0.27628914, a: 1}
+  m_Sprite: {fileID: 1201621629, guid: 73b945bbe5293fb4586d52a11511f111, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.4, y: 0.8}
+  m_DrawMode: 1
+  m_Size: {x: 5, y: 5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -732,27 +732,6 @@ MonoBehaviour:
   scarecrow: {fileID: 0}
   min_Money_Drop: 15
   Max_Money_Drop: 25
---- !u!95 &7680133026911164852
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3465345333553980773}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c411dbfc9910f7447bed08cca975b907, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &1626734228443647797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -806,10 +785,32 @@ MonoBehaviour:
     key: i_Attack_Damage
     constantValue: 0
   Summon_Position: {fileID: 3528760516356842291}
+  Summon_Animator: {fileID: 7680133026911164852}
   enemy_Hog: {fileID: 362895113993197914, guid: 3b36c711410824740812ebfbea927d8e, type: 3}
   enemy_Bird: {fileID: 119715352043712820, guid: 70a66c6e314511343a11edb39177ffaf, type: 3}
   enemy_Magpie: {fileID: 2120112856537873307, guid: 4bc5ddba295284848932df048d668e66, type: 3}
   enemy_Wolf: {fileID: 6888356697249192122, guid: 1b04da6e633e8a746b7ba4733d6d19be, type: 3}
+--- !u!95 &7680133026911164852
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3465345333553980773}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: cf966db71c9c28c46a72bbc27db51521, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3528760516356842291
 GameObject:
   m_ObjectHideFlags: 0

@@ -114,7 +114,7 @@ public class Magpie : Enemy_Parent, Enemy_Interface
         
         if(projectRB != null)
         {
-            projectRB.velocity = direction * f_Projectile_Speed;
+            projectRB.velocity = direction.normalized * f_Projectile_Speed;
         }
     }
 

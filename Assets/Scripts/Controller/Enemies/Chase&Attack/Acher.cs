@@ -27,6 +27,7 @@ public class Acher : Enemy_Parent, Enemy_Interface
     [Header("Others")]
     //[SerializeField] private GameObject Target_Player;
     [SerializeField] private GameObject Bullet_Prefab;
+    [SerializeField] private Animator Acher_Animator;
 
     private float arrowSpeed = 15.0f;
 
@@ -71,6 +72,9 @@ public class Acher : Enemy_Parent, Enemy_Interface
             is_Attacking = true;
             is_Attack_Turn = true;
             BR_Not_Attacking.Value = false;
+
+            Acher_Animator.SetBool("is_First_End", false);
+            Acher_Animator.SetBool("is_Attacking", true);
         }
 
         if (Attack_Time >= f_Before_Delay && !is_Attack_Complete) // Attack
@@ -85,6 +89,7 @@ public class Acher : Enemy_Parent, Enemy_Interface
                 Acher_Attack(1);
                 is_Attack_Complete = true;
             }
+            Acher_Animator.SetBool("is_First_End", true);
         }
 
         //Call After Delay Method
@@ -98,12 +103,16 @@ public class Acher : Enemy_Parent, Enemy_Interface
             BR_Not_Attacking.Value = true;
 
             Attack_Time = 0.0f;
+
+            Acher_Animator.SetBool("is_Attacking", false);
         }
     }
 
     private void Acher_Attack(int Alpha) //Left = -1, Right = 1;
     {
-        GameObject projectile = MonoBehaviour.Instantiate(Bullet_Prefab, this.gameObject.transform.position, this.gameObject.transform.rotation);
+        Vector3 v3 = this.gameObject.transform.position;
+        v3.y += 0.15f;
+        GameObject projectile = MonoBehaviour.Instantiate(Bullet_Prefab, v3, this.gameObject.transform.rotation);
 
         projectile.GetComponent<Enemy_Porjectile>().i_Projectile_Damage = IR_Attack_Damage.Value;
 

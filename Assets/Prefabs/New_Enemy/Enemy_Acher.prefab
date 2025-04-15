@@ -83,12 +83,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
-  m_Color: {r: 0.5773585, g: 0.16449271, b: 0.1668701, a: 1}
+  m_Sprite: {fileID: -495414047, guid: af3fd7495ffe6cb42a2d8a382fddcbeb, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_DrawMode: 1
+  m_Size: {x: 4, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -126,7 +126,7 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.05}
   m_Size: {x: 1, y: 1}
   m_Direction: 0
 --- !u!50 &6020317094623358923
@@ -224,6 +224,7 @@ MonoBehaviour:
     key: is_Not_Attacking
     constantValue: 0
   Bullet_Prefab: {fileID: 8333097592702568372, guid: 11ba6240cc42a0243a0641d2fc307506, type: 3}
+  Acher_Animator: {fileID: 3050924242845109254}
 --- !u!95 &3050924242845109254
 Animator:
   serializedVersion: 5
@@ -1061,7 +1062,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.2}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1115,7 +1116,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5167390969829477657
 RectTransform:
   m_ObjectHideFlags: 0

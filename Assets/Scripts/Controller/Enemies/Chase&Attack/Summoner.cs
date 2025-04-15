@@ -25,6 +25,7 @@ public class Summoner : Enemy_Parent, Enemy_Interface
     [Header("Others")]
     //[SerializeField] private GameObject Target_Player;
     [SerializeField] private GameObject Summon_Position;
+    [SerializeField] private Animator Summon_Animator;
 
     [Header("Enemies")]
     [SerializeField] private GameObject enemy_Hog;
@@ -99,8 +100,8 @@ public class Summoner : Enemy_Parent, Enemy_Interface
 
         if (Attack_Time >= f_Before_Delay && !is_Attack_Complete) // Attack
         {
+            Summon_Animator.SetTrigger("is_Attacking");
             Summon();
-
             is_Attack_Complete = true;
         }
 
@@ -111,7 +112,6 @@ public class Summoner : Enemy_Parent, Enemy_Interface
             is_Attacking = false;
             is_Attack_Complete = false;
 
-            Debug.Log("Not Attacking true");
             BR_Not_Attacking.Value = true;
 
             Attack_Time = 0.0f;
