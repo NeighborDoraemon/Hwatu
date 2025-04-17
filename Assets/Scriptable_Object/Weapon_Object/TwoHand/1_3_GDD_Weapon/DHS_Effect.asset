@@ -20,3 +20,15 @@ MonoBehaviour:
       effect_Animator: {fileID: 0}
       position_Offset: {x: 0.259, y: -0.235, z: 0}
       duration: 0.1
+  - motion_Name: PC_DHS_JumpAtk
+    frame_Effects:
+    - frame_Number: 1
+      effect_Sprites: {fileID: -1630964306, guid: 8febea4a3a930fa45886b356e88a5296, type: 3}
+      effect_Animator: {fileID: 0}
+      position_Offset: {x: 0.155, y: -0.046, z: 0}
+      duration: 0.05
+    - frame_Number: 2
+      effect_Sprites: {fileID: 2078543317, guid: 8febea4a3a930fa45886b356e88a5296, type: 3}
+      effect_Animator: {fileID: 0}
+      position_Offset: {x: 0.166, y: -0.072, z: 0}
+      duration: 0.1

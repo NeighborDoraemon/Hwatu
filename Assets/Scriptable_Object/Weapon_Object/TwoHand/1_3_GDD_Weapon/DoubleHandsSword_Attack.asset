@@ -14,3 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skill_Projectile_Prefab: {fileID: 4150010414422937313, guid: a7f77746d8f4c0b47a1d432cac8b0f31, type: 3}
   projectile_Speed: 10
+  ground_Layer:
+    serializedVersion: 2
+    m_Bits: 64
+  min_FallSpeed: 0.1

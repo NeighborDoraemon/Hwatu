@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animation_Name: PC_DHS_JumpAtk
   frame_Pos:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
+  - {x: -0.142, y: -0.114, z: 0}
+  - {x: -0.142, y: -0.114, z: 0}
+  - {x: 0.252, y: -0.383, z: 0}
+  - {x: 0.229, y: -0.406, z: 0}
+  - {x: 0.252, y: -0.383, z: 0}
   frame_Rotations:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 166.036}
+  - {x: 0, y: 0, z: 166.036}
+  - {x: 0, y: 0, z: -47.174}
+  - {x: 0, y: 0, z: -61.353}
+  - {x: 0, y: 0, z: -47.174}
   frame_Scales: []

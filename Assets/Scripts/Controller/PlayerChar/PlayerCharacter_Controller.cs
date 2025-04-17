@@ -22,7 +22,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     Vector2 movement = new Vector2();
     public bool isMoving;
-    int jumpCount = 0;
+    [HideInInspector] public int jumpCount = 0;
     public int maxJumpCount = 2;
 
     [Header("Teleport")]
@@ -34,11 +34,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     public GameObject chestPrefab;
     public Transform spawnPoint;
 
-    [HideInInspector]
-    public bool isGrounded;
-    [HideInInspector]
-    public bool canAttack = true;
-    
+    [HideInInspector] public bool isGrounded;
+    [HideInInspector] private bool has_Jumped;
+    [HideInInspector] public bool canAttack = true;
+
     [Header("Cinemachine")]
     private Camera_Manager camera_Manager;
     private Collider2D cur_Cinemachine_Collider;
@@ -209,7 +208,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         if (isGrounded && rb.velocity.y == 0 && this.gameObject.transform.position.y - 0.3f > Now_New_Platform.transform.position.y)
         {
-            jumpCount = 0;
+            //jumpCount = 0;
         }
     }
 
@@ -313,13 +312,21 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 {
                     if (jumpCount < maxJumpCount)
                     {
-                        rb.velocity = new Vector2(rb.velocity.x, 0);
-                        rb.AddForce(new Vector2(0, jumpPower), ForceMode2D.Impulse);
-                        jumpCount++;
+                        Do_Jump();
                     }
                 }
             }
         }
+    }
+
+    private void Do_Jump()
+    {
+        rb.velocity = new Vector2(rb.velocity.x, 0);
+        rb.AddForce(new Vector2(0, jumpPower), ForceMode2D.Impulse);
+
+        jumpCount++;
+        has_Jumped = true;
+        isGrounded = false;
     }
     
     public void Input_Teleportation(InputAction.CallbackContext ctx)
@@ -791,6 +798,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 if (frame_Effect_Info.effect_Animator != null)
                 {
                     effect_Animator.runtimeAnimatorController = frame_Effect_Info.effect_Animator;
+                    effect_Render.enabled = true;
                     effect_Animator.Play("Effect_Start");
                     StartCoroutine(Reset_Effect_After_Animation(frame_Effect_Info.duration));
                 }
@@ -969,9 +977,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 //Debug.LogError("Attack Strategy is missing for Hold_Attack");
                 break;
             }
-
-            yield return new WaitForSeconds(cur_Weapon_Data.attack_Cooldown);            
         }
+        yield return new WaitForSeconds(cur_Weapon_Data.attack_Cooldown);
 
         is_AtkCoroutine_Running = false;
     }
@@ -1171,6 +1178,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (other.gameObject.CompareTag("Platform") || other.gameObject.CompareTag("OneWayPlatform"))
         {
+            bool was_Ground = isGrounded;
+
             isGrounded = true;
             i_platform++;
 
@@ -1180,6 +1189,12 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             }
 
             Now_New_Platform = other.gameObject; //Reset condition
+
+            if (!was_Ground)
+            {
+                has_Jumped = false;
+                jumpCount = 0;
+            }
         }
     }
 
@@ -1194,6 +1209,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             {
                 isGrounded = false;
                 i_platform = 0;
+
+                if (!has_Jumped)
+                {
+                    jumpCount = 1;
+                }
             }
 
             if (other.gameObject.CompareTag("OneWayPlatform") && other.gameObject == current_Platform)
