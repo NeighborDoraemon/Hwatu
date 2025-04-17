@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -46,16 +47,20 @@ public class Pause_Manager : MonoBehaviour
 
     public void Pause_Start()
     {
+        Time.timeScale = 0.0f;
         Main_Can.gameObject.SetActive(false);
         Pause_Can.gameObject.SetActive(true);
     }
 
     public void Pause_Stop()
     {
-        Time.timeScale = 1.0f;
-        Pause_Can.gameObject.SetActive(false);
-        Main_Can.gameObject.SetActive(true);
-        Setting_Can.gameObject.SetActive(false);
+        //if (!Setting_Can.gameObject.activeSelf)
+        {
+            Time.timeScale = 1.0f;
+            Pause_Can.gameObject.SetActive(false);
+            Main_Can.gameObject.SetActive(true);
+            Setting_Can.gameObject.SetActive(false);
+        }
     }
 
     public void Btn_Setting()
@@ -66,9 +71,13 @@ public class Pause_Manager : MonoBehaviour
 
     public void Btn_Setting_Out()
     {
-        Setting_Can.gameObject.SetActive(false);
-        Pause_Can.gameObject.SetActive(true);
+        //if (Setting_Can.gameObject.activeSelf)
+        //{
+            Setting_Can.gameObject.SetActive(false);
+            Pause_Can.gameObject.SetActive(true);
+        //}
     }
+
 
     public void Btn_Help()
     {

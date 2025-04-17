@@ -2548,6 +2548,7 @@ Transform:
   - {fileID: 1269816264}
   - {fileID: 1983624798}
   - {fileID: 1927102955}
+  - {fileID: 1295748338}
   m_Father: {fileID: 2038471288}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &172223717
@@ -53540,6 +53541,72 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6852315076723741100, guid: 8bc2c117881c4224492a7ccb34b9b866, type: 3}
   m_PrefabInstance: {fileID: 1295375850}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1295748337
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 172223716}
+    m_Modifications:
+    - target: {fileID: 7581791926005544834, guid: f32d828e6711029498753af375685cb3, type: 3}
+      propertyPath: m_Name
+      value: Walls
+      objectReference: {fileID: 0}
+    - target: {fileID: 8570627583694486536, guid: f32d828e6711029498753af375685cb3, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8570627583694486536, guid: f32d828e6711029498753af375685cb3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8570627583694486536, guid: f32d828e6711029498753af375685cb3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8570627583694486536, guid: f32d828e6711029498753af375685cb3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8570627583694486536, guid: f32d828e6711029498753af375685cb3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8570627583694486536, guid: f32d828e6711029498753af375685cb3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8570627583694486536, guid: f32d828e6711029498753af375685cb3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8570627583694486536, guid: f32d828e6711029498753af375685cb3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8570627583694486536, guid: f32d828e6711029498753af375685cb3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8570627583694486536, guid: f32d828e6711029498753af375685cb3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8570627583694486536, guid: f32d828e6711029498753af375685cb3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f32d828e6711029498753af375685cb3, type: 3}
+--- !u!4 &1295748338 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8570627583694486536, guid: f32d828e6711029498753af375685cb3, type: 3}
+  m_PrefabInstance: {fileID: 1295748337}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1296128803
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54682,6 +54749,7 @@ MonoBehaviour:
   player_Con: {fileID: 1097749508849876877}
   Main_Can: {fileID: 1354925987}
   Option_Can: {fileID: 93344552}
+  Pause_Can: {fileID: 0}
   Key_Objects:
   - {fileID: 967641597}
   - {fileID: 1954914591}
@@ -64207,6 +64275,10 @@ PrefabInstance:
       propertyPath: weapon_Manager
       value: 
       objectReference: {fileID: 1370405311}
+    - target: {fileID: 5418104219592675981, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
+      propertyPath: Key_Setting_Can
+      value: 
+      objectReference: {fileID: 93344552}
     - target: {fileID: 5418104219592675981, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
       propertyPath: card_UI_Manager
       value: 

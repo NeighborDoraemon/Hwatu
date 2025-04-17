@@ -74,8 +74,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     [SerializeField] private SpriteRenderer player_render;
     
     [Header("Map_Manager")]
-    [SerializeField]
-    private Map_Manager map_Manager;
+    [SerializeField] private Map_Manager map_Manager;
     public bool use_Portal = false;
     
     //platform & Collider
@@ -103,12 +102,17 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     [HideInInspector] public bool is_Knock_Back = false;
 
+    //for Escape
+    [HideInInspector] public bool is_Key_Setting = false;
+    [SerializeField] private Canvas Key_Setting_Can;
+
     public enum Player_State
     {
         Normal,
         Dialogue,
         Dialogue_Choice,
-        Event_Doing
+        Event_Doing,
+        Trap_Minigame
     }
 
     public enum Event_State
@@ -243,7 +247,28 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             {
                 movement = Vector2.zero;
             }
-            else if (ctx.phase == InputActionPhase.Started)
+            //else if (ctx.phase == InputActionPhase.Started)
+            //{
+            //    movement = ctx.action.ReadValue<Vector2>();
+
+            //    if (is_Minigame)
+            //    {
+            //        current_gauge += increase_rate;
+            //        Debug.Log("게이지 증가" + current_gauge);
+            //    }
+            //}
+            else
+            {
+                movement = ctx.action.ReadValue<Vector2>();
+            }
+        }
+        else if (Current_Player_State == Player_State.Event_Doing)
+        {
+            Now_Contact_Npc.GetComponent<Npc_Interface>().Event_Move(ctx);
+        }
+        else if (Current_Player_State == Player_State.Trap_Minigame)
+        {
+            if (ctx.phase == InputActionPhase.Started)
             {
                 movement = ctx.action.ReadValue<Vector2>();
 
@@ -253,14 +278,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                     Debug.Log("게이지 증가" + current_gauge);
                 }
             }
-            else
-            {
-                movement = ctx.action.ReadValue<Vector2>();
-            }
-        }
-        else if(Current_Player_State == Player_State.Event_Doing)
-        {
-            Now_Contact_Npc.GetComponent<Npc_Interface>().Event_Move(ctx);
         }
     }
 
@@ -1144,17 +1161,24 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (ctx.phase == InputActionPhase.Started)
         {
-            if (Input.GetKeyDown(KeyCode.Escape) && Current_Player_State == Player_State.Normal)
+            if (/*Input.GetKeyDown(KeyCode.Escape) &&*/ Current_Player_State == Player_State.Normal)
             {
-                if (Time.timeScale == 0.0f)
+                if (Time.timeScale == 0.0f /*&& !Key_Setting_Can.gameObject.activeSelf*/)
                 {
-                    pause_Manager.Pause_Stop();
-                    Time.timeScale = 1.0f;
+                    if (!Key_Setting_Can.gameObject.activeSelf)
+                    {
+                        pause_Manager.Pause_Stop();
+                    }
+                    else
+                    {
+                        pause_Manager.Btn_Setting_Out();
+                    }
+                    //Time.timeScale = 1.0f;
                 }
                 else if (Time.timeScale == 1.0f)
                 {
                     pause_Manager.Pause_Start();
-                    Time.timeScale = 0.0f;
+                    //Time.timeScale = 0.0f;
                 }
             }
         }
@@ -1361,6 +1385,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         current_gauge = 0;
 
         is_Minigame = true;
+        Current_Player_State = Player_State.Trap_Minigame;
 
         while (current_gauge <= require_gauge)
         {
@@ -1378,6 +1403,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
 
         is_Minigame = false;
+        Current_Player_State = Player_State.Normal;
         Knock_Back_End();
         onComplete?.Invoke();
     }

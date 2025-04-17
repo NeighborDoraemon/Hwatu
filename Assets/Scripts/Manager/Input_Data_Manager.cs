@@ -45,6 +45,7 @@ public class Input_Data_Manager : MonoBehaviour
     [Header("Canvas")]
     [SerializeField] private Canvas Main_Can;
     [SerializeField] private Canvas Option_Can;
+    [SerializeField] private Canvas Pause_Can;
 
     private bool is_Option_Setting = false;
 
@@ -99,10 +100,10 @@ public class Input_Data_Manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && is_Option_Setting == true)
-        {
-            Btn_Option_Quit();
-        }
+        //if (Input.GetKeyDown(KeyCode.Escape) && is_Option_Setting == true)
+        //{
+        //    Btn_Option_Quit();
+        //}
     }
 
     public void Btn_Key_Change(int alpha)
@@ -203,7 +204,9 @@ public class Input_Data_Manager : MonoBehaviour
 
     public void Btn_Option()
     {
-        if(Main_Can != null)
+        //player_Con.is_Key_Setting = true;
+
+        if (Main_Can != null)
         {
             Main_Can.gameObject.SetActive(false);
         }
@@ -213,12 +216,16 @@ public class Input_Data_Manager : MonoBehaviour
 
     public void Btn_Option_Quit()
     {
-        Option_Can.gameObject.SetActive(false);
-        if (Main_Can != null)
+        if (is_Option_Setting == true)
         {
-            Main_Can.gameObject.SetActive(true);
+            Option_Can.gameObject.SetActive(false);
+            if (Main_Can != null)
+            {
+                Main_Can.gameObject.SetActive(true);
+            }
+            is_Option_Setting = false;
+            //player_Con.is_Key_Setting = true;
         }
-        is_Option_Setting = false;
     }
 
     public void Btn_Quit()

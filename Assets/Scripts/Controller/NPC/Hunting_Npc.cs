@@ -52,6 +52,8 @@ public class Hunting_Npc : MonoBehaviour, Npc_Interface
     private bool is_Result_Once = false;
     private int Used_bullet = 0;
 
+    private List<GameObject> Birds_List = new List<GameObject>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -143,6 +145,15 @@ public class Hunting_Npc : MonoBehaviour, Npc_Interface
 
                 }
 
+                for(int i = 0; i < Birds_List.Count; i++)
+                {
+                    if (Birds_List[i] != null)
+                    {
+                        Destroy(Birds_List[i].gameObject);
+                    }
+                }
+
+
                 is_Result_Once = true;
             }
         }
@@ -219,6 +230,7 @@ public class Hunting_Npc : MonoBehaviour, Npc_Interface
             }
 
             GameObject bird_pref = Instantiate(Bird_Prefabs[Prf_Count], Spawn_Points[i].transform.position, Quaternion.identity);
+            Birds_List.Add(bird_pref);
 
             bird_pref.GetComponent<Hunting_Bird>().Set_Manager(this.gameObject);
             bird_pref.GetComponent<Hunting_Bird>().Set_Position(Spawn_Points[i].transform.position);
