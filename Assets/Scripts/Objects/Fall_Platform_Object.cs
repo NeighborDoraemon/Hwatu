@@ -28,7 +28,13 @@ public class Fall_Platform_Object : MonoBehaviour
 
         if(collision.gameObject.CompareTag("Enemy"))
         {
-            collision.gameObject.GetComponentInChildren<Enemy_Basic>().TakeDamage(99999);
+            Debug.Log("적 낙사 호출시작");
+            Enemy_Basic enemy = collision.GetComponent<Enemy_Basic>()
+                            ?? collision.GetComponentInParent<Enemy_Basic>()
+                            ?? collision.GetComponentInChildren<Enemy_Basic>();
+
+            Debug.Log("적 낙사 호출완료");
+            enemy.TakeDamage(999);
         }
     }
 }

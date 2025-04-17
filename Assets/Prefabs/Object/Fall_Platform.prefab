@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8028343438538426895}
   - component: {fileID: 1347738892860360839}
   - component: {fileID: 6522117707186447762}
+  - component: {fileID: 5224658238622360322}
   m_Layer: 0
   m_Name: Fall_Platform
   m_TagString: Untagged
@@ -91,3 +92,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   v_Return_Position: {x: -30, y: 1, z: 0}
+--- !u!50 &5224658238622360322
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2240859782521979056}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0

@@ -21,14 +21,17 @@ public class Sprint_Trap : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        foreach (ContactPoint2D contact in collision.contacts)
+        if (collision.gameObject.CompareTag("Player"))
         {
-            Vector2 normal = contact.normal;
-            Debug.Log("Normal: " + normal);
-
-            if (normal.y < -0.5f)
+            foreach (ContactPoint2D contact in collision.contacts)
             {
-                collision.gameObject.GetComponent<Rigidbody2D>().velocity += new Vector2(0.0f, Power);
+                Vector2 normal = contact.normal;
+                Debug.Log("Normal: " + normal);
+
+                if (normal.y < -0.5f)
+                {
+                    collision.gameObject.GetComponent<Rigidbody2D>().velocity += new Vector2(0.0f, Power);
+                }
             }
         }
     }

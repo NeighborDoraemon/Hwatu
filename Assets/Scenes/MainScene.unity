@@ -41131,7 +41131,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &470908298
 Transform:
   m_ObjectHideFlags: 0
@@ -46947,7 +46947,7 @@ Transform:
   m_GameObject: {fileID: 879990129}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -25.16, y: 1.04, z: -10}
+  m_LocalPosition: {x: -29.9, y: -0.70000005, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -58288,7 +58288,7 @@ Transform:
   m_GameObject: {fileID: 1709604181}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -25.16, y: 1.04, z: -10}
+  m_LocalPosition: {x: -29.9, y: -0.70000005, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -60097,7 +60097,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 6
+  orthographic size: 7
   m_Depth: 10
   m_CullingMask:
     serializedVersion: 2
@@ -64245,11 +64245,11 @@ PrefabInstance:
       objectReference: {fileID: 1819922464}
     - target: {fileID: 7421354220885094674, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -25.16
+      value: -29.9
       objectReference: {fileID: 0}
     - target: {fileID: 7421354220885094674, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.94
+      value: -0.8
       objectReference: {fileID: 0}
     - target: {fileID: 7421354220885094674, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
       propertyPath: m_LocalPosition.z
@@ -64749,7 +64749,7 @@ PrefabInstance:
       objectReference: {fileID: 653631432400588474}
     - target: {fileID: 7478998900830929774, guid: 93b19b0c9f0da1843afaf3d205cdb2a9, type: 3}
       propertyPath: i_Using_Map_Count
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7478998900830929774, guid: 93b19b0c9f0da1843afaf3d205cdb2a9, type: 3}
       propertyPath: Map_Data.Array.size
