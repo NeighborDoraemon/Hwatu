@@ -226,7 +226,7 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d4206b8c-2463-4fc8-a048-74c0b4c67f48"",
-                    ""path"": ""<Keyboard>/shift"",
+                    ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
