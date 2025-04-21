@@ -996,10 +996,10 @@ CapsuleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 11328
+    m_Bits: 11329
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 7159
+    m_Bits: 7158
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -1043,8 +1043,8 @@ MonoBehaviour:
     blackboard: {fileID: 361652465450674757}
     key: is_Not_Attacking
     constantValue: 0
-  f_Knockback_Time: 1
-  f_Knockback_Power: 5
+  f_Knockback_Time: 0.2
+  f_Knockback_Power: 3
   Damage_Once: 1
 --- !u!114 &101030975460925924
 MonoBehaviour:

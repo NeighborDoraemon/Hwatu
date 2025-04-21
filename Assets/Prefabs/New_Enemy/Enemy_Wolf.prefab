@@ -1034,7 +1034,7 @@ MonoBehaviour:
     key: is_Not_Attacking
     constantValue: 0
   f_Knockback_Time: 0.2
-  f_Knockback_Power: 1
+  f_Knockback_Power: 2
   Damage_Once: 1
 --- !u!61 &2373751241745447790
 BoxCollider2D:

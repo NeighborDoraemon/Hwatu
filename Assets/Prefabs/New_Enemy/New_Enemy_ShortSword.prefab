@@ -797,7 +797,7 @@ MonoBehaviour:
     key: is_Not_Attacking
     constantValue: 0
   f_Knockback_Time: 0.2
-  f_Knockback_Power: 2
+  f_Knockback_Power: 3
   Damage_Once: 1
 --- !u!1 &5787911948114189688
 GameObject:

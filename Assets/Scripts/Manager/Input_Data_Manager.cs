@@ -19,7 +19,9 @@ public enum Key_Enum
     Down = 8,
     Change_First = 9,
     Change_Second = 10,
-    KeyCount = 11
+    Escape = 11,
+    Inventory = 12,
+    KeyCount = 13
 }
 
 
@@ -45,6 +47,7 @@ public class Input_Data_Manager : MonoBehaviour
     [Header("Canvas")]
     [SerializeField] private Canvas Main_Can;
     [SerializeField] private Canvas Option_Can;
+    [SerializeField] private Canvas Pause_Can;
 
     private bool is_Option_Setting = false;
 
@@ -99,10 +102,10 @@ public class Input_Data_Manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && is_Option_Setting == true)
-        {
-            Btn_Option_Quit();
-        }
+        //if (Input.GetKeyDown(KeyCode.Escape) && is_Option_Setting == true)
+        //{
+        //    Btn_Option_Quit();
+        //}
     }
 
     public void Btn_Key_Change(int alpha)
@@ -119,6 +122,7 @@ public class Input_Data_Manager : MonoBehaviour
         if (i_key_count == 0 || i_key_count == 1)
         {
             int bindingIndex = Player_Input_List[i_key_count].action.GetBindingIndexForControl(Player_Input_List[i_key_count].action.controls[i_key_count]);
+            int bindingIndex_02 = Player_Input_List[i_key_count].action.GetBindingIndexForControl(Player_Input_List[i_key_count].action.controls[i_key_count]);
             player_Input.SwitchCurrentActionMap("Menu");
 
             //Player_Input_List[i_key_count].action.Disable();
@@ -126,12 +130,26 @@ public class Input_Data_Manager : MonoBehaviour
             rebindingOperation = Player_Input_List[i_key_count].action.PerformInteractiveRebinding(bindingIndex)
                   .WithControlsExcluding("Mouse")
                   .OnMatchWaitForAnother(0.1f)
-                  .OnComplete(operation => RebinComplete(i_key_count))
+                  .OnComplete(operation => {
+                      string newBindingPath = Player_Input_List[i_key_count].action.bindings[bindingIndex].effectivePath;
+
+                      if (Check_Same(Player_Input_List[i_key_count].action, newBindingPath, bindingIndex_02))
+                      {
+                          Debug.Log("키 중복!");
+                          StartRebinding(i_key_count);
+                      }
+                      else
+                      {
+                          Debug.Log("정상 등록");
+                          RebinComplete(i_key_count);
+                      }
+                  })
                   .Start();
         }
         else if(i_key_count == 7 || i_key_count == 8)
         {
             int bindingIndex = Player_Input_List[i_key_count].action.GetBindingIndexForControl(Player_Input_List[i_key_count].action.controls[i_key_count - 7]);
+            int bindingIndex_02 = Player_Input_List[i_key_count].action.GetBindingIndexForControl(Player_Input_List[i_key_count].action.controls[i_key_count - 7]);
             player_Input.SwitchCurrentActionMap("Menu");
 
             //Player_Input_List[i_key_count].action.Disable();
@@ -139,7 +157,21 @@ public class Input_Data_Manager : MonoBehaviour
             rebindingOperation = Player_Input_List[i_key_count].action.PerformInteractiveRebinding(bindingIndex)
                   .WithControlsExcluding("Mouse")
                   .OnMatchWaitForAnother(0.1f)
-                  .OnComplete(operation => RebinComplete(i_key_count))
+                  .OnComplete(operation =>
+                  {
+                      string newBindingPath = Player_Input_List[i_key_count].action.bindings[bindingIndex].effectivePath;
+
+                      if (Check_Same(Player_Input_List[i_key_count].action, newBindingPath, bindingIndex_02))
+                      {
+                          Debug.Log("키 중복!");
+                          StartRebinding(i_key_count);
+                      }
+                      else
+                      {
+                          Debug.Log("정상 등록");
+                          RebinComplete(i_key_count);
+                      }
+                  })
                   .Start();
         }
         else
@@ -151,7 +183,20 @@ public class Input_Data_Manager : MonoBehaviour
             rebindingOperation = Player_Input_List[i_key_count].action.PerformInteractiveRebinding()
                   .WithControlsExcluding("Mouse")
                   .OnMatchWaitForAnother(0.1f)
-                  .OnComplete(operation => RebinComplete(i_key_count))
+                  .OnComplete(operation => {
+                      string newBindingPath = Player_Input_List[i_key_count].action.bindings[0].effectivePath;
+
+                      if (Check_Same(Player_Input_List[i_key_count].action, newBindingPath, 0))
+                      {
+                          Debug.Log("키 중복!");
+                          StartRebinding(i_key_count);
+                      }
+                      else
+                      {
+                          Debug.Log("정상 등록");
+                          RebinComplete(i_key_count);
+                      }
+                  })
                   .Start();
         }
     }
@@ -191,6 +236,7 @@ public class Input_Data_Manager : MonoBehaviour
         player_Input.SwitchCurrentActionMap("Player");
     }
 
+
     public void Save_Keys()
     {
         string rebinds = player_Input.actions.SaveBindingOverridesAsJson();
@@ -202,7 +248,9 @@ public class Input_Data_Manager : MonoBehaviour
 
     public void Btn_Option()
     {
-        if(Main_Can != null)
+        //player_Con.is_Key_Setting = true;
+
+        if (Main_Can != null)
         {
             Main_Can.gameObject.SetActive(false);
         }
@@ -212,12 +260,16 @@ public class Input_Data_Manager : MonoBehaviour
 
     public void Btn_Option_Quit()
     {
-        Option_Can.gameObject.SetActive(false);
-        if (Main_Can != null)
+        if (is_Option_Setting == true)
         {
-            Main_Can.gameObject.SetActive(true);
+            Option_Can.gameObject.SetActive(false);
+            if (Main_Can != null)
+            {
+                Main_Can.gameObject.SetActive(true);
+            }
+            is_Option_Setting = false;
+            //player_Con.is_Key_Setting = true;
         }
-        is_Option_Setting = false;
     }
 
     public void Btn_Quit()
@@ -233,8 +285,26 @@ public class Input_Data_Manager : MonoBehaviour
         }
     }
 
-    private void Check_Same()
+    private bool Check_Same(InputAction currentAction, string newPath, int currentBindingIndex)
     {
+        for (int i = 0; i < Player_Input_List.Count; i++)
+        {
+            var action = Player_Input_List[i].action;
 
+            for (int j = 0; j < action.bindings.Count; j++)
+            {
+                // 자기 자신의 바인딩은 건너뛴다 (같은 액션 + 같은 바인딩 인덱스)
+                if (action == currentAction && j == currentBindingIndex)
+                    continue;
+
+                if (action.bindings[j].effectivePath == newPath)
+                {
+                    Debug.Log($"중복 발생! {newPath} 는 {action.name}의 {j}번 바인딩과 겹침");
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

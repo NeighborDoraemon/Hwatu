@@ -104,16 +104,16 @@
                     "interactions": "",
                     "initialStateCheck": false
                 },
-              {
-                "name": "Change_SecondCard",
-                "type": "Button",
-                "id": "959ab392-253e-470e-9d8e-96b55dca27db",
-                "expectedControlType": "Button",
-                "processors": "",
-                "interactions": "",
-                "initialStateCheck": false
-              },
-              {
+                {
+                    "name": "Change_SecondCard",
+                    "type": "Button",
+                    "id": "959ab392-253e-470e-9d8e-96b55dca27db",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "UpDown",
                     "type": "Value",
                     "id": "e811147c-3dd4-4e18-916f-d975d0274ca4",
@@ -204,7 +204,7 @@
                 {
                     "name": "",
                     "id": "d4206b8c-2463-4fc8-a048-74c0b4c67f48",
-                    "path": "<Keyboard>/shift",
+                    "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -267,18 +267,18 @@
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
-              {
-                "name": "",
-                "id": "66e7e627-aa3b-4b81-a109-d1a85ac45a90",
-                "path": "<Keyboard>/d",
-                "interactions": "",
-                "processors": "",
-                "groups": "",
-                "action": "Change_SecondCard",
-                "isComposite": false,
-                "isPartOfComposite": false
-              },
-              {
+                {
+                    "name": "",
+                    "id": "66e7e627-aa3b-4b81-a109-d1a85ac45a90",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Change_SecondCard",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
                     "name": "UpDown",
                     "id": "fc2d16c6-5ee0-45fc-9213-4f7af52ab8a3",
                     "path": "2DVector",

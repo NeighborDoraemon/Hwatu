@@ -1099,10 +1099,10 @@ CapsuleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 3136
+    m_Bits: 3137
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 7159
+    m_Bits: 7158
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
