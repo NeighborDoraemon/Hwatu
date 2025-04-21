@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hog : Enemy_Parent, Enemy_Interface
+public class Hog : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
 {
     [Header("Float Values")]
     [SerializeField] private float f_Chasing_Speed = 15.0f;
@@ -164,6 +164,8 @@ public class Hog : Enemy_Parent, Enemy_Interface
 
     public void Enemy_Stun(float Duration)
     {
+        Debug.Log("Stun_01");
+
         Hog_Animator.SetBool("is_Delay_End", false);
         Hog_Animator.SetBool("is_Attacking", false);
         Hog_Effect_Animator.SetBool("is_Attacking", false);

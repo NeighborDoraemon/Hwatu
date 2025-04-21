@@ -109,14 +109,4 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
             TakeDamage(Tick_Damage);
         }
     }
-
-    //IEnumerator Stun_Durable(float Duration)
-    //{
-    //    yield return new WaitForSeconds(Duration);
-    //    BR_Stunned.Value = false;
-    //}
-
-    public void Enemy_Stun(float Duration)  //Do not use This Method
-    { 
-    }
 }

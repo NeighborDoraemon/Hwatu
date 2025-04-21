@@ -5,7 +5,7 @@ using MBT;
 using Unity.Burst.Intrinsics;
 using UnityEngine.InputSystem.XR;
 
-public class Summoner : Enemy_Parent, Enemy_Interface
+public class Summoner : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
 {
     [Header("Attack Delay")]
     [SerializeField] private float f_Before_Delay = 0.3f;

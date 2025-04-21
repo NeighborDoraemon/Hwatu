@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MBT;
 
-public class Magpie : Enemy_Parent, Enemy_Interface
+public class Magpie : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
 {
     [Header("Attack Delay")]
     [SerializeField] private float f_Before_Delay = 0.3f;

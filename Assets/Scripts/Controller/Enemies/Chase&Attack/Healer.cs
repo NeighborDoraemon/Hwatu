@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Healer : Enemy_Parent, Enemy_Interface
+public class Healer : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
 {
     [Header("Delay")]
     [SerializeField] private float f_Delay = 3.0f;

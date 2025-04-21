@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MBT;
 
-public class Bird : Enemy_Parent, Enemy_Interface
+public class Bird : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
 {
     [Header("Attack Delay")]
     [SerializeField] private float f_Before_Delay = 0.3f;
@@ -131,6 +131,7 @@ public class Bird : Enemy_Parent, Enemy_Interface
 
     public void Enemy_Stun(float Duration)
     {
+        Debug.Log("Bird Stun");
         is_Attacking = false;
         //is_Attack_Complete = false;
 

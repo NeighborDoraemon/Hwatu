@@ -48,7 +48,12 @@ public class Weapon_Collision_Handler : MonoBehaviour
 
             if (Random.value <= player.stun_Rate)
             {
-                other.GetComponent<Enemy_Interface>().Enemy_Stun(1.1f);
+                Enemy_Stun_Interface enemy = other.GetComponent<Enemy_Stun_Interface>()
+                            ?? other.GetComponentInParent<Enemy_Stun_Interface>()
+                            ?? other.GetComponentInChildren<Enemy_Stun_Interface>();
+
+                enemy.Enemy_Stun(2.0f);
+                //other.GetComponentInChildren<Enemy_Stun_Interface>().Enemy_Stun(2.0f);
             }
 
             if (Random.value <= player.bleeding_Rate)

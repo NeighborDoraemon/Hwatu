@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Poison : Enemy_Parent, Enemy_Interface
+public class Poison : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
 {
     [Header("Attack Delay")]
     [SerializeField] private float f_Before_Delay = 1.5f;

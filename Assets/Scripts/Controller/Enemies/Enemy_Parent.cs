@@ -36,12 +36,13 @@ public class Enemy_Parent : MonoBehaviour
     {
         yield return new WaitForSeconds(Duration);
         BR_Stunned.Value = false;
+        Debug.Log("Stun_03");
     }
 
     public void Take_Stun(float duration)
     {
         BR_Stunned.Value = true;
-
+        Debug.Log("Stun_02");
         StartCoroutine(Stun_Durable(duration));
     }
 }

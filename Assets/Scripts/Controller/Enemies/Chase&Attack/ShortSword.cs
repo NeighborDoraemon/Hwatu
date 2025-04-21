@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShortSword : Enemy_Parent, Enemy_Interface
+public class ShortSword : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
 {
     [Header("Float Values")]
     [SerializeField] private float f_Chasing_Speed = 4.0f;
