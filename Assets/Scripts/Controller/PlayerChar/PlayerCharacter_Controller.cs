@@ -123,6 +123,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     private Player_State Current_Player_State;
     private Event_State Current_Event_State;
+
+    [SerializeField] private Stat_Panel_Object stat_Object;
+
     //---------------------------------------------------
     
     private void Awake()
@@ -1076,6 +1079,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     void OnInventory_Pressed(InputAction.CallbackContext context)
     {
         ShowInventory();
+        //stat_Object.Set_Stat_Panel();
         Time.timeScale = 0.0f;
     }
     void OnInventory_Released(InputAction.CallbackContext context)
