@@ -322,10 +322,17 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 return;
             }
 
-            if (is_UI_Open)
+            if (isInventory_Visible && is_Item_Change && pending_SwapItem != null)
             {
+                pending_SwapItem = null;
+                is_Item_Change = false;
+                HideInventory();
+                Time.timeScale = 1.0f;
                 return;
             }
+
+            if (is_UI_Open)
+                return;
 
             if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
             {
@@ -1119,6 +1126,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     // Player Character UI ==========================================================================================
     void OnInventory_Pressed(InputAction.CallbackContext context)
     {
+        if (is_StatUI_Visible)
+        {
+            return;
+        }
         ShowInventory();
         //stat_Object.Set_Stat_Panel();
         Time.timeScale = 0.0f;

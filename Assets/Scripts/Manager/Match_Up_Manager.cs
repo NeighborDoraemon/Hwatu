@@ -211,6 +211,12 @@ public class Match_Up_Manager : MonoBehaviour
                 }
                 else
                 {
+                    if (p_controller.has_Dice_Effect)
+                    {
+                        player_Higher();
+                        Debug.Log("Dice Effect has enabled!");
+                        return;
+                    }
                     map_Higher();
                 }
             }
