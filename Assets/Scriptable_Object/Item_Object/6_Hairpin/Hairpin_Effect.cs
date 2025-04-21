@@ -5,17 +5,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Hairpin_Effect", menuName = "ItemEffects/Hairpin_Effect")]
 public class Hairpin_Effect : ItemEffect
 {
-    public float skill_Cooldown_Reduce_Multiple = 0.9f;
-
+    public float inc_Bleeding_Rate = 0.05f;
     public override void ApplyEffect(PlayerCharacter_Controller player)
     {
-        player.skill_Cooldown *= skill_Cooldown_Reduce_Multiple;
-        Debug.Log("Skill Cooldown has been reduced");
+        player.bleeding_Rate += inc_Bleeding_Rate;
     }
 
     public override void RemoveEffect(PlayerCharacter_Controller player)
     {
-        player.skill_Cooldown /= skill_Cooldown_Reduce_Multiple;
-        Debug.Log("Skill cooldown has been restored");
+        player.bleeding_Rate -= inc_Bleeding_Rate;
     }
 }

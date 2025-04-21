@@ -15,7 +15,6 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
 
     private GameObject cur_Jangtae;
     public bool isRiding = false;
-    //private bool isRolling = false;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
@@ -43,7 +42,6 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         Debug.Log("Attack called!");
-        player.rb.AddForce(new Vector2(0, player.jumpPower), ForceMode2D.Impulse);
 
         if (isRiding)
         {
@@ -104,6 +102,18 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
 
     private IEnumerator Mount_Jangtae(PlayerCharacter_Controller player, float delay)
     {
+        player.can_Card_Change = false;
+
+        Transform platform_Child = player.transform.Find("Platform_Collider");
+        if (platform_Child != null)
+        {
+            Collider2D old_Collider = platform_Child.GetComponent<Collider2D>();
+            if (old_Collider != null)
+                old_Collider.enabled = false;
+        }
+
+        player.rb.AddForce(new Vector2(0, player.jumpPower), ForceMode2D.Impulse);
+
         yield return new WaitForSeconds(delay);
 
         Debug.Log("Mount_Jangtae called!");
@@ -125,6 +135,12 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
 
         Debug.Log("Jangtae instantiated successfully.");
 
+        Collider2D jangtae_Collider = cur_Jangtae.GetComponent<Collider2D>();
+        if (jangtae_Collider != null)
+        {
+            player.player_Platform_Collider = jangtae_Collider;
+        }
+
         cur_Jangtae.transform.SetParent(player.transform);
         cur_Jangtae.transform.localPosition = new Vector3(0, -0.6f, 0);
 
@@ -134,6 +150,8 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
     private void Start_Rolling(PlayerCharacter_Controller player)
     {
         if (cur_Jangtae == null) return;
+
+        player.rb.AddForce(new Vector2(0, player.jumpPower), ForceMode2D.Impulse);
 
         cur_Jangtae.transform.SetParent(null);
 
@@ -150,7 +168,18 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
         Vector2 roll_Direction = player.is_Facing_Right ? Vector2.right : Vector2.left;
         jangtae_Rb.velocity = roll_Direction * roll_Speed;
 
-        //isRolling = true;
+        Transform platform_Child = player.transform.Find("Platform_Collider");
+        if (platform_Child != null)
+        {
+            Collider2D old_Collider = platform_Child.GetComponent<Collider2D>();
+            if (old_Collider != null)
+            {
+                old_Collider.enabled = true;
+                player.player_Platform_Collider = old_Collider;
+            }
+        }
+
         isRiding = false;
+        player.can_Card_Change = true;
     }
 }

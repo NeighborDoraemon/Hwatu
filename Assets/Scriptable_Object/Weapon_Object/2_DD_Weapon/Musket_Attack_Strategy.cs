@@ -61,7 +61,6 @@ public class Musket_Attack_Strategy : ScriptableObject, IAttack_Strategy
             case WeaponState.Ready:
                 player.animator.SetTrigger("Attack");
                 player.isAttacking = true;
-                player.cur_AttackCount++;                
                 return;
         }
     }

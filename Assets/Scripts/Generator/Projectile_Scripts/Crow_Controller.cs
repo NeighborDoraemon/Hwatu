@@ -5,7 +5,6 @@ using UnityEngine;
 public class Crow_Controller : MonoBehaviour
 {
     private PlayerCharacter_Controller player;
-    private float attack_Range;
     private int attack_Damage;
     private float attack_Cooldown;
     private bool isAttacking = false;
@@ -19,24 +18,31 @@ public class Crow_Controller : MonoBehaviour
     private Vector3 velocity = Vector3.zero;
     private Vector3 pre_Attack_Pos;
 
-    private enum Crow_State { Patrol, Attack, Protect }
+    private enum Crow_State { Patrol, Follow, Attack, Protect }
     private Crow_State cur_State;
 
-    // 정찰 대기 변수
+    [Header("정찰 상태 변수")]
+    [SerializeField] private bool is_Waiting = false;
     private float patrol_Wait_Timer = 0.0f;
-    private bool is_Waiting = false;
 
-    // 공격 상태 변수
+    [Header("동행 상태 변수")]
+    [SerializeField] private float follow_Distance = 8.0f;
+    [SerializeField] private float return_Distance = 4.0f;
+    [SerializeField] private float follow_Speed = 12.0f;
+    [SerializeField] private Vector3 follow_Offset = new Vector3(-1.0f, 0.0f, 0.0f);
+
+    [Header("공격 상태 변수")]
+    [SerializeField] private float attack_Duration = 0.5f;
+    [SerializeField] public float attack_Speed = 10.0f;
+    [SerializeField] private float attack_Range = 2.0f;
+    [SerializeField] private bool can_Attack = true;
     private Transform attack_Target;
     private float attack_Timer = 0.0f;
-    private float attack_Duration = 0.5f;
-    public float attack_Speed = 10.0f;
     private Vector3 attack_End_Pos;
     private bool attacking_Forward = true;
-    private bool can_Attack = true;
 
-    // 보호 상태 변수
-    private float protect_Duration;
+    [Header("보호 상태 변수")]
+    [SerializeField] private float protect_Duration;
     private float protect_Timer = 0.0f;
 
     public float teleport_Distance_Threshold = 15.0f;
@@ -51,11 +57,10 @@ public class Crow_Controller : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    public void Initialize(PlayerCharacter_Controller player, float attackRange, int attackDamage, float attack_Cooldown)
+    public void Initialize(PlayerCharacter_Controller player, int attackDamage, float attack_Cooldown)
     {
         this.player = player;
-        this.attack_Range = attackRange;
-        this.attack_Damage = attackDamage;
+        this.attack_Damage = attackDamage + 2;
         this.attack_Cooldown = attack_Cooldown;
 
         Set_State(Crow_State.Patrol);
@@ -67,6 +72,9 @@ public class Crow_Controller : MonoBehaviour
         {
             case Crow_State.Patrol:
                 Exit_Patrol_State();
+                break;
+            case Crow_State.Follow:
+                Exit_Follow_State();
                 break;
             case Crow_State.Attack:
                 Exit_Attack_State();
@@ -82,6 +90,9 @@ public class Crow_Controller : MonoBehaviour
         {
             case Crow_State.Patrol:
                 Enter_Patrol_State();
+                break;
+            case Crow_State.Follow:
+                Enter_Follow_State();
                 break;
             case Crow_State.Attack:
                 Enter_Attack_State();
@@ -127,7 +138,7 @@ public class Crow_Controller : MonoBehaviour
 
         if (!isAttacking && can_Attack)
         {
-            Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, attack_Range, LayerMask.GetMask("Enemy"));
+            Collider2D[] enemies = Physics2D.OverlapCircleAll(player.transform.position, attack_Range, LayerMask.GetMask("Enemy"));
             if (enemies.Length > 0)
             {
                 Transform closet_Enemy = Find_Closet_Enemy(enemies);
@@ -150,6 +161,27 @@ public class Crow_Controller : MonoBehaviour
     {
         float random_X = Random.Range(-patrol_Radius, patrol_Radius);
         patrol_Target = player.transform.position + new Vector3(random_X, height_Offset, 0);
+    }
+    #endregion
+
+    #region Follow State
+    private void Enter_Follow_State()
+    {
+
+    }
+
+    private void Update_Follow_State()
+    {
+        Vector3 target_Pos = player.transform.position
+                             + (player.is_Facing_Right ? -follow_Offset : follow_Offset);
+
+        transform.position = Vector3.MoveTowards(
+            transform.position, target_Pos, follow_Speed * Time.deltaTime);
+    }
+
+    private void Exit_Follow_State()
+    {
+
     }
     #endregion
 
@@ -183,7 +215,7 @@ public class Crow_Controller : MonoBehaviour
                     Enemy_Basic enemy_Controller = attack_Target.GetComponent<Enemy_Basic>();
                     if (enemy_Controller != null)
                     {
-                        enemy_Controller.TakeDamage(player.Calculate_Damage());
+                        enemy_Controller.TakeDamage(Calculate_Damage());
                     }
                     attacking_Forward = false;
                 }
@@ -279,12 +311,24 @@ public class Crow_Controller : MonoBehaviour
 
     private void Update()
     {
+        float dist = Vector3.Distance(transform.position, player.transform.position);
+        if (cur_State != Crow_State.Attack && cur_State != Crow_State.Protect)
+        {
+            if (dist > follow_Distance)
+                Set_State(Crow_State.Follow);
+            else if (cur_State == Crow_State.Follow && dist <= return_Distance)
+                Set_State(Crow_State.Patrol);
+        }
+
         Check_And_Teleport_To_Player();
 
         switch (cur_State)
         {
             case Crow_State.Patrol:
                 Update_Patrol_State();
+                break;
+            case Crow_State.Follow:
+                Update_Follow_State();
                 break;
             case Crow_State.Attack:
                 Update_Attack_State();
@@ -337,5 +381,19 @@ public class Crow_Controller : MonoBehaviour
         isProtecting = true;
         this.protect_Duration = protect_Duration;
         Set_State(Crow_State.Protect);
+    }
+
+    public int Calculate_Damage()
+    {
+        int base_Dmg = attack_Damage + player.attackDamage;
+        int total_Dmg = Mathf.RoundToInt(base_Dmg * player.damage_Mul);
+
+        bool is_Critical = UnityEngine.Random.value <= player.crit_Rate;
+        if (is_Critical)
+        {
+            total_Dmg = Mathf.RoundToInt(total_Dmg * player.crit_Dmg);
+        }
+
+        return total_Dmg;
     }
 }

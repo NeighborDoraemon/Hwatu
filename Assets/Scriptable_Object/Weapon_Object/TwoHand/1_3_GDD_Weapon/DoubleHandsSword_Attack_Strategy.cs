@@ -48,7 +48,6 @@ public class DoubleHandsSword_Attack_Strategy : ScriptableObject, IAttack_Strate
         {
             player.animator.SetTrigger("Attack");
             player.isAttacking = true;
-            player.cur_AttackCount++;
         }
     }
 

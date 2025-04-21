@@ -9,11 +9,11 @@ public class Norigae_Effect : ItemEffect
 
     public override void ApplyEffect(PlayerCharacter_Controller player)
     {
-        player.movementSpeed *= speedMultiplier;
+        player.movementSpeed_Mul += 0.1f;
     }
 
     public override void RemoveEffect(PlayerCharacter_Controller player)
     {
-        player.movementSpeed /= speedMultiplier;
+        player.movementSpeed_Mul -= 0.1f;
     }
 }

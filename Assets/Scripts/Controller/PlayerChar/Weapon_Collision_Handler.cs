@@ -22,26 +22,6 @@ public class Weapon_Collision_Handler : MonoBehaviour
         base_Weapon_Damage = player.cur_Weapon_Data.attack_Damage;
     }
 
-    //public int Calculate_Final_Damage()
-    //{
-    //    int playerDamage = player != null ? player.attackDamage : 0;
-
-    //    int totalDamage = base_Weapon_Damage + playerDamage;
-        
-    //    bool isCritical = Random.value <= player.crit_Rate;
-    //    if (isCritical)
-    //    {
-    //        totalDamage = Mathf.RoundToInt(totalDamage * player.crit_Dmg);
-    //        Debug.Log($"Critical Hit! Total Damage: {totalDamage}");
-    //    }
-    //    else
-    //    {
-    //        Debug.Log($"Normal Hit! Total Damage: {totalDamage}");
-    //    }
-
-    //    return totalDamage;
-    //}
-
     public void Enable_Collider(float duration)
     {
         if (weapon_Collider != null)
@@ -65,6 +45,16 @@ public class Weapon_Collision_Handler : MonoBehaviour
         {
             int finalDamage = player.Calculate_Damage();
             other.GetComponent<Enemy_Basic>().TakeDamage(finalDamage);
+
+            if (Random.value <= player.stun_Rate)
+            {
+                other.GetComponent<Enemy_Interface>().Enemy_Stun(1.1f);
+            }
+
+            if (Random.value <= player.bleeding_Rate)
+            {
+                other.GetComponent<Enemy_Basic>().Bleeding_Attack(finalDamage, 5, 1.1f);
+            }
 
             player.Trigger_Enemy_Hit();
         }

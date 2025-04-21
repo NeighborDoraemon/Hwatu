@@ -12,3 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4423fd252de16d94baaf50620a4c7643, type: 3}
   m_Name: DokkaebiBat_Attack
   m_EditorClassIdentifier: 
+  skill_Range: 0.2
+  skill_Offset: 0.5
+  enemy_LayerMask:
+    serializedVersion: 2
+    m_Bits: 512

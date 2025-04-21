@@ -11,7 +11,6 @@ public class Crow_Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
     private Crow_Controller crow_Controller;
 
     public GameObject crow_Prefab;
-    public float attack_Range = 2.0f;
     public float protect_Duration = 3.0f;
     private bool isProtecting = false;
 
@@ -35,7 +34,7 @@ public class Crow_Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
             if (crow_Controller != null)
             {
-                crow_Controller.Initialize(player, attack_Range, weapon_Data.attack_Damage, weapon_Data.attack_Cooldown);
+                crow_Controller.Initialize(player, weapon_Data.attack_Damage, weapon_Data.attack_Cooldown);
             }
         }
 
@@ -64,7 +63,6 @@ public class Crow_Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
     {
         player.animator.SetTrigger("Attack");
         player.isAttacking = true;
-        player.cur_AttackCount++;
     }
 
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point)

@@ -38,7 +38,6 @@ public class DokkaebiBat_Attack_Strategy : ScriptableObject, IAttack_Strategy
     {
         player.animator.SetTrigger("Attack");
         player.isAttacking = true;
-        player.cur_AttackCount++;
     }
 
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point)
@@ -49,6 +48,13 @@ public class DokkaebiBat_Attack_Strategy : ScriptableObject, IAttack_Strategy
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         player.animator.SetTrigger("Skill");
+
+        player.StartCoroutine(Skill_Routine(player));
+    }
+
+    private IEnumerator Skill_Routine(PlayerCharacter_Controller player)
+    {
+        yield return new WaitForSeconds(0.4f);
 
         Vector2 origin = (Vector2)player.transform.position + Vector2.right * (player.is_Facing_Right ? 1 : -1) * skill_Offset;
 

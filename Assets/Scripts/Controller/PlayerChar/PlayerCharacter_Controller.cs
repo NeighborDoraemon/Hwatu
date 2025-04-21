@@ -37,6 +37,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     [HideInInspector] public bool isGrounded;
     [HideInInspector] private bool has_Jumped;
     [HideInInspector] public bool canAttack = true;
+    [HideInInspector] public bool can_JumpAtk = true;
 
     [Header("Cinemachine")]
     private Camera_Manager camera_Manager;
@@ -64,7 +65,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     public bool is_Item_Change = false;
 
     [SerializeField] private float card_Change_Cooldown = 2.0f;
-    private bool can_Card_Change = true;
+    public bool can_Card_Change = true;
 
     //--------------------------------------------------- Created By KYH
     [Header("Player_UI")]
@@ -79,7 +80,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     
     //platform & Collider
     private GameObject current_Platform;
-    [SerializeField] private BoxCollider2D player_Collider;
+    public Collider2D player_Platform_Collider;
     private GameObject Now_New_Platform;
     private bool is_Down_Performed = false;    
 
@@ -206,10 +207,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             weapon_Animator.SetBool("isMove", isMoving);
         }
 
-        if (isGrounded && rb.velocity.y == 0 && this.gameObject.transform.position.y - 0.3f > Now_New_Platform.transform.position.y)
-        {
-            //jumpCount = 0;
-        }
+        //if (isGrounded && rb.velocity.y == 0 && this.gameObject.transform.position.y - 0.3f > Now_New_Platform.transform.position.y)
+        //{
+        //    jumpCount = 0;
+        //}
     }
 
     // Move ===========================================================================================
@@ -286,7 +287,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         if (!is_Knock_Back)
         {
-            rb.velocity = new Vector2(normalized_Movement.x * movementSpeed, rb.velocity.y);
+            float total_Speed = movementSpeed * movementSpeed_Mul;
+            rb.velocity = new Vector2(normalized_Movement.x * total_Speed, rb.velocity.y);
         }
     }
 
@@ -294,6 +296,12 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (Current_Player_State == Player_State.Normal)    //상태조건
         {
+            if (is_StatUI_Visible)
+            {
+                Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.Exit_UI();
+                return;
+            }
+
             if (is_UI_Open)
             {
                 return;
@@ -426,6 +434,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 pending_SwapItem = null;
                 is_Item_Change = false;
                 HideInventory();
+                Time.timeScale = 1.0f;
                 return;
             }
 
@@ -576,8 +585,15 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public void Input_Change_FirstCard(InputAction.CallbackContext ctx)
     {
-        if (ctx.phase != InputActionPhase.Started || Time.timeScale != 1.0f || is_Player_Dead || !can_Card_Change || isAttacking)
+        if (ctx.phase != InputActionPhase.Started || Time.timeScale != 1.0f || is_Player_Dead 
+            || !can_Card_Change || isAttacking || card_Inventory[2] == null)
             return;
+
+        if (attack_Strategy is Jangtae_Attack_Startegy JT_Strategy && JT_Strategy.isRiding)
+        {
+            can_Card_Change = false;
+            return;
+        }
 
         Change_FirstAndThird_Card();
 
@@ -593,8 +609,15 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public void Input_Change_SecondCard(InputAction.CallbackContext ctx)
     {
-        if (ctx.phase != InputActionPhase.Started || Time.timeScale != 1.0f || is_Player_Dead || !can_Card_Change || isAttacking)
+        if (ctx.phase != InputActionPhase.Started || Time.timeScale != 1.0f || is_Player_Dead 
+            || !can_Card_Change || isAttacking || card_Inventory[2] == null)
             return;
+
+        if (attack_Strategy is Jangtae_Attack_Startegy JT_Strategy && JT_Strategy.isRiding)
+        {
+            can_Card_Change = false;
+            return;
+        }
 
         Change_SecondAndThird_Card();
 
@@ -903,14 +926,22 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     private void Perform_Attack()
     {
-        isAttacking = true;
-        animator.SetBool("isAttacking", true);
-        attack_Strategy.Attack(this, cur_Weapon_Data);
-        Update_Attack_Timers();
-
-        if (Is_Last_Attack())
+        if (isGrounded)
         {
-            End_Attack();
+            animator.SetBool("isAttacking", true);
+            attack_Strategy.Attack(this, cur_Weapon_Data);
+            Update_Attack_Timers();
+
+            if (Is_Last_Attack())
+            {
+                End_Attack();
+            }
+        }
+        else if (can_JumpAtk && !isGrounded)
+        {
+            animator.SetBool("Can_JumpAtk", false);
+            attack_Strategy.Attack(this, cur_Weapon_Data);
+            can_JumpAtk = false;
         }
     }
 
@@ -977,7 +1008,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 //Debug.LogError("Attack Strategy is missing for Hold_Attack");
                 break;
             }
+
+            yield return null;
         }
+
         yield return new WaitForSeconds(cur_Weapon_Data.attack_Cooldown);
 
         is_AtkCoroutine_Running = false;
@@ -1080,6 +1114,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             inventoryPanel.SetActive(true);
             isInventory_Visible = true;
             is_UI_Open = true;
+            Update_Inventory();
         }
     }
     void HideInventory()
@@ -1095,6 +1130,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     private void Shift_Selected_Item()
     {
         is_Item_Change = true;
+        Time.timeScale = 0.0f;
         ShowInventory();
     }
 
@@ -1176,24 +1212,46 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Platform") || other.gameObject.CompareTag("OneWayPlatform"))
+        foreach (ContactPoint2D contact in other.contacts)
         {
-            bool was_Ground = isGrounded;
+            Vector2 normal = contact.normal;
 
-            isGrounded = true;
-            i_platform++;
-
-            if (other.gameObject.CompareTag("OneWayPlatform"))
+            if (other.gameObject.CompareTag("Platform"))
             {
-                current_Platform = other.gameObject;
+                bool was_Ground = isGrounded;
+                isGrounded = true;
+                i_platform++;
+
+                can_JumpAtk = true;
+                animator.SetBool("Can_JumpAtk", true);
+
+                //Now_New_Platform = other.gameObject; //Reset condition
+
+                if (!was_Ground)
+                {
+                    has_Jumped = false;
+                    jumpCount = 0;
+                }
             }
-
-            Now_New_Platform = other.gameObject; //Reset condition
-
-            if (!was_Ground)
+            else if (other.gameObject.CompareTag("OneWayPlatform"))
             {
-                has_Jumped = false;
-                jumpCount = 0;
+                if (normal.y > 0.5f)
+                {
+                    bool was_Ground = isGrounded;
+                    isGrounded = true;
+                    current_Platform = other.gameObject;
+
+                    can_JumpAtk = true;
+                    animator.SetBool("Can_JumpAtk", true);
+
+                    if (!was_Ground)
+                    {
+                        has_Jumped = false;
+                        jumpCount = 0;
+                    }
+
+                    break;
+                }
             }
         }
     }
@@ -1277,9 +1335,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         BoxCollider2D platform_Collider = current_Platform.GetComponent<BoxCollider2D>();
 
-        Physics2D.IgnoreCollision(player_Collider, platform_Collider);
+        Physics2D.IgnoreCollision(player_Platform_Collider, platform_Collider);
         yield return new WaitForSeconds(0.5f);
-        Physics2D.IgnoreCollision(player_Collider, platform_Collider, false);
+        Physics2D.IgnoreCollision(player_Platform_Collider, platform_Collider, false);
     }
 
     public void Weak_Knock_Back(int Left_Num, float Knock_Back_time, float Power) //Left = 1, Right = -1

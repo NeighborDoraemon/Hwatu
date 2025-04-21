@@ -11,29 +11,32 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     [HideInInspector] public Animator animator;
 
     [Header("플레이어 기본 능력치")]
-    public float base_MovementSpeed = 1.0f;     // 플레이어 기본 이동속도
-    public float base_JumpPower = 5.0f;         // 플레이어 기본 점프력
-    public int base_Max_Health = 100;           // 플레이어 기본 최대 체력
+    public float base_MovementSpeed = 1.0f;       // 플레이어 기본 이동속도
+    public float base_JumpPower = 5.0f;           // 플레이어 기본 점프력
+    public int base_Max_Health = 100;             // 플레이어 기본 최대 체력
 
     [Header("플레이어 현재 능력치")]
-    public float movementSpeed = 1.0f;          // 이동속도
-    public float jumpPower = 5.0f;              // 점프력
-    public int max_Health = 100;                // 최대 체력
-    public int health = 100;                    // 체력
-    public int attackDamage = 0;                // 플레이어 추가 공격력
-    public int skill_Damage = 0;                // 추가 스킬 공격력
-    public float crit_Rate = 0;                 // 치명타 확률
-    public float crit_Dmg = 2;                  // 치명타 배율
-    public int player_Life = 0;                 // 플레이어 현재 목숨
+    public float movementSpeed = 1.0f;            // 이동속도
+    public float jumpPower = 5.0f;                // 점프력
+    public int max_Health = 100;                  // 최대 체력
+    public int health = 100;                      // 체력
+    public int attackDamage = 0;                  // 플레이어 추가 공격력
+    public int skill_Damage = 0;                  // 추가 스킬 공격력
+    public float crit_Rate = 0;                   // 치명타 확률
+    public float crit_Dmg = 2;                    // 치명타 배율
+    public int player_Life = 0;                   // 플레이어 현재 목숨
 
     [Header("능력치 증감 및 변화치")]
-    public float damage_Mul = 1f;               // 주는 데미지 증감 배율
-    public float takenDamage_Mul = 1f;          // 받는 데미지 증감 배율
-    public float defend_Attack_Rate = 0f;       // 적의 공격 방어 확률
-    public float movementSpeed_Mul = 1f;        // 이동속도 증감 배율
-    public float health_Mul = 1f;               // 최대체력 증감 배율
-    public int damage_Reduce_Min = 0;           // 데미지 감소 최소치
-    public int damage_Reduce_Max = 0;           // 데미지 감소 최대치
+    public float damage_Mul = 1.0f;               // 주는 데미지 증감 배율
+    public float takenDamage_Mul = 1.0f;          // 받는 데미지 증감 배율
+    public float defend_Attack_Rate = 0.0f;       // 적의 공격 방어 확률
+    public float movementSpeed_Mul = 1.0f;        // 이동속도 증감 배율
+    public float health_Mul = 1.0f;               // 최대체력 증감 배율
+    public int damage_Reduce_Min = 0;             // 데미지 감소 최소치
+    public int damage_Reduce_Max = 0;             // 데미지 감소 최대치
+    public float money_Earned_Mul = 0.0f;         // 돈 획득량 배율
+    public float bleeding_Rate = 0.0f;            // 출혈 확률
+    public float stun_Rate = 0.0f;                // 기절 확률
 
     [Header("공격 관련 변수")]
     public float comboTime = 0.5f;
@@ -41,7 +44,6 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     [HideInInspector] public float last_Attack_Time = 0f;
     [HideInInspector] public float last_ComboAttack_Time = 0f;
     public bool isAttacking = false;
-    public int cur_AttackCount = 0;
     public int max_AttackCount = 0;
 
     [HideInInspector] public int cur_AttackInc_Phase = 1;

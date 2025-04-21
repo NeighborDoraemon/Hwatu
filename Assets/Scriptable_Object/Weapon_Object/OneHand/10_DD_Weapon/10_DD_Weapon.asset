@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapon_Name: "\uAE4C\uB9C8\uADC0\uC640 \uD654\uD22C\uD328"
   comb_Name: "\uC7A5 \uB561"
-  attack_Damage: 5
+  attack_Damage: 3
   attack_Cooldown: 0.5
   max_Attack_Count: 3
   skill_Damage: 0

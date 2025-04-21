@@ -19,8 +19,6 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
 
     protected bool isCombDone = false;                              // 화투 조합이 이루어졌는지 체크하는 변수
 
-    //[HideInInspector] public bool is_Start_Spawn = true;            // 시작 지급인지 확인하는 변수 (윤혁)
-
     public void AddCard(GameObject card)
     {
         isCombDone = false;
@@ -35,10 +33,10 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                     Object_Manager.instance.Remove_Used_Sprite(cardComponent.selected_Sprite);
                 }
 
-                Destroy(card_Inventory[1]);
+                Destroy(card_Inventory[2]);
             }
 
-            card_Inventory[1] = card;
+            card_Inventory[2] = card;
         }
         else
         {

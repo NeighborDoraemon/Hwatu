@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.NetworkInformation;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,10 +17,19 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
 
     private Dictionary<ItemEffect, int> active_Effects = new Dictionary<ItemEffect, int>();
 
-    public bool has_BowSheath_Effect = false;
-    public bool has_EarRing_Effect = false;
+    [HideInInspector] public bool has_BowSheath_Effect = false;
+    [HideInInspector] public bool has_EarRing_Effect = false;
 
     [HideInInspector] public GameObject earRing_Explosion_Prefab;
+
+    private void Awake()
+    {
+        PlayerCharacter_Controller player = this.GetComponent<PlayerCharacter_Controller>();
+        for (int i = 0; i < item_Slots.Count; i++)
+        {
+            item_Slots[i].Initialized(i, this);
+        }
+    }
 
     public void AddItem(Item newItem)
     {
@@ -88,9 +98,15 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
 
     public void Re_Apply_All_Effects()
     {
-        PlayerCharacter_Controller player = this.GetComponent<PlayerCharacter_Controller>();
+        var player = this.GetComponent<PlayerCharacter_Controller>();
         if (player == null) return;
         
+        var effects = active_Effects.Keys.ToList();
+        foreach (var effect in effects)
+        {
+            effect.RemoveEffect(player);
+        }
+
         foreach (var effect in active_Effects.Keys)
         {
             effect.ApplyEffect(player);
@@ -131,6 +147,18 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
 
         item_Slots[selected_Slot_Index].Set_Selected(true);
 
+        Update_ItemDescription();
+    }
+
+    public void On_Slot_Hover(int index)
+    {
+        if (index < 0 || index >= player_Inventory.Count)
+            return;
+
+        item_Slots[selected_Slot_Index].Set_Selected(false);
+        selected_Slot_Index = index;
+
+        item_Slots[selected_Slot_Index].Set_Selected(true);
         Update_ItemDescription();
     }
 

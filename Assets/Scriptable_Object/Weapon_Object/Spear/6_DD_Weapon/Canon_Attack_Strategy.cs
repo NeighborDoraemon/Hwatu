@@ -36,8 +36,8 @@ public class Canon_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
-        player.animator.SetTrigger("Attack");
         player.isAttacking = true;
+        player.animator.SetTrigger("Attack");
     }
 
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point)

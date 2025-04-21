@@ -75,7 +75,6 @@ public class Tiger_Attack_Strategy : ScriptableObject, IAttack_Strategy
     {
         player.animator.SetTrigger("Attack");
         player.isAttacking = true;
-        player.cur_AttackCount++;
     }
 
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point)

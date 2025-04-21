@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CrowAndCard_Attack
   m_EditorClassIdentifier: 
   crow_Prefab: {fileID: 1335327918262151755, guid: 058387335e8cdba47b853b551af8f099, type: 3}
-  attack_Range: 5
+  protect_Duration: 3
   projectile_Prefab: {fileID: 4150010414422937313, guid: 382a799ee5aa5834e9a23ce7c7cdc1af, type: 3}
