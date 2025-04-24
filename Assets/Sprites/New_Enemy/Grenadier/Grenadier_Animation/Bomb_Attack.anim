@@ -85,7 +85,7 @@ AnimationClip:
   - time: 0.25
     functionName: Throw_Attack
     data: 
-    objectReferenceParameter: {fileID: 4429806113204215289, guid: c5a63740c827dd64899d15b0f3c9a1d5, type: 3}
+    objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

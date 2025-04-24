@@ -91,7 +91,7 @@ AnimationClip:
   - time: 0.33333334
     functionName: Acher_Attack
     data: 
-    objectReferenceParameter: {fileID: 4731985901941664976, guid: 685b28cbd0b39564c8fcfc79553d719c, type: 3}
+    objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
