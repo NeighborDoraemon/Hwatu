@@ -535,7 +535,7 @@ MonoBehaviour:
   attackDamage: 0
   skill_Damage: 0
   crit_Rate: 0
-  crit_Dmg: 1.5
+  crit_Dmg: 2
   player_Life: 0
   damage_Mul: 1
   takenDamage_Mul: 1
@@ -544,12 +544,17 @@ MonoBehaviour:
   health_Mul: 1
   damage_Reduce_Min: 0
   damage_Reduce_Max: 0
+  heal_Amount_Mul: 1
+  money_Earned_Mul: 1
+  bleeding_Rate: 0
+  stun_Rate: 0
   comboTime: 0.3
   attack_Cooldown: 1
   last_Attack_Time: 0
   last_ComboAttack_Time: 0
   isAttacking: 0
   max_AttackCount: 0
+  es_Stack: 0
   cur_AttackInc_Phase: 1
   cur_HealthInc_Phase: 1
   cur_AttackCoolTimeInc_Phase: 1
@@ -586,6 +591,7 @@ MonoBehaviour:
   item_Description_UI: {fileID: 0}
   has_BowSheath_Effect: 0
   has_EarRing_Effect: 0
+  has_Dice_Effect: 0
   earRing_Explosion_Prefab: {fileID: 0}
   inventoryPanel: {fileID: 0}
   is_StatUI_Visible: 0
@@ -610,6 +616,7 @@ MonoBehaviour:
   is_UI_Open: 0
   is_Item_Change: 0
   card_Change_Cooldown: 2
+  can_Card_Change: 1
   Player_Health_Bar: {fileID: 0}
   pause_Manager: {fileID: 0}
   player_render: {fileID: 8434130835688464816}
@@ -618,6 +625,9 @@ MonoBehaviour:
   player_Platform_Collider: {fileID: 3641037530319108596}
   match_manager: {fileID: 0}
   is_Knock_Back: 0
+  is_Key_Setting: 0
+  Key_Setting_Can: {fileID: 0}
+  stat_Object: {fileID: 0}
 --- !u!1 &5417539781672758290
 GameObject:
   m_ObjectHideFlags: 0

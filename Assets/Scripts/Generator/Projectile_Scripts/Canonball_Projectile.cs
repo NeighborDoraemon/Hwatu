@@ -45,6 +45,23 @@ public class Canonball_Projectile : MonoBehaviour
             {
                 enemy_Script.TakeDamage(damage);
             }
+
+            if (Random.value <= player.stun_Rate)
+            {
+                Enemy_Stun_Interface enemy_Interface = enemy_Script.GetComponent<Enemy_Stun_Interface>()
+                            ?? enemy_Script.GetComponentInParent<Enemy_Stun_Interface>()
+                            ?? enemy_Script.GetComponentInChildren<Enemy_Stun_Interface>();
+
+                enemy_Interface.Enemy_Stun(2.0f);
+                //other.GetComponentInChildren<Enemy_Stun_Interface>().Enemy_Stun(2.0f);
+            }
+
+            if (Random.value <= player.bleeding_Rate)
+            {
+                enemy_Script.GetComponent<Enemy_Basic>().Bleeding_Attack(damage, 5, 1.1f);
+            }
+
+            player.Trigger_Enemy_Hit();
         }
 
         Destroy(gameObject);

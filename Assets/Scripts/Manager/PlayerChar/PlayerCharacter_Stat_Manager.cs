@@ -34,7 +34,8 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     public float health_Mul = 1.0f;               // 최대체력 증감 배율
     public int damage_Reduce_Min = 0;             // 데미지 감소 최소치
     public int damage_Reduce_Max = 0;             // 데미지 감소 최대치
-    public float money_Earned_Mul = 0.0f;         // 돈 획득량 배율
+    public float heal_Amount_Mul = 1.0f;          // 회복량 증감 배율
+    public float money_Earned_Mul = 1.0f;         // 돈 획득량 배율
     public float bleeding_Rate = 0.0f;            // 출혈 확률
     public float stun_Rate = 0.0f;                // 기절 확률
 
@@ -45,6 +46,7 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     [HideInInspector] public float last_ComboAttack_Time = 0f;
     public bool isAttacking = false;
     public int max_AttackCount = 0;
+    public int es_Stack = 0;
 
     [HideInInspector] public int cur_AttackInc_Phase = 1;
     [HideInInspector] public int cur_HealthInc_Phase = 1;
@@ -110,13 +112,11 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
                 Debug.Log("Phase 1 Completed. Phase 2 Start.");
             }
         }
-
-        if (cur_AttackInc_Phase == 2)
+        else if (cur_AttackInc_Phase == 2)
         {
-
+            cur_AttackInc_Phase = 3;
         }
-
-        if (cur_AttackInc_Phase == 3)
+        else if (cur_AttackInc_Phase == 3)
         {
 
         }
@@ -140,8 +140,7 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
                 Debug.Log("Phase 1 Completed. Phase 2 Start.");
             }
         }
-
-        if (cur_HealthInc_Phase == 2)
+        else if (cur_HealthInc_Phase == 2)
         {
             if (cur_Inc_DamageReduction < 3)
             {
@@ -157,10 +156,9 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
                 Debug.Log("Phase 2 Completed. Phase 3 Start.");
             }
         }
-
-        if (cur_HealthInc_Phase == 3)
+        else if (cur_HealthInc_Phase == 3)
         {
-
+            heal_Amount_Mul += 0.2f;
         }
     }
 
@@ -181,15 +179,13 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
                 Debug.Log("Phase 1 Completed. Phase 2 Start.");
             }
         }
-
-        if (cur_AttackCoolTimeInc_Phase == 2)
+        else if (cur_AttackCoolTimeInc_Phase == 2)
         {
-
+            cur_AttackCoolTimeInc_Phase = 3;
         }
-
-        if (cur_AttackCoolTimeInc_Phase == 3)
+        else if (cur_AttackCoolTimeInc_Phase == 3)
         {
-
+            max_Teleport_Count++;
         }
     }
 
@@ -210,13 +206,13 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
                 Debug.Log("Phase 1 Completed. Phase 2 Start.");
             }
         }
-
-        if (cur_MoveSpeedInc_Phase == 2)
+        else if (cur_MoveSpeedInc_Phase == 2)
         {
+            money_Earned_Mul += 0.2f;
 
+            cur_MoveSpeedInc_Phase = 3;
         }
-
-        if (cur_MoveSpeedInc_Phase == 3)
+        else if (cur_MoveSpeedInc_Phase == 3)
         {
 
         }

@@ -20,3 +20,4 @@ MonoBehaviour:
   zeroStack_Effect_Data: {fileID: 11400000, guid: ed3e10da9ae984b42ab2106e0cf62a00, type: 2}
   halfStack_Effect_Data: {fileID: 11400000, guid: 8558636002a3ef04689fafb4d695085a, type: 2}
   fullStack_Effect_Data: {fileID: 11400000, guid: 527618648564e59489c2cd6d33480b15, type: 2}
+  inc_Attack_Dmg: 0

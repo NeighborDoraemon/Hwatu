@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System;
 using Unity.Mathematics;
+using System.Linq;
 
 // PlayerCharacter_Controller Created By JBJ, KYH
 public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
@@ -681,14 +682,12 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             return;
         }
         
-        if (attack_Strategy != null && attack_Strategy is Tiger_Attack_Strategy tiger_Strategy)
+        if (attack_Strategy != null)
         {
-            tiger_Strategy.Reset_Stats();
+            attack_Strategy.Reset_Stats();
         }
-        else if (attack_Strategy != null && attack_Strategy is Crow_Card_Attack_Strategy crow_Strategy)
-        {
-            crow_Strategy.Reset_Stats();
-        }
+
+        Check_Es_Stack();
 
         if (weapon_Anchor.childCount > 0)
         {
@@ -754,6 +753,14 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         animator.SetInteger("cur_Max_AtkCount", cur_Weapon_Data.max_Attack_Count);
 
         animator.SetTrigger("Change_Weapon");
+    }
+
+    public void Check_Es_Stack()
+    {
+        if (!Has_Three_And_ThreeG())
+        {
+            es_Stack = 0;
+        }
     }
 
     void Update_WeaponAnchor_Position()
@@ -1097,8 +1104,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f
                 && !is_Player_Dead && Is_Skill_Cooldown_Complete())
             {
-                animator.SetTrigger("Skill");
                 attack_Strategy.Skill(this, cur_Weapon_Data);
+                //animator.SetTrigger("Skill");
                 Update_Skill_Timer();
             }
         }
@@ -1205,6 +1212,17 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             On_Player_Damaged?.Invoke();
         }
+    }
+
+    public void Player_Take_Heal(int amount)
+    {
+        if (is_Player_Dead) return;
+
+        int heal_Amount = Mathf.RoundToInt(amount * heal_Amount_Mul);
+
+        health = Mathf.Clamp(health + heal_Amount, 0, max_Health);
+
+        Player_Health_Bar.fillAmount = (float)health / max_Health;
     }
 
     private void Player_Died()

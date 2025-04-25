@@ -11,6 +11,7 @@ public class Tiger_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public Vector2 roar_Size = new Vector2(4.0f, 2.0f);
     public Vector2 roar_Offset = new Vector2(2.0f, 0.0f);
+    public float roar_Stun_Duration = 2.0f;
 
     private CapsuleCollider2D og_Collider;
     private BoxCollider2D tiger_Collider;
@@ -83,6 +84,8 @@ public class Tiger_Attack_Strategy : ScriptableObject, IAttack_Strategy
     }
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
+        player.animator.SetTrigger("Skill");
+
         Vector2 roar_Center = player.transform.position;
         roar_Center += (player.is_Facing_Right ? roar_Offset : new Vector2(-roar_Offset.x, roar_Offset.y));
 
@@ -90,10 +93,12 @@ public class Tiger_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
         foreach (Collider2D enemy in enemies)
         {
-            Enemy_Basic enemy_Controller = enemy.GetComponent<Enemy_Basic>();
-            if (enemy_Controller != null)
+            Enemy_Stun_Interface enemy_Stun = enemy.GetComponent<Enemy_Stun_Interface>()
+                            ?? enemy.GetComponentInParent<Enemy_Stun_Interface>()
+                            ?? enemy.GetComponentInChildren<Enemy_Stun_Interface>();
+            if (enemy_Stun != null)
             {
-                enemy_Controller.TakeDamage(weapon_Data.skill_Damage);
+                enemy_Stun.Enemy_Stun(roar_Stun_Duration);
             }
         }
     }

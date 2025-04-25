@@ -39,6 +39,8 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
         player.skill_Cooldown = weapon_Data.skill_Cooldown;
     }
 
+    public void Reset_Stats() { }
+
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         Debug.Log("Attack called!");
@@ -74,7 +76,7 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
     }
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
-        if (cur_Jangtae == null)
+        if (cur_Jangtae == null || isRiding)
         {
             return;
         }

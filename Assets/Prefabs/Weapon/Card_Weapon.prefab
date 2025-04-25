@@ -129,7 +129,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.05, y: 0.05}
+  m_Size: {x: 0.07, y: 0.07}
   m_EdgeRadius: 0
 --- !u!114 &3857494934688511678
 MonoBehaviour:
@@ -144,6 +144,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   base_Weapon_Damage: 3
-  crit_Chance: 0.2
-  crit_Multiple: 2
   weapon_Collider: {fileID: 3471636446047068593}

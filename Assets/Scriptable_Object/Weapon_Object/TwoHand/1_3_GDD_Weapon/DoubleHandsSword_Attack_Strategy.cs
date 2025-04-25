@@ -37,6 +37,8 @@ public class DoubleHandsSword_Attack_Strategy : ScriptableObject, IAttack_Strate
         player.skill_Cooldown = weapon_Data.skill_Cooldown;
     }
 
+    public void Reset_Stats() { }
+
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         if (!player.isGrounded)

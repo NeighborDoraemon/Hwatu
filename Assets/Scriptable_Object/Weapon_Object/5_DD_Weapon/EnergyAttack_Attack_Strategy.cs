@@ -34,6 +34,8 @@ public class EnergyAttack_Attack_Strategy : ScriptableObject, IAttack_Strategy
         player.skill_Cooldown = weapon_Data.skill_Cooldown;
     }
 
+    public void Reset_Stats() { }
+
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         player.animator.SetTrigger("Attack");
@@ -46,7 +48,8 @@ public class EnergyAttack_Attack_Strategy : ScriptableObject, IAttack_Strategy
     }
 
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
-    {        
+    {
+        player.animator.SetTrigger("Skill");
         player.StartCoroutine(EnergyWave(player));
     }
 

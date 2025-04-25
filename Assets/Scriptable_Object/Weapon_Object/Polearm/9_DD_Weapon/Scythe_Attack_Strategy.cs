@@ -33,6 +33,8 @@ public class Scythe_Attack_Strategy : ScriptableObject, IAttack_Strategy
         player.skill_Cooldown = weapon_Data.skill_Cooldown;
     }
 
+    public void Reset_Stats() { }
+
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         player.animator.SetTrigger("Attack");
@@ -47,6 +49,7 @@ public class Scythe_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
+        player.animator.SetTrigger("Skill");
         player.StartCoroutine(Dash_Skill(player));        
     }
 
@@ -92,12 +95,7 @@ public class Scythe_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
                         if (enemy.IR_Health.Value <= 0)
                         {
-                            player.Player_Take_Damage(-heal_Amount);
-
-                            if (player.health > player.max_Health)
-                            {
-                                player.health = player.max_Health;
-                            }
+                            player.Player_Take_Heal(heal_Amount);
                         }
                     }
                 }

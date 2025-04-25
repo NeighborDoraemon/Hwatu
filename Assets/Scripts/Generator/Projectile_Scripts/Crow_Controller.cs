@@ -217,6 +217,22 @@ public class Crow_Controller : MonoBehaviour
                     {
                         enemy_Controller.TakeDamage(Calculate_Damage());
                     }
+
+                    if (Random.value <= player.stun_Rate)
+                    {
+                        Enemy_Stun_Interface enemy = enemy_Controller.GetComponent<Enemy_Stun_Interface>()
+                                    ?? enemy_Controller.GetComponentInParent<Enemy_Stun_Interface>()
+                                    ?? enemy_Controller.GetComponentInChildren<Enemy_Stun_Interface>();
+
+                        enemy.Enemy_Stun(2.0f);
+                        //other.GetComponentInChildren<Enemy_Stun_Interface>().Enemy_Stun(2.0f);
+                    }
+
+                    if (Random.value <= player.bleeding_Rate)
+                    {
+                        enemy_Controller.GetComponent<Enemy_Basic>().Bleeding_Attack(Calculate_Damage(), 5, 1.1f);
+                    }
+
                     attacking_Forward = false;
                 }
             }

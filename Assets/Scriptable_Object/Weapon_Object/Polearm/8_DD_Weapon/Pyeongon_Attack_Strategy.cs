@@ -36,6 +36,8 @@ public class Pyeongon_Attack_Strategy : ScriptableObject, IAttack_Strategy
         player.skill_Cooldown = weapon_Data.skill_Cooldown;
     }
 
+    public void Reset_Stats() { }
+
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         player.isAttacking = true;        
@@ -48,7 +50,7 @@ public class Pyeongon_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
-        
+        player.animator.SetTrigger("Skill");
         player.StartCoroutine(Air_Move(player, duration, move_Speed));
     }
 

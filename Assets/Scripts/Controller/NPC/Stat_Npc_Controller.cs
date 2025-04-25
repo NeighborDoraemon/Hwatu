@@ -8,9 +8,11 @@ using UnityEngine.UI;
 public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
 {
     [SerializeField] private PlayerCharacter_Controller player;
+    [SerializeField] private Canvas main_Can;
 
     [Header("Stat UI")]
     [SerializeField] private Canvas Stat_Manage_Can;
+    [SerializeField] private Transform stat_Window_Panel;
     [SerializeField] private Image[] stat_Buttons;
 
     [Header("Stat Value")]
@@ -19,6 +21,9 @@ public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
     public float moveSpeed_Inc_Value = 1.0f;
     public float critRate_Inc_Value = 0.1f;
     public float critDmg_Inc_Value = 0.1f;
+
+    [Header("Attack_Dmg_Image")]
+
 
     [Header("Dialogue Index")]
     [SerializeField] private int Interaction_start;
@@ -35,6 +40,11 @@ public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
 
     public void UI_Start()
     {
+        if (main_Can != null)
+        {
+            main_Can.gameObject.SetActive(false);
+        }
+
         if (Stat_Manage_Can != null)
         {
             Stat_Manage_Can.gameObject.SetActive(true);
@@ -51,6 +61,11 @@ public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
     public void Exit_UI()
     {
         if (!is_StatUI_Open) return;
+
+        if (main_Can != null)
+        {
+            main_Can.gameObject.SetActive(true);
+        }
 
         if (Stat_Manage_Can != null)
         {
@@ -81,6 +96,12 @@ public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
         Update_Select_Border();
     }
 
+    public void Select_Stat_By_Index(int index)
+    {
+        cur_Index = index;
+        Confirm_Selection();
+    }
+
     public void Confirm_Selection()
     {
         if (!is_StatUI_Open) return;
@@ -92,25 +113,47 @@ public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
         }
 
         Image selected_Button = stat_Buttons[cur_Index];
-        string button_Name = selected_Button.gameObject.name;
+        string stat_Name = selected_Button.gameObject.name;
 
-        switch (button_Name)
+        switch (stat_Name)
         {
             case "Stat_AttackDamage":
                 player?.Increase_AttackDamage();
+                Update_Stat_Image(stat_Name, player.cur_AttackInc_Phase);
                 break;
             case "Stat_Health":
                 player?.Increase_Health();
+                Update_Stat_Image(stat_Name, player.cur_HealthInc_Phase);
                 break;
             case "Stat_AttacSpeed":
                 player?.Increase_AttackCoolTime();
+                Update_Stat_Image(stat_Name, player.cur_AttackCoolTimeInc_Phase);
                 break;
             case "Stat_MoveSpeed":
                 player?.Increase_MoveSpeed();
+                Update_Stat_Image(stat_Name, player.cur_MoveSpeedInc_Phase);
                 break;
             default:
-                Debug.Log($"[{button_Name}] is null");
+                Debug.Log($"[{stat_Name}] is null");
                 break;
+        }
+    }
+
+    private void Update_Stat_Image(string stat_Name, int phase)
+    {
+        Transform stat_Group = stat_Window_Panel.Find(stat_Name);
+        if (stat_Group == null) return;
+        
+        var images = stat_Group.GetComponentsInChildren<Image>(true);
+
+        foreach (var img in images)
+        {
+            if (img.name.StartsWith("First_Image"))
+                img.gameObject.SetActive(phase >= 1);
+            else if (img.name.StartsWith("Second_Image"))
+                img.gameObject.SetActive(phase >= 2);
+            else if (img.name.StartsWith("Third_Image"))
+                img.gameObject.SetActive(phase >= 3);
         }
     }
 

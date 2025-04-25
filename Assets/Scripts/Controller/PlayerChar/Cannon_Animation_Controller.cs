@@ -26,4 +26,9 @@ public class Cannon_Animation_Controller : MonoBehaviour
             cannon_Animator.SetTrigger("Attack");
         }
     }
+    
+    public void Trigger_Skill()
+    {
+        cannon_Animator.SetTrigger("Skill");
+    }
 }

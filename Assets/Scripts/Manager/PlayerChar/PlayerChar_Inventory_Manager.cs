@@ -105,6 +105,8 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
         var effects = active_Effects.Keys.ToList();
         foreach (var effect in effects)
         {
+            if (effect is Scroll_Effect)
+                continue;
             effect.RemoveEffect(player);
         }
 

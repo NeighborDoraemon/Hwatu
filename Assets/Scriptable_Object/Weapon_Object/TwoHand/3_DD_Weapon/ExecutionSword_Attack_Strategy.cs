@@ -8,9 +8,6 @@ public class ExecutionSword_Attack_Strategy : ScriptableObject, IAttack_Strategy
     private PlayerCharacter_Controller player;
     private Weapon_Data weapon_Data;
 
-    private static Dictionary<int, int> weapon_Kill_Stacks = new Dictionary<int, int>();
-
-    private int kill_Stack = 0;
     public float move_Distance = 1.0f;
     private float move_Duration = 0.2f;
     public float move_Delay = 0.1f;
@@ -25,7 +22,7 @@ public class ExecutionSword_Attack_Strategy : ScriptableObject, IAttack_Strategy
     public Weapon_Effect_Data halfStack_Effect_Data;
     public Weapon_Effect_Data fullStack_Effect_Data;
 
-    private int weapon_ID;
+    public int inc_Attack_Dmg = 0;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
@@ -36,24 +33,19 @@ public class ExecutionSword_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
         this.player = player;
         this.weapon_Data = weapon_Data;
-        weapon_ID = weapon_Data.GetInstanceID();
-
-        if (weapon_Kill_Stacks.ContainsKey(weapon_ID))
-        {
-            kill_Stack = weapon_Kill_Stacks[weapon_ID];
-        }
-        else
-        {
-            kill_Stack = 0;
-            weapon_Kill_Stacks.Add(weapon_ID, kill_Stack);
-        }
 
         Initialize_Weapon_Data();
-        Manage_Stack_By_Card();
-        Debug.Log($"Current Es Stack : {kill_Stack}");
+
+        if (player.es_Stack == 0)
+        {
+            inc_Attack_Dmg = 0;
+        }
+        player.attackDamage += inc_Attack_Dmg;
+
+        Update_By_Stack();
+        Debug.Log($"Current Es Stack : {player.es_Stack}");
 
         player.On_Enemy_Killed += Handle_Enemy_Killed;
-        Update_By_Stack();
     }
 
     private void Initialize_Weapon_Data()
@@ -62,6 +54,12 @@ public class ExecutionSword_Attack_Strategy : ScriptableObject, IAttack_Strategy
         player.attack_Cooldown = weapon_Data.attack_Cooldown;
         player.max_AttackCount = weapon_Data.max_Attack_Count;
         player.skill_Cooldown = weapon_Data.skill_Cooldown;
+    }
+
+    public void Reset_Stats()
+    {
+        player.On_Enemy_Killed -= Handle_Enemy_Killed;
+        player.attackDamage -= inc_Attack_Dmg;
     }
 
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
@@ -80,9 +78,6 @@ public class ExecutionSword_Attack_Strategy : ScriptableObject, IAttack_Strategy
                 player.StartCoroutine(MoveForward_While_Attacking(player));
             }
         }
-
-        //Apply_Stack_Effects();
-        Debug.Log($"Current Es Stack : {kill_Stack}");
     }
 
     private IEnumerator MoveForward_While_Attacking(PlayerCharacter_Controller player)
@@ -115,50 +110,48 @@ public class ExecutionSword_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     private void Handle_Enemy_Killed()
     {
-        Add_Kill_Stack();
-    }
-
-    public void Add_Kill_Stack()
-    {
-        if (kill_Stack < 100)
+        if (player.es_Stack < 100)
         {
-            kill_Stack += 50;
-            if (kill_Stack % 10 == 0)
-            {
-                weapon_Data.attack_Damage += 1;
-            }
-
-            if (kill_Stack == 100)
+            player.es_Stack++;
+            if (player.es_Stack == 100)
             {
                 player.player_Life++;
             }
 
-            weapon_Kill_Stacks[weapon_ID] = kill_Stack;
+            if (player.es_Stack % 10 == 0)
+            {
+                inc_Attack_Dmg++;
+                player.attackDamage++;
+            }
 
             Update_By_Stack();
-            Debug.Log($"KillStack Increased! Current Stack = {kill_Stack}");
+            Debug.Log($"cur attack dmg{weapon_Data.attack_Damage}");
         }
     }
 
     private void Update_By_Stack()
     {
-        SpriteRenderer player_WeaponSpriteRenderer = player.weapon_Prefab.GetComponent<SpriteRenderer>();
+        if (player.cur_Weapon_Data != weapon_Data)
+            return;
 
-        if (player_WeaponSpriteRenderer != null)
+        SpriteRenderer sr = player.weapon_Prefab.GetComponent<SpriteRenderer>();
+        if (sr == null) return;
+
+        if (sr != null)
         {
-            if (kill_Stack >= 100)
+            if (player.es_Stack >= 100)
             {
-                player_WeaponSpriteRenderer.sprite = fullStack_Weapon_Sprite;
+                sr.sprite = fullStack_Weapon_Sprite;
                 weapon_Data.effect_Data = fullStack_Effect_Data;
             }
-            else if (kill_Stack >= 50)
+            else if (player.es_Stack >= 50)
             {
-                player_WeaponSpriteRenderer.sprite = halfStack_Weapon_Sprite;
+                sr.sprite = halfStack_Weapon_Sprite;
                 weapon_Data.effect_Data = halfStack_Effect_Data;
             }
             else
             {
-                player_WeaponSpriteRenderer.sprite = zeroStack_Weapon_Sprite;
+                sr.sprite = zeroStack_Weapon_Sprite;
                 weapon_Data.effect_Data = zeroStack_Effect_Data;
             }
         }
@@ -166,42 +159,9 @@ public class ExecutionSword_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point) { }
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data) { }
-    private void Apply_Stack_Effects()
+    
+    public void Reset_Dmg()
     {
-        weapon_Data.attack_Damage += (kill_Stack / 10);        
-    }
-
-    private void Manage_Stack_By_Card()
-    {
-        if (player == null) return;
-
-        bool has_Three_Card = false;
-        bool has_ThreeGwang_Card = false;
-
-        for (int i = 0; i < player.card_Inventory.Length; i++)
-        {
-            GameObject card_Obj = player.card_Inventory[i];
-            if (card_Obj != null)
-            {
-                int month = card_Obj.GetComponent<Card>().cardValue.Month;
-                if (month == 3) has_Three_Card = true;
-                if (month == 13) has_ThreeGwang_Card = true;
-            }
-        }
-
-        if (!has_Three_Card || !has_ThreeGwang_Card)
-        {
-            Reset_Stack();
-            Debug.Log("Es Stack is reset!");
-        }
-    }
-
-    public void Reset_Stack()
-    {
-        kill_Stack = 0;
-        if (weapon_Kill_Stacks.ContainsKey(weapon_ID))
-        {
-            weapon_Kill_Stacks[weapon_ID] = 0;
-        }
+        inc_Attack_Dmg = 0;
     }
 }

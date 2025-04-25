@@ -36,6 +36,8 @@ public class Musket_Attack_Strategy : ScriptableObject, IAttack_Strategy
         player.skill_Cooldown = weapon_Data.skill_Cooldown;
     }
 
+    public void Reset_Stats() { }
+
     private enum WeaponState
     {
         Ready,

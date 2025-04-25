@@ -38,6 +38,11 @@ public class HorseToken_Attack_Strategy : ScriptableObject, IAttack_Strategy
         player.skill_Cooldown = weapon_Data.skill_Cooldown;
     }
 
+    public void Reset_Stats() 
+    { 
+        player.On_Player_Damaged -= Decrease_Stack;
+    }
+
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         player.animator.SetTrigger("Attack");
@@ -52,17 +57,19 @@ public class HorseToken_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     private IEnumerator Shoot_With_Delay(PlayerCharacter_Controller player, Transform fire_Point)
     {
-        for (int i = 0; i < cur_Stack; i++)
+        int shots_To_Fire = cur_Stack;
+
+        for (int i = 0; i < shots_To_Fire; i++)
         {
             Vector3 spawn_Position = fire_Point.position + new Vector3(0, 0.5f, 0);
-
             GameObject projectile_Obj = Instantiate(projectile_Prefab, spawn_Position, Quaternion.identity);
             Horse_Projectile projectile = projectile_Obj.GetComponent<Horse_Projectile>();
 
             Vector2 shootDirection = (player.is_Facing_Right) ? Vector2.right : Vector2.left;
             projectile.transform.localScale = new Vector3(
                 Mathf.Abs(projectile.transform.localScale.x) * (player.is_Facing_Right ? 1 : -1),
-                projectile.transform.localScale.y, projectile.transform.localScale.z);
+                projectile.transform.localScale.y,
+                projectile.transform.localScale.z);
 
             projectile.Initialized(this, shootDirection, projectile_Speed);
 
