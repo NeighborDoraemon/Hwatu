@@ -25,6 +25,8 @@ public class HorseToken_Attack_Strategy : ScriptableObject, IAttack_Strategy
         this.player = player;
         this.weapon_Data = weapon_Data;
 
+        cur_Stack = 1;
+
         Initialize_Weapon_Data();
 
         player.On_Player_Damaged += Decrease_Stack;
@@ -52,14 +54,12 @@ public class HorseToken_Attack_Strategy : ScriptableObject, IAttack_Strategy
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point)
     {
         Debug.Log("cur_Stack : " + cur_Stack);
-        player.StartCoroutine(Shoot_With_Delay(player, fire_Point));
+        player.StartCoroutine(Shoot_With_Delay(player, fire_Point, cur_Stack));
     }
 
-    private IEnumerator Shoot_With_Delay(PlayerCharacter_Controller player, Transform fire_Point)
+    private IEnumerator Shoot_With_Delay(PlayerCharacter_Controller player, Transform fire_Point, int fire_Stack)
     {
-        int shots_To_Fire = cur_Stack;
-
-        for (int i = 0; i < shots_To_Fire; i++)
+        for (int i = 0; i < fire_Stack; i++)
         {
             Vector3 spawn_Position = fire_Point.position + new Vector3(0, 0.5f, 0);
             GameObject projectile_Obj = Instantiate(projectile_Prefab, spawn_Position, Quaternion.identity);
