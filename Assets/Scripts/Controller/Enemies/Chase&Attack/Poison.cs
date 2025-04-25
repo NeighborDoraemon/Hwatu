@@ -81,6 +81,8 @@ public class Poison : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
             is_Attacking = true;
             is_Attack_Turn = true;
             BR_Not_Attacking.Value = false;
+
+            poison_Animator.SetBool("is_Attacking", true);
         }
 
         if (Attack_Time >= f_Before_Delay && !is_Attack_Complete) // Attack
@@ -111,12 +113,14 @@ public class Poison : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
             }
 
             Attack_Time = 0.0f;
+            poison_Animator.SetBool("is_Attacking", false);
         }
     }
 
     private void Acher_Attack(int Alpha) //Left = -1, Right = 1;
     {
         GameObject projectile = null;
+        poison_Animator.SetTrigger("Attack_Trigger");
 
         if (!is_Standing)
         {
