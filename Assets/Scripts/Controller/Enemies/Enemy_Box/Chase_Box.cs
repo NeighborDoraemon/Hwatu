@@ -26,11 +26,8 @@ public class Chase_Box : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            //Target_Player = collision.gameObject;
-            //player_Object = collision.gameObject;
-
             BR_Chasing.Value = true;
-            //Debug.Log("플레이어 감지");
+            enemy_Animator.SetBool("is_Chasing", true);
         }
     }
 
@@ -48,7 +45,6 @@ public class Chase_Box : MonoBehaviour
         {
             BR_Chasing.Value = false;
             enemy_Animator.SetBool("is_Chasing", false);
-            //Debug.Log("플레이어 놓침");
         }
     }
 }

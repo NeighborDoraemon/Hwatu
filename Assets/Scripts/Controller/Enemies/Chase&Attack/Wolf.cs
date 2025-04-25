@@ -27,7 +27,7 @@ public class Wolf : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
     [Header("Others")]
     //[SerializeField] private GameObject Target_Player;
     [SerializeField] private Crash_Box Enemy_CB;
-    [SerializeField] private Animator ShortSword_Animator;
+    [SerializeField] private Animator Wolf_Animator;
     private float Distance = 0.0f;
 
     private bool is_Attack_Turn = false;
@@ -55,13 +55,10 @@ public class Wolf : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
         {
             if ((BR_Chasing.Value && Distance <= FR_Attack_Range.Value) || is_Attacking)
             {
-                //ShortSword_Animator.SetBool("is_Chasing", false);
-                //ShortSword_Animator.SetBool("is_Attacking", true);
                 Attack_Call();
             }
             else if (BR_Chasing.Value && Distance > FR_Attack_Range.Value)
             {
-                //ShortSword_Animator.SetBool("is_Chasing", true);
                 Chasing();
             }
         }

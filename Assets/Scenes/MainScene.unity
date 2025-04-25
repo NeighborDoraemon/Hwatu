@@ -71826,7 +71826,7 @@ PrefabInstance:
       objectReference: {fileID: 568451219}
     - target: {fileID: 5418104219592675981, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
       propertyPath: stun_Rate
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5418104219592675981, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
       propertyPath: money_Text

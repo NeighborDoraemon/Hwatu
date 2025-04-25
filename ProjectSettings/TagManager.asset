@@ -20,6 +20,7 @@ TagManager:
   - PlayerClone
   - Wave
   - Event
+  - Trap_Platform
   layers:
   - Default
   - TransparentFX

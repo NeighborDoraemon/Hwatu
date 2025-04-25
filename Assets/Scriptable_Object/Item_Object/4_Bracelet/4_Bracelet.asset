@@ -16,7 +16,7 @@ MonoBehaviour:
   item_Description: "\uD154\uB808\uD3EC\uD2B8 \uD69F\uC218 \uC99D\uAC00, \uB300\uC2E0
     \uCFE8\uD0C0\uC784 50% \uC99D\uAC00"
   item_Icon: {fileID: 21300000, guid: 8f9a6b14dc7d3b945ac812250c790c62, type: 3}
-  item_Price: 400
+  item_Price: 350
   itemEffect: {fileID: 11400000, guid: a241b1736b3e4e0448dd179891c1c20a, type: 2}
   isConsumable: 0
   item_Rarity: 1

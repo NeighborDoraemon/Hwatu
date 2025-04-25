@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2870981456011438566}
   m_Layer: 0
   m_Name: Springboard
-  m_TagString: Untagged
+  m_TagString: Trap_Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
