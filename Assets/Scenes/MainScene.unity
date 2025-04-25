@@ -71994,6 +71994,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1090033572545843101, guid: 8a2150b5382560f489f2e55a87b10220, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 271589312, guid: b53a6244324264b49be0799d9943b090, type: 3}
     - target: {fileID: 1165618920396306315, guid: 8a2150b5382560f489f2e55a87b10220, type: 3}
       propertyPath: m_Name
       value: Item_Slot_6
@@ -72110,6 +72114,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3234084496883566241, guid: 8a2150b5382560f489f2e55a87b10220, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1012228358, guid: b53a6244324264b49be0799d9943b090, type: 3}
     - target: {fileID: 3467430912769138628, guid: 8a2150b5382560f489f2e55a87b10220, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -72186,6 +72194,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6136941044684285734, guid: 8a2150b5382560f489f2e55a87b10220, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -223085646, guid: b53a6244324264b49be0799d9943b090, type: 3}
     - target: {fileID: 7072692218491328136, guid: 8a2150b5382560f489f2e55a87b10220, type: 3}
       propertyPath: m_Name
       value: Canvas
