@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -159,6 +160,7 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
         else if (cur_HealthInc_Phase == 3)
         {
             heal_Amount_Mul += 0.2f;
+            heal_Amount_Mul = (float)Math.Round(heal_Amount_Mul, 1);
         }
     }
 
@@ -197,6 +199,9 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
             {
                 cur_Inc_MoveSpeed += 0.1f;
                 movementSpeed += 0.1f;
+
+                movementSpeed = (float)Math.Round(movementSpeed, 1);
+                cur_Inc_MoveSpeed = (float)Math.Round(cur_Inc_MoveSpeed, 1);
                 Debug.Log("Move Speed Enhanced (Phase 1) : Current Move Speed " + movementSpeed);
             }
 
