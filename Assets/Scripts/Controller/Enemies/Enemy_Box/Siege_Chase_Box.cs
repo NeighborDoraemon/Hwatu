@@ -1,4 +1,5 @@
 using MBT;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class Siege_Chase_Box : MonoBehaviour
     [SerializeField] private BoolReference BR_Look_Once;
     //private GameObject Target_Player;
 
+    public event Action Player_Detect;
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +36,7 @@ public class Siege_Chase_Box : MonoBehaviour
             if(!BR_Look_Once.Value)
             {
                 BR_Look_Once.Value = true;
+                Player_Detect?.Invoke();
             }
             //Debug.Log("플레이어 감지");
         }

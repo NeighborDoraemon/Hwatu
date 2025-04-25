@@ -31,6 +31,12 @@ public class FB_Peasent : MonoBehaviour
     [SerializeField] private bool is_Started = false;
     //====Pattern Value
     [SerializeField] private float f_Pattern_Delay = 0.0f;
+
+    [Header("Animator")]
+    [SerializeField] private Animator FB_Peasant_Animator;
+    [SerializeField] private Animator FB_Ps_Effect_Animator;
+    [SerializeField] private SpriteRenderer FB_Peasant_SP;
+    [SerializeField] private SpriteRenderer FB_Ps_Effect_SP;
     
 
     private bool is_Facing_Left = true;
@@ -134,14 +140,17 @@ public class FB_Peasent : MonoBehaviour
             if (!Throw_Cooldown && Distance >= f_Throw_Distance)
             {
                 Now_State = Attack_State.Throw;
+                Debug.Log("State_Throw");
             }
             else if (!Heavy_Cooldown)
             {
                 Now_State = Attack_State.Heavy;
+                Debug.Log("State_Heavy");
             }
             else if (!Dash_Cooldown)
             {
                 Now_State = Attack_State.Dash;
+                Debug.Log("State_Dash");
             }
         }
     }
@@ -153,20 +162,25 @@ public class FB_Peasent : MonoBehaviour
             TurnAround();
 
             is_Once_Used = true;
+            is_Attack_Called = false;
+            is_Homi_Back = false;
+            //Debug.Log("throw Once Do");
         }
 
         if(!is_Attack_Called)
         {
+            //Debug.Log("throw Instantiate");
+            is_Homi_Back = false;
             if(is_Facing_Left)
             {
-                GameObject homi = Instantiate(Mini_Homi, this.gameObject.transform.position + new Vector3(-1.0f,0.0f,0.0f), Mini_Homi.gameObject.transform.rotation);
+                GameObject homi = Instantiate(Mini_Homi, this.gameObject.transform.position + new Vector3(-1.0f,-0.5f,0.0f), Mini_Homi.gameObject.transform.rotation);
                 //homi.GetComponent<Rigidbody2D>().velocity = new Vector2(-f_Throw_Speed, 0.0f);
 
                 is_Attack_Called = true;
             }
             else
             {
-                GameObject homi = Instantiate(Mini_Homi, this.gameObject.transform.position + new Vector3(1.0f, 0.0f, 0.0f), Quaternion.Euler(0.0f, 180.0f, -90.0f));
+                GameObject homi = Instantiate(Mini_Homi, this.gameObject.transform.position + new Vector3(1.0f, -0.5f, 0.0f), Quaternion.Euler(0.0f, 180.0f, -90.0f));
                 //homi.GetComponent<Rigidbody2D>().velocity = new Vector2(f_Throw_Speed, 0.0f);
 
                 is_Attack_Called = true;
@@ -175,6 +189,7 @@ public class FB_Peasent : MonoBehaviour
 
         if(is_Homi_Back) // Mini Homi is Back & Attack Complete
         {
+            //Debug.Log("throw after");
             Throw_Cooldown = true;
 
             is_Once_Used = false;
@@ -224,9 +239,10 @@ public class FB_Peasent : MonoBehaviour
                     enemy_Rigid.velocity = Vector2.zero;
 
                     { // Turn Around
-                        quater.y = 0.0f;
+                        FB_Peasant_SP.flipX = true;
+                        FB_Ps_Effect_SP.flipX = true;
 
-                        this.gameObject.transform.rotation = quater;
+                        //this.gameObject.transform.rotation = quater;
                         is_Facing_Left = true;
                     }
                     is_Move_Complete = true;
@@ -244,9 +260,10 @@ public class FB_Peasent : MonoBehaviour
                     enemy_Rigid.velocity = Vector2.zero;
 
                     { // Turn Around
-                        quater.y = 180.0f;
+                        FB_Peasant_SP.flipX = false;
+                        FB_Ps_Effect_SP.flipX = false;
 
-                        this.gameObject.transform.rotation = quater;
+                        //this.gameObject.transform.rotation = quater;
                         is_Facing_Left = false;
                     }
                     is_Move_Complete = true;
@@ -258,12 +275,12 @@ public class FB_Peasent : MonoBehaviour
 
         if(!is_Left_Point && !is_Attack_Called && is_Move_Complete) //¼öÁ¤
         {
-            GameObject homi = Instantiate(Big_Homi, FB_Heavy_01.transform.position, Quaternion.Euler(0.0f, 0.0f, -90.0f));
+            GameObject homi = Instantiate(Big_Homi, FB_Heavy_01.transform.position + new Vector3(0.0f, 0.5f, 0.0f), Quaternion.Euler(0.0f, 0.0f, -90.0f));
             is_Attack_Called = true;
         }
         else if(is_Left_Point && !is_Attack_Called && is_Move_Complete)
         {
-            GameObject homi = Instantiate(Big_Homi_Reverse, FB_Heavy_02.transform.position, Quaternion.Euler(0.0f, 180.0f, -90.0f));
+            GameObject homi = Instantiate(Big_Homi_Reverse, FB_Heavy_02.transform.position + new Vector3(0.0f, 0.5f, 0.0f), Quaternion.Euler(0.0f, 180.0f, -90.0f));
             is_Attack_Called = true;
         }
 
@@ -292,10 +309,16 @@ public class FB_Peasent : MonoBehaviour
 
             V3_Start_Position = this.transform.position;
             is_Once_Used = true;
+            FB_Peasant_Animator.SetTrigger("Dash_Before_Trigger");
         }
 
         if (!is_Attack_Called && f_Dash_Time >= f_Dash_Delay)
         {
+            FB_Peasant_Animator.SetBool("is_Dashing", true);
+            FB_Ps_Effect_Animator.SetBool("is_Dashing", true);
+
+            FB_Ps_Effect_SP.gameObject.SetActive(true)/* = true*/;
+
             if (is_Facing_Left)
             {
                 enemy_Rigid.velocity = new Vector2(-f_Dash_Speed, 0.0f);
@@ -320,6 +343,10 @@ public class FB_Peasent : MonoBehaviour
             StartCoroutine(Attack_CoolDown(Now_State));
             f_Pattern_Time = 0.0f;
 
+            FB_Peasant_Animator.SetBool("is_Dashing", false);
+            FB_Ps_Effect_Animator.SetBool("is_Dashing", false);
+            FB_Ps_Effect_SP.gameObject.SetActive(false);
+
             Now_State = Attack_State.Nothing;
         }
     }
@@ -332,21 +359,21 @@ public class FB_Peasent : MonoBehaviour
         {
             case Attack_State.Throw:
                 {
-                    Debug.Log("Throw_Cool_Called");
+                    //Debug.Log("Throw_Cool_Called");
                     yield return new WaitForSeconds(5.0f);  //5sec
                     Throw_Cooldown = false;
                     break;
                 }
             case Attack_State.Heavy:
                 {
-                    Debug.Log("Heavy_Cool_Called");
+                    //Debug.Log("Heavy_Cool_Called");
                     yield return new WaitForSeconds(15.0f);  //15sec
                     Heavy_Cooldown = false;
                     break;
                 }
             case Attack_State.Dash:
                 {
-                    Debug.Log("Dash_Cool_Called");
+                    //Debug.Log("Dash_Cool_Called");
                     yield return new WaitForSeconds(7.0f);  //7sec
                     Dash_Cooldown = false;
                     break;
@@ -361,21 +388,25 @@ public class FB_Peasent : MonoBehaviour
 
     private void TurnAround()
     {
-        Quaternion quater = this.gameObject.transform.rotation;
+        //Quaternion quater = this.gameObject.transform.rotation;
 
-        if (this.gameObject.transform.position.x <= Target_Player.transform.position.x && quater.y < 1.0f) // Player is On Right && Facing Left
+        //FB_Peasant_SP.flipX = true;
+
+        if (this.gameObject.transform.position.x <= Target_Player.transform.position.x && FB_Peasant_SP.flipX) // Player is On Right && Facing Left
         {
-            quater.y = 180.0f;
+            FB_Peasant_SP.flipX = false;
+            FB_Ps_Effect_SP.flipX = false;
 
-            this.gameObject.transform.rotation = quater;
+            //this.gameObject.transform.rotation = quater;
             is_Facing_Left = false;
 
         }
-        else if (this.gameObject.transform.position.x > Target_Player.transform.position.x && quater.y >= 160.0f)
+        else if (this.gameObject.transform.position.x > Target_Player.transform.position.x && !FB_Peasant_SP.flipX)
         {
-            quater.y = 0.0f;
+            FB_Peasant_SP.flipX = true;
+            FB_Ps_Effect_SP.flipX = true;
 
-            this.gameObject.transform.rotation = quater;
+            //this.gameObject.transform.rotation = quater;
             is_Facing_Left = true;
         }
     }

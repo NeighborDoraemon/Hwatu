@@ -40,27 +40,13 @@ public class FB_Mini_Homi : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(is_Going_Left) // Going Left
+        if (is_Going_Left) // Going Left
         {
-            //if (homi_rigid.velocity.x <= 0.1f)
-            //{
-            //    homi_rigid.velocity = new Vector2(4.0f, 0.0f);
-            //}
-            //else
-            //{
-                homi_rigid.AddForce(new Vector2(f_Back_Power, 0.0f));
-            //}
+            homi_rigid.AddForce(new Vector2(f_Back_Power, 0.0f));
         }
         else
         {
-            //if (homi_rigid.velocity.x <= 0.1f)
-            //{
-            //    homi_rigid.velocity = new Vector2(-4.0f, 0.0f);
-            //}
-            //else
-            //{
-                homi_rigid.AddForce(new Vector2(-f_Back_Power, 0.0f));
-            //}
+            homi_rigid.AddForce(new Vector2(-f_Back_Power, 0.0f));
         }
     }
 
@@ -73,6 +59,7 @@ public class FB_Mini_Homi : MonoBehaviour
         else if(collision.gameObject.CompareTag("Enemy"))
         {
             collision.gameObject.GetComponent<FB_Peasent>().is_Homi_Back = true;
+            Debug.Log("Homi Back");
             Destroy(gameObject);
         }
     }

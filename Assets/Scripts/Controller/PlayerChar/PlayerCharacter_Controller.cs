@@ -1138,7 +1138,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             return;
         }
         ShowInventory();
-        //stat_Object.Set_Stat_Panel();
+        stat_Object.Set_Stat_Panel();
         Time.timeScale = 0.0f;
     }
     void OnInventory_Released(InputAction.CallbackContext context)
@@ -1399,6 +1399,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public void Weak_Knock_Back(int Left_Num, float Knock_Back_time, float Power) //Left = 1, Right = -1
     {
+        if(Current_Player_State == Player_State.Trap_Minigame)
+        {
+            return;
+        }
+
         is_Knock_Back = true;
 
         Vector2 Knock_Back_Direction = new Vector2((float)Left_Num, 0.5f);

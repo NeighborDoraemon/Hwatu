@@ -168,6 +168,7 @@ public class Hog : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
 
         Hog_Animator.SetBool("is_Delay_End", false);
         Hog_Animator.SetBool("is_Attacking", false);
+        Hog_Animator.SetTrigger("is_Stunned");
         Hog_Effect_Animator.SetBool("is_Attacking", false);
 
         is_Attack_Turn = false;

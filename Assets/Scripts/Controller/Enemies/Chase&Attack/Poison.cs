@@ -13,23 +13,29 @@ public class Poison : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
 
     [Header("BB_Value")]
     [SerializeField] private BoolReference BR_Chasing;
-    //[SerializeField] private BoolReference BR_Facing_Left;
-    //[SerializeField] private GameObjectReference OR_Player;
-
-    //[SerializeField] private FloatReference FR_Attack_Range;
     [SerializeField] private IntReference IR_Attack_Damage;
-    //[SerializeField] private BoolReference BR_Stunned;
     [SerializeField] private BoolReference BR_Not_Attacking;
 
     [Header("Others")]
-    //[SerializeField] private GameObject Target_Player;
     [SerializeField] private GameObject Bullet_Prefab;
+    [SerializeField] private CapsuleCollider2D Lie_Down_Collider;
+    [SerializeField] private CapsuleCollider2D Stand_Collider;
+    [SerializeField] private Siege_Chase_Box chase_Box;
+    [SerializeField] private Animator poison_Animator;
+
+    [Header("Positions")]
+    [SerializeField] private Transform Down_Position;
+    [SerializeField] private Transform Stand_Position;
+
 
     private float arrowSpeed = 15.0f;
 
     private bool is_Attack_Turn = false;
     private bool is_Attacking = false; // 공격 중 범위를 벗어났을 때, 다른 행동을 못하게 설정
     private bool is_Attack_Complete = false; // 연속공격의 방지
+
+    private bool is_Look_Once = false; // 플레이어 감지 여부
+    private bool is_Standing = false; // 서있는지 여부
 
     public void Player_Initialize(PlayerCharacter_Controller player)
     {
@@ -39,7 +45,15 @@ public class Poison : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
     // Start is called before the first frame update
     void Start()
     {
+        if (chase_Box != null)
+        {
+            chase_Box.Player_Detect += Player_Detect_Method;
+        }
+    }
 
+    private void OnDestroy()
+    {
+        chase_Box.Player_Detect -= Player_Detect_Method;
     }
 
     // Update is called once per frame
@@ -67,6 +81,8 @@ public class Poison : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
             is_Attacking = true;
             is_Attack_Turn = true;
             BR_Not_Attacking.Value = false;
+
+            poison_Animator.SetBool("is_Attacking", true);
         }
 
         if (Attack_Time >= f_Before_Delay && !is_Attack_Complete) // Attack
@@ -86,25 +102,48 @@ public class Poison : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
         //Call After Delay Method
         if (Attack_Time >= f_Before_Delay + f_After_Delay)
         {
-            Debug.Log("Archer Turn");
-
             is_Attack_Turn = false;
             is_Attacking = false;
             is_Attack_Complete = false;
             BR_Not_Attacking.Value = true;
 
+            if(is_Look_Once)
+            {
+                Change_Stand();
+            }
+
             Attack_Time = 0.0f;
+            poison_Animator.SetBool("is_Attacking", false);
         }
     }
 
     private void Acher_Attack(int Alpha) //Left = -1, Right = 1;
     {
-        GameObject projectile = MonoBehaviour.Instantiate(Bullet_Prefab, this.gameObject.transform.position, this.gameObject.transform.rotation);
+        GameObject projectile = null;
+        poison_Animator.SetTrigger("Attack_Trigger");
+
+        if (!is_Standing)
+        {
+            projectile = MonoBehaviour.Instantiate(Bullet_Prefab, Down_Position.position, this.gameObject.transform.rotation);
+        }
+        else
+        {
+            projectile = MonoBehaviour.Instantiate(Bullet_Prefab, Stand_Position.position, this.gameObject.transform.rotation);
+        }
 
         Rigidbody2D projectile_Rb = projectile.GetComponent<Rigidbody2D>();
-        Vector2 shootDirection = new Vector2(Alpha, 0.0f);
-        projectile_Rb.velocity = shootDirection * arrowSpeed;
+        Vector2 shootDirection;
 
+        if (BR_Facing_Left.Value)
+        {
+            shootDirection = new Vector2(-1, 0.0f);
+        }
+        else
+        {
+            shootDirection = new Vector2(1, 0.0f);
+        }
+
+        projectile_Rb.velocity = shootDirection * arrowSpeed;
     }
 
     public void Enemy_Stun(float Duration)
@@ -118,5 +157,21 @@ public class Poison : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
         Attack_Time = 0.0f;
 
         Take_Stun(Duration);
+    }
+
+    private void Player_Detect_Method()
+    {
+        is_Look_Once = true;
+    }
+
+    private void Change_Stand()
+    {
+        Stand_Collider.enabled = true;
+        Lie_Down_Collider.enabled = false;
+
+        poison_Animator.SetBool("is_Standing", true);
+        poison_Animator.SetTrigger("Standing_Trigger");
+
+        is_Standing = true;
     }
 }

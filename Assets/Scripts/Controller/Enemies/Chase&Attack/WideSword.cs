@@ -58,7 +58,6 @@ public class WideSword : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
             if ((BR_Chasing.Value && Distance <= FR_Attack_Range.Value) || is_Attacking)
             {
                 Wide_Animator.SetBool("is_Chasing", false);
-                Wide_Animator.SetBool("is_Attacking", true);
                 Attack_Call();
             }
             else if (BR_Chasing.Value && Distance > FR_Attack_Range.Value)
@@ -98,13 +97,14 @@ public class WideSword : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
             is_Attack_Turn = true;
 
             is_Attack_Complete = false;
+            Wide_Animator.SetBool("is_Delay_End", false);
         }
 
         Attack_Time += Time.deltaTime;
 
         if (Attack_Time >= f_Before_Delay && !is_Attack_Complete) // Attack
         {
-            Wide_Animator.SetBool("is_Delay_End", true);
+            Wide_Animator.SetTrigger("is_Attacking");
             if (BR_Facing_Left.Value) //Attack Left
             {
                 //Debug.Log(Attack_Time);
@@ -127,9 +127,7 @@ public class WideSword : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
 
             Attack_Time = 0.0f;
             BR_Not_Attacking.Value = true;
-
-            Wide_Animator.SetBool("is_Attacking", false);
-            Wide_Animator.SetBool("is_Delay_End", false);
+            Wide_Animator.SetBool("is_Delay_End", true);
         }
     }
 
@@ -166,8 +164,8 @@ public class WideSword : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
 
     public void Enemy_Stun(float Duration)
     {
+        Wide_Animator.SetBool("is_Chasing", false);
         Wide_Animator.SetBool("is_Delay_End", false);
-        Wide_Animator.SetBool("is_Attacking", false);
 
         is_Attack_Turn = false;
         is_Attacking = false;
