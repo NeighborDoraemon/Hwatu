@@ -21,6 +21,12 @@ public class Poison : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
     [SerializeField] private CapsuleCollider2D Lie_Down_Collider;
     [SerializeField] private CapsuleCollider2D Stand_Collider;
     [SerializeField] private Siege_Chase_Box chase_Box;
+    [SerializeField] private Animator poison_Animator;
+
+    [Header("Positions")]
+    [SerializeField] private Transform Down_Position;
+    [SerializeField] private Transform Stand_Position;
+
 
     private float arrowSpeed = 15.0f;
 
@@ -29,7 +35,8 @@ public class Poison : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
     private bool is_Attack_Complete = false; // 연속공격의 방지
 
     private bool is_Look_Once = false; // 플레이어 감지 여부
-    
+    private bool is_Standing = false; // 서있는지 여부
+
     public void Player_Initialize(PlayerCharacter_Controller player)
     {
         Target_Player = player.gameObject;
@@ -93,8 +100,6 @@ public class Poison : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
         //Call After Delay Method
         if (Attack_Time >= f_Before_Delay + f_After_Delay)
         {
-            Debug.Log("Archer Turn");
-
             is_Attack_Turn = false;
             is_Attacking = false;
             is_Attack_Complete = false;
@@ -111,10 +116,29 @@ public class Poison : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
 
     private void Acher_Attack(int Alpha) //Left = -1, Right = 1;
     {
-        GameObject projectile = MonoBehaviour.Instantiate(Bullet_Prefab, this.gameObject.transform.position, this.gameObject.transform.rotation);
+        GameObject projectile = null;
+
+        if (!is_Standing)
+        {
+            projectile = MonoBehaviour.Instantiate(Bullet_Prefab, Down_Position.position, this.gameObject.transform.rotation);
+        }
+        else
+        {
+            projectile = MonoBehaviour.Instantiate(Bullet_Prefab, Stand_Position.position, this.gameObject.transform.rotation);
+        }
 
         Rigidbody2D projectile_Rb = projectile.GetComponent<Rigidbody2D>();
-        Vector2 shootDirection = new Vector2(Alpha, 0.0f);
+        Vector2 shootDirection;
+
+        if (BR_Facing_Left.Value)
+        {
+            shootDirection = new Vector2(-1, 0.0f);
+        }
+        else
+        {
+            shootDirection = new Vector2(1, 0.0f);
+        }
+
         projectile_Rb.velocity = shootDirection * arrowSpeed;
     }
 
@@ -140,5 +164,10 @@ public class Poison : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
     {
         Stand_Collider.enabled = true;
         Lie_Down_Collider.enabled = false;
+
+        poison_Animator.SetBool("is_Standing", true);
+        poison_Animator.SetTrigger("Standing_Trigger");
+
+        is_Standing = true;
     }
 }

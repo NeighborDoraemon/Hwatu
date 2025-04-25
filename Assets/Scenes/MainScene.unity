@@ -71152,7 +71152,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2094925113
 RectTransform:
   m_ObjectHideFlags: 0
@@ -71829,6 +71829,10 @@ PrefabInstance:
       propertyPath: map_Manager
       value: 
       objectReference: {fileID: 546713623}
+    - target: {fileID: 5418104219592675981, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
+      propertyPath: stat_Object
+      value: 
+      objectReference: {fileID: 2094925116}
     - target: {fileID: 5418104219592675981, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
       propertyPath: match_manager
       value: 

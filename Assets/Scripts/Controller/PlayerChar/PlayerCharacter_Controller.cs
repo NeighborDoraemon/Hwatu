@@ -1120,7 +1120,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     void OnInventory_Pressed(InputAction.CallbackContext context)
     {
         ShowInventory();
-        //stat_Object.Set_Stat_Panel();
+        stat_Object.Set_Stat_Panel();
         Time.timeScale = 0.0f;
     }
     void OnInventory_Released(InputAction.CallbackContext context)
