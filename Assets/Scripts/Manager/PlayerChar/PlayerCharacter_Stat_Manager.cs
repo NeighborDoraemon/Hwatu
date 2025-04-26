@@ -33,10 +33,13 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     public float defend_Attack_Rate = 0.0f;       // 적의 공격 방어 확률
     public float movementSpeed_Mul = 1.0f;        // 이동속도 증감 배율
     public float health_Mul = 1.0f;               // 최대체력 증감 배율
+    public float attack_Cooltime_Mul = 1.0f;      // 공격속도 쿨타임 증감 배율
+    public float skill_Cooltime_Mul = 1.0f;       // 스킬 쿨타임 증감 배율
     public int damage_Reduce_Min = 0;             // 데미지 감소 최소치
     public int damage_Reduce_Max = 0;             // 데미지 감소 최대치
     public float heal_Amount_Mul = 1.0f;          // 회복량 증감 배율
     public float money_Earned_Mul = 1.0f;         // 돈 획득량 배율
+    public float teleport_Cooltime_Mul = 1.0f;    // 텔레포트 쿨타임 증감 배율
     public float bleeding_Rate = 0.0f;            // 출혈 확률
     public float stun_Rate = 0.0f;                // 기절 확률
 
@@ -49,19 +52,26 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     public int max_AttackCount = 0;
     public int es_Stack = 0;
 
+    [Header("스탯 강화 관련 변수")]
+    public float inhance_Skillcooltime_Value = 0.1f;
+    public float teleport_Invicible_Time = 0.1f;
+
     [HideInInspector] public int cur_AttackInc_Phase = 1;
     [HideInInspector] public int cur_HealthInc_Phase = 1;
     [HideInInspector] public int cur_AttackCoolTimeInc_Phase = 1;
     [HideInInspector] public int cur_MoveSpeedInc_Phase = 1;
 
     [HideInInspector] public int cur_Inc_AttackDamage = 0;
-
     [HideInInspector] public int cur_Inc_Health = 0;
     [HideInInspector] public int cur_Inc_DamageReduction = 0;
-
     [HideInInspector] public float cur_Dec_AttackCoolTime = 0;
-
     [HideInInspector] public float cur_Inc_MoveSpeed = 0;
+
+    [HideInInspector] public bool dmg_Inc_To_Lost_Health = false;
+    [HideInInspector] public bool card_Match_Dmg_Inc = false;
+    [HideInInspector] public bool skill_Cooltime_Has_Dec = false;
+    [HideInInspector] public bool money_Earned_Has_Inc = false;
+    [HideInInspector] public bool invicible_Teleport = false; 
     
     [Header("스킬 변수")]
     public float skill_Cooldown = 1.0f;
@@ -105,21 +115,31 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
                 cur_Inc_AttackDamage++;
                 attackDamage += 1;
                 Debug.Log("Attack Damage Enhanced (Phase 1) : Current Attack Damage " + attackDamage);
-            }
-
-            if (cur_Inc_AttackDamage >= 10)
-            {
-                cur_AttackInc_Phase = 2;
-                Debug.Log("Phase 1 Completed. Phase 2 Start.");
+                return;
             }
         }
-        else if (cur_AttackInc_Phase == 2)
+
+        if (cur_AttackInc_Phase == 1 && cur_Inc_AttackDamage >= 10)
+        {
+            cur_AttackInc_Phase = 2;
+            Debug.Log("Phase 1 Completed. Phase 2 Start.");
+        }
+
+        if (cur_AttackInc_Phase == 2)
+        {
+            if (!dmg_Inc_To_Lost_Health)
+            {
+                dmg_Inc_To_Lost_Health = true;
+                return;
+            }
+        }
+
+        if (cur_AttackInc_Phase == 2 && dmg_Inc_To_Lost_Health)
         {
             cur_AttackInc_Phase = 3;
-        }
-        else if (cur_AttackInc_Phase == 3)
-        {
 
+            card_Match_Dmg_Inc = true;
+            return;
         }
     }
 
@@ -133,15 +153,17 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
                 max_Health += 5;
                 health += 5;
                 Debug.Log("Health Enhanced (Phase 1) : Current Max Health " + max_Health);
-            }
-
-            if (cur_Inc_Health >= 50)
-            {
-                cur_HealthInc_Phase = 2;
-                Debug.Log("Phase 1 Completed. Phase 2 Start.");
+                return;
             }
         }
-        else if (cur_HealthInc_Phase == 2)
+
+        if (cur_HealthInc_Phase == 1 && cur_Inc_Health >= 50)
+        {
+            cur_HealthInc_Phase = 2;
+            Debug.Log("Phase 1 Completed. Phase 2 Start.");
+        }
+
+        if (cur_HealthInc_Phase == 2)
         {
             if (cur_Inc_DamageReduction < 3)
             {
@@ -149,18 +171,19 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
                 damage_Reduce_Min += 1;
                 damage_Reduce_Max += 1;
                 Debug.Log("Health Enhanced (Phase 2) : Current DamageReduction " + damage_Reduce_Min + "," + damage_Reduce_Max);
-            }
-
-            if (cur_Inc_DamageReduction >= 3)
-            {
-                cur_HealthInc_Phase = 3;
-                Debug.Log("Phase 2 Completed. Phase 3 Start.");
+                return;
             }
         }
-        else if (cur_HealthInc_Phase == 3)
+
+        if (cur_HealthInc_Phase == 2 && cur_Inc_DamageReduction >= 3)
         {
+            cur_HealthInc_Phase = 3;
+            Debug.Log("Phase 2 Completed. Phase 3 Start.");
+
             heal_Amount_Mul += 0.2f;
-            heal_Amount_Mul = (float)Math.Round(heal_Amount_Mul, 1);
+            heal_Amount_Mul = Mathf.Round(heal_Amount_Mul * 100f) / 100f;
+
+            return;
         }
     }
 
@@ -171,23 +194,35 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
             if (cur_Dec_AttackCoolTime < 1.0f)
             {
                 cur_Dec_AttackCoolTime += 0.1f;
-                attack_Cooldown -= 0.1f;
+                attack_Cooltime_Mul -= 0.01f;
+                attack_Cooltime_Mul = Mathf.Round(attack_Cooltime_Mul * 100f) / 100f;
                 Debug.Log("Attack CoolTime Enhanced (Phase 1) : Current Attack CoolTime " + attack_Cooldown);
-            }
-
-            if (cur_Dec_AttackCoolTime >= 1.0f)
-            {
-                cur_AttackCoolTimeInc_Phase = 2;
-                Debug.Log("Phase 1 Completed. Phase 2 Start.");
+                return;
             }
         }
-        else if (cur_AttackCoolTimeInc_Phase == 2)
+
+        if (cur_AttackCoolTimeInc_Phase == 1 && cur_Dec_AttackCoolTime >= 1.0f)
+        {
+            cur_AttackCoolTimeInc_Phase = 2;
+            Debug.Log("Phase 1 Completed. Phase 2 Start.");
+        }
+
+        if (cur_AttackCoolTimeInc_Phase == 2)
+        {
+            if (!skill_Cooltime_Has_Dec)
+            {
+                skill_Cooltime_Mul -= inhance_Skillcooltime_Value;
+                skill_Cooltime_Has_Dec = true;
+                return;
+            }
+        }
+        
+        if (cur_AttackCoolTimeInc_Phase == 2 && skill_Cooltime_Has_Dec)
         {
             cur_AttackCoolTimeInc_Phase = 3;
-        }
-        else if (cur_AttackCoolTimeInc_Phase == 3)
-        {
+
             max_Teleport_Count++;
+            return;
         }
     }
 
@@ -203,23 +238,32 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
                 movementSpeed = (float)Math.Round(movementSpeed, 1);
                 cur_Inc_MoveSpeed = (float)Math.Round(cur_Inc_MoveSpeed, 1);
                 Debug.Log("Move Speed Enhanced (Phase 1) : Current Move Speed " + movementSpeed);
+                return;
             }
+        }
 
-            if (cur_Inc_MoveSpeed >= 1.0f)
+        if (cur_MoveSpeedInc_Phase == 1 && cur_Inc_MoveSpeed >= 1.0f)
+        {
+            cur_MoveSpeedInc_Phase = 2;
+            Debug.Log("Phase 1 Completed. Phase 2 Start.");
+        }
+
+        if (cur_MoveSpeedInc_Phase == 2)
+        {
+            if (!money_Earned_Has_Inc)
             {
-                cur_MoveSpeedInc_Phase = 2;
-                Debug.Log("Phase 1 Completed. Phase 2 Start.");
+                money_Earned_Mul += 0.2f;
+                money_Earned_Has_Inc = true;
+                return;
             }
+            
         }
-        else if (cur_MoveSpeedInc_Phase == 2)
+        
+        if (cur_MoveSpeedInc_Phase == 2 && money_Earned_Has_Inc)
         {
-            money_Earned_Mul += 0.2f;
-
             cur_MoveSpeedInc_Phase = 3;
-        }
-        else if (cur_MoveSpeedInc_Phase == 3)
-        {
-
+            invicible_Teleport = true;
+            return;
         }
     }
 }

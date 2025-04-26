@@ -17,4 +17,6 @@ MonoBehaviour:
   ground_Layer:
     serializedVersion: 2
     m_Bits: 64
-  min_FallSpeed: 0.1
+  fallSpeed: 5
+  accel_Delay: 0.1
+  accel_Rate: 20

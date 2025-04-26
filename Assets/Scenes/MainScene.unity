@@ -42974,7 +42974,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &470908298
 Transform:
   m_ObjectHideFlags: 0
@@ -71824,10 +71824,6 @@ PrefabInstance:
       propertyPath: comb_Text
       value: 
       objectReference: {fileID: 568451219}
-    - target: {fileID: 5418104219592675981, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
-      propertyPath: stun_Rate
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5418104219592675981, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
       propertyPath: money_Text
       value: 

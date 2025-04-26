@@ -169,6 +169,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             Debug.LogError("Inventory Panel is Missing!");
         }
+
+        teleporting_Cooltime_Timer = teleporting_CoolTime * teleport_Cooltime_Mul;
     }
     // Update is called once per frame
     void Update()
@@ -410,8 +412,20 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 }
 
                 On_Teleport?.Invoke(this);
+
+                if (invicible_Teleport)
+                {
+                    StartCoroutine(Invicible_After_Teleport());
+                }
             }
         }
+    }
+
+    private IEnumerator Invicible_After_Teleport()
+    {
+        isInvincible = true;
+        yield return new WaitForSeconds(teleport_Invicible_Time);
+        isInvincible = false;
     }
 
     void Handle_Teleportation_Time()
@@ -421,13 +435,13 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             teleporting_Cooltime_Timer -= Time.deltaTime;
             if (teleporting_Cooltime_Timer <= 0.0f)
             {
-                teleporting_Cooltime_Timer = teleporting_CoolTime;
                 cur_Teleport_Count++;
-
                 if (cur_Teleport_Count > 0)
                 {
                     canTeleporting = true;
                 }
+
+                teleporting_Cooltime_Timer = teleporting_CoolTime * teleport_Cooltime_Mul;
             }
         }
     }
@@ -973,10 +987,17 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
         else if (can_JumpAtk && !isGrounded)
         {
-            animator.SetBool("Can_JumpAtk", false);
-            attack_Strategy.Attack(this, cur_Weapon_Data);
             can_JumpAtk = false;
+            animator.SetBool("Can_JumpAtk", true);
+            attack_Strategy.Attack(this, cur_Weapon_Data);
+            StartCoroutine(Reset_JumpAtk_Param_Next_Frame());
         }
+    }
+
+    private IEnumerator Reset_JumpAtk_Param_Next_Frame()
+    {
+        yield return null;
+        animator.SetBool("Can_JumpAtk", false);
     }
 
     public void End_Attack()
@@ -990,14 +1011,18 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     private IEnumerator Attack_Cooltime()
     {
-        yield return new WaitForSeconds(cur_Weapon_Data.attack_Cooldown);
+        float waitTime = cur_Weapon_Data.attack_Cooldown * attack_Cooltime_Mul;
+        waitTime = Mathf.Max(0.1f, waitTime);
 
+        yield return new WaitForSeconds(waitTime);
         canAttack = true;
     }
 
     private bool Is_Cooldown_Complete()
     {
-        return Time.time >= last_Attack_Time + attack_Cooldown && canAttack == true;
+        float modified_Cooldown = cur_Weapon_Data.attack_Cooldown * attack_Cooltime_Mul;
+        modified_Cooldown = Mathf.Max(0.1f, modified_Cooldown);
+        return Time.time >= last_Attack_Time + modified_Cooldown && canAttack == true;
     }
     private bool Can_Combo_Attack()
     {
@@ -1121,7 +1146,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     private bool Is_Skill_Cooldown_Complete()
     {
-        return Time.time >= last_Skill_Time + skill_Cooldown;
+        float modified_Cooldown = cur_Weapon_Data.skill_Cooldown * skill_Cooltime_Mul;
+        return Time.time >= last_Skill_Time + modified_Cooldown;
     }
 
     private void Update_Skill_Timer()

@@ -59,7 +59,9 @@ public class HorseToken_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     private IEnumerator Shoot_With_Delay(PlayerCharacter_Controller player, Transform fire_Point, int fire_Stack)
     {
-        for (int i = 0; i < fire_Stack; i++)
+        int shots_To_Fire = fire_Stack;
+
+        for (int i = 0; i < shots_To_Fire; i++)
         {
             Vector3 spawn_Position = fire_Point.position + new Vector3(0, 0.5f, 0);
             GameObject projectile_Obj = Instantiate(projectile_Prefab, spawn_Position, Quaternion.identity);

@@ -12,4 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f83cb8ec90feeb468a7fc5542770867, type: 3}
   m_Name: Shield_Attack
   m_EditorClassIdentifier: 
+  isParrying: 0
   parry_Duration: 0.5
+  ground_Layer:
+    serializedVersion: 2
+    m_Bits: 64
+  fallSpeed: 5
+  accel_Delay: 0.1
+  accel_Rate: 20

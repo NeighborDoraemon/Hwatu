@@ -555,6 +555,7 @@ MonoBehaviour:
   isAttacking: 0
   max_AttackCount: 0
   es_Stack: 0
+  invicible_Time: 0.1
   cur_AttackInc_Phase: 1
   cur_HealthInc_Phase: 1
   cur_AttackCoolTimeInc_Phase: 1
@@ -564,6 +565,7 @@ MonoBehaviour:
   cur_Inc_DamageReduction: 0
   cur_Dec_AttackCoolTime: 0
   cur_Inc_MoveSpeed: 0
+  invicible_Teleport: 0
   skill_Cooldown: 1
   last_Skill_Time: 0
   is_Skill_Active: 0
