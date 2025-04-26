@@ -11,20 +11,15 @@ public class DokkabieMask_Effect : ItemEffect
     public float berserk_Duration = 30f;
     public float cooldown_Duration = 60f;
 
-    public float damage_Mul = 0.5f;
-    public float takenDamage_Mul = 1.5f;
-    public float attack_Cooldown_Mul = 0.7f;
-    public float moveSpeed_Mul = 1.2f;
-
     private float cur_Gauge = 0f;
     private bool is_Berserk_Active = false;
     private bool is_Cooldown = false;
     private PlayerCharacter_Controller cur_Player;
 
-    private float og_Damage_Mul;
-    private float og_TakenDamage_Mul;
-    private float og_AttackCooldown;
-    private float og_MoveSpeed;
+    public float damage_Value = 0.5f;
+    public float taken_Damage_Value = 0.5f;
+    public float atk_Cooltime_Value = 0.3f;
+    public float moveSpeed_Value = 0.2f;
 
     public override void ApplyEffect(PlayerCharacter_Controller player)
     {
@@ -61,22 +56,17 @@ public class DokkabieMask_Effect : ItemEffect
     {
         is_Berserk_Active = true;
 
-        og_MoveSpeed = cur_Player.movementSpeed;
-        og_Damage_Mul = cur_Player.damage_Mul;
-        og_TakenDamage_Mul = cur_Player.takenDamage_Mul;
-        og_AttackCooldown = cur_Player.attack_Cooldown;
-
-        cur_Player.movementSpeed = og_MoveSpeed * moveSpeed_Mul;
-        cur_Player.damage_Mul = og_Damage_Mul + damage_Mul;
-        cur_Player.takenDamage_Mul = og_TakenDamage_Mul * takenDamage_Mul;
-        cur_Player.attack_Cooldown = og_AttackCooldown * attack_Cooldown_Mul;
+        cur_Player.damage_Mul += damage_Value;
+        cur_Player.takenDamage_Mul += taken_Damage_Value;
+        cur_Player.attack_Cooltime_Mul -= atk_Cooltime_Value;
+        cur_Player.movementSpeed_Mul += moveSpeed_Value;
 
         yield return new WaitForSeconds(berserk_Duration);
 
-        cur_Player.movementSpeed = og_MoveSpeed;
-        cur_Player.damage_Mul = og_Damage_Mul;
-        cur_Player.takenDamage_Mul = og_TakenDamage_Mul;
-        cur_Player.attack_Cooldown = og_AttackCooldown;
+        cur_Player.damage_Mul -= damage_Value;
+        cur_Player.takenDamage_Mul -= taken_Damage_Value;
+        cur_Player.attack_Cooltime_Mul += atk_Cooltime_Value;
+        cur_Player.movementSpeed_Mul -= moveSpeed_Value;
 
         is_Berserk_Active = false;
         is_Cooldown = true;

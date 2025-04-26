@@ -122,8 +122,11 @@ public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
                 Update_Stat_Image(stat_Name, player.cur_AttackInc_Phase);
                 break;
             case "Stat_Health":
+                int old_Phase = player.cur_HealthInc_Phase;
                 player?.Increase_Health();
-                Update_Stat_Image(stat_Name, player.cur_HealthInc_Phase);
+                int phase_To_Show = old_Phase < player.cur_HealthInc_Phase
+                                        ? player.cur_HealthInc_Phase : old_Phase;
+                Update_Stat_Image(stat_Name, phase_To_Show);
                 break;
             case "Stat_AttacSpeed":
                 player?.Increase_AttackCoolTime();

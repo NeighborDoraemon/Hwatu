@@ -14,7 +14,9 @@ public class DoubleHandsSword_Attack_Strategy : ScriptableObject, IAttack_Strate
     public float projectile_Speed = 10.0f;
 
     public LayerMask ground_Layer;
-    public float min_FallSpeed = 5.0f;
+    public float fallSpeed = 5.0f;
+    public float accel_Delay = 0.3f;
+    public float accel_Rate = 5.0f;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
@@ -58,24 +60,21 @@ public class DoubleHandsSword_Attack_Strategy : ScriptableObject, IAttack_Strate
         player.animator.SetTrigger("Attack");
         player.jumpCount = player.maxJumpCount;
 
-        Vector2 origin = player.transform.position;
-        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down, Mathf.Infinity, ground_Layer);
-        float distance_To_Ground = hit.collider ? hit.distance : 0.0f;
+        float tp_Fall_Speed = fallSpeed;
 
-        AnimatorClipInfo[] clips = player.animator.GetCurrentAnimatorClipInfo(0);
-        float attack_Duration = clips.Length > 0
-            ? clips[0].clip.length
-            : 0.5f;
-
-        float calculated_Speed = attack_Duration > 0
-            ? distance_To_Ground / attack_Duration
-            : min_FallSpeed;
-        float fall_Speed = Mathf.Max(calculated_Speed, min_FallSpeed);
+        float elapsed = 0.0f;
 
         player.is_Knock_Back = true;
         while (!player.isGrounded)
         {
-            player.rb.velocity = new Vector2(player.rb.velocity.x, -fall_Speed);
+            elapsed += Time.deltaTime;
+
+            if (elapsed > accel_Delay)
+            {
+                tp_Fall_Speed += accel_Rate * Time.deltaTime;
+            }
+
+            player.rb.velocity = new Vector2(player.rb.velocity.x, -tp_Fall_Speed);
             yield return null;
         }
 
