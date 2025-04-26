@@ -12,6 +12,10 @@ public class Noose_Trap : MonoBehaviour
     {
         if(collision.CompareTag("Player"))
         {
+            if(collision.GetComponent<PlayerCharacter_Controller>().is_Knock_Back)
+            {
+                return;
+            }
             collision.GetComponent<Rigidbody2D>().gravityScale = 0.0f;
             collision.gameObject.transform.position = bind_spot.transform.position;
             collision.GetComponent<PlayerCharacter_Controller>().Player_Trap_Stun(false, () =>

@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3429903516b5a5244b9acd0a362bcfbf, type: 3}
   m_Name: Book_Effect
   m_EditorClassIdentifier: 
-  skill_Cooldown_Reduce_Multiple: 0.9
+  skill_Cooldown_Reduce_Multiple: 0.1

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef832687035261a4c8cb7a8102db713f, type: 3}
   m_Name: Ddidon_Effect
   m_EditorClassIdentifier: 
-  movementSpeed_Reduce_Multiple: 0.9
-  atkCooldown_Reduce_Multiple: 0.9
+  movementSpeed_Reduce_Multiple: 0.1
+  atkCooldown_Reduce_Multiple: 0.1

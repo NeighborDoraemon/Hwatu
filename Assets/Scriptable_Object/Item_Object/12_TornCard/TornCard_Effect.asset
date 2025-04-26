@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19051b71508d3dc47ab067e8f22f1904, type: 3}
   m_Name: TornCard_Effect
   m_EditorClassIdentifier: 
+  teleport_Damage: 5
+  damage_Radius: 1
