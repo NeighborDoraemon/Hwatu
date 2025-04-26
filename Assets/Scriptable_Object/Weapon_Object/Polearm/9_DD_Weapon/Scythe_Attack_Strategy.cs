@@ -61,6 +61,8 @@ public class Scythe_Attack_Strategy : ScriptableObject, IAttack_Strategy
         float check_Interval = 0.05f;
         float check_Radius = 0.5f;
 
+        int mask = LayerMask.GetMask("Enemy", "Boss_Enemy");
+
         LayerMask enemy_Layer = LayerMask.GetMask("Enemy");
         LayerMask wall_Layer = LayerMask.GetMask("Walls");
         LayerMask boss_Layer = LayerMask.GetMask("Boss_Enemy");
@@ -83,7 +85,7 @@ public class Scythe_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
             if (elapsed % check_Interval < Time.deltaTime)
             {
-                Collider2D[] hit_Enemies = Physics2D.OverlapCircleAll(player.transform.position, check_Radius, enemy_Layer);
+                Collider2D[] hit_Enemies = Physics2D.OverlapCircleAll(player.transform.position, check_Radius, mask);
 
                 foreach (Collider2D enemyCollider in hit_Enemies)
                 {

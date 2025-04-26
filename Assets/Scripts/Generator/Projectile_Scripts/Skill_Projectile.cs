@@ -11,6 +11,8 @@ public class Skill_Projectile : MonoBehaviour
     {
         player = FindObjectOfType<PlayerCharacter_Controller>();
         final_Damage = player.Calculate_Skill_Damage();
+
+        Destroy(gameObject, 3.0f);
     }
 
     public void Initialized(Rigidbody2D rb, Vector2 direction, float speed)

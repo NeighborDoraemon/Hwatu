@@ -138,7 +138,8 @@ public class Crow_Controller : MonoBehaviour
 
         if (!isAttacking && can_Attack)
         {
-            Collider2D[] enemies = Physics2D.OverlapCircleAll(player.transform.position, attack_Range, LayerMask.GetMask("Enemy"));
+            int mask = LayerMask.GetMask("Enemy", "Boss_Enemy");
+            Collider2D[] enemies = Physics2D.OverlapCircleAll(player.transform.position, attack_Range, mask);
             if (enemies.Length > 0)
             {
                 Transform closet_Enemy = Find_Closet_Enemy(enemies);
