@@ -35,7 +35,8 @@ public class Canon_Skill_Projectile : MonoBehaviour
 
     private void Explode()
     {
-        Collider2D[] hit_Enemies = Physics2D.OverlapCircleAll(transform.position, explosion_Radius, enemy_Layer);
+        int mask = LayerMask.GetMask("Enemy", "Boss_Enemy");
+        Collider2D[] hit_Enemies = Physics2D.OverlapCircleAll(transform.position, explosion_Radius, mask);
 
         foreach (Collider2D enemy in hit_Enemies)
         {

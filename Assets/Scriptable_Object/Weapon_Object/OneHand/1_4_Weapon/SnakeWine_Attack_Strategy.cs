@@ -46,10 +46,6 @@ public class SnakeWine_Attack_Strategy : ScriptableObject, IAttack_Strategy
     {
         player.animator.SetTrigger("Skill");
 
-        player.Player_Take_Damage(weapon_Data.skill_Damage);
-        if (player.health > player.max_Health)
-        {
-            player.health = player.max_Health;
-        }
+        player.Player_Take_Heal(weapon_Data.skill_Damage);
     }
 }

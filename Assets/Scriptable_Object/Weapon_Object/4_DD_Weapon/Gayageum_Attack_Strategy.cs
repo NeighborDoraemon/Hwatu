@@ -9,9 +9,11 @@ public class Gayageum_Attack_Strategy : ScriptableObject, IAttack_Strategy
     private PlayerCharacter_Controller player;
     private Weapon_Data weapon_Data;
 
-    [SerializeField] private float attack_Range = 2.0f;    
+    [SerializeField] private float attack_Range = 2.0f;
     [SerializeField] private float skill_Active_Time = 5.0f;
-    //[SerializeField] private LayerMask enemy_Layer;
+    public float hold_Atk_Interval = 3.0f;
+
+    private float last_Hold_Attack_Time = -Mathf.Infinity;
     private bool is_Skill_Active = false;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
@@ -43,12 +45,19 @@ public class Gayageum_Attack_Strategy : ScriptableObject, IAttack_Strategy
         {
             player.isAttacking = true;
         }
-        
-        LayerMask enemy_Layer = LayerMask.GetMask("Enemy");        
 
-        Collider2D[] hit_Enemies = Physics2D.OverlapCircleAll(player.transform.position, attack_Range, enemy_Layer);
+        if (Time.time < last_Hold_Attack_Time + hold_Atk_Interval)
+        {
+            return;
+        }
 
-        foreach (Collider2D enemy_Collider in hit_Enemies)
+        last_Hold_Attack_Time = Time.time;
+
+        int mask = LayerMask.GetMask("Enemy", "Boss_Enemy");
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(player.transform.position, attack_Range, mask);
+
+        foreach (Collider2D enemy_Collider in hits)
         {
             Enemy_Basic enemy = enemy_Collider.GetComponent<Enemy_Basic>();
             if (enemy != null)

@@ -8,7 +8,10 @@ public class BronzeBell_Attack_Strrategy : ScriptableObject, IAttack_Strategy
     private PlayerCharacter_Controller player;
     private Weapon_Data weapon_Data;
 
-    [SerializeField] private float attack_Range = 2.5f;            
+    public float attack_Range = 2.5f;
+    public float hold_Atk_Interval = 3.0f;
+
+    private float last_Hold_Attack_Time = -Mathf.Infinity;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
@@ -40,11 +43,18 @@ public class BronzeBell_Attack_Strrategy : ScriptableObject, IAttack_Strategy
             player.isAttacking = true;
         }
 
-        LayerMask enemy_Layer = LayerMask.GetMask("Enemy");
+        if (Time.time < last_Hold_Attack_Time + hold_Atk_Interval)
+        {
+            return;
+        }
 
-        Collider2D[] hit_Enemies = Physics2D.OverlapCircleAll(player.transform.position, attack_Range, enemy_Layer);
+        last_Hold_Attack_Time = Time.time;
 
-        foreach (Collider2D enemy_Collider in hit_Enemies)
+        int mask = LayerMask.GetMask("Enemy", "Boss_Enemy");
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(player.transform.position, attack_Range, mask);
+        
+        foreach (Collider2D enemy_Collider in hits)
         {
             Enemy_Basic enemy = enemy_Collider.GetComponent<Enemy_Basic>();
             if (enemy != null)
