@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class Obj_ScareCrow : MonoBehaviour
 {
     [SerializeField] private TextMeshPro TextMesh;
+    [SerializeField] private Animator Scarecrow_Animator;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +26,8 @@ public class Obj_ScareCrow : MonoBehaviour
         TextMesh.text = Damage.ToString();
         TextMesh.alpha = 1f;
         StartCoroutine(FadeOut());
+
+        Scarecrow_Animator.SetTrigger("Hit");
     }
 
     private IEnumerator FadeOut()
