@@ -39,6 +39,8 @@ public class Dialogue_Manager : MonoBehaviour
 
     private GameObject Event_NPC;
 
+    private int Temp = 5001;
+
     private void Awake()
     {
         if (instance == null)
@@ -55,24 +57,15 @@ public class Dialogue_Manager : MonoBehaviour
     void Start()
     {
         Dialogue_Pharsing();
+        Item_Pharsing();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if (is_Dialogue && Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    Print_Next_Dialogue();
-        //}
-        //else if (!is_Dialogue/* && is_Chose_Waiting */&& Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    Chose_Complete();
-        //}
-        //else if (!is_Dialogue && (Input.GetKeyDown(KeyCode.DownArrow) || (Input.GetKeyDown(KeyCode.UpArrow))))
-        //{
-        //    Chose_Cursor_Move();
-        //}
+        
     }
+
     private void Dialogue_Pharsing()
     {
         int? Lastkey = null;
@@ -103,7 +96,7 @@ public class Dialogue_Manager : MonoBehaviour
                 if (Dialogue_Dict.ContainsKey(Keyvalue))
                 {
                     Dialogue_Dict[Keyvalue].Character_Name.Add(data[1]);
-                    Dialogue_Dict[Keyvalue].Scripts.Add(data[2]);
+                    Dialogue_Dict[Keyvalue].Scripts.Add(ReplaceSpecialChars(data[2]));
                 }
                 else
                 {
@@ -111,20 +104,14 @@ public class Dialogue_Manager : MonoBehaviour
                     return;
                 }
             }
-            //else if(data.Length != 3)
-            //{
-            //    Debug.LogError("Dialogue Length Error!");
-            //}
             else
             {
                 if (!Dialogue_Dict.ContainsKey(Keyvalue))   //키가 없으니 마지막키에 키값넣고, 데이터넣기
                 {
-                    //string.IsNullOrWhiteSpace - 빈칸검사
-
                     Lastkey = Keyvalue;
                     Temp_Data.Event_Num = Keyvalue;
                     Temp_Data.Character_Name.Add(data[1]);
-                    Temp_Data.Scripts.Add(data[2]);
+                    Temp_Data.Scripts.Add(ReplaceSpecialChars(data[2]));
 
                     bool.TryParse(data[3], out Temp_Data.is_Choice);    //bool 데이터 파싱 성공시 데이터 입력. 실패시 false 입력
 
@@ -133,6 +120,68 @@ public class Dialogue_Manager : MonoBehaviour
             }
         }
     }
+
+    private void Item_Pharsing()
+    {
+        int? Lastkey = null;
+        string path = Path.Combine(Application.streamingAssetsPath, "Hwatu_Item_Table" + ".csv"); // 파일 이름 넣기
+
+
+        if (!File.Exists(path))
+        {
+            Debug.LogError("Path File Missing!");
+            return;
+        }
+        string[] Lines = File.ReadAllLines(path);
+
+        for (int i = 1; i < Lines.Length; i++)
+        {
+            Item_Data Temp_Data = new Item_Data();
+
+            string[] data = Lines[i].Split(',');
+
+            if (!int.TryParse(data[0], out int Keyvalue))
+            {
+                Debug.LogError("Item Index Error!");
+                return;
+            }
+
+            if (Lastkey == Keyvalue) //키가 존재하니 추가하지 않음 (아이템은 중복 없음)
+            {
+                //if (Item_Dict.ContainsKey(Keyvalue))
+                //{
+                //    Item_Dict[Keyvalue].Item.Add(data[1]);
+                //    Item_Dict[Keyvalue].Scripts.Add(ReplaceSpecialChars(data[2]));
+                //}
+                //else
+                {
+                    Debug.LogError("Dictionary Error!");
+                    return;
+                }
+            }
+            else
+            {
+                if (!Dialogue_Dict.ContainsKey(Keyvalue))   //키가 없으니 마지막키에 키값넣고, 데이터넣기
+                {
+                    Lastkey = Keyvalue;
+                    Temp_Data.Item_Num = Keyvalue;
+                    Temp_Data.Item_Name = data[1];
+                    Temp_Data.Item_Dialogue = ReplaceSpecialChars(data[2]);
+                    Temp_Data.Item_Effect_Script = ReplaceSpecialChars(data[3]);
+
+                    //bool.TryParse(data[3], out Temp_Data.is_Choice);
+
+                    Item_Dict.Add(Keyvalue, Temp_Data);
+                }
+            }
+        }
+    }
+
+    public Item_Data Get_Item_Data(int Index)
+    {
+        return Item_Dict[Index];
+    }
+
     private void Call_Dialogue(int Key)
     {
         is_Dialogue = true;
@@ -228,6 +277,14 @@ public class Dialogue_Manager : MonoBehaviour
     public void Get_Npc_Data(GameObject npc)
     {
         Event_NPC = npc;
+    }
+
+    // 기호를 콤마로 변환하는 메서드 추가
+    private string ReplaceSpecialChars(string input)
+    {
+        return input.Replace("^", ",");
+                    //.Replace("※", ",")
+                    //.Replace("//", ",");
     }
 }
 
