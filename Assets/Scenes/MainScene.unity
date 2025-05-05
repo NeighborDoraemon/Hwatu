@@ -3449,6 +3449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ff39ca9e2814694098cab0bb80b2ee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1097749508849876877}
   Obj_LandMine: {fileID: 1284184423}
   Obj_ArrowRain_01: {fileID: 667101326}
   Obj_ArrowRain_02: {fileID: 331895977}
@@ -3474,6 +3475,11 @@ MonoBehaviour:
   boundary_01: {fileID: 1891400548}
   boundary_02: {fileID: 1877535580}
   Health_Image: {fileID: 1168362344}
+  Interaction_Start: 1401
+  Second_Phase_Start: 1402
+  After_Boss: 1403
+  Forgiving_Yes: 1404
+  Forgiving_No: 1405
 --- !u!114 &172223719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45952,7 +45958,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_TargetDisplay: 0
 --- !u!224 &669653359
 RectTransform:

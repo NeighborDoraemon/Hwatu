@@ -437,4 +437,9 @@ public class FB_Peasent : MonoBehaviour
     {
         is_Started = true;
     }
+
+    public void Stop_Pattern()
+    {
+        is_Started = false;
+    }
 }

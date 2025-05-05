@@ -102,18 +102,9 @@ public class ShortSword : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
         if (Attack_Time >= f_Before_Delay && !is_Attack_Complete) // Attack
         {
             ShortSword_Animator.SetTrigger("Trigger_Attack");
-            if (BR_Facing_Left.Value) //Attack Left
-            {
-                ShortSword_Attack(-1);
-                is_Attack_Complete = true;
-                //ShortSword_Animator.SetBool("is_Delay_End", false);
-            }
-            else //Attack Right
-            {
-                ShortSword_Attack(1);
-                is_Attack_Complete = true;
-                //ShortSword_Animator.SetBool("is_Delay_End", false);
-            }
+
+            ShortSword_Attack();
+            is_Attack_Complete = true;
         }
 
         //Call After Delay Method
@@ -131,7 +122,7 @@ public class ShortSword : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
         }
     }
 
-    private void ShortSword_Attack(int Alpha) //Left = -1, Right = 1;
+    private void ShortSword_Attack()
     {
         if(BR_Not_Attacking.Value)
         {
@@ -154,5 +145,11 @@ public class ShortSword : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
         Attack_Time = 0.0f;
 
         Take_Stun(Duration);
+    }
+
+    public void ShortSword_Attack_End()
+    {
+        Enemy_CB.Damage_Once = false;
+        BR_Not_Attacking.Value = true;
     }
 }

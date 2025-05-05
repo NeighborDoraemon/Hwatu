@@ -33,9 +33,6 @@ public class Dialogue_Manager : MonoBehaviour
     [SerializeField] private GameObject Chose_Text_02;
 
     private bool is_First_Chosing = true;   //커서의 위치 true = 1번, false = 2번
-    private bool is_Chose_Waiting = false;
-
-    private bool is_Dialogue = false;
 
     private GameObject Event_NPC;
 
@@ -184,7 +181,9 @@ public class Dialogue_Manager : MonoBehaviour
 
     private void Call_Dialogue(int Key)
     {
-        is_Dialogue = true;
+        called_Name.Clear();
+        called_Script.Clear();
+
         foreach (string alpha in Dialogue_Dict[Key].Character_Name)
         {
             called_Name.Enqueue(alpha);
@@ -219,9 +218,6 @@ public class Dialogue_Manager : MonoBehaviour
                 p_Controller.State_Change(PlayerCharacter_Controller.Player_State.Dialogue_Choice);
 
                 is_First_Chosing = true;
-                is_Dialogue = false;
-
-                is_Chose_Waiting = true;
             }
             else
             {

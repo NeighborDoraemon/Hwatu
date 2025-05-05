@@ -45,6 +45,12 @@ public class FB_Sniping : MonoBehaviour
         is_Attacking_Now = true;
     }
 
+    public void Stop_Attack()
+    {
+        Line_Render.enabled = false;
+        is_Attacking_Now = false;
+    }
+
     private void Attack_Sniping()
     {
         if(!is_Once)
