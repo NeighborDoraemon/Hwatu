@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class FB_Castle_Wall : MonoBehaviour
+public class FB_Castle_Wall : MonoBehaviour, Npc_Interface
 {
-    ///*[HideInInspector] */public bool is_Attack_Start = false;
+    [SerializeField] private PlayerCharacter_Controller player;
 
     [Header("Damage_Objects")]
     [SerializeField] private GameObject Obj_LandMine;
@@ -42,6 +43,13 @@ public class FB_Castle_Wall : MonoBehaviour
     [Header("Boss Canvas")]
     [SerializeField] private Image Health_Image;
 
+    [Header("Dialogue Index")]
+    [SerializeField] private int Interaction_Start;
+    [SerializeField] private int Second_Phase_Start;
+    [SerializeField] private int After_Boss;
+    [SerializeField] private int Forgiving_Yes;
+    [SerializeField] private int Forgiving_No;
+
 
     // LandMine Mechanism needs to be fixed
     //==== Value For LandMine
@@ -57,6 +65,9 @@ public class FB_Castle_Wall : MonoBehaviour
     private bool is_Quater_02 = false;
     private bool is_Quater_03 = false;
 
+    private bool is_Boss_Dead = false; // Boss is Dead
+    private bool is_Forgiving = false; // Forgiving Yes or No
+
 
     // Boolean for Attack Once
     private bool is_Once_Attacked = false;
@@ -66,6 +77,8 @@ public class FB_Castle_Wall : MonoBehaviour
     private bool ArrowRain_CoolDown = false;
     private bool Rock_CoolDown = false;
     private bool Sniper_CoolDown = false;
+
+    private GameObject Rock_Prefab = null;
 
     private enum Attack_State
     {
@@ -103,16 +116,16 @@ public class FB_Castle_Wall : MonoBehaviour
 
             if (IR_Health.Value <= 0 && !is_Second_Phase)
             {
+                Fade_Stop();
                 Do_Second_Phase();
             }
-            else if(IR_Health.Value <= 0 && is_Second_Phase)
+            else if (IR_Health.Value <= 0 && is_Second_Phase && !is_Boss_Dead)
             {
-                Obj_FB_Peasent.SetActive(false);
-                pause_Manager.Show_Result(false);
-
-                boundary_01.gameObject.SetActive(false);
-                boundary_02.gameObject.SetActive(true);
-                Destroy(gameObject); // Die
+                Fade_Stop();
+                is_Boss_Dead = true;
+                is_Started = false;
+                Obj_FB_Peasent.GetComponent<FB_Peasent>().Stop_Pattern();
+                Npc_Interaction_Start();
             }
 
             Health_Calculate();
@@ -122,21 +135,21 @@ public class FB_Castle_Wall : MonoBehaviour
 
     private void Health_Calculate()
     {
-        if(IR_Health.Value <= Health_Quater_01 && IR_Health.Value > Health_Quater_02 && !is_Quater_01) // 51% - 75%
+        if (IR_Health.Value <= Health_Quater_01 && IR_Health.Value > Health_Quater_02 && !is_Quater_01) // 51% - 75%
         {
             Debug.Log("LandMine 01 Called");
 
             is_Quater_01 = true;
             is_Can_Use_LandMine = true;
         }
-        else if(IR_Health.Value <= Health_Quater_02 && IR_Health.Value > Health_Quater_03 && !is_Quater_02) // 26% - 50%
+        else if (IR_Health.Value <= Health_Quater_02 && IR_Health.Value > Health_Quater_03 && !is_Quater_02) // 26% - 50%
         {
             Debug.Log("LandMine 02 Called");
 
             is_Quater_02 = true;
             is_Can_Use_LandMine = true;
         }
-        else if(IR_Health.Value <= Health_Quater_03 && !is_Quater_03) // 1% - 25%
+        else if (IR_Health.Value <= Health_Quater_03 && !is_Quater_03) // 1% - 25%
         {
             Debug.Log("LandMine 03 Called");
 
@@ -185,7 +198,6 @@ public class FB_Castle_Wall : MonoBehaviour
             {
                 case Attack_State.LandMine:
                     {
-                        Debug.Log("LandMine Called");
                         Obj_LandMine.gameObject.GetComponent<FB_DamageBox>().Call_Invoke();
                         StartCoroutine(Fade_Sprite(SR_LandMine, 1.0f, 1.0f, 0.0f));
 
@@ -198,7 +210,6 @@ public class FB_Castle_Wall : MonoBehaviour
                     }
                 case Attack_State.ArrowRain:
                     {
-                        Debug.Log("ArrowRain Called");
                         Obj_ArrowRain_01.gameObject.GetComponent<FB_DamageBox>().Call_Invoke();
                         StartCoroutine(Fade_Sprite(SR_Arrow_01, 1.0f, 1.0f, 0.0f));
                         Obj_ArrowRain_02.gameObject.GetComponent<FB_DamageBox>().Call_Invoke();
@@ -211,8 +222,8 @@ public class FB_Castle_Wall : MonoBehaviour
                     }
                 case Attack_State.Rock:
                     {
-                        GameObject rock_fr = Instantiate(Prfb_Rock, Obj_Rock_Position.gameObject.transform.position, Obj_Rock_Position.gameObject.transform.rotation);
-                        rock_fr.GetComponent<Rigidbody2D>().velocity = new Vector2(-3.0f, 0.0f);
+                        Rock_Prefab = Instantiate(Prfb_Rock, Obj_Rock_Position.gameObject.transform.position, Obj_Rock_Position.gameObject.transform.rotation);
+                        Rock_Prefab.GetComponent<Rigidbody2D>().velocity = new Vector2(-3.0f, 0.0f);
 
                         is_Once_Attacked = true;
                         Rock_CoolDown = true;
@@ -295,12 +306,16 @@ public class FB_Castle_Wall : MonoBehaviour
         is_Second_Phase = true;
 
         Obj_FB_Peasent.SetActive(true);
-        Obj_FB_Peasent.GetComponent<FB_Peasent>().Start_Pattern();
+        is_Started = false;
+
+        Npc_Interaction_Start();
+        //Obj_FB_Peasent.GetComponent<FB_Peasent>().Start_Pattern();
     }
 
     public void Call_Start()
     {
-        Invoke("Start_Pattern", 3.0f);
+        Dialogue_Manager.instance.Get_Npc_Data(gameObject);
+        Npc_Interaction_Start();
     }
 
     private void Start_Pattern()
@@ -309,7 +324,26 @@ public class FB_Castle_Wall : MonoBehaviour
         Boss_Canvas.SetActive(true);
     }
 
+    private void Fade_Stop()
+    {
+        StopAllCoroutines();
 
+        Color alpha = SR_LandMine.color;
+        alpha.a = 0.0f;
+        SR_LandMine.color = alpha;
+        SR_Arrow_01.color = alpha;
+        SR_Arrow_02.color = alpha;
+
+        Obj_LandMine.gameObject.GetComponent<FB_DamageBox>().Stop_All_Coroutine();
+        Obj_ArrowRain_01.gameObject.GetComponent<FB_DamageBox>().Stop_All_Coroutine();
+        Obj_ArrowRain_02.gameObject.GetComponent<FB_DamageBox>().Stop_All_Coroutine();
+        Obj_Sniper_Location.gameObject.GetComponent<FB_Sniping>().Stop_Attack();
+
+        if(Rock_Prefab != null)
+        {
+            Destroy(Rock_Prefab);
+        }
+    }
     // for Warning Fade
     private IEnumerator Fade_Sprite(SpriteRenderer sprite, float targetAlpha, float duration, float delay)
     {
@@ -318,7 +352,7 @@ public class FB_Castle_Wall : MonoBehaviour
         Color color = sprite.color;
         //float startAlpha = color.a;
 
-        for(float t = 0.0f; t < duration; t += Time.deltaTime)
+        for (float t = 0.0f; t < duration; t += Time.deltaTime)
         {
             float alpha = Mathf.Lerp(0.0f, targetAlpha, t / duration);
             color.a = alpha;
@@ -342,4 +376,81 @@ public class FB_Castle_Wall : MonoBehaviour
         color.a = 0.0f;
         sprite.color = color;
     }
+
+    public void Npc_Interaction_Start()
+    {
+        player.State_Change(PlayerCharacter_Controller.Player_State.Dialogue);
+
+        if (is_Boss_Dead)
+        {
+            Dialogue_Manager.instance.Start_Dialogue(After_Boss);
+            return;
+        }
+        else
+        {
+            if (!is_Second_Phase)
+            {
+                Dialogue_Manager.instance.Start_Dialogue(Interaction_Start);
+            }
+            else
+            {
+                Dialogue_Manager.instance.Start_Dialogue(Second_Phase_Start);
+            }
+        }
+    }
+    public void Event_Start()   //방생을 위한 메서드
+    {
+        Debug.Log("Forgiving Start");
+        is_Forgiving = true;
+        player.State_Change(PlayerCharacter_Controller.Player_State.Dialogue);
+        StartCoroutine(Forgiving_With_Delay());
+    }
+    public void Npc_Interaction_End()
+    {
+        if(!is_Boss_Dead)
+        {
+            Start_Pattern();
+            if (is_Second_Phase)
+            {
+                Obj_FB_Peasent.GetComponent<FB_Peasent>().Start_Pattern();
+            }
+            player.State_Change(PlayerCharacter_Controller.Player_State.Normal);
+        }
+        else
+        {
+            if(!is_Forgiving)
+            {
+                is_Forgiving = true;
+                Debug.Log("End_01");
+                StartCoroutine(Forgiving_No_With_Delay());
+                return;
+            }
+            Debug.Log("End_02");
+            player.State_Change(PlayerCharacter_Controller.Player_State.Normal);
+
+            Obj_FB_Peasent.SetActive(false);
+            pause_Manager.Show_Result(false);
+
+            boundary_01.gameObject.SetActive(false);
+            boundary_02.gameObject.SetActive(true);
+            Destroy(gameObject);
+            //Debug.Log("Boss Dead");
+        }
+    }
+
+    private IEnumerator Forgiving_With_Delay()
+    {
+        yield return new WaitForSeconds(0.1f);
+        Dialogue_Manager.instance.Start_Dialogue(Forgiving_Yes);
+    }
+    private IEnumerator Forgiving_No_With_Delay()
+    {
+        yield return new WaitForSeconds(0.1f);
+        Dialogue_Manager.instance.Start_Dialogue(Forgiving_No);
+    }
+
+    public void Event_Move(InputAction.CallbackContext ctx) //Not used
+    {}
+    public void Event_Attack(InputAction.CallbackContext ctx)   //Not used
+    {}
 }

@@ -26,20 +26,6 @@ public class FB_DamageBox : MonoBehaviour
         }
     }
 
-    //private void OnTriggerStay2D(Collider2D collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Player") && f_Time_Count >= f_Start_Time + f_Attack_Delay && !is_Once_Act)
-    //    {
-    //        if (!is_Once_Act)
-    //        {
-    //            f_Start_Time = f_Time_Count;
-    //            is_Once_Act = true;
-
-    //        }
-    //        Invoke("Give_Damage", f_Attack_Delay);
-    //    }
-    //}
-
 
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -54,9 +40,13 @@ public class FB_DamageBox : MonoBehaviour
         StartCoroutine(Give_Damage());
     }
 
+    public void Stop_All_Coroutine()
+    {
+        StopAllCoroutines();
+    }
+
     IEnumerator Give_Damage()
     {
-        Debug.Log("Coroutine Called");
         yield return new WaitForSeconds(f_Attack_Delay);
         if (Obj_Player != null)
         {
