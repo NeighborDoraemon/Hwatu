@@ -380,6 +380,7 @@ public class FB_Castle_Wall : MonoBehaviour, Npc_Interface
     public void Npc_Interaction_Start()
     {
         player.State_Change(PlayerCharacter_Controller.Player_State.Dialogue);
+        player.Player_Vector_Stop();
 
         if (is_Boss_Dead)
         {

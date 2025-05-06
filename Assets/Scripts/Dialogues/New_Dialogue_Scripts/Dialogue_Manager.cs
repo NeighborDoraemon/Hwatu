@@ -36,8 +36,6 @@ public class Dialogue_Manager : MonoBehaviour
 
     private GameObject Event_NPC;
 
-    private int Temp = 5001;
-
     private void Awake()
     {
         if (instance == null)

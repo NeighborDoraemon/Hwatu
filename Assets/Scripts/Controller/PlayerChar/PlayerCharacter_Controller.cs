@@ -1678,6 +1678,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         Current_Event_State = state;
     }
+
+    public void Player_Vector_Stop()
+    {
+        movement = Vector2.zero;
+    }
 }
 
 
