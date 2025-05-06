@@ -179,6 +179,36 @@ public class Object_Manager : MonoBehaviour
         spawned_Item_Instances.Add(itemInstance);
     }
 
+    public void Spawn_Specific_Item(Vector2 spawn_Pos, Item item_To_Spawn)
+    {
+        if (item_To_Spawn == null)
+        {
+            Debug.LogError("[Object_Manager] Spawn Item is null");
+            return;
+        }
+
+        if (itemPrefab == null)
+        {
+            Debug.LogError("[Object_Manager] ItemPrefab is null");
+        }
+
+        GameObject instance = Instantiate(itemPrefab, spawn_Pos, Quaternion.identity);
+
+        Item_Prefab prefab_Script = instance.GetComponent<Item_Prefab>();
+        if (prefab_Script == null)
+        {
+            Debug.LogError("[Object_Manager] Can't found Item_Prefab component");
+            Destroy(instance);
+            return;
+        }
+        prefab_Script.Initialize(item_To_Spawn);
+
+        if (!item_To_Spawn.isConsumable)
+            spawnedItems.Add(item_To_Spawn);
+
+        spawned_Item_Instances.Add(instance);
+    }
+
     private ItemRarity Get_Random_Rarity(Dictionary<ItemRarity, float> dropRates)
     {
         float total_Weight = 0f;

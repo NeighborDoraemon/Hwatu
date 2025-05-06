@@ -16,6 +16,14 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
     private GameObject cur_Jangtae;
     public bool isRiding = false;
 
+    private CapsuleCollider2D player_Col;
+    private Vector2 og_Offset;
+    private Vector2 og_Size;
+    private bool og_Stored = false;
+
+    public float mount_Col_Offset;
+    public float mount_Col_Height_Inc;
+
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         if (player == null || weapon_Data == null)
@@ -27,6 +35,14 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
         this.weapon_Data = weapon_Data;
 
         isRiding = false;
+
+        player_Col = player.GetComponent<CapsuleCollider2D>();
+        if (player_Col != null && !og_Stored)
+        {
+            og_Offset = player_Col.offset;
+            og_Size = player_Col.size;
+            og_Stored = true;
+        }
 
         Initialize_Weapon_Data();
     }
@@ -106,19 +122,12 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
     {
         player.can_Card_Change = false;
 
-        Transform platform_Child = player.transform.Find("Platform_Collider");
-        if (platform_Child != null)
+        if (player.isGrounded)
         {
-            Collider2D old_Collider = platform_Child.GetComponent<Collider2D>();
-            if (old_Collider != null)
-                old_Collider.enabled = false;
+            player.rb.AddForce(new Vector2(0, player.jumpPower), ForceMode2D.Impulse);
         }
 
-        player.rb.AddForce(new Vector2(0, player.jumpPower), ForceMode2D.Impulse);
-
         yield return new WaitForSeconds(delay);
-
-        Debug.Log("Mount_Jangtae called!");
 
         if (jangtae_Prefab == null)
         {
@@ -128,6 +137,16 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
 
         Vector3 spawn_Pos = player.transform.position + new Vector3(0, -0.5f, 0);
         cur_Jangtae = Instantiate(jangtae_Prefab, spawn_Pos, Quaternion.identity);
+        cur_Jangtae.transform.SetParent(player.transform);
+        cur_Jangtae.transform.localPosition = new Vector3(0, -0.6f, 0);
+
+        Transform platform_Child = player.transform.Find("Platform_Collider");
+        if (platform_Child != null)
+        {
+            Collider2D old_Collider = platform_Child.GetComponent<Collider2D>();
+            if (old_Collider != null)
+                old_Collider.enabled = false;
+        }
 
         if (cur_Jangtae == null)
         {
@@ -143,17 +162,23 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
             player.player_Platform_Collider = jangtae_Collider;
         }
 
-        cur_Jangtae.transform.SetParent(player.transform);
-        cur_Jangtae.transform.localPosition = new Vector3(0, -0.6f, 0);
-
         isRiding = true;
+
+        if (player_Col != null)
+        {
+            player_Col.offset = og_Offset + new Vector2(0, mount_Col_Offset);
+            player_Col.size = og_Size + new Vector2(0, mount_Col_Height_Inc);
+        }
     }
 
     private void Start_Rolling(PlayerCharacter_Controller player)
     {
         if (cur_Jangtae == null) return;
 
-        player.rb.AddForce(new Vector2(0, player.jumpPower), ForceMode2D.Impulse);
+        if (player.isGrounded)
+        {
+            player.rb.AddForce(new Vector2(0, player.jumpPower), ForceMode2D.Impulse);
+        }
 
         cur_Jangtae.transform.SetParent(null);
 
@@ -179,6 +204,12 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
                 old_Collider.enabled = true;
                 player.player_Platform_Collider = old_Collider;
             }
+        }
+
+        if (player_Col != null)
+        {
+            player_Col.offset = og_Offset;
+            player_Col.size = og_Size;
         }
 
         isRiding = false;

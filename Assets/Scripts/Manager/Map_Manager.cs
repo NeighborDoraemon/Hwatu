@@ -149,6 +149,8 @@ public class Map_Manager : MonoBehaviour
                             Debug.Log("Fade In Complete");
                         });
                     });
+
+                    Object_Manager.instance.Destroy_All_Cards_And_Items();
                 }
             }
         }

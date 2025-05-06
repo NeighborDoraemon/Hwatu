@@ -14,3 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectile_Prefab: {fileID: 1335327918262151755, guid: c5b5347fb5ad1604f811bb53003bec82, type: 3}
   projectile_Speed: 20
+  skill_Projectile_Prefab: {fileID: 1335327918262151755, guid: e984fee153dd7ab4a84cf21e68cb5ff1, type: 3}
+  skill_Projectile_Speed: 20
+  channel_Duration: 2
+  skill_Cancel_Cooltime: 2

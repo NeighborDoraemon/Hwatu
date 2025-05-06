@@ -12,7 +12,6 @@ public class Crow_Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public GameObject crow_Prefab;
     public float protect_Duration = 3.0f;
-    private bool isProtecting = false;
 
     public GameObject projectile_Prefab;
     private float projectile_Speed = 10.0f;

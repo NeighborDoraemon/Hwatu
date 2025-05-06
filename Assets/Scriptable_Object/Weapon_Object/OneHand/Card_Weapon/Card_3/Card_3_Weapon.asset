@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Card_3_Weapon
   m_EditorClassIdentifier: 
   weapon_Name: "\uD654\uD22C\uD328"
+  weapon_Icon: {fileID: 21300000, guid: ff96a70494507ce43be3d30b9beefeba, type: 3}
   comb_Name: "\uAC11 \uC624"
   attack_Damage: 6
   attack_Cooldown: 1.5

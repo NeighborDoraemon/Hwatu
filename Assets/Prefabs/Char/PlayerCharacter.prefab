@@ -261,8 +261,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.30791467}
-  m_Size: {x: 0.15, y: 0.38417065}
+  m_Offset: {x: 0, y: -0.31}
+  m_Size: {x: 0.15, y: 0.35}
   m_Direction: 0
 --- !u!95 &1742070725938111941
 Animator:
@@ -542,10 +542,13 @@ MonoBehaviour:
   defend_Attack_Rate: 0
   movementSpeed_Mul: 1
   health_Mul: 1
+  attack_Cooltime_Mul: 1
+  skill_Cooltime_Mul: 1
   damage_Reduce_Min: 0
   damage_Reduce_Max: 0
   heal_Amount_Mul: 1
   money_Earned_Mul: 1
+  teleport_Cooltime_Mul: 1
   bleeding_Rate: 0
   stun_Rate: 0
   comboTime: 0.3
@@ -555,7 +558,8 @@ MonoBehaviour:
   isAttacking: 0
   max_AttackCount: 0
   es_Stack: 0
-  invicible_Time: 0.1
+  inhance_Skillcooltime_Value: 0.1
+  teleport_Invicible_Time: 0.1
   cur_AttackInc_Phase: 1
   cur_HealthInc_Phase: 1
   cur_AttackCoolTimeInc_Phase: 1
@@ -565,6 +569,10 @@ MonoBehaviour:
   cur_Inc_DamageReduction: 0
   cur_Dec_AttackCoolTime: 0
   cur_Inc_MoveSpeed: 0
+  dmg_Inc_To_Lost_Health: 0
+  card_Match_Dmg_Inc: 0
+  skill_Cooltime_Has_Dec: 0
+  money_Earned_Has_Inc: 0
   invicible_Teleport: 0
   skill_Cooldown: 1
   last_Skill_Time: 0

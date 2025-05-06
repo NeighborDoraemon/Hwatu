@@ -47,9 +47,16 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
     {
         if (player_Inventory.Count >= max_Inventory_Size)
         {
-            Remove_Item_Effect(player_Inventory[selected_Slot_Index]);
+            Item old_Item = player_Inventory[selected_Slot_Index];
+            Remove_Item_Effect(old_Item);
+
+            PlayerCharacter_Controller player = this.GetComponent<PlayerCharacter_Controller>();
+            Vector2 drop_Pos = new Vector2(player.transform.position.x, player.transform.position.y - 0.2f);
+            Object_Manager.instance.Spawn_Specific_Item(drop_Pos, old_Item);
+
             player_Inventory[selected_Slot_Index] = newItem;
             Apply_Item_Effect(newItem);
+
             Update_Inventory();
         }
         else

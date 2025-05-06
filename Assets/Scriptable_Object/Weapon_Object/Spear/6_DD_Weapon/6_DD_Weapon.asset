@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: 6_DD_Weapon
   m_EditorClassIdentifier: 
   weapon_Name: "\uBE44\uACA9\uC9C4\uCC9C\uB8B0"
+  weapon_Icon: {fileID: 1333245113, guid: 63c87ee70ad7b4a4892b538b310f3aad, type: 3}
   comb_Name: "6 \uB561"
   attack_Damage: 8
   attack_Cooldown: 2
   max_Attack_Count: 1
   skill_Damage: 16
-  skill_Cooldown: 2
+  skill_Cooldown: 25
   weapon_Prefab: {fileID: 4134064597167626368, guid: 153836894f114084e8fa7be865f0b33a, type: 3}
   overrideController: {fileID: 22100000, guid: 9176fe482f9020d4c9d3674105a5ec8e, type: 2}
   weapon_overrideController: {fileID: 0}

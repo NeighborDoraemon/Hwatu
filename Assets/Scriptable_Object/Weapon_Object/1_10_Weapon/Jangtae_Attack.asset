@@ -17,3 +17,5 @@ MonoBehaviour:
   roll_Speed: 5
   explosion_Radius: 3
   isRiding: 0
+  mount_Col_Offset: -0.14
+  mount_Col_Height_Inc: 0.3

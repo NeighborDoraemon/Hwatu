@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 1_10_Weapon
   m_EditorClassIdentifier: 
   weapon_Name: "\uC7A5\uD0DC"
+  weapon_Icon: {fileID: 586171866, guid: 7910eb211bd381c4b8196be49c749d90, type: 3}
   comb_Name: "\uC7A5 \uC0A5"
   attack_Damage: 5
   attack_Cooldown: 1

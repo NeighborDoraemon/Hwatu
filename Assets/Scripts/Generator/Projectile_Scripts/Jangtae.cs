@@ -32,6 +32,10 @@ public class Jangtae : MonoBehaviour
         }
         else if (other.CompareTag("Walls"))
         {
+            if (player.attack_Strategy is Jangtae_Attack_Startegy jt && jt.isRiding)
+            {
+                return;
+            }
             Destroy(this.gameObject);
         }
     }

@@ -8,6 +8,8 @@ public class SnakeWine_Attack_Strategy : ScriptableObject, IAttack_Strategy
     private PlayerCharacter_Controller player;
     private Weapon_Data weapon_Data;
 
+    public int skill_Count = 3;
+
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         if (player == null || weapon_Data == null)
@@ -17,6 +19,8 @@ public class SnakeWine_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
         this.player = player;
         this.weapon_Data = weapon_Data;
+
+        skill_Count = 3;
 
         Initialize_Weapon_Data();
     }
@@ -46,6 +50,10 @@ public class SnakeWine_Attack_Strategy : ScriptableObject, IAttack_Strategy
     {
         player.animator.SetTrigger("Skill");
 
-        player.Player_Take_Heal(weapon_Data.skill_Damage);
+        if (skill_Count > 0)
+        {
+            player.Player_Take_Heal(weapon_Data.skill_Damage);
+            skill_Count--;
+        }
     }
 }

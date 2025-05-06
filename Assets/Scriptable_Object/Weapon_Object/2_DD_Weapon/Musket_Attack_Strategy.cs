@@ -10,8 +10,14 @@ public class Musket_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public GameObject projectile_Prefab;
     public float projectile_Speed = 20.0f;
-    
-    private bool is_Empty = false;
+
+    private bool is_Channeling = false;
+    private float forced_Cooltime_End_Time = 0.0f;
+
+    public GameObject skill_Projectile_Prefab;
+    public float skill_Projectile_Speed = 20.0f;
+    public float channel_Duration = 2.0f;
+    public float skill_Cancel_Cooltime = 2.0f;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
@@ -25,7 +31,8 @@ public class Musket_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
         Initialize_Weapon_Data();
 
-        is_Empty = false;
+        forced_Cooltime_End_Time = -Mathf.Infinity;
+        is_Channeling = false;
     }
 
     private void Initialize_Weapon_Data()
@@ -103,6 +110,45 @@ public class Musket_Attack_Strategy : ScriptableObject, IAttack_Strategy
     }
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
+        //Debug.Log($"[Musket.Skill] Time.time={Time.time:f2}, forcedEnd={forced_Cooltime_End_Time:f2}, isCh={is_Channeling}");
+        if (Time.time < forced_Cooltime_End_Time) return;
+        if (is_Channeling) return;
 
+        player.StartCoroutine(Channel_And_Fire(player));
+    }
+
+    private IEnumerator Channel_And_Fire(PlayerCharacter_Controller player)
+    {
+        is_Channeling = true;
+        Vector3 lastPos = player.transform.position;
+        float elapsed = 0.0f;
+
+        player.animator.SetBool("isHoldAtk", true);
+        while (elapsed < channel_Duration)
+        {
+            if ((player.transform.position - lastPos).sqrMagnitude > Mathf.Epsilon)
+            {
+                forced_Cooltime_End_Time = Time.time + skill_Cancel_Cooltime;
+                is_Channeling = false;
+                player.animator.SetBool("isHoldAtk", false);
+                yield break;
+            }
+
+            lastPos = player.transform.position;
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        player.animator.SetBool("isHoldAtk", false);
+        is_Channeling = false;
+        
+        Vector3 spawn_Pos = player.weapon_Anchor.position;
+        GameObject proj = Instantiate(skill_Projectile_Prefab, spawn_Pos, Quaternion.identity);
+        Rigidbody2D rb = proj.GetComponent<Rigidbody2D>();
+        rb.velocity = (player.is_Facing_Right ? Vector2.right : Vector2.left) * projectile_Speed;
+        player.animator.SetTrigger("Skill");
+        //Destroy(proj, 5.0f);
+
+        player.Update_Skill_Timer();
     }
 }

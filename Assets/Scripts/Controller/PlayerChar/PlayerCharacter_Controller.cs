@@ -8,15 +8,15 @@ using UnityEngine.InputSystem;
 using System;
 using Unity.Mathematics;
 using System.Linq;
+//using UnityEngine.UIElements;
 
 // PlayerCharacter_Controller Created By JBJ, KYH
 public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 {
     private Player_InputActions inputActions;
-    [SerializeField]
-    private GameObject inventoryPanel;
+    [SerializeField] private GameObject inventoryPanel;
     private bool isInventory_Visible = false;
-    public bool is_StatUI_Visible = false;
+    [HideInInspector] public bool is_StatUI_Visible = false;
 
     public Rigidbody2D rb;
     GameObject current_Item;
@@ -31,10 +31,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     private int cur_Teleport_Count;
     public float teleporting_Cooltime_Timer;
 
-    [Header("DebugChest")]
-    public GameObject chestPrefab;
-    public Transform spawnPoint;
+    [Header("DebugChest")] public GameObject chestPrefab;
 
+    public Transform spawnPoint;
     [HideInInspector] public bool isGrounded;
     [HideInInspector] private bool has_Jumped;
     [HideInInspector] public bool canAttack = true;
@@ -45,8 +44,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     private Collider2D cur_Cinemachine_Collider;
 
     [Header("Weapon_Data")]
-    private Weapon_Collision_Handler weapon_Handler;
-    private bool is_AtkCoroutine_Running = false;
     public GameObject weapon_Prefab;    
     public SpriteRenderer effect_Render;
     public Animator effect_Animator;
@@ -54,25 +51,30 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     public Transform effect_Anchor;
     public bool is_Facing_Right = true;
     public Animator weapon_Animator;
+    private Weapon_Collision_Handler weapon_Handler;
+    private bool is_AtkCoroutine_Running = false;
 
     public event Action On_Player_Damaged;
     public event Action On_Enemy_Hit;
     public event Action On_Enemy_Killed;
     public event Action<PlayerCharacter_Controller> On_Teleport;
-    public bool isInvincible = false;
+    [HideInInspector] public bool isInvincible = false;
 
     private Item pending_SwapItem = null;
-    public bool is_UI_Open = false;
-    public bool is_Item_Change = false;
+    [HideInInspector] public bool is_UI_Open = false;
+    [HideInInspector] public bool is_Item_Change = false;
 
     [SerializeField] private float card_Change_Cooldown = 2.0f;
-    public bool can_Card_Change = true;
+    [HideInInspector] public bool can_Card_Change = true;
 
     //--------------------------------------------------- Created By KYH
     [Header("Player_UI")]
     [SerializeField] private Image Player_Health_Bar;
     [SerializeField] private Pause_Manager pause_Manager;
     [SerializeField] private SpriteRenderer player_render;
+
+    [SerializeField] private Item_Preview_UI item_Preview_UI;
+    [SerializeField] private Card_Preview_UI card_Preview_UI;
     
     [Header("Map_Manager")]
     [SerializeField] private Map_Manager map_Manager;
@@ -327,6 +329,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
             if (isInventory_Visible && is_Item_Change && pending_SwapItem != null)
             {
+                Vector2 spawn_Pos = new Vector2(transform.position.x, transform.position.y - 0.2f);
+                Object_Manager.instance.Spawn_Specific_Item(spawn_Pos, pending_SwapItem);
                 pending_SwapItem = null;
                 is_Item_Change = false;
                 HideInventory();
@@ -581,7 +585,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 {
                     Debug.Log("Not Enough Money!");
                 }
-
+                Update_Player_Money();
             }
             else // Default Item 
             {
@@ -622,7 +626,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     void Spawn_Chest() // Spawn Debuging Card Chest
     {
-        GameObject chest = Instantiate(chestPrefab, spawnPoint.position, spawnPoint.rotation);
+        Vector2 spawn_Pos = new Vector2(transform.position.x, transform.position.y - 0.2f);
+        GameObject chest = Instantiate(chestPrefab, spawn_Pos, Quaternion.identity);
     }
 
     public void Input_Change_FirstCard(InputAction.CallbackContext ctx)
@@ -1130,8 +1135,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 && !is_Player_Dead && Is_Skill_Cooldown_Complete())
             {
                 attack_Strategy.Skill(this, cur_Weapon_Data);
-                //animator.SetTrigger("Skill");
-                Update_Skill_Timer();
+                if (attack_Strategy is not Musket_Attack_Strategy musket)
+                {
+                    Update_Skill_Timer();
+                }
             }
         }
     }
@@ -1150,7 +1157,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         return Time.time >= last_Skill_Time + modified_Cooldown;
     }
 
-    private void Update_Skill_Timer()
+    public void Update_Skill_Timer()
     {
         last_Skill_Time = Time.time;
     }
@@ -1171,6 +1178,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         HideInventory();
         Time.timeScale = 1.0f;
+
+        movement = Vector2.zero;
+        rb.velocity = new Vector2(0, rb.velocity.y);
     }
     void ShowInventory()
     {
@@ -1225,9 +1235,17 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         int damage_Reduction = UnityEngine.Random.Range(damage_Reduce_Min, damage_Reduce_Max + 1);
         int reduced_Damage = Mathf.Max(0, Damage - damage_Reduction);
-
         int total_Dmg = Mathf.RoundToInt(reduced_Damage * takenDamage_Mul);
+
+        int old_Health = health;
         health = health - total_Dmg;
+
+        if (dmg_Inc_To_Lost_Health)
+        {
+            int health_Lost = old_Health - health;
+            Adjust_Damage_Multiplier(health_Lost);
+        }
+
         Player_Health_Bar.fillAmount = (float)health / max_Health;
 
         if (health <= 0)
@@ -1246,17 +1264,57 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         int heal_Amount = Mathf.RoundToInt(amount * heal_Amount_Mul);
 
+        int old_Health = health;
         health = Mathf.Clamp(health + heal_Amount, 0, max_Health);
+
+        if (dmg_Inc_To_Lost_Health)
+        {
+            int health_Recoverd = health - old_Health;
+            Adjust_Damage_Multiplier(health_Recoverd);
+        }
 
         Player_Health_Bar.fillAmount = (float)health / max_Health;
     }
 
+    private void Adjust_Damage_Multiplier(int health_Data)
+    {
+        float percent_Change = (float) health_Data / max_Health;
+        damage_Mul += percent_Change;
+
+        damage_Mul = Mathf.Round(damage_Mul * 100.0f) / 100.0f;
+
+        damage_Mul = Mathf.Max(damage_Mul, 0.0f);
+    }
+
     private void Player_Died()
     {
+        if (player_Life > 0)
+        {
+            player_Life--;
+            animator.SetTrigger("Player_Resurrection");
+
+            health = max_Health / 5;
+
+            is_Player_Dead = true;
+            isInvincible = true;
+            StartCoroutine(End_Invisible_After_Delay(2.4f));
+            return;
+        }
+
         is_Player_Dead = true;
-        player_render.enabled = false;
+        isInvincible = true;
+        //player_render.enabled = false;
+        animator.SetTrigger("Player_Dead");
 
         pause_Manager.Show_Result(true);
+    }
+
+    private IEnumerator End_Invisible_After_Delay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        isInvincible = false;
+        is_Player_Dead = false;
     }
 
     public void Input_Game_Stop(InputAction.CallbackContext ctx)
@@ -1388,7 +1446,38 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Item" || other.gameObject.tag == "Card" || other.gameObject.tag == "Chest" || other.gameObject.tag == "Market_Item")
+        if (other.CompareTag("Card"))
+        {
+            if (card_Inventory[0] != null && card_Inventory[1] != null)
+            {
+                if (card_Preview_UI == null)
+                {
+                    Debug.LogError("카드 프리뷰 UI 존재하지 않음"); return;
+                }
+
+                var hovered = other.GetComponent<Card>().cardValue;
+                var a = card_Inventory[0].GetComponent<Card>().cardValue;
+                var b = card_Inventory[1].GetComponent<Card>().cardValue;
+
+                var preview_First = Compute_Weapon(a, hovered);
+                var preview_Second = Compute_Weapon(b, hovered);
+
+                card_Preview_UI.Show(preview_First, preview_Second);
+            }
+
+            current_Item = other.gameObject;
+        }
+        else if (other.CompareTag("Item") || other.CompareTag("Market_Item"))
+        {
+            current_Item = other.gameObject;
+
+            var item_Comp = other.GetComponent<Item_Prefab>();
+            if (item_Comp != null)
+            {
+                item_Preview_UI.Show(item_Comp.itemData);
+            }
+        }
+        else if (other.CompareTag("Chest"))
         {
             current_Item = other.gameObject;
         }
@@ -1403,11 +1492,21 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             use_Portal = false;
         }
 
-        if (other.gameObject.tag == "Item" || other.gameObject.tag == "Card" || other.gameObject.tag == "Chest" || other.gameObject.tag == "Market_Item")
+        if (other.CompareTag("Card"))
+        {
+            current_Item = null;
+            card_Preview_UI.Hide();
+        }
+        else if (other.CompareTag("Item") || other.CompareTag("Market_Item"))
+        {
+            current_Item = null;
+            item_Preview_UI.Hide();
+        }
+        else if (other.CompareTag("Chest"))
         {
             current_Item = null;
         }
-
+                
         if (other.gameObject.tag == "NPC")
         {
             is_Npc_Contack = false;
@@ -1490,6 +1589,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         money_Text.text = i_Money.ToString();
 
         //Debug.Log("Player Money : " + i_Money);
+    }
+
+    public void Update_Player_Money()
+    {
+        money_Text.text = i_Money.ToString();
     }
 
     //=============== 속박, 기절계열

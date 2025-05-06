@@ -32,13 +32,13 @@ public class Crow_Controller : MonoBehaviour
     [SerializeField] private Vector3 follow_Offset = new Vector3(-1.0f, 0.0f, 0.0f);
 
     [Header("공격 상태 변수")]
-    [SerializeField] private float attack_Duration = 0.5f;
+    //[SerializeField] private float attack_Duration = 0.5f;
     [SerializeField] public float attack_Speed = 10.0f;
     [SerializeField] private float attack_Range = 2.0f;
     [SerializeField] private bool can_Attack = true;
     private Transform attack_Target;
-    private float attack_Timer = 0.0f;
-    private Vector3 attack_End_Pos;
+    //private float attack_Timer = 0.0f;
+    //private Vector3 attack_End_Pos;
     private bool attacking_Forward = true;
 
     [Header("보호 상태 변수")]
@@ -155,7 +155,7 @@ public class Crow_Controller : MonoBehaviour
 
     private void Exit_Patrol_State()
     {
-
+        
     }
 
     private void Choose_New_Patrol_Target()
@@ -240,8 +240,15 @@ public class Crow_Controller : MonoBehaviour
         }
         else
         {
-            transform.position = Vector3.MoveTowards(transform.position, pre_Attack_Pos, attack_Speed * Time.deltaTime);
-            if (Vector3.Distance(transform.position, pre_Attack_Pos) < 0.01f)
+            Vector3 follow_Offset_World = player.transform.position
+                + (player.is_Facing_Right ? follow_Offset : -follow_Offset);
+
+            transform.position = Vector3.MoveTowards(
+                transform.position,
+                follow_Offset_World,
+                attack_Speed * Time.deltaTime);
+
+            if (Vector3.Distance(transform.position, follow_Offset_World) < 0.01f)
             {
                 Finish_Attack();
             }
@@ -250,10 +257,10 @@ public class Crow_Controller : MonoBehaviour
 
     private void Finish_Attack()
     {
-        transform.position = pre_Attack_Pos;
         attack_Target = null;
         isAttacking = false;
-        Set_State(Crow_State.Patrol);
+
+        Set_State(Crow_State.Follow);
     }
 
     private IEnumerator Attack_Cooldown_Coroutine()
@@ -386,9 +393,13 @@ public class Crow_Controller : MonoBehaviour
     public void Set_Protecting(bool protecting)
     {
         isProtecting = protecting;
-        if (protecting && cur_State != Crow_State.Protect)
+        if (isProtecting && cur_State != Crow_State.Protect)
         {
             Set_State(Crow_State.Protect);
+        }
+        else if (!isProtecting)
+        {
+            Set_State(Crow_State.Follow);
         }
     }
 

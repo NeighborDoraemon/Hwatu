@@ -239,7 +239,14 @@ public class Match_Up_Manager : MonoBehaviour
     private void player_Higher()
     {
         Debug.Log("Player's Match is Higher!");
-        p_controller.damage_Mul += 0.3f;
+        if (p_controller.card_Match_Dmg_Inc)
+        {
+            p_controller.damage_Mul += 0.5f;
+        }
+        else
+        {
+            p_controller.damage_Mul += 0.3f;
+        }
 
         is_damage_up = true;
     }

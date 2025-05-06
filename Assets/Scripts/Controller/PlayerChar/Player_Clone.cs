@@ -118,6 +118,7 @@ public class Player_Clone : MonoBehaviour
                     if (effect_Animator != null)
                     {
                         effect_Animator.runtimeAnimatorController = frame_Effect_Info.effect_Animator;
+                        effect_Render.enabled = true;
                         effect_Animator.Play("Effect_Start");
                         StartCoroutine(Reset_Effect_After_Animation(frame_Effect_Info.duration));
                     }
@@ -227,7 +228,7 @@ public class Player_Clone : MonoBehaviour
             Animator weapon_Animator = cur_Weapon.GetComponent<Animator>();
             if (weapon_Animator != null && player.cur_Weapon_Data.weapon_overrideController != null)
             {
-                weapon_Animator.runtimeAnimatorController = player.cur_Weapon_Data.overrideController;
+                weapon_Animator.runtimeAnimatorController = player.cur_Weapon_Data.weapon_overrideController;
             }
         }
 

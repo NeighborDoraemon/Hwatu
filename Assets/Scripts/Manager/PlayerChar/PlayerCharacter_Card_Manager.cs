@@ -46,7 +46,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
         }
         UpdateCardUI();
         Card_Combination();
-        
+
         if (Object_Manager.instance != null)
         {
             Sprite collected_Sprite = card.GetComponent<SpriteRenderer>().sprite;
@@ -207,12 +207,12 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                         || (card_1.Month == 4 && card_2.Month == 10))
                     {
                         Set_Weapon(17);
-                    }                     
+                    }
                     else if ((card_1.Month == 7 && card_2.Month == 4)
                         || (card_1.Month == 4 && card_2.Month == 7))
                     {
                         Set_Weapon(13);
-                    }  
+                    }
                     else if ((card_1.Month == 9 && card_2.Month == 4)
                         || (card_1.Month == 4 && card_2.Month == 9))
                     {
@@ -248,7 +248,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                     else
                     {
                         Set_Weapon(1);
-                    }                    
+                    }
                 }
                 isCombDone = true;
             }
@@ -276,5 +276,137 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
         }
 
         return both_Have;
+    }
+
+    public Weapon_Data Compute_Weapon(Card_Value c1, Card_Value c2)
+    {
+        int weaponID = 1;
+
+        if (c1.Month > 10 && c2.Month > 10 && c1.Month != c2.Month)
+        {
+            if ((c1.Month == 11 && c2.Month == 13)
+                || (c1.Month == 13 && c2.Month == 11))
+            {
+                weaponID = 21;
+            }
+            else if ((c1.Month == 11 && c1.Month == 18)
+                || (c1.Month == 18 && c2.Month == 11))
+            {
+                weaponID = 15;
+            }
+            else if ((c1.Month == 13 && c2.Month == 18)
+                || (c1.Month == 18 && c2.Month == 13))
+            {
+                weaponID = 6;
+            }
+        }
+        else if ((c1.Month % 10) == (c2.Month % 10))
+        {
+            switch (c1.Month % 10)
+            {
+                case 1:
+                    weaponID = 4;
+                    break;
+                case 2:
+                    weaponID = 11;
+                    break;
+                case 3:
+                    weaponID = 12;
+                    break;
+                case 4:
+                    weaponID = 18;
+                    break;
+                case 5:
+                    weaponID = 20;
+                    break;
+                case 6:
+                    weaponID = 16;
+                    break;
+                case 7:
+                    weaponID = 24;
+                    break;
+                case 8:
+                    weaponID = 10;
+                    break;
+                case 9:
+                    weaponID = 14;
+                    break;
+                case 0:
+                    weaponID = 25;
+                    break;
+                default:
+                    Debug.Log("해당 월이 없음");
+                    break;
+            }
+        }
+        else if (c1.Month != c2.Month)
+        {
+            if ((c1.Month + c2.Month) % 10 >= 1 && (c1.Month + c2.Month) % 10 <= 8)
+            {
+                if ((c1.Month % 10 == 1 && c2.Month == 4)
+                    || (c1.Month == 4 && c2.Month % 10 == 1))
+                {
+                    weaponID = 7;
+                }
+                else if ((c1.Month % 10 == 1 && c2.Month == 2)
+                    || (c1.Month == 2 && c2.Month % 10 == 1))
+                {
+                    weaponID = 9;
+                }
+                else if ((c1.Month % 10 == 1 && c2.Month == 10)
+                    || (c1.Month == 10 && c2.Month % 10 == 1))
+                {
+                    weaponID = 22;
+                }
+                else if ((c1.Month == 10 && c2.Month == 4)
+                    || (c1.Month == 4 && c2.Month == 10))
+                {
+                    weaponID = 17;
+                }
+                else if ((c1.Month == 7 && c2.Month == 4)
+                    || (c1.Month == 4 && c2.Month == 7))
+                {
+                    weaponID = 13;
+                }
+                else if ((c1.Month == 9 && c2.Month == 4)
+                    || (c1.Month == 4 && c2.Month == 9))
+                {
+                    weaponID = 19;
+                }
+                else
+                {
+                    weaponID = 2;
+                    comb_Text.text = ((c1.Month + c2.Month) % 10) + " " + cur_Weapon_Data.comb_Name;
+                }
+            }
+            else if ((c1.Month + c2.Month) % 10 == 9)
+            {
+                weaponID = 3;
+            }
+            else
+            {
+                if (((c1.Month % 10) == 1 && c2.Month == 9)
+                    || (c1.Month == 9 && (c2.Month % 10) == 1))
+                {
+                    weaponID = 8;
+                }
+                else if ((c1.Month == 4 && c2.Month == 6)
+                    || (c1.Month == 6 && c2.Month == 4))
+                {
+                    weaponID = 5;
+                }
+                else if ((c1.Month == 7 && c2.Month % 10 == 3)
+                    || (c1.Month % 10 == 3 && c2.Month == 7))
+                {
+                    weaponID = 23;
+                }
+                else
+                {
+                    weaponID = 1;
+                }
+            }
+        }
+
+        return weapon_Manager.Get_Weapon_Data(weaponID);
     }
 }

@@ -10,21 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c8e7cc7e5bf5a124f842638c93b025ba, type: 3}
-  m_Name: ES_Atk_Animation_Pos_Data
+  m_Name: ES_Land_APD
   m_EditorClassIdentifier: 
-  animation_Name: PC_TH_Atk
+  animation_Name: PC_TH_Land
   frame_Pos:
-  - {x: -0.13, y: -0.237, z: 0}
-  - {x: -0.111, y: -0.239, z: 0}
-  - {x: -0.028, y: -0.151, z: 0}
-  - {x: 0.152, y: -0.396, z: 0}
-  - {x: 0.152, y: -0.396, z: 0}
-  - {x: 0.122, y: -0.291, z: 0}
+  - {x: 0.108, y: -0.273, z: 0}
+  - {x: 0.108, y: -0.273, z: 0}
+  - {x: 0.108, y: -0.282, z: 0}
   frame_Rotations:
-  - {x: 0, y: 0, z: 174.766}
-  - {x: 0, y: 0, z: 174.766}
-  - {x: 0, y: 0, z: 116.502}
-  - {x: 0, y: 0, z: -41.505}
-  - {x: 0, y: 0, z: -41.505}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   frame_Scales: []

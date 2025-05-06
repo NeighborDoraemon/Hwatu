@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: 2_SanSam
   m_EditorClassIdentifier: 
   itemName: "\uC0B0\uC0BC"
-  item_Description: 
+  item_Description: "\uCCB4\uB825\uC744 50 \uD68C\uBCF5\uC2DC\uCF1C\uC90D\uB2C8\uB2E4
+    (\uC18C\uBAA8\uC131)"
   item_Icon: {fileID: 21300000, guid: 83b1f496023315542b45710cc524638a, type: 3}
   item_Price: 300
   itemEffect: {fileID: 11400000, guid: 253e3fcd91b2440489f1ebd3bd3871b1, type: 2}

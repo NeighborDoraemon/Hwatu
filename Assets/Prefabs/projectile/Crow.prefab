@@ -105,12 +105,13 @@ MonoBehaviour:
   patrol_Speed: 3
   height_Offset: 0.1
   is_Waiting: 0
-  follow_Distance: 6
+  follow_Distance: 2
   return_Distance: 4
   follow_Speed: 12
-  follow_Offset: {x: -1, y: 0, z: 0}
+  follow_Offset: {x: -0.5, y: 0, z: 0}
   attack_Duration: 0.5
   attack_Speed: 10
+  attack_Range: 2
   can_Attack: 1
   protect_Duration: 0
   teleport_Distance_Threshold: 15
