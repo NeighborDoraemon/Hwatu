@@ -1321,19 +1321,25 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (ctx.phase == InputActionPhase.Started)
         {
-            if (/*Input.GetKeyDown(KeyCode.Escape) &&*/ Current_Player_State == Player_State.Normal)
+            if (Current_Player_State == Player_State.Normal)
             {
-                if (Time.timeScale == 0.0f /*&& !Key_Setting_Can.gameObject.activeSelf*/)
+                if (Time.timeScale == 0.0f)
                 {
-                    if (!Key_Setting_Can.gameObject.activeSelf)
+                    if(!pause_Manager.is_Help_Activated() && !Key_Setting_Can.gameObject.activeSelf)
                     {
                         pause_Manager.Pause_Stop();
                     }
                     else
                     {
-                        pause_Manager.Btn_Setting_Out();
+                        if (Key_Setting_Can.gameObject.activeSelf)
+                        {
+                            pause_Manager.Btn_Setting_Out();
+                        }
+                        else
+                        {
+                            pause_Manager.Btn_Help_Out();
+                        }
                     }
-                    //Time.timeScale = 1.0f;
                 }
                 else if (Time.timeScale == 1.0f)
                 {

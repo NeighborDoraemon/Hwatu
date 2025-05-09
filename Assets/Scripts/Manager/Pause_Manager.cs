@@ -12,6 +12,7 @@ public class Pause_Manager : MonoBehaviour
     [SerializeField] private Canvas Setting_Can;
     [SerializeField] private Canvas Main_Can;
     [SerializeField] private Canvas Result_Can;
+    [SerializeField] private Canvas JokBo_Can;
 
     [Header("Objects")]
     [SerializeField] private PlayerCharacter_Controller p_control;
@@ -81,7 +82,27 @@ public class Pause_Manager : MonoBehaviour
 
     public void Btn_Help()
     {
+        JokBo_Can.gameObject.SetActive(true);
+        Main_Can.gameObject.SetActive(false);
+        Pause_Can.gameObject.SetActive(false);  
+    }
 
+    public void Btn_Help_Out()
+    {
+        JokBo_Can.gameObject.SetActive(false);
+        Pause_Can.gameObject.SetActive(true);
+    }
+
+    public bool is_Help_Activated()
+    {
+        if(JokBo_Can.gameObject.activeSelf)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public void Btn_New_Game()
