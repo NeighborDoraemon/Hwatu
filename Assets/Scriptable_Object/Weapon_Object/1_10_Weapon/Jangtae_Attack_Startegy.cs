@@ -122,10 +122,11 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
     {
         player.can_Card_Change = false;
 
-        if (player.isGrounded)
-        {
-            player.rb.AddForce(new Vector2(0, player.jumpPower), ForceMode2D.Impulse);
-        }
+        player.rb.AddForce(new Vector2(0, player.jumpPower), ForceMode2D.Impulse);
+        //if (player.isGrounded)
+        //{
+            
+        //}
 
         yield return new WaitForSeconds(delay);
 

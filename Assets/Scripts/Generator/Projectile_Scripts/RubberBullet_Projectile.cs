@@ -1,3 +1,4 @@
+using MBT;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -84,10 +85,18 @@ public class RubberBullet_Projectile : MonoBehaviour
             return;
         }
 
-        var next = Find_Next_Target();
+        var cur_BT = enemy.GetComponentInChildren<MonoBehaviourTree>();
+        Vector2 center = cur_BT != null ? (Vector2)cur_BT.transform.position : rb.position;
+
+        var next = Find_Next_Target(center);
         if (next != null)
         {
-            Vector2 dir = ((Vector2)next.transform.position - rb.position).normalized;
+            var next_BT = next.GetComponentInChildren<MonoBehaviourTree>();
+            Vector2 target_Pos = next_BT != null 
+                ? (Vector2)next_BT.transform.position 
+                : (Vector2)next.transform.position;
+
+            Vector2 dir = (target_Pos - center).normalized;
             rb.velocity = dir * speed;
             Align_Rotation();
         }
@@ -97,10 +106,10 @@ public class RubberBullet_Projectile : MonoBehaviour
         }
     }
 
-    private Enemy_Basic Find_Next_Target()
+    private Enemy_Basic Find_Next_Target(Vector2 center)
     {
         int mask = LayerMask.GetMask("Enemy", "Boss_Enemy");
-        Collider2D[] candidates = Physics2D.OverlapCircleAll(transform.position, bounce_Range, mask);
+        Collider2D[] candidates = Physics2D.OverlapCircleAll(center, bounce_Range, mask);
 
         Enemy_Basic closet = null;
         float min_Dist = float.MaxValue;

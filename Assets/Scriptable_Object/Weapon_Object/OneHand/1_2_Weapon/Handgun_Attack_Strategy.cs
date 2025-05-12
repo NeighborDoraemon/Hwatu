@@ -10,10 +10,15 @@ public class Handgun_Attack_Strategy : ScriptableObject, IAttack_Strategy
     private PlayerCharacter_Controller player;
     private Weapon_Data weapon_Data;
 
+    [Header("Normal Bullet")]
     public GameObject projectile_Prefab;
     public float projectile_Speed = 20.0f;
 
+    [Header("Skill Bullet")]
+    public int skill_Bullet_Count = 3;
     public GameObject skill_Projectile_Prefab;
+
+    private int remaining_Bullet = 0;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
@@ -36,7 +41,7 @@ public class Handgun_Attack_Strategy : ScriptableObject, IAttack_Strategy
         player.skill_Cooldown = weapon_Data.skill_Cooldown;
     }
 
-    public void Reset_Stats() { }
+    public void Reset_Stats() { remaining_Bullet = 0; }
 
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
@@ -46,10 +51,22 @@ public class Handgun_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point)
     {
-        GameObject projectile = Instantiate(projectile_Prefab, fire_Point.position, Quaternion.identity);
+        GameObject prefab_To_Use;
 
+        if (remaining_Bullet > 0)
+        {
+            prefab_To_Use = skill_Projectile_Prefab;
+            remaining_Bullet--;
+        }
+        else
+        {
+            prefab_To_Use = projectile_Prefab;
+        }
+
+        GameObject projectile = Instantiate(prefab_To_Use, fire_Point.position, Quaternion.identity);
         Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
         Vector2 shootDirection = (player.is_Facing_Right) ? Vector2.right : Vector2.left;
+
         Vector3 projectile_Scale = projectile.transform.localScale;
         projectile_Scale.x = (player.is_Facing_Right) ? Mathf.Abs(projectile_Scale.x) : -Mathf.Abs(projectile_Scale.x);
         projectile.transform.localScale = projectile_Scale;
@@ -60,7 +77,8 @@ public class Handgun_Attack_Strategy : ScriptableObject, IAttack_Strategy
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         player.animator.SetTrigger("Skill");
-        player.StartCoroutine(Skill_Coroutine(player));
+        remaining_Bullet = skill_Bullet_Count;
+        //player.StartCoroutine(Skill_Coroutine(player));
     }
 
     private IEnumerator Skill_Coroutine(PlayerCharacter_Controller player)
