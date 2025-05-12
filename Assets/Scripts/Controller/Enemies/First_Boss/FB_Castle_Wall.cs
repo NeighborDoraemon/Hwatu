@@ -415,6 +415,7 @@ public class FB_Castle_Wall : MonoBehaviour, Npc_Interface
             {
                 Obj_FB_Peasent.GetComponent<FB_Peasent>().Start_Pattern();
             }
+            is_Started = true;
             player.State_Change(PlayerCharacter_Controller.Player_State.Normal);
         }
         else

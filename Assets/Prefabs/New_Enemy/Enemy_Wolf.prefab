@@ -256,7 +256,7 @@ Transform:
   m_GameObject: {fileID: 3305437404063440528}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1335,7 +1335,7 @@ MonoBehaviour:
     key: i_Attack_Damage
     constantValue: 0
   Enemy_CB: {fileID: 1214813047253774684}
-  ShortSword_Animator: {fileID: 5826831300201052540}
+  Wolf_Animator: {fileID: 0}
 --- !u!1 &9087736121493037472
 GameObject:
   m_ObjectHideFlags: 0
