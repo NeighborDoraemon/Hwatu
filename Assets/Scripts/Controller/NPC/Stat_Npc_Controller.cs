@@ -51,7 +51,7 @@ public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
         }
 
         is_StatUI_Open = true;
-        player.is_UI_Open = true;
+        player.State_Change(PlayerCharacter_Controller.Player_State.UI_Open);
         player.is_StatUI_Visible = true;
         Time.timeScale = 0.0f;
         cur_Index = 0;
@@ -73,7 +73,7 @@ public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
         }
 
         is_StatUI_Open = false;
-        player.is_UI_Open = false;
+        player.State_Change(PlayerCharacter_Controller.Player_State.Normal);
         player.is_StatUI_Visible = false;
         Time.timeScale = 1.0f;
     }

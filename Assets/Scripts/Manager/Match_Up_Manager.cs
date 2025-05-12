@@ -263,7 +263,15 @@ public class Match_Up_Manager : MonoBehaviour
     {
         if (is_damage_up && !is_damage_down)
         {
-            p_controller.damage_Mul -= 0.3f;
+            if (p_controller.card_Match_Dmg_Inc)
+            {
+                p_controller.damage_Mul -= 0.5f;
+            }
+            else
+            {
+                p_controller.damage_Mul -= 0.3f;
+            }
+            
             is_damage_up = false;
         }
         else if (!is_damage_up && is_damage_down)

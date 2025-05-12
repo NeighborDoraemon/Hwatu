@@ -16,27 +16,30 @@ public class Horse_Projectile : MonoBehaviour
     private void Awake()
     {
         player = FindObjectOfType<PlayerCharacter_Controller>();
-        final_Damage = player.Calculate_Damage();
 
         Destroy(gameObject, 3.0f);
     }
 
-    public void Initialized(HorseToken_Attack_Strategy attack_Strategy, Vector2 direction, float speed)
+    public void Initialized(HorseToken_Attack_Strategy attack_Strategy, Vector2 direction, float speed, int total_Damage)
     {
         rb = GetComponent<Rigidbody2D>();
         rb.velocity = direction * speed;
+        final_Damage = total_Damage;
 
-        OnHitEnemy += () =>
+        if (!attack_Strategy.is_Skill_On)
         {
-            Debug.Log("Hit registered, increasing stack.");
-            attack_Strategy.Increase_Stack();
-            OnMiss = null;
-        };
-        OnMiss += () =>
-        {
-            Debug.Log("Miss registered, decreasing stack.");
-            attack_Strategy.Decrease_Stack();
-        };
+            OnHitEnemy += () =>
+            {
+                Debug.Log("Hit registered, increasing stack.");
+                attack_Strategy.Increase_Stack();
+                OnMiss = null;
+            };
+            OnMiss += () =>
+            {
+                Debug.Log("Miss registered, decreasing stack.");
+                attack_Strategy.Decrease_Stack();
+            };
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)

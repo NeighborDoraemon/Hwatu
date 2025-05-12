@@ -21,7 +21,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
 
     public void AddCard(GameObject card)
     {
-        isCombDone = false;
+        //isCombDone = false;
 
         if (cardCount == card_Inventory.Length)
         {
@@ -376,7 +376,6 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                 else
                 {
                     weaponID = 2;
-                    comb_Text.text = ((c1.Month + c2.Month) % 10) + " " + cur_Weapon_Data.comb_Name;
                 }
             }
             else if ((c1.Month + c2.Month) % 10 == 9)

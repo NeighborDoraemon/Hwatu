@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 using System;
 using Unity.Mathematics;
 using System.Linq;
+using System.Xml.Schema;
 //using UnityEngine.UIElements;
 
 // PlayerCharacter_Controller Created By JBJ, KYH
@@ -61,7 +62,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     [HideInInspector] public bool isInvincible = false;
 
     private Item pending_SwapItem = null;
-    [HideInInspector] public bool is_UI_Open = false;
+    //[HideInInspector] public bool is_UI_Open = false;
     [HideInInspector] public bool is_Item_Change = false;
 
     [SerializeField] private float card_Change_Cooldown = 2.0f;
@@ -112,6 +113,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     public enum Player_State
     {
         Normal,
+        UI_Open,
         Dialogue,
         Dialogue_Choice,
         Event_Doing,
@@ -183,19 +185,19 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
             }
-            else if (is_UI_Open)
-            {
-                rb.velocity = Vector2.zero;
-            }
+            //else if (is_UI_Open)
+            //{
+            //    rb.velocity = Vector2.zero;
+            //}
             else
             {
                 Move();
             }
 
-            if (!isCombDone)
-            {
-                Card_Combination();
-            }
+            //if (!isCombDone)
+            //{
+            //    Card_Combination();
+            //}
 
             Update_Animation_Parameters();
             HandleCombo();
@@ -230,27 +232,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (Current_Player_State == Player_State.Normal)    //State Check
         {
-            if (is_UI_Open)
-            {
-                if (ctx.phase == InputActionPhase.Performed)
-                {
-                    Vector2 input = ctx.ReadValue<Vector2>();
-                    if (isInventory_Visible)
-                    {
-                        if (Mathf.Abs(input.x) > 0.1f)
-                        {
-                            Navigate_Inventory((int)input.x);
-                        }
-                    }
-                    else if (is_StatUI_Visible)
-                    {
-                        Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.Navigate_Stats(input);
-                        return;
-                    }
-                }
-                return;
-            }
-
             if (ctx.phase == InputActionPhase.Canceled)
             {
                 movement = Vector2.zero;
@@ -268,6 +249,24 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             else
             {
                 movement = ctx.action.ReadValue<Vector2>();
+            }
+        }
+        else if (Current_Player_State == Player_State.UI_Open)
+        {
+            if (ctx.phase == InputActionPhase.Performed)
+            {
+                Vector2 input = ctx.ReadValue<Vector2>();
+                if (isInventory_Visible)
+                {
+                    if (Mathf.Abs(input.x) > 0.1f)
+                    {
+                        Navigate_Inventory((int)input.x);
+                    }
+                }
+                else if (is_StatUI_Visible)
+                {
+                    Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.Navigate_Stats(input);
+                }
             }
         }
         else if (Current_Player_State == Player_State.Event_Doing)
@@ -321,26 +320,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (Current_Player_State == Player_State.Normal)    //상태조건
         {
-            if (is_StatUI_Visible)
-            {
-                Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.Exit_UI();
-                return;
-            }
-
-            if (isInventory_Visible && is_Item_Change && pending_SwapItem != null)
-            {
-                Vector2 spawn_Pos = new Vector2(transform.position.x, transform.position.y - 0.2f);
-                Object_Manager.instance.Spawn_Specific_Item(spawn_Pos, pending_SwapItem);
-                pending_SwapItem = null;
-                is_Item_Change = false;
-                HideInventory();
-                Time.timeScale = 1.0f;
-                return;
-            }
-
-            if (is_UI_Open)
-                return;
-
             if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
             {
                 if (is_Down_Performed)
@@ -359,6 +338,23 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 }
             }
         }
+        else if (Current_Player_State == Player_State.UI_Open)
+        {
+            if (is_StatUI_Visible)
+            {
+                Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.Exit_UI();
+            }
+            else if (isInventory_Visible && is_Item_Change && pending_SwapItem != null)
+            {
+                Vector2 spawn_Pos = new Vector2(transform.position.x, transform.position.y - 0.2f);
+                Object_Manager.instance.Spawn_Specific_Item(spawn_Pos, pending_SwapItem);
+                pending_SwapItem = null;
+                is_Item_Change = false;
+                HideInventory();
+                Time.timeScale = 1.0f;
+                return;
+            }
+        }
     }
 
     private void Do_Jump()
@@ -375,7 +371,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (Current_Player_State == Player_State.Normal)    //상태조건
         {
-            if (is_UI_Open || is_Player_Dead) return;
+            if (is_Player_Dead) return;
 
             if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && canTeleporting)
             {
@@ -452,15 +448,17 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     // Created By KYH ---------------------------------------------------------------
     public void Input_Down_Jump(InputAction.CallbackContext ctx)
     {
-        if (is_UI_Open) return;
-
-        if (ctx.phase == InputActionPhase.Performed && Time.timeScale == 1.0f)
+        //if (is_UI_Open) return;
+        if (Current_Player_State == Player_State.Normal)
         {
-            is_Down_Performed = true;
-        }
-        else if (ctx.phase == InputActionPhase.Canceled)
-        {
-            is_Down_Performed = false;
+            if (ctx.phase == InputActionPhase.Performed && Time.timeScale == 1.0f)
+            {
+                is_Down_Performed = true;
+            }
+            else if (ctx.phase == InputActionPhase.Canceled)
+            {
+                is_Down_Performed = false;
+            }
         }
     }
     // ----------------------------------------------------------------------------
@@ -474,6 +472,15 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             if (ctx.phase != InputActionPhase.Started || is_Player_Dead)
                 return;
 
+            map_Manager.Use_Portal();
+            Handle_Npc_Interaction();
+            Handle_Item_Interaction();
+        }
+        else if (Current_Player_State == Player_State.UI_Open)
+        {
+            if (ctx.phase != InputActionPhase.Started)
+                return;
+
             if (isInventory_Visible && is_Item_Change && pending_SwapItem != null)
             {
                 SwapItem(pending_SwapItem);
@@ -483,18 +490,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 Time.timeScale = 1.0f;
                 return;
             }
-
-            if (is_StatUI_Visible)
+            else if (is_StatUI_Visible)
             {
                 Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.Confirm_Selection();
                 return;
             }
-
-            if (is_UI_Open) return;
-
-            map_Manager.Use_Portal();
-            Handle_Npc_Interaction();
-            Handle_Item_Interaction();
         }
         else if (Current_Player_State == Player_State.Dialogue)
         {
@@ -632,50 +632,56 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     public void Input_Change_FirstCard(InputAction.CallbackContext ctx)
     {
-        if (ctx.phase != InputActionPhase.Started || Time.timeScale != 1.0f || is_Player_Dead 
+        if (Current_Player_State == Player_State.Normal)
+        {
+            if (ctx.phase != InputActionPhase.Started || Time.timeScale != 1.0f || is_Player_Dead
             || !can_Card_Change || isAttacking || card_Inventory[2] == null)
-            return;
+                return;
 
-        if (attack_Strategy is Jangtae_Attack_Startegy JT_Strategy && JT_Strategy.isRiding)
-        {
-            can_Card_Change = false;
-            return;
+            if (attack_Strategy is Jangtae_Attack_Startegy JT_Strategy && JT_Strategy.isRiding)
+            {
+                can_Card_Change = false;
+                return;
+            }
+
+            Change_FirstAndThird_Card();
+
+            if (card_Inventory[0] != null && card_Inventory[1] != null) //Match Up Call
+            {
+                match_manager.Give_Player_Cards(card_Inventory[0], card_Inventory[1]);
+                match_manager.Match_Reset();
+                match_manager.Start_Match();
+            }
+
+            StartCoroutine(Card_Change_Cooldown_Routine());
         }
-
-        Change_FirstAndThird_Card();
-
-        if (card_Inventory[0] != null && card_Inventory[1] != null) //Match Up Call
-        {
-            match_manager.Give_Player_Cards(card_Inventory[0], card_Inventory[1]);
-            match_manager.Match_Reset();
-            match_manager.Start_Match();
-        }
-
-        StartCoroutine(Card_Change_Cooldown_Routine());
     }
 
     public void Input_Change_SecondCard(InputAction.CallbackContext ctx)
     {
-        if (ctx.phase != InputActionPhase.Started || Time.timeScale != 1.0f || is_Player_Dead 
+        if (Current_Player_State == Player_State.Normal)
+        {
+            if (ctx.phase != InputActionPhase.Started || Time.timeScale != 1.0f || is_Player_Dead
             || !can_Card_Change || isAttacking || card_Inventory[2] == null)
-            return;
+                return;
 
-        if (attack_Strategy is Jangtae_Attack_Startegy JT_Strategy && JT_Strategy.isRiding)
-        {
-            can_Card_Change = false;
-            return;
+            if (attack_Strategy is Jangtae_Attack_Startegy JT_Strategy && JT_Strategy.isRiding)
+            {
+                can_Card_Change = false;
+                return;
+            }
+
+            Change_SecondAndThird_Card();
+
+            if (card_Inventory[0] != null && card_Inventory[1] != null) //Match Up Call
+            {
+                match_manager.Give_Player_Cards(card_Inventory[0], card_Inventory[1]);
+                match_manager.Match_Reset();
+                match_manager.Start_Match();
+            }
+
+            StartCoroutine(Card_Change_Cooldown_Routine());
         }
-
-        Change_SecondAndThird_Card();
-
-        if (card_Inventory[0] != null && card_Inventory[1] != null) //Match Up Call
-        {
-            match_manager.Give_Player_Cards(card_Inventory[0], card_Inventory[1]);
-            match_manager.Match_Reset();
-            match_manager.Start_Match();
-        }
-
-        StartCoroutine(Card_Change_Cooldown_Routine());
     }
 
     private IEnumerator Card_Change_Cooldown_Routine()
@@ -906,11 +912,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (Current_Player_State == Player_State.Normal)    //평소에만 공격 가능하도록 설정
         {
-            if (is_UI_Open)
-            {
-                return;
-            }
-
             if (Time.timeScale != 1.0f || is_Player_Dead)
             {
                 return;
@@ -1129,8 +1130,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (Current_Player_State == Player_State.Normal)    //상태조건
         {
-            if (is_UI_Open) return;
-
             if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f
                 && !is_Player_Dead && Is_Skill_Cooldown_Complete())
             {
@@ -1178,38 +1177,63 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         HideInventory();
         Time.timeScale = 1.0f;
-
+        Current_Player_State = Player_State.Normal;
         movement = Vector2.zero;
         rb.velocity = new Vector2(0, rb.velocity.y);
     }
     void ShowInventory()
     {
+        Current_Player_State = Player_State.UI_Open;
+
         if (!isInventory_Visible && inventoryPanel != null)
         {
             inventoryPanel.SetActive(true);
             isInventory_Visible = true;
-            is_UI_Open = true;
+            //is_UI_Open = true;
             Update_Inventory();
         }
     }
     void HideInventory()
     {
+        Current_Player_State = Player_State.Normal;
+
         if (isInventory_Visible && inventoryPanel != null)
         {
             inventoryPanel.SetActive(false);
             isInventory_Visible = false;
-            is_UI_Open = false;
+            //is_UI_Open = false;
         }
     }
 
     private void Shift_Selected_Item()
     {
         is_Item_Change = true;
+        Current_Player_State = Player_State.UI_Open;
         Time.timeScale = 0.0f;
         ShowInventory();
     }
 
     // Created By KYH -------------------------------------------------------------------
+    public void Update_Player_Health(float health_Multiplier)
+    {
+        if (health_Multiplier <= 0.0f)
+        {
+            Debug.LogWarning("health_Multiplier must be greater than 0.");
+            return;
+        }
+
+        float ratio = (float)health / max_Health;
+        int new_MaxHealth = Mathf.RoundToInt(max_Health * health_Multiplier);
+        int new_CurHealth = Mathf.RoundToInt(new_MaxHealth * ratio);
+
+        new_CurHealth = Mathf.Clamp(new_CurHealth, 0, new_MaxHealth);
+
+        max_Health = new_CurHealth;
+        health = new_CurHealth;
+
+        Player_Health_Bar.fillAmount = (float)health / max_Health;
+    }
+
     public void Player_Take_Damage(int Damage)
     {
         if (isInvincible || is_Player_Dead) return;
@@ -1293,8 +1317,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             player_Life--;
             animator.SetTrigger("Player_Resurrection");
 
-            health = max_Health / 5;
-
             is_Player_Dead = true;
             isInvincible = true;
             StartCoroutine(End_Invisible_After_Delay(2.4f));
@@ -1313,6 +1335,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         yield return new WaitForSeconds(delay);
 
+        health = max_Health / 5;
+        Player_Health_Bar.fillAmount = (float)health / max_Health;
         isInvincible = false;
         is_Player_Dead = false;
     }
@@ -1357,7 +1381,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             Vector2 normal = contact.normal;
 
-            if (other.gameObject.CompareTag("Platform"))
+            if (other.gameObject.CompareTag("Platform") || other.gameObject.CompareTag("Trap_Platform"))
             {
                 bool was_Ground = isGrounded;
                 isGrounded = true;
@@ -1463,6 +1487,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 var preview_Second = Compute_Weapon(b, hovered);
 
                 card_Preview_UI.Show(preview_First, preview_Second);
+
+                var ft = card_Preview_UI.GetComponent<Follow_Item>();
+                ft.target = other.transform;
+                ft.world_Offset = new Vector3(0, 1.2f, 0);
             }
 
             current_Item = other.gameObject;
@@ -1476,6 +1504,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             {
                 item_Preview_UI.Show(item_Comp.itemData);
             }
+            var ft = item_Preview_UI.GetComponent<Follow_Item>();
+            ft.target = other.transform;
+            ft.world_Offset = new Vector3(0, 1.2f, 0);
         }
         else if (other.CompareTag("Chest"))
         {

@@ -135,11 +135,12 @@ public class Bow_Attack_Strategy : ScriptableObject, IAttack_Strategy
             return;
         }
 
+        int mask = LayerMask.GetMask("Enemy", "Boss_Enemy");
         Collider2D[] enemies = Physics2D.OverlapBoxAll(
             mainCamera.transform.position,
             new Vector2(mainCamera.orthographicSize * 2 * mainCamera.aspect, mainCamera.orthographicSize * 2),
             0,
-            LayerMask.GetMask("Enemy")
+            mask
             );
 
         if (enemies.Length > 0)

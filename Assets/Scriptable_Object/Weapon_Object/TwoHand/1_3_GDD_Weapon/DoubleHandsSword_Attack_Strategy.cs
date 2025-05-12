@@ -64,7 +64,7 @@ public class DoubleHandsSword_Attack_Strategy : ScriptableObject, IAttack_Strate
 
         float elapsed = 0.0f;
 
-        player.is_Knock_Back = true;
+        //player.is_Knock_Back = true;
         while (!player.isGrounded)
         {
             elapsed += Time.deltaTime;
@@ -78,7 +78,7 @@ public class DoubleHandsSword_Attack_Strategy : ScriptableObject, IAttack_Strate
             yield return null;
         }
 
-        player.is_Knock_Back = false;
+        //player.is_Knock_Back = false;
     }
 
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point)

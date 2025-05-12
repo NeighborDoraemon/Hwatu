@@ -15,8 +15,6 @@ public class Tiger_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     private CapsuleCollider2D og_Collider;
     private BoxCollider2D tiger_Collider;
-    private int og_Maxhealth;
-    private float og_Movespeed;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
@@ -39,11 +37,8 @@ public class Tiger_Attack_Strategy : ScriptableObject, IAttack_Strategy
         tiger_Collider.offset = new Vector2(0, -0.3f);
         tiger_Collider.isTrigger = true;
 
-        og_Maxhealth = player.max_Health;
-        og_Movespeed = player.movementSpeed;
-
-        player.max_Health = Mathf.RoundToInt(og_Maxhealth * 1.3f);
-        player.movementSpeed = og_Movespeed * 1.1f;
+        player.movementSpeed_Mul += 0.1f;
+        player.Update_Player_Health(1.3f);
 
         Initialize_Weapon_Data();
     }
@@ -67,9 +62,9 @@ public class Tiger_Attack_Strategy : ScriptableObject, IAttack_Strategy
         {
             og_Collider.enabled = true;
         }
-        
-        player.max_Health = og_Maxhealth;
-        player.movementSpeed = og_Movespeed;
+
+        player.Update_Player_Health(1f / 1.3f);
+        player.movementSpeed_Mul -= 0.1f;
     }
 
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)

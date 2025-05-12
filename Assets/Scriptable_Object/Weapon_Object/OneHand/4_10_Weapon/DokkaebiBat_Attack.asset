@@ -16,4 +16,4 @@ MonoBehaviour:
   skill_Offset: 0.5
   enemy_LayerMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 16896

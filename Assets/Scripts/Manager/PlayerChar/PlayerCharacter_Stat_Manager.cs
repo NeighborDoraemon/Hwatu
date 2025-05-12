@@ -32,7 +32,7 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     public float takenDamage_Mul = 1.0f;          // 받는 데미지 증감 배율
     public float defend_Attack_Rate = 0.0f;       // 적의 공격 방어 확률
     public float movementSpeed_Mul = 1.0f;        // 이동속도 증감 배율
-    public float health_Mul = 1.0f;               // 최대체력 증감 배율
+    //public float health_Mul = 1.0f;               // 최대체력 증감 배율
     public float attack_Cooltime_Mul = 1.0f;      // 공격속도 쿨타임 증감 배율
     public float skill_Cooltime_Mul = 1.0f;       // 스킬 쿨타임 증감 배율
     public int damage_Reduce_Min = 0;             // 데미지 감소 최소치

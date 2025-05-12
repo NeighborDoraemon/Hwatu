@@ -853,6 +853,7 @@ GameObject:
   - component: {fileID: 635883490356884642}
   - component: {fileID: 6267708810301888679}
   - component: {fileID: 8813697659826941056}
+  - component: {fileID: 5346895387324816353}
   m_Layer: 5
   m_Name: Item_Preview
   m_TagString: Untagged
@@ -920,6 +921,20 @@ MonoBehaviour:
   item_Icon: {fileID: 3481994050976979461}
   name_Text: {fileID: 397482720733891538}
   desc_Text: {fileID: 3881379344655952887}
+--- !u!114 &5346895387324816353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1013564145804779304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35223a2bd2ff9c34ba9d13bfef3e47b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  world_Offset: {x: 0, y: 0, z: 0}
 --- !u!1 &1018995345971268392
 GameObject:
   m_ObjectHideFlags: 0
@@ -2567,6 +2582,7 @@ GameObject:
   - component: {fileID: 3808420334459072003}
   - component: {fileID: 3397398163674802110}
   - component: {fileID: 3061801974304958860}
+  - component: {fileID: 5936621615677218752}
   m_Layer: 5
   m_Name: Card_Preview
   m_TagString: Untagged
@@ -2634,6 +2650,20 @@ MonoBehaviour:
   preview_Panel: {fileID: 3925994507109263356}
   child_Panel_First: {fileID: 7403685811570482740}
   child_Panel_Second: {fileID: 3232756757176014394}
+--- !u!114 &5936621615677218752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3925994507109263356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35223a2bd2ff9c34ba9d13bfef3e47b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  world_Offset: {x: 0, y: 0, z: 0}
 --- !u!1 &4142418132060870754
 GameObject:
   m_ObjectHideFlags: 0

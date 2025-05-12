@@ -23,6 +23,8 @@ public class ExecutionSword_Attack_Strategy : ScriptableObject, IAttack_Strategy
     public Weapon_Effect_Data fullStack_Effect_Data;
 
     public int inc_Attack_Dmg = 0;
+    public float attackCooltime_Dec_Value = 0.3f;
+    public float skill_Delay = 5.0f;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
@@ -158,7 +160,24 @@ public class ExecutionSword_Attack_Strategy : ScriptableObject, IAttack_Strategy
     }
 
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point) { }
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data) { }
+
+    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    {
+        if (player.es_Stack >= 5)
+        {
+            player.StartCoroutine(Skill_Coroutine());
+        }
+    }
+
+    private IEnumerator Skill_Coroutine()
+    {
+        player.es_Stack -= 5;
+        player.attack_Cooltime_Mul -= attackCooltime_Dec_Value;
+
+        yield return new WaitForSeconds(skill_Delay);
+
+        player.attack_Cooltime_Mul += attackCooltime_Dec_Value;
+    }
     
     public void Reset_Dmg()
     {

@@ -12,3 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e826d7095890e464dbae3e73255969a0, type: 3}
   m_Name: GreatAxe_Weapon_Attack_Strategy
   m_EditorClassIdentifier: 
+  spin_Box_Size: {x: 1.5, y: 2}
+  spin_Box_Offset: {x: 0, y: 0}
+  smash_Delay: 0.5
+  smash_Offset: 0.7
+  smash_Box_Size: {x: 1, y: 0.5}

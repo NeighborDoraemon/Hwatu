@@ -15,6 +15,8 @@ public class HorseToken_Attack_Strategy : ScriptableObject, IAttack_Strategy
     public int max_Stack = 5;
     private int cur_Stack = 1;
 
+    public bool is_Skill_On = false;
+
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         if (player == null || weapon_Data == null)
@@ -26,6 +28,7 @@ public class HorseToken_Attack_Strategy : ScriptableObject, IAttack_Strategy
         this.weapon_Data = weapon_Data;
 
         cur_Stack = 1;
+        is_Skill_On = false;
 
         Initialize_Weapon_Data();
 
@@ -73,13 +76,30 @@ public class HorseToken_Attack_Strategy : ScriptableObject, IAttack_Strategy
                 projectile.transform.localScale.y,
                 projectile.transform.localScale.z);
 
-            projectile.Initialized(this, shootDirection, projectile_Speed);
+            int final_Damage = Calc_Horse_Damage(weapon_Data.attack_Damage);
+            projectile.Initialized(this, shootDirection, projectile_Speed, final_Damage);
 
             yield return new WaitForSeconds(shoot_Delay);
         }
     }
+
+    private int Calc_Horse_Damage(int Damage)
+    {
+        int raw_WeaponDmg = is_Skill_On ? Damage * 4 : Damage;
+        int base_Dmg = raw_WeaponDmg + player.attackDamage;
+
+        int total_Dmg = Mathf.RoundToInt(base_Dmg * player.damage_Mul);
+
+        if (Random.value <= player.crit_Rate)
+            total_Dmg = Mathf.RoundToInt(total_Dmg * player.crit_Dmg);
+
+        return total_Dmg;
+    }
+
     public void Increase_Stack()
     {
+        if (is_Skill_On) return;
+
         if (cur_Stack < max_Stack)
         {
             cur_Stack++;
@@ -88,6 +108,8 @@ public class HorseToken_Attack_Strategy : ScriptableObject, IAttack_Strategy
     }
     public void Decrease_Stack()
     {
+        if (is_Skill_On) return;
+
         if (cur_Stack > 1)
         {
             cur_Stack--;
@@ -96,6 +118,16 @@ public class HorseToken_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
+        is_Skill_On = !is_Skill_On;
 
+        if (is_Skill_On)
+        {
+            cur_Stack = 1;
+            Debug.Log("마패 스킬 ON");
+        }
+        else
+        {
+            Debug.Log("마패 스킬 OFF");
+        }
     }
 }

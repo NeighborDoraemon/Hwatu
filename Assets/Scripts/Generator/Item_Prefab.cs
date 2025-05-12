@@ -19,4 +19,6 @@ public class Item_Prefab : MonoBehaviour
         itemData = newItemData;
         spriteRenderer.sprite = itemData.item_Icon;  // 아이템의 스프라이트 설정
     }
+
+    public Item GetItem() { return itemData; }
 }

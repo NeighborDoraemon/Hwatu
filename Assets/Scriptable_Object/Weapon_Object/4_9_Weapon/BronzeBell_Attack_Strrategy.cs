@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "BronzeBell_Attack", menuName = "Weapon/Attack Strategy/BronzeBell")]
@@ -76,6 +77,47 @@ public class BronzeBell_Attack_Strrategy : ScriptableObject, IAttack_Strategy
 
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
-        
+        var Obj_Manager = Object_Manager.instance;
+
+        var old_Cards = Obj_Manager.current_Spawned_Card.ToList();
+        var card_Positions = new List<Vector2>();
+        foreach (var card in old_Cards)
+        {
+            card_Positions.Add(card.transform.position);
+            var sprite = card.GetComponent<SpriteRenderer>().sprite;
+            Obj_Manager.Remove_Used_Sprite(sprite);
+            Obj_Manager.Remove_From_Spawned_Cards(card);
+            Destroy(card);
+        }
+        foreach (var pos in card_Positions)
+        {
+            Obj_Manager.Spawn_Cards(pos);
+        }
+
+        var item_Objects = GameObject.FindGameObjectsWithTag("Item");
+        foreach (var item_Obj in item_Objects)
+        {
+            var pos = (Vector2)item_Obj.transform.position;
+            var prefab_Script = item_Obj.GetComponent<Item_Prefab>();
+            var old_Item = prefab_Script.GetItem();
+            var rarity = old_Item.item_Rarity;
+
+            var candidates = Obj_Manager.item_Database.
+                Get_Items_By_Rarity(rarity).
+                Where(i => i != old_Item).
+                ToList();
+
+            if (candidates.Count == 0)
+            {
+                candidates = Obj_Manager.item_Database.Get_All_Items().
+                    Where(i => i != old_Item).
+                    ToList();
+            }
+
+            var new_Item = candidates[Random.Range(0, candidates.Count)];
+
+            Destroy(item_Obj);
+            Obj_Manager.Spawn_Specific_Item(pos, new_Item);
+        }
     }
 }
