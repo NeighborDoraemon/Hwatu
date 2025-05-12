@@ -15,9 +15,12 @@ public class Save_Manager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+        if (Instance != null && Instance != this) 
+        { 
+            Destroy(gameObject); 
+            return; 
+        }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
 
         savePath = Path.Combine(Application.persistentDataPath, "save_data.json");
         currentData = LoadFromFile() ?? new SaveData();
@@ -56,6 +59,15 @@ public class Save_Manager : MonoBehaviour
 
 public class SaveData
 {
+    //Maps
     public List<Map_Value> Map_List = new List<Map_Value>();
+    public int Map_Index;
 
+    //Player
+
+    //Event
+
+    //Market
+    public bool is_Market_Now = false;
+    public bool is_take_Market = false;
 }
