@@ -9,6 +9,7 @@ public class Platform_Box : MonoBehaviour
     [SerializeField] private BoolReference BR_Chasing;
 
     private int Platform_Index;
+    private bool initialized = false;
 
     // Start is called before the first frame update
     void Start()
@@ -34,22 +35,35 @@ public class Platform_Box : MonoBehaviour
     {
         if (collision.CompareTag("Walls"))
         {
+            // 벽에 닿았으면 즉시 방향 전환
             BR_At_End.Value = true;
+            return;
         }
-        else if(collision.CompareTag("Platform") || collision.CompareTag("OneWayPlatform"))
+
+        if (collision.CompareTag("Platform") || collision.CompareTag("OneWayPlatform"))
         {
             Platform_Index++;
+
+            if (!initialized)
+            {
+                initialized = true; // 첫 발판 접촉으로 초기화
+                return;
+            }
+
+            // 발판에 정상적으로 접촉 중이면 끝이 아님
+            BR_At_End.Value = false;
         }
     }
 
     protected void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Platform" || collision.gameObject.tag == "OneWayPlatform")
+        if (collision.CompareTag("Platform") || collision.CompareTag("OneWayPlatform"))
         {
             Platform_Index--;
-            Debug.Log(Platform_Index);
-            if (Platform_Index <= 0)
+
+            if (initialized && Platform_Index <= 0)
             {
+                // 더 이상 발판에 닿아있지 않음
                 BR_At_End.Value = true;
                 BR_Chasing.Value = false;
             }
