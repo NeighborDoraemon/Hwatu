@@ -35,7 +35,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     [Header("DebugChest")] public GameObject chestPrefab;
 
     public Transform spawnPoint;
-    [HideInInspector] public bool isGrounded;
+    /*[HideInInspector]*/ public bool isGrounded;
     [HideInInspector] private bool has_Jumped;
     [HideInInspector] public bool canAttack = true;
     [HideInInspector] public bool can_JumpAtk = true;
