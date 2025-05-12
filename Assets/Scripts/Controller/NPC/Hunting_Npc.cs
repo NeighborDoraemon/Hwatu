@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,9 +11,6 @@ public class Hunting_Npc : MonoBehaviour, Npc_Interface
     private PlayerCharacter_Controller p_control = null;
     private GameObject Player_Object = null;
 
-    [Header("Input")]
-    [SerializeField] private PlayerInput p_Input;
-
     private Vector2 v_Horizontal = new Vector2(0.0f, 0.0f);
 
     [Header("Event Objects")]
@@ -21,6 +19,12 @@ public class Hunting_Npc : MonoBehaviour, Npc_Interface
     [SerializeField] private GameObject Event_Position;
     [SerializeField] private GameObject Event_Projectile;
     [SerializeField] private GameObject Result_Position;
+
+    [Header("Event UI")]
+    [SerializeField] private GameObject Event_Slider;
+    [SerializeField] private SpriteRenderer Event_Time_Slider;
+    [SerializeField] private TextMeshPro Event_Bullet_Text;
+    
 
     [Header("Event Values")]
     [SerializeField] private float Max_Angle;
@@ -54,6 +58,12 @@ public class Hunting_Npc : MonoBehaviour, Npc_Interface
 
     private List<GameObject> Birds_List = new List<GameObject>();
 
+    private float currentTime;
+    private Vector3 originalScale;
+    private Vector3 originalPosition;
+    private float spriteHeight;
+    private float totalTime = 60.0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -66,10 +76,12 @@ public class Hunting_Npc : MonoBehaviour, Npc_Interface
         if(is_Event_Acting)
         {
             Hunting_Move();
+            UpdateTimeGauge();
 
-            if(bird_Count == 0 && is_Running)
+            if ((bird_Count == 0 && is_Running) || (Used_bullet == Max_Bullet && is_Running))
             {
                 StopCoroutine(coroutine);
+                Event_Slider.SetActive(false);
                 Event_Result();
             }
         }
@@ -81,13 +93,12 @@ public class Hunting_Npc : MonoBehaviour, Npc_Interface
         {
             p_control.State_Change(PlayerCharacter_Controller.Player_State.Dialogue);
             Dialogue_Manager.instance.Start_Dialogue(Interaction_start);
-            Debug.Log("Dialogue Start");
+            InitTimeGauge();
         }
         else if(p_control != null && is_Result_Once)
         {
             p_control.State_Change(PlayerCharacter_Controller.Player_State.Dialogue);
             Dialogue_Manager.instance.Start_Dialogue(After_Event);
-            Debug.Log("Dialogue Start");
         }
     }
 
@@ -106,6 +117,7 @@ public class Hunting_Npc : MonoBehaviour, Npc_Interface
 
             //Debug.Log("Event Start!");
             Hunting_Spawn();
+            Event_Slider.SetActive(true);
             coroutine = StartCoroutine(Event_Coroutine());
         }
     }
@@ -194,6 +206,7 @@ public class Hunting_Npc : MonoBehaviour, Npc_Interface
                 GameObject prf = Instantiate(Event_Projectile, Bow_Object.transform.position, Bow_Point.transform.rotation);
                 prf.GetComponent<Hunting_Projectile>().Start_Rotate(Bow_Point.transform.eulerAngles.z);
                 Used_bullet++;
+                Set_Bullet_Text();
             }
             else
             {
@@ -258,5 +271,32 @@ public class Hunting_Npc : MonoBehaviour, Npc_Interface
         is_Event_Once = true;
 
         //Npc_Interaction_End();
+    }
+
+    // 시간 게이지 초기화
+    private void InitTimeGauge()
+    {
+        currentTime = totalTime;
+        originalScale = Event_Time_Slider.transform.localScale;
+        originalPosition = Event_Time_Slider.transform.localPosition;
+        spriteHeight = Event_Time_Slider.bounds.size.y;
+    }
+
+    // 시간 게이지 업데이트
+    private void UpdateTimeGauge()
+    {
+        currentTime -= Time.deltaTime;
+        currentTime = Mathf.Clamp(currentTime, 0f, totalTime);
+
+        float fillAmount = currentTime / totalTime;
+
+        Event_Time_Slider.transform.localScale = new Vector3(originalScale.x, originalScale.y * fillAmount, originalScale.z);
+        float offsetY = spriteHeight * (1 - fillAmount) * 0.5f;
+        Event_Time_Slider.transform.localPosition = originalPosition - new Vector3(0f, offsetY, 0f);
+    }
+
+    private void Set_Bullet_Text()
+    {
+        Event_Bullet_Text.text = (Max_Bullet - Used_bullet).ToString();
     }
 }

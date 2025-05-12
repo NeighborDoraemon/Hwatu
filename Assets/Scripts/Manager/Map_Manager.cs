@@ -30,6 +30,7 @@ public class Map_Manager : MonoBehaviour
     [SerializeField] private GameObject Market_Stall;
     private bool is_take_Market = false;
     private bool is_Market_Now = false;
+    private bool is_Next_Event = false; // Event Map
 
     [Header("Boss Objects")]
     [SerializeField] private GameObject First_Boss;
@@ -133,23 +134,25 @@ public class Map_Manager : MonoBehaviour
 
                         match_manager.Give_Map_Cards(map_Card_01, map_Card_02);
                         match_manager.Match_Reset();
-                        match_manager.Start_Match();
+                        //match_manager.Start_Match();
                     }
 
                     player_Input.SwitchCurrentActionMap("Menu");
                     new_Fade.Fade_Out(() =>
                     {
                         Portal_Method();
-                        Debug.Log("Fade Out Complete");
 
 
                         new_Fade.Fade_In(() =>
                         {
                             player_Input.SwitchCurrentActionMap("Player");
-                            Debug.Log("Fade In Complete");
+                            if (!is_Market_Now && !is_Next_Event)
+                            {
+                                match_manager.Start_Match();
+                            }
+                            is_Next_Event = false;
                         });
                     });
-
                     Object_Manager.instance.Destroy_All_Cards_And_Items();
                 }
             }
@@ -180,16 +183,6 @@ public class Map_Manager : MonoBehaviour
         Set_Next_Point();
         is_Tutorial_Cleared = true;
     }
-
-    //private void Update_Map_Boundary()
-    //{
-    //    GameObject boundary_Object = GameObject.FindWithTag("Boundary");
-    //    if (boundary_Object != null)
-    //    {
-    //        cur_Map_Boundary = boundary_Object.GetComponent<Collider2D>();
-    //        camera_Manager.Update_Confiner(cur_Map_Boundary);
-    //    }
-    //}
 
     private void Shuffle_Maps()
     {
@@ -299,6 +292,8 @@ public class Map_Manager : MonoBehaviour
     {
         mv_Next_Map = Event_Map_Shuffled_Queue.Dequeue();
         v_Next_SpawnPoint = mv_Next_Map.v_Map_Spawnpoint;
+        is_Next_Event = true;
+
         Debug.Log("Event Map Next!");
     }
 }

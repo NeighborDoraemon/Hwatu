@@ -1,6 +1,7 @@
 using MBT;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Poison : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
@@ -22,6 +23,7 @@ public class Poison : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
     [SerializeField] private CapsuleCollider2D Stand_Collider;
     [SerializeField] private Siege_Chase_Box chase_Box;
     [SerializeField] private Animator poison_Animator;
+    [SerializeField] private GameObject Poison_BlackBoard;
 
     [Header("Positions")]
     [SerializeField] private Transform Down_Position;
@@ -168,6 +170,8 @@ public class Poison : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
     {
         Stand_Collider.enabled = true;
         Lie_Down_Collider.enabled = false;
+
+        Poison_BlackBoard.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
 
         poison_Animator.SetBool("is_Standing", true);
         poison_Animator.SetTrigger("Standing_Trigger");

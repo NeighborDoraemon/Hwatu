@@ -1,4 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using TMPro.Examples;
 using UnityEngine;
 
 public class Match_Up_Manager : MonoBehaviour
@@ -154,6 +157,7 @@ public class Match_Up_Manager : MonoBehaviour
     private Match map_match;
 
     [SerializeField] private PlayerCharacter_Controller p_controller;
+    [SerializeField] private TextMeshPro Match_Text;
 
     private bool is_damage_up = false;
     private bool is_damage_down = false;
@@ -232,6 +236,7 @@ public class Match_Up_Manager : MonoBehaviour
                     p_controller.damage_Mul += 0.3f;
                     is_damage_down = false;
                 }
+                Print_Match(0);
             }
         }
     }
@@ -247,7 +252,7 @@ public class Match_Up_Manager : MonoBehaviour
         {
             p_controller.damage_Mul += 0.3f;
         }
-
+        Print_Match(1);
         is_damage_up = true;
     }
 
@@ -255,7 +260,7 @@ public class Match_Up_Manager : MonoBehaviour
     {
         Debug.Log("Map's Match is Higher!");
         p_controller.damage_Mul -= 0.3f;
-
+        Print_Match(2);
         is_damage_down = true;
     }
 
@@ -279,5 +284,62 @@ public class Match_Up_Manager : MonoBehaviour
             p_controller.damage_Mul += 0.3f;
             is_damage_down = false;
         }
+    }
+
+    private void Print_Match(int case_index)
+    {
+        switch (case_index)
+        {
+            case 0:
+                {
+                    Match_Text.text = "상성 동일!\n데미지가 변하지 않습니다";
+                    StartCoroutine(Fade_Sprite(Match_Text, 1.0f, 1.0f, 0.0f));
+                    break;
+                }
+            case 1:
+                {
+                    Match_Text.text = "상성 승리!\n데미지가 1.3배 증가합니다";
+                    StartCoroutine(Fade_Sprite(Match_Text, 1.0f, 1.0f, 0.0f));
+                    break;
+                }
+            case 2:
+                {
+                    Match_Text.text = "상성 패배...\n데미지가 1.3배 감소합니다";
+                    StartCoroutine(Fade_Sprite(Match_Text, 1.0f, 1.0f, 0.0f));
+                    break;
+                }
+        }
+    }
+
+    private IEnumerator Fade_Sprite(TextMeshPro sprite, float targetAlpha, float duration, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        Color color = sprite.color;
+        //float startAlpha = color.a;
+
+        for (float t = 0.0f; t < duration; t += Time.deltaTime)
+        {
+            float alpha = Mathf.Lerp(0.0f, targetAlpha, t / duration);
+            color.a = alpha;
+            sprite.color = color;
+
+            yield return null;
+        }
+
+        color.a = targetAlpha;
+        sprite.color = color;
+
+        for (float t = 0.0f; t < duration; t += Time.deltaTime)
+        {
+            float alpha = Mathf.Lerp(targetAlpha, 0.0f, t / duration);
+            color.a = alpha;
+            sprite.color = color;
+
+            yield return null;
+        }
+
+        color.a = 0.0f;
+        sprite.color = color;
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,6 +11,7 @@ public class Enemy_Generator : MonoBehaviour
     [SerializeField]
     private GameObject[] Box_Prefabs;
     [SerializeField] private PlayerCharacter_Controller p_Controller;
+    [SerializeField] private TextMeshPro Wave_Text;
 
     [Header("Array")]
     [SerializeField] private GameObject[] Enemy_Prefabs;
@@ -125,6 +127,11 @@ public class Enemy_Generator : MonoBehaviour
             is_Now_Started = true;
             Is_Next_Spawn = false;
 
+            if(Wave_Count != 1)
+            {
+                Wave_Print(0);
+            }
+
             //Box Spawn
 
             //if (is_Now_Started) // 게임 시작 시 바로 스폰되는걸 방지
@@ -153,6 +160,8 @@ public class Enemy_Generator : MonoBehaviour
                 {
                     Vector3 cardBox_SpawnPoint = Map_Manager.Map_Shuffled_List[i_Map_Count].v_CardBox_SpawnPoint;
                     Instantiate(Box_Random(), cardBox_SpawnPoint, Quaternion.identity);
+
+                    Wave_Print(1);
                 }
 
                 Is_Room_Clear = true;
@@ -204,5 +213,53 @@ public class Enemy_Generator : MonoBehaviour
         }
 
         return Box_Prefabs[index];
+    }
+
+    private void Wave_Print(int case_index)
+    {
+        switch(case_index)
+        {
+            case 0:
+                Wave_Text.text = "아직 끝나지 않았다...";
+                Wave_Text.color = new Color(255.0f, 0.0f, 0.0f);
+                break;
+            case 1:
+                Wave_Text.text = "이제 고요하다...";
+                Wave_Text.color = new Color(255.0f, 255.0f, 255.0f);
+                break;
+        }
+        StartCoroutine(Fade_Sprite(Wave_Text, 1.0f, 1.0f, 0.0f));
+    }
+
+    private IEnumerator Fade_Sprite(TextMeshPro sprite, float targetAlpha, float duration, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        Color color = sprite.color;
+        //float startAlpha = color.a;
+
+        for (float t = 0.0f; t < duration; t += Time.deltaTime)
+        {
+            float alpha = Mathf.Lerp(0.0f, targetAlpha, t / duration);
+            color.a = alpha;
+            sprite.color = color;
+
+            yield return null;
+        }
+
+        color.a = targetAlpha;
+        sprite.color = color;
+
+        for (float t = 0.0f; t < duration; t += Time.deltaTime)
+        {
+            float alpha = Mathf.Lerp(targetAlpha, 0.0f, t / duration);
+            color.a = alpha;
+            sprite.color = color;
+
+            yield return null;
+        }
+
+        color.a = 0.0f;
+        sprite.color = color;
     }
 }
