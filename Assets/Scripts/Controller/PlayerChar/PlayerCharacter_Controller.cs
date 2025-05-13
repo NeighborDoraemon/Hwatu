@@ -1553,10 +1553,19 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     private IEnumerator DisableCollision()
     {
         BoxCollider2D platform_Collider = current_Platform.GetComponent<BoxCollider2D>();
+        CompositeCollider2D platform_Composite = current_Platform.GetComponent<CompositeCollider2D>();
 
         Physics2D.IgnoreCollision(player_Platform_Collider, platform_Collider);
+        if(platform_Composite != null)
+        {
+            platform_Composite.isTrigger = true;
+        }
         yield return new WaitForSeconds(0.5f);
         Physics2D.IgnoreCollision(player_Platform_Collider, platform_Collider, false);
+        if(platform_Composite != null)
+        {
+            platform_Composite.isTrigger = false;
+        }
     }
 
     public void Weak_Knock_Back(int Left_Num, float Knock_Back_time, float Power) //Left = 1, Right = -1
