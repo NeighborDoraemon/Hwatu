@@ -120,7 +120,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         Dialogue,
         Dialogue_Choice,
         Event_Doing,
-        Trap_Minigame
+        Trap_Minigame,
+        Player_Dead
     }
 
     public enum Event_State
@@ -178,6 +179,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
 
         teleporting_Cooltime_Timer = teleporting_CoolTime * teleport_Cooltime_Mul;
+
+        Current_Player_State = Player_State.Normal; // 플레이어 현재상태 초기화 KYH
     }
     // Update is called once per frame
     void Update()
@@ -1332,6 +1335,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         animator.SetTrigger("Player_Dead");
 
         pause_Manager.Show_Result(true);
+        Current_Player_State = Player_State.Player_Dead;
     }
 
     private IEnumerator End_Invisible_After_Delay(float delay)
@@ -1414,7 +1418,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             }
             else if (other.gameObject.CompareTag("OneWayPlatform"))
             {
-                if(TryGetComponent<EdgeCollider2D>(out EdgeCollider2D edge))
+                EdgeCollider2D edge = other.gameObject.GetComponent<EdgeCollider2D>() ? other.gameObject.GetComponent<EdgeCollider2D>() : null; 
+                if (edge != null)
                 {
                     OneWays.Add(other.gameObject);
                 }
