@@ -39,6 +39,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     [HideInInspector] private bool has_Jumped;
     [HideInInspector] public bool canAttack = true;
     [HideInInspector] public bool can_JumpAtk = true;
+    private float combo_Deadline;
 
     [Header("Cinemachine")]
     private Camera_Manager camera_Manager;
@@ -68,14 +69,21 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     [SerializeField] private float card_Change_Cooldown = 2.0f;
     [HideInInspector] public bool can_Card_Change = true;
 
+    [HideInInspector] public bool has_Cleared_Map = false;
+
     //--------------------------------------------------- Created By KYH
-    [Header("Player_UI")]
+    [Header("Player UI")]
     [SerializeField] private Image Player_Health_Bar;
     [SerializeField] private Pause_Manager pause_Manager;
     [SerializeField] private SpriteRenderer player_render;
 
     [SerializeField] private Item_Preview_UI item_Preview_UI;
     [SerializeField] private Card_Preview_UI card_Preview_UI;
+
+    [Header("Skill Cooltime UI")]
+    public Image skill_cTime_Image;
+    public Color ready_Color = Color.blue;
+    public Color cooldown_Color = Color.red;
     
     [Header("Map_Manager")]
     [SerializeField] private Map_Manager map_Manager;
@@ -85,7 +93,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     private GameObject current_Platform;
     public Collider2D player_Platform_Collider;
     private GameObject Now_New_Platform;
-    private bool is_Down_Performed = false;    
+    private bool is_Down_Performed = false;
 
     private bool is_Player_Dead = false;
 
@@ -181,14 +189,15 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (Time.timeScale == 1.0f && !is_Player_Dead)
         {
-            if (isAttacking && isGrounded && !cur_Weapon_Data.is_HoldAttack_Enabled)
+            var state = animator.GetCurrentAnimatorStateInfo(0);
+            bool on_Attack_State = state.IsTag("Attack_1") ||
+            state.IsTag("Attack_2") ||
+            state.IsTag("Attack_3");
+
+            if (on_Attack_State && isGrounded && !cur_Weapon_Data.is_HoldAttack_Enabled)
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
             }
-            //else if (is_UI_Open)
-            //{
-            //    rb.velocity = Vector2.zero;
-            //}
             else
             {
                 Move();
@@ -202,11 +211,13 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             Update_Animation_Parameters();
             HandleCombo();
             Handle_Teleportation_Time();
+            Update_WeaponAnchor_Position();
         }
     }
     private void FixedUpdate()
     {
-        Update_WeaponAnchor_Position();
+        
+        Update_Skill_Cooldown_UI();
     }
 
     void Update_Animation_Parameters()
@@ -290,6 +301,18 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     void Move()
     {
+        var state = animator.GetCurrentAnimatorStateInfo(0);
+        bool on_Attack_State = state.IsTag("Attack_1") ||
+            state.IsTag("Attack_2") ||
+            state.IsTag("Attack_3");
+
+        bool hold_Attack = cur_Weapon_Data != null && cur_Weapon_Data.is_HoldAttack_Enabled;
+
+        if (on_Attack_State && isGrounded && !hold_Attack)
+        {
+            return;
+        }
+
         if (movement.x < 0)
         {
             if (is_Facing_Right)
@@ -307,10 +330,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             }            
         }
 
-        Vector2 normalized_Movement = movement.normalized;
-
         if (!is_Knock_Back)
         {
+            Vector2 normalized_Movement = movement.normalized;
             float total_Speed = movementSpeed * movementSpeed_Mul;
             rb.velocity = new Vector2(normalized_Movement.x * total_Speed, rb.velocity.y);
         }
@@ -448,7 +470,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     // Created By KYH ---------------------------------------------------------------
     public void Input_Down_Jump(InputAction.CallbackContext ctx)
     {
-        //if (is_UI_Open) return;
         if (Current_Player_State == Player_State.Normal)
         {
             if (ctx.phase == InputActionPhase.Performed && Time.timeScale == 1.0f)
@@ -785,6 +806,16 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         if (!Has_Three_And_ThreeG())
         {
             es_Stack = 0;
+
+            if (has_Es_Extra_Life)
+            {
+                if (player_Life > 0)
+                {
+                    player_Life -= 1;
+                }
+                
+                has_Es_Extra_Life = false;
+            }
         }
     }
 
@@ -821,7 +852,15 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             {
                 AnimationClip cur_Clip = clipInfo[0].clip;
                 int total_Frames = Mathf.RoundToInt(cur_Clip.length * cur_Clip.frameRate);
-                int cur_Frame = Mathf.FloorToInt(state_Info.normalizedTime * total_Frames) % total_Frames;                
+
+                float norm_Time = state_Info.normalizedTime;
+                if (!cur_Clip.isLooping)
+                    norm_Time = Mathf.Clamp01(norm_Time);
+
+                int cur_Frame = Mathf.Min(
+                    Mathf.FloorToInt(norm_Time * total_Frames),
+                    total_Frames - 1
+                    );
 
                 Vector3 new_Pos = animation_Data.Get_Position(cur_Frame);
                 Quaternion new_Rotation = animation_Data.Get_Rotation(cur_Frame);
@@ -831,8 +870,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 weapon_Anchor.localRotation = is_Facing_Right ? new_Rotation : Quaternion.Inverse(new_Rotation);
                 weapon_Anchor.localScale = is_Facing_Right ?
                     new_Scale : new Vector3(-new_Scale.x, new_Scale.y, new_Scale.z);
-            }            
-        }        
+            }
+        }
     }
     string Get_Cur_Animation_Name(Animator animator)
     {
@@ -980,6 +1019,12 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     private void Perform_Attack()
     {
+        if (!isAttacking)
+        {
+            isAttacking = true;
+            can_Card_Change = false;
+        }
+
         if (isGrounded)
         {
             animator.SetBool("isAttacking", true);
@@ -1011,6 +1056,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         isAttacking = false;
         animator.SetBool("isAttacking", false);
         canAttack = false;
+        can_Card_Change = true;
 
         StartCoroutine(Attack_Cooltime());
     }
@@ -1032,11 +1078,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     }
     private bool Can_Combo_Attack()
     {
-        return isAttacking && Time.time - last_Attack_Time <= last_ComboAttack_Time;
+        return isAttacking && Time.time <= combo_Deadline;
     }
     private bool Is_Combo_Complete()
     {
-        return Time.time - last_ComboAttack_Time > comboTime;
+        return Time.time  > combo_Deadline;
     }
     private bool Is_Last_Attack()
     {
@@ -1050,11 +1096,17 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         return false;
     }
+
+    public void On_Attack_Animation_End()
+    {
+        if (Is_Last_Attack())
+            End_Attack();
+    }
     
     private void Update_Attack_Timers()
     {
-        last_ComboAttack_Time = Time.time;
         last_Attack_Time = Time.time;
+        combo_Deadline = Time.time + comboTime;
     }
 
     private IEnumerator Continuous_Attack()
@@ -1138,13 +1190,15 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                 {
                     Update_Skill_Timer();
                 }
+
+                skill_cTime_Image.color = cooldown_Color;
             }
         }
     }
 
     public void Input_UpDown(InputAction.CallbackContext ctx)
     {
-        if(ctx.phase == InputActionPhase.Started && Current_Player_State == Player_State.Dialogue_Choice)
+        if (ctx.phase == InputActionPhase.Started && Current_Player_State == Player_State.Dialogue_Choice)
         {
             Dialogue_Manager.instance.Chose_Cursor_Move();
         }
@@ -1159,6 +1213,20 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     public void Update_Skill_Timer()
     {
         last_Skill_Time = Time.time;
+    }
+
+    private void Update_Skill_Cooldown_UI()
+    {
+        float cooldown = cur_Weapon_Data.skill_Cooldown * skill_Cooltime_Mul;
+        float elapsed = Time.time - last_Skill_Time;
+
+        float t = Mathf.Clamp01(elapsed / cooldown);
+        skill_cTime_Image.fillAmount = t;
+
+        if (elapsed >= cooldown)
+        {
+            skill_cTime_Image.color = ready_Color;
+        }
     }
     // ======================================================================================================
 
@@ -1280,6 +1348,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             On_Player_Damaged?.Invoke();
         }
+
+        camera_Manager.Shake_Camera();
     }
 
     public void Player_Take_Heal(int amount)

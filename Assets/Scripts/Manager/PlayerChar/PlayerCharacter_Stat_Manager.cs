@@ -51,6 +51,7 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     public bool isAttacking = false;
     public int max_AttackCount = 0;
     public int es_Stack = 0;
+    public bool has_Es_Extra_Life = false;
 
     [Header("스탯 강화 관련 변수")]
     public float inhance_Skillcooltime_Value = 0.1f;

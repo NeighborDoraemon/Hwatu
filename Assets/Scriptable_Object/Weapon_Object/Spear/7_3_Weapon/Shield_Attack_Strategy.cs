@@ -12,10 +12,19 @@ public class Shield_Attack_Strategy : ScriptableObject, IAttack_Strategy
     public bool isParrying;
     public float parry_Duration = 0.5f;
 
+    [Header("Shield Jump Attack Settings")]
     public LayerMask ground_Layer;
     public float fallSpeed = 1.0f;
     public float accel_Delay = 0.1f;
     public float accel_Rate = 20.0f;
+
+    [Header("Shield Skill Settings")]
+    public GameObject shield_Pj_Prefab;
+    public float projectile_Speed = 15.0f;
+    public float return_Speed = 20.0f;
+    public float max_Distance = 8.0f;
+
+    private bool shield_Thrown = false;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
@@ -26,6 +35,8 @@ public class Shield_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
         this.player = player;
         this.weapon_Data = weapon_Data;
+
+        shield_Thrown = false;
 
         Initialize_Weapon_Data();
     }
@@ -42,10 +53,11 @@ public class Shield_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
+        if (shield_Thrown) return;
+
         if (player.isGrounded)
         {
             if (isParrying) return;
-
             Activate_Parry(player);
         }
         else if (!player.isGrounded)
@@ -58,7 +70,7 @@ public class Shield_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     private IEnumerator Jump_Attack(PlayerCharacter_Controller player)
     {
-        player.animator.SetTrigger("Attack");
+        //player.animator.SetTrigger("Attack");
         player.jumpCount = player.maxJumpCount;
 
         float tp_Fall_Speed = fallSpeed;
@@ -130,5 +142,38 @@ public class Shield_Attack_Strategy : ScriptableObject, IAttack_Strategy
     }
 
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point) { }
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data) { }    
+    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    {
+        Debug.Log("[Shield_Strategy] Skill called");
+
+        if (shield_Thrown)
+        {
+            Debug.Log("[Shield_Startegy] 이미 던져짐, 돌아오는 중");
+            return;
+        }
+        shield_Thrown = true;
+
+        Vector3 spawn_Pos = player.weapon_Anchor.position;
+        GameObject proj = Instantiate(shield_Pj_Prefab, spawn_Pos, shield_Pj_Prefab.transform.rotation);
+        var shield_Proj = proj.GetComponent<Shield_Projectile>();
+
+        Vector2 dir = player.is_Facing_Right ? Vector2.right : Vector2.left;
+
+        shield_Proj.Initialize(
+            dir,
+            projectile_Speed,
+            return_Speed,
+            max_Distance,
+            player.Calculate_Skill_Damage(),
+            this
+            );
+
+        //player.animator.SetTrigger("Skill");
+    }
+
+    public void On_Shield_Returned()
+    {
+        Debug.Log("[Shield_Strategy] On_Shield_Returned 호출됨");
+        shield_Thrown = false;
+    }
 }

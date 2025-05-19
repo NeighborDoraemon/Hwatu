@@ -999,12 +999,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7813225147008665994}
         m_TargetAssemblyTypeName: Stat_Npc_Controller, Assembly-CSharp
-        m_MethodName: Confirm_Selection
-        m_Mode: 1
+        m_MethodName: Select_Stat_By_Index
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2474,12 +2474,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7813225147008665994}
         m_TargetAssemblyTypeName: Stat_Npc_Controller, Assembly-CSharp
-        m_MethodName: Confirm_Selection
-        m_Mode: 1
+        m_MethodName: Select_Stat_By_Index
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -3129,7 +3129,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4470508291569639101}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7813225147008665994}
+        m_TargetAssemblyTypeName: Stat_Npc_Controller, Assembly-CSharp
+        m_MethodName: Select_Stat_By_Index
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7179856251427189866
 GameObject:
   m_ObjectHideFlags: 0
@@ -3328,12 +3340,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7813225147008665994}
         m_TargetAssemblyTypeName: Stat_Npc_Controller, Assembly-CSharp
-        m_MethodName: Confirm_Selection
-        m_Mode: 1
+        m_MethodName: Select_Stat_By_Index
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -3990,7 +4002,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -27, y: 0.52, z: 0}
-  m_LocalScale: {x: 1, y: 2, z: 1}
+  m_LocalScale: {x: 1.3, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8817888962417343506}
@@ -4038,8 +4050,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  m_Color: {r: 0.7509433, g: 0.37263787, b: 0.37263787, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 62532aee18ddd6a408bd3d0ded781e54, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -4084,8 +4096,8 @@ PolygonCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.28866667}
-    oldSize: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.09375, y: 1.859375}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -4093,9 +4105,9 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0, y: 0.5773587}
-      - {x: -0.5, y: -0.28866667}
-      - {x: 0.5, y: -0.28866667}
+    - - {x: 0, y: 1}
+      - {x: -0.5, y: -0.9}
+      - {x: 0.5, y: -0.9}
   m_UseDelaunayMesh: 0
 --- !u!114 &7813225147008665994
 MonoBehaviour:
@@ -4292,12 +4304,16 @@ PrefabInstance:
       value: Minimap_Npc
       objectReference: {fileID: 0}
     - target: {fileID: 7024875685772841529, guid: 90dad703c640b144891e6027c94ef985, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7024875685772841529, guid: 90dad703c640b144891e6027c94ef985, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7024875685772841529, guid: 90dad703c640b144891e6027c94ef985, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.2
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 7024875685772841529, guid: 90dad703c640b144891e6027c94ef985, type: 3}
       propertyPath: m_LocalPosition.z

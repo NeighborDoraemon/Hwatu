@@ -9,12 +9,16 @@ public class Gayageum_Attack_Strategy : ScriptableObject, IAttack_Strategy
     private PlayerCharacter_Controller player;
     private Weapon_Data weapon_Data;
 
+    [Header("Base Attack Settings")]
     [SerializeField] private float attack_Range = 2.0f;
-    [SerializeField] private float skill_Active_Time = 5.0f;
     public float hold_Atk_Interval = 3.0f;
+    public LayerMask enemy_Layer;
 
     private float last_Hold_Attack_Time = -Mathf.Infinity;
     private bool is_Skill_Active = false;
+
+    [Header("Skill Settings")]
+    [SerializeField] private float skill_Active_Time = 5.0f;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
@@ -25,6 +29,8 @@ public class Gayageum_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
         this.player = player;
         this.weapon_Data = weapon_Data;
+
+        last_Hold_Attack_Time = -Mathf.Infinity;
 
         Initialize_Weapon_Data();
     }
@@ -53,9 +59,7 @@ public class Gayageum_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
         last_Hold_Attack_Time = Time.time;
 
-        int mask = LayerMask.GetMask("Enemy", "Boss_Enemy");
-
-        Collider2D[] hits = Physics2D.OverlapCircleAll(player.transform.position, attack_Range, mask);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(player.transform.position, attack_Range, enemy_Layer);
 
         foreach (Collider2D enemy_Collider in hits)
         {
@@ -64,6 +68,22 @@ public class Gayageum_Attack_Strategy : ScriptableObject, IAttack_Strategy
             {
                 enemy.TakeDamage(player.Calculate_Damage());
                 Debug.Log("Enemy hit by hold attack, Damage : " + player.attackDamage);
+
+                if (UnityEngine.Random.value <= player.stun_Rate)
+                {
+                    Enemy_Stun_Interface enemy_Interface = enemy.GetComponent<Enemy_Stun_Interface>()
+                                ?? enemy.GetComponentInParent<Enemy_Stun_Interface>()
+                                ?? enemy.GetComponentInChildren<Enemy_Stun_Interface>();
+
+                    enemy_Interface.Enemy_Stun(2.0f);
+                }
+
+                if (UnityEngine.Random.value <= player.bleeding_Rate)
+                {
+                    enemy.GetComponent<Enemy_Basic>().Bleeding_Attack(player.Calculate_Damage(), 5, 1.1f);
+                }
+
+                player.Trigger_Enemy_Hit();
             }
             else
             {

@@ -8,20 +8,24 @@ public class ExecutionSword_Attack_Strategy : ScriptableObject, IAttack_Strategy
     private PlayerCharacter_Controller player;
     private Weapon_Data weapon_Data;
 
+    [Header("Base Attack Settings")]
     public float move_Distance = 1.0f;
-    private float move_Duration = 0.2f;
     public float move_Delay = 0.1f;
+    private float move_Duration = 0.2f;
     private bool is_Moveing_Forward = false;
     private Queue<Vector3> moveQueue = new Queue<Vector3>();
 
+    [Header("Weapon Sprites")]
     public Sprite zeroStack_Weapon_Sprite;
     public Sprite halfStack_Weapon_Sprite;
     public Sprite fullStack_Weapon_Sprite;
 
+    [Header("Weapon Effect Data")]
     public Weapon_Effect_Data zeroStack_Effect_Data;
     public Weapon_Effect_Data halfStack_Effect_Data;
     public Weapon_Effect_Data fullStack_Effect_Data;
 
+    [Header("Skill Settings")]
     public int inc_Attack_Dmg = 0;
     public float attackCooltime_Dec_Value = 0.3f;
     public float skill_Delay = 5.0f;
@@ -115,9 +119,10 @@ public class ExecutionSword_Attack_Strategy : ScriptableObject, IAttack_Strategy
         if (player.es_Stack < 100)
         {
             player.es_Stack++;
-            if (player.es_Stack == 100)
+            if (player.es_Stack == 100 && !player.has_Es_Extra_Life)
             {
-                player.player_Life++;
+                player.has_Es_Extra_Life = true;
+                player.player_Life += 1;
             }
 
             if (player.es_Stack % 10 == 0)

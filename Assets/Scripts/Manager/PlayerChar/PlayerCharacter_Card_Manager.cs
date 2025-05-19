@@ -278,6 +278,25 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
         return both_Have;
     }
 
+    public bool Has_Four_And_Nine()
+    {
+        bool has_Four = card_Inventory.Any(go => go != null && go.GetComponent<Card>().cardValue.Month == 4);
+        bool has_Nine = card_Inventory.Any(go => go != null && go.GetComponent<Card>().cardValue.Month == 9);
+
+        bool both_Have;
+
+        if (has_Four && has_Nine)
+        {
+            both_Have = true;
+        }
+        else
+        {
+            both_Have = false;
+        }
+
+        return both_Have;
+    }
+
     public Weapon_Data Compute_Weapon(Card_Value c1, Card_Value c2)
     {
         int weaponID = 1;

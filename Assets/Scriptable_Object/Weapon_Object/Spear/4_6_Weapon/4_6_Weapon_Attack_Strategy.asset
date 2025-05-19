@@ -12,3 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0d65523ab8d86d488679335bf0a07b5, type: 3}
   m_Name: 4_6_Weapon_Attack_Strategy
   m_EditorClassIdentifier: 
+  dash_Speed: 10
+  dash_Distance: 3
+  dash_Hit_Radius: 0.5
+  enemy_Layer:
+    serializedVersion: 2
+    m_Bits: 16896
