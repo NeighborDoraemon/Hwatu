@@ -32,6 +32,7 @@ public class Input_Data_Manager : MonoBehaviour
     [Header("Lists")]
     [SerializeField] private List<InputActionReference> Player_Input_List = new List<InputActionReference>();
     [SerializeField] private List<Text> Input_Text = new List<Text>();
+    [SerializeField] private List<GameObject> Key_Warning_Objects = new List<GameObject>();
 
 
     [Header("Key Change")]
@@ -49,13 +50,21 @@ public class Input_Data_Manager : MonoBehaviour
     [SerializeField] private Canvas Option_Can;
     [SerializeField] private Canvas Pause_Can;
 
+    [Header("Panel")]
+    [SerializeField] private GameObject Panel_Warning;
+
     private bool is_Option_Setting = false;
 
     [Header("Key Objects")]
     [SerializeField] private List<GameObject> Key_Objects = new List<GameObject>();
 
+    private int Samed_Index = 0; // for warning
+
     //for exchange
     private string tempOldBindingPath;
+
+    private bool is_Change_Exist = false;   //변경점이 있다 = true
+    private bool is_Warning_Print = false; //경고문구 출력 여부
 
     // Start is called before the first frame update
     void Start()
@@ -105,12 +114,6 @@ public class Input_Data_Manager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void Btn_Key_Change(int Action_Index)
     {
         int Binding_Index = 0;
@@ -152,7 +155,17 @@ public class Input_Data_Manager : MonoBehaviour
                   string newPath = Player_Input_List[i_key_count].action.bindings[bindingIndex].effectivePath;
                   string newBindingPath = Player_Input_List[i_key_count].action.bindings[bindingIndex].effectivePath;
 
-                  var conflict = Check_Same(action, newBindingPath, bindingIndex);
+                  if (newPath == oldPath)
+                  {
+                      Debug.Log("동일한 키 입력됨 - 아무것도 안 바뀜");
+                      is_Change_Exist = false;
+                  }
+                  else
+                  {
+                      is_Change_Exist = true;
+                  }
+
+                      var conflict = Check_Same(action, newBindingPath, bindingIndex, i_key_count);
 
                   RebinComplete(i_key_count, bindingIndex);
 
@@ -168,110 +181,24 @@ public class Input_Data_Manager : MonoBehaviour
                       player_Input.SwitchCurrentActionMap("Player");
 
                       // UI 반영
-                      UpdateUIFor(conflict.Value.conflictAction, conflict.Value.conflictBindingIndex);
+                      Set_Texts();
                   }
               })
               .Start();
     }
-
-    //public void StartRebinding(int i_key_count)
-    //{
-    //    if (i_key_count == 0 || i_key_count == 1)
-    //    {
-    //        int bindingIndex = Player_Input_List[i_key_count].action.GetBindingIndexForControl(Player_Input_List[i_key_count].action.controls[i_key_count]);
-    //        int bindingIndex_02 = Player_Input_List[i_key_count].action.GetBindingIndexForControl(Player_Input_List[i_key_count].action.controls[i_key_count]);
-
-    //        var action = Player_Input_List[i_key_count].action;
-
-    //        player_Input.SwitchCurrentActionMap("Menu");
-
-    //        //Player_Input_List[i_key_count].action.Disable();
-
-    //        rebindingOperation = Player_Input_List[i_key_count].action.PerformInteractiveRebinding(bindingIndex)
-    //              .WithControlsExcluding("Mouse")
-    //              .OnMatchWaitForAnother(0.1f)
-    //              .OnComplete(operation => {
-    //                  string newBindingPath = Player_Input_List[i_key_count].action.bindings[bindingIndex].effectivePath;
-
-    //                  var conflict = Check_Same(action, newBindingPath, bindingIndex);
-
-    //                  if (Check_Same(Player_Input_List[i_key_count].action, newBindingPath, bindingIndex_02))
-    //                  {
-    //                      Debug.Log("키 중복!");
-    //                      StartRebinding(i_key_count);
-    //                  }
-    //                  else
-    //                  {
-    //                      Debug.Log("정상 등록");
-    //                      RebinComplete(i_key_count);
-    //                  }
-    //              })
-    //              .Start();
-    //    }
-    //    else if(i_key_count == 7 || i_key_count == 8)
-    //    {
-    //        int bindingIndex = Player_Input_List[i_key_count].action.GetBindingIndexForControl(Player_Input_List[i_key_count].action.controls[i_key_count - 7]);
-    //        int bindingIndex_02 = Player_Input_List[i_key_count].action.GetBindingIndexForControl(Player_Input_List[i_key_count].action.controls[i_key_count - 7]);
-
-    //        player_Input.SwitchCurrentActionMap("Menu");
-
-    //        //Player_Input_List[i_key_count].action.Disable();
-
-    //        rebindingOperation = Player_Input_List[i_key_count].action.PerformInteractiveRebinding(bindingIndex)
-    //              .WithControlsExcluding("Mouse")
-    //              .OnMatchWaitForAnother(0.1f)
-    //              .OnComplete(operation =>
-    //              {
-    //                  string newBindingPath = Player_Input_List[i_key_count].action.bindings[bindingIndex].effectivePath;
-
-    //                  if (Check_Same(Player_Input_List[i_key_count].action, newBindingPath, bindingIndex_02))
-    //                  {
-    //                      Debug.Log("키 중복!");
-    //                      StartRebinding(i_key_count);
-    //                  }
-    //                  else
-    //                  {
-    //                      Debug.Log("정상 등록");
-    //                      RebinComplete(i_key_count);
-    //                  }
-    //              })
-    //              .Start();
-    //    }
-    //    else
-    //    {
-    //        player_Input.SwitchCurrentActionMap("Menu");
-
-    //        //Player_Input_List[i_key_count].action.Disable();
-
-    //        rebindingOperation = Player_Input_List[i_key_count].action.PerformInteractiveRebinding()
-    //              .WithControlsExcluding("Mouse")
-    //              .OnMatchWaitForAnother(0.1f)
-    //              .OnComplete(operation => {
-    //                  string newBindingPath = Player_Input_List[i_key_count].action.bindings[0].effectivePath;
-
-    //                  if (Check_Same(Player_Input_List[i_key_count].action, newBindingPath, 0))
-    //                  {
-    //                      Debug.Log("키 중복!");
-    //                      StartRebinding(i_key_count);
-    //                  }
-    //                  else
-    //                  {
-    //                      Debug.Log("정상 등록");
-    //                      RebinComplete(i_key_count);
-    //                  }
-    //              })
-    //              .Start();
-    //    }
-    //}
 
     private void RebinComplete(int actionIndex, int bindingIndex)
     {
         var path = Player_Input_List[actionIndex].action.bindings[bindingIndex].effectivePath;
         Input_Text[actionIndex].text = InputControlPath.ToHumanReadableString(path, InputControlPath.HumanReadableStringOptions.OmitDevice);
 
+        if (is_Change_Exist)
+        {
+            Key_Warning_Objects[actionIndex].SetActive(true);
+        }
+
         is_Rebinding_Now = false;
         rebindingOperation.Dispose();
-        //rebindOperation.Dispose();
 
         player_Input.SwitchCurrentActionMap("Player");
     }
@@ -320,6 +247,11 @@ public class Input_Data_Manager : MonoBehaviour
         PlayerPrefs.SetString("Rebinds", rebinds);
 
         Change_Key_Objects();
+
+        foreach(GameObject Warnings in Key_Warning_Objects)
+        {
+            Warnings.SetActive(false);
+        }
     }
 
     public void Btn_Option()
@@ -336,16 +268,35 @@ public class Input_Data_Manager : MonoBehaviour
 
     public void Btn_Option_Quit()
     {
-        if (is_Option_Setting == true)
+        //if (is_Option_Setting == true)
+        //{
+        //    Option_Can.gameObject.SetActive(false);
+        //    if (Main_Can != null)
+        //    {
+        //        Main_Can.gameObject.SetActive(true);
+        //    }
+        //    is_Option_Setting = false;
+        //    //player_Con.is_Key_Setting = true;
+        //}
+        if (PlayerPrefs.HasKey(RebindsKey))
         {
-            Option_Can.gameObject.SetActive(false);
-            if (Main_Can != null)
+            string rebinds = PlayerPrefs.GetString("Rebinds", string.Empty);
+
+            if (string.IsNullOrEmpty(rebinds))
             {
-                Main_Can.gameObject.SetActive(true);
+                return;
             }
-            is_Option_Setting = false;
-            //player_Con.is_Key_Setting = true;
+
+            player_Input.actions.LoadBindingOverridesFromJson(rebinds);
+
+            Change_Key_Objects();
+
+            foreach (GameObject Warnings in Key_Warning_Objects)
+            {
+                Warnings.SetActive(false);
+            }
         }
+        Set_Texts();
     }
 
     public void Btn_Quit()
@@ -361,31 +312,7 @@ public class Input_Data_Manager : MonoBehaviour
         }
     }
 
-    //private bool Check_Same(InputAction currentAction, string newPath, int currentBindingIndex)
-    //{
-    //    for (int i = 0; i < Player_Input_List.Count; i++)
-    //    {
-    //        var action = Player_Input_List[i].action;
-
-    //        for (int j = 0; j < action.bindings.Count; j++)
-    //        {
-    //            // 자기 자신의 바인딩은 건너뛴다 (같은 액션 + 같은 바인딩 인덱스)
-    //            if (action == currentAction && j == currentBindingIndex)
-    //                continue;
-
-    //            if (action.bindings[j].effectivePath == newPath)
-    //            {
-    //                Debug.Log($"중복 발생! {newPath} 는 {action.name}의 {j}번 바인딩과 겹침");
-    //                //SwapBindings(currentAction, currentBindingIndex, action, j);
-    //                return true;
-    //            }
-    //        }
-    //    }
-
-    //    return false;
-    //}
-
-    private (InputAction conflictAction, int conflictBindingIndex)? Check_Same(InputAction currentAction, string newPath, int currentBindingIndex)
+    private (InputAction conflictAction, int conflictBindingIndex)? Check_Same(InputAction currentAction, string newPath, int currentBindingIndex, int Key_Index)
     {
         for (int i = 0; i < Player_Input_List.Count; i++)
         {
@@ -399,7 +326,16 @@ public class Input_Data_Manager : MonoBehaviour
                 if (action.bindings[j].effectivePath == newPath)
                 {
                     Debug.Log($"중복 발생! {newPath} 는 {action.name}의 {j}번 바인딩과 겹침");
-                    return (action, j);
+                    Samed_Index = i;
+                    if(Key_Index == 0 && Samed_Index == 0)
+                    {
+                        Samed_Index = 1;
+                    }
+                    else if(Key_Index == 7 && Samed_Index == 7)
+                    {
+                        Samed_Index = 8;
+                    }
+                        return (action, j);
                 }
             }
         }
@@ -464,6 +400,8 @@ public class Input_Data_Manager : MonoBehaviour
         // 바인딩 변경
         action.ApplyBindingOverride(bindingIndex, newPath);
 
+        Key_Warning_Objects[Samed_Index].SetActive(true);
+
         // UI 업데이트 등 필요한 후처리
         int actionIndex = Player_Input_List.FindIndex(p => p.action == action);
         if (actionIndex >= 0)
@@ -471,19 +409,4 @@ public class Input_Data_Manager : MonoBehaviour
             RebinComplete(actionIndex, bindingIndex);
         }
     }
-
-    void UpdateUIFor(InputAction action, int bindingIndex)
-    {
-        //for (int i = 0; i < Player_Input_List.Count; i++)
-        //{
-        //    if (Player_Input_List[i].action == action)
-        //    {
-        //        var path = action.bindings[bindingIndex].effectivePath;
-        //        Input_Text[i].text = InputControlPath.ToHumanReadableString(path, InputControlPath.HumanReadableStringOptions.OmitDevice);
-        //        break;
-        //    }
-        //}
-        Set_Texts();
-    }
-
 }

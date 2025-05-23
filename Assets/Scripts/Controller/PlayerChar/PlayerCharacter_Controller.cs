@@ -478,7 +478,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             if (ctx.phase != InputActionPhase.Started || is_Player_Dead)
                 return;
 
-            map_Manager.Use_Portal();
+            map_Manager.Use_Portal(false);
             Handle_Npc_Interaction();
             Handle_Item_Interaction();
         }

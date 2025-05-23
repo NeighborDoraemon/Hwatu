@@ -125,9 +125,14 @@ public class Axe : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
         {
             Enemy_Crash_Box.GetComponent<Crash_Box>().Damage_Once = true;
             //Enemy_CB.Damage_Once = true;
-            //BR_Not_Attacking.Value = false;
+            BR_Not_Attacking.Value = false;
             Attack_Time = 0.0f;
         }
+    }
+
+    public void Axe_Attack_End()
+    {
+        BR_Not_Attacking.Value = true;
     }
 
     public void Enemy_Stun(float Duration)

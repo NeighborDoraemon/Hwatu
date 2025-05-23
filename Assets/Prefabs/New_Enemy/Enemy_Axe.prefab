@@ -708,7 +708,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: f_Attack_Range
-  val: 0.4
+  val: 0.6
 --- !u!114 &2809375382101516068
 MonoBehaviour:
   m_ObjectHideFlags: 0
