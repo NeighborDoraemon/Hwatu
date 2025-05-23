@@ -4,6 +4,7 @@ using UnityEngine;
 using static UnityEngine.InputSystem.InputActionRebindingExtensions;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 
 public enum Key_Enum 
@@ -48,7 +49,7 @@ public class Input_Data_Manager : MonoBehaviour
     [Header("Canvas")]
     [SerializeField] private Canvas Main_Can;
     [SerializeField] private Canvas Option_Can;
-    [SerializeField] private Canvas Pause_Can;
+    //[SerializeField] private Canvas Pause_Can;
 
     [Header("Panel")]
     [SerializeField] private GameObject Panel_Warning;
@@ -58,6 +59,11 @@ public class Input_Data_Manager : MonoBehaviour
     [Header("Key Objects")]
     [SerializeField] private List<GameObject> Key_Objects = new List<GameObject>();
 
+    [Header("Scroll Objects")]
+    [SerializeField] private RectTransform ViewPort;
+    [SerializeField] private GameObject Warning_Up;
+    [SerializeField] private GameObject Warning_Down;
+
     private int Samed_Index = 0; // for warning
 
     //for exchange
@@ -65,6 +71,8 @@ public class Input_Data_Manager : MonoBehaviour
 
     private bool is_Change_Exist = false;   //변경점이 있다 = true
     private bool is_Warning_Print = false; //경고문구 출력 여부
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -83,6 +91,73 @@ public class Input_Data_Manager : MonoBehaviour
             Change_Key_Objects();
         }
         Set_Texts();
+    }
+
+
+    public void CheckWarningVisibility()
+    {
+        Rect viewportWorldRect = GetWorldRect(ViewPort);
+
+        int Above_Count = 0;
+        int Below_Count = 0;
+
+        foreach (GameObject icon in Key_Warning_Objects)
+        {
+            if (icon == null || !icon.activeInHierarchy)
+                continue;
+
+            RectTransform iconRect = icon.GetComponent<RectTransform>();
+            Rect iconWorldRect = GetWorldRect(iconRect);
+
+            // 화면에 안 보이는 아이콘만 따짐
+            if (!viewportWorldRect.Overlaps(iconWorldRect, true))
+            {
+                float iconY = iconWorldRect.center.y;
+                float viewMinY = viewportWorldRect.yMin;
+                float viewMaxY = viewportWorldRect.yMax;
+
+                if (iconY > viewMaxY)
+                {
+                    Above_Count++;
+                }
+                else if (iconY < viewMinY)
+                {
+                    Below_Count++;
+                }
+            }
+        }
+
+        // 결과 처리
+        if (Above_Count > 0)
+        {
+            //Debug.Log("▲ 위쪽에 안 보이는 경고 있음");
+            Warning_Up.SetActive(true);
+        }
+        else
+        {
+            Warning_Up.SetActive(false);
+        }
+
+        if (Below_Count > 0)
+        {
+            //Debug.Log("▼ 아래쪽에 안 보이는 경고 있음");
+            Warning_Down.SetActive(true);
+        }
+        else
+        {
+            Warning_Down.SetActive(false);
+        }
+    }
+
+    private Rect GetWorldRect(RectTransform rt)
+    {
+        Vector3[] corners = new Vector3[4];
+        rt.GetWorldCorners(corners);
+
+        Vector3 bottomLeft = corners[0]; // corners[0] = BottomLeft
+        Vector3 topRight = corners[2];   // corners[2] = TopRight
+
+        return new Rect(bottomLeft, topRight - bottomLeft);
     }
 
     private void Set_Texts()
@@ -150,6 +225,7 @@ public class Input_Data_Manager : MonoBehaviour
         rebindingOperation = Player_Input_List[i_key_count].action.PerformInteractiveRebinding(bindingIndex)
               .WithControlsExcluding("Mouse")
               .OnMatchWaitForAnother(0.1f)
+              .WithCancelingThrough("") // 취소 키 비활성화
               .OnComplete(operation =>
               {
                   string newPath = Player_Input_List[i_key_count].action.bindings[bindingIndex].effectivePath;
@@ -195,6 +271,7 @@ public class Input_Data_Manager : MonoBehaviour
         if (is_Change_Exist)
         {
             Key_Warning_Objects[actionIndex].SetActive(true);
+            CheckWarningVisibility();
         }
 
         is_Rebinding_Now = false;
@@ -401,6 +478,7 @@ public class Input_Data_Manager : MonoBehaviour
         action.ApplyBindingOverride(bindingIndex, newPath);
 
         Key_Warning_Objects[Samed_Index].SetActive(true);
+        CheckWarningVisibility();
 
         // UI 업데이트 등 필요한 후처리
         int actionIndex = Player_Input_List.FindIndex(p => p.action == action);
