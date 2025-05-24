@@ -36,6 +36,15 @@ public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
     {
         player = FindObjectOfType<PlayerCharacter_Controller>();
         Dialogue_Once = false;
+
+        for (int i = 0; i < stat_Buttons.Length; i++)
+        {
+            var btn = stat_Buttons[i].gameObject;
+            var hover = btn.GetComponent<Stat_Button_Hover>()
+                ?? btn.AddComponent<Stat_Button_Hover>();
+            hover.stat_Con = this;
+            hover.index = i;
+        }
     }
 
     public void UI_Start()
@@ -94,6 +103,18 @@ public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
             cur_Index = 0;
 
         Update_Select_Border();
+    }
+
+    public void On_Stat_Hover(int index)
+    {
+        if (!is_StatUI_Open) return;
+
+        Transform prev = stat_Buttons[cur_Index].transform.Find("Select_Border");
+        if (prev != null) { prev.gameObject.SetActive(false); }
+
+        cur_Index = index;
+        Transform next = stat_Buttons[cur_Index].transform.Find("Select_Border");
+        if (next != null) { next.gameObject.SetActive(true); }
     }
 
     public void Select_Stat_By_Index(int index)

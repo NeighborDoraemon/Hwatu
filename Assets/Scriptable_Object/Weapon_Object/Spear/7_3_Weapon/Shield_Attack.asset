@@ -20,3 +20,7 @@ MonoBehaviour:
   fallSpeed: 5
   accel_Delay: 0.1
   accel_Rate: 20
+  shield_Pj_Prefab: {fileID: 4150010414422937313, guid: 5e4868f4edcff5d4790d6c56afdfb28c, type: 3}
+  projectile_Speed: 15
+  return_Speed: 20
+  max_Distance: 8

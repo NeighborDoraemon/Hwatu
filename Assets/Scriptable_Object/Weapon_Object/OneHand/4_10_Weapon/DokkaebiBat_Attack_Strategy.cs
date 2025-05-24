@@ -9,8 +9,10 @@ public class DokkaebiBat_Attack_Strategy : ScriptableObject, IAttack_Strategy
     private PlayerCharacter_Controller player;
     private Weapon_Data weapon_Data;
 
+    [Header("Skill Settings")]
     public float skill_Range = 1.5f;
-    public float skill_Offset = 0.5f;
+    public Vector2 skill_Offset = new Vector2(1.5f, 0.0f);
+    public Vector2 skill_BoxSize = new Vector2(1.0f, 2.0f);
     public LayerMask enemy_LayerMask;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
@@ -58,16 +60,25 @@ public class DokkaebiBat_Attack_Strategy : ScriptableObject, IAttack_Strategy
     {
         yield return new WaitForSeconds(0.4f);
 
-        Vector2 origin = (Vector2)player.transform.position + Vector2.right * (player.is_Facing_Right ? 1 : -1) * skill_Offset;
+        Vector2 origin = player.weapon_Anchor.position;
 
-        Collider2D[] hits = Physics2D.OverlapCircleAll(origin, skill_Range, enemy_LayerMask);
+        Vector2 box_Center = origin + Vector2.right * (player.is_Facing_Right ? 1 : -1) * skill_Offset.x + Vector2.up * skill_Offset.y;
+
+        Collider2D[] hits = Physics2D.OverlapBoxAll(box_Center, skill_BoxSize, 0.0f, enemy_LayerMask);
+        //Debug.Log($"[Dokkabie Bat] hits count = {hits.Length}");
+        //for (int i = 0; i < hits.Length; i++)
+        //{
+        //    Debug.Log($"[Dokkabie Bat] hit[{i}] ¡æ {hits[i].gameObject.name} (Layer: {LayerMask.LayerToName(hits[i].gameObject.layer)})");
+        //}
 
         foreach (var hit in hits)
         {
-            var enemy = hit.GetComponent<Enemy_Basic>();
+            var enemy = hit.GetComponent<Enemy_Basic>()
+                ?? hit.GetComponentInParent<Enemy_Basic>();
             if (enemy != null)
             {
                 enemy.TakeDamage(player.Calculate_Skill_Damage());
+                Debug.Log($"[Dokkabie Bat] Applied damage to {enemy.name}");
             }
         }
     }

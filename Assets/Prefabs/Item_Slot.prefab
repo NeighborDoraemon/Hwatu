@@ -106,8 +106,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4290535690738171852}
   - {fileID: 4335577275254314632}
+  - {fileID: 4290535690738171852}
   - {fileID: 4856107379589080081}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -167,8 +167,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 4129678182544998461}
-  item_Name_Text: {fileID: 473453723778508070}
   selection_Border: {fileID: 691982740239751247}
+  slot_Index: 0
 --- !u!1 &6954913555392383766
 GameObject:
   m_ObjectHideFlags: 0

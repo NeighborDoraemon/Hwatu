@@ -165,4 +165,24 @@ public class Obj_Market_Stall : MonoBehaviour
             }
         }
     }
+
+    public void Reroll_Market()
+    {
+        foreach (var go in Spawned_Items)
+        {
+            if (go != null)
+            {
+                Destroy(go);
+            }
+        }
+
+        Spawned_Items.Clear();
+        Market_List.Clear();
+        Database_List.Clear();
+        Inventory_List.Clear();
+
+        Market_On_Sale();
+        Set_Item_Slots();
+        Set_Price_Slot();
+    }
 }

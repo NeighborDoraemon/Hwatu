@@ -13,3 +13,8 @@ MonoBehaviour:
   m_Name: BronzeBell_Attack
   m_EditorClassIdentifier: 
   attack_Range: 2.5
+  hold_Atk_Interval: 3
+  enemy_Layer:
+    serializedVersion: 2
+    m_Bits: 16896
+  has_Rerolled: 1

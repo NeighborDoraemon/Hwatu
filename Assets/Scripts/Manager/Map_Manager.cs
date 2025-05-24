@@ -78,6 +78,10 @@ public class Map_Manager : MonoBehaviour, ISaveable
 
     private List<int> Map_Index_List = new List<int>();
 
+    // Create By JBJ
+    [Header("BronzeBell Reroll Strategy")]
+    [SerializeField] private BronzeBell_Attack_Strrategy BB_Strat;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -230,6 +234,11 @@ public class Map_Manager : MonoBehaviour, ISaveable
                         match_manager.Give_Map_Cards(map_Card_01, map_Card_02);
                         match_manager.Match_Reset();
                         //match_manager.Start_Match();
+                    }
+
+                    if (Obj_Player.GetComponent<PlayerCharacter_Card_Manager>().Has_Four_And_Nine())
+                    {
+                        BB_Strat.Reset_Reroll_Count();
                     }
 
                     player_Input.SwitchCurrentActionMap("Menu");
