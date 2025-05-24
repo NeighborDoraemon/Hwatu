@@ -77,7 +77,6 @@ public class Hog : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
         if (!is_Attack_Turn && !is_Attack_Complete) // 공격 시작 시, 플레이어 방향 보게하기
         {
             TurnAround();
-            Debug.Log("Hog Turn");
 
             Attack_Time = 0.0f;
 
@@ -85,7 +84,6 @@ public class Hog : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
             is_Attack_Turn = true;
 
             is_Attack_Once = false;
-            //BR_Not_Attacking.Value = false;
 
             f_Dash_StartPosition = this.transform.position.x;
             Hog_Animator.SetBool("is_Attacking", true);
@@ -127,7 +125,6 @@ public class Hog : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
         //Call After Delay Method
         if (Attack_Time >= f_After_Delay && is_First_End)
         {
-            Debug.Log("Hog Dash End");
             is_Attack_Turn = false;
             is_Attacking = false;
             is_Attack_Complete = false;

@@ -57,7 +57,7 @@ public class Axe : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
                 Axe_Animator.SetBool("is_Chasing", false);
                 Attack_Call();
             }
-            else if ((BR_Chasing.Value && Distance > FR_Attack_Range.Value) && !is_Attacking)
+            else if (BR_Chasing.Value && Distance > FR_Attack_Range.Value)
             {
                 Axe_Animator.SetBool("is_Chasing", true);
                 Chasing();
@@ -70,7 +70,7 @@ public class Axe : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
         if (!is_Attacking)
         {
             TurnAround();
-            Debug.Log("Chasing");
+
             if (BR_Facing_Left.Value)
             {
                 this.transform.Translate(Vector3.left * f_Chasing_Speed * Time.deltaTime);
@@ -86,7 +86,7 @@ public class Axe : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
     {
         if (!is_Attack_Turn) // 공격 시작 시, 플레이어 방향 보게하기
         {
-            //TurnAround();
+            TurnAround();
 
             Attack_Time = 0.0f;
 
@@ -126,13 +126,7 @@ public class Axe : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
             Enemy_Crash_Box.GetComponent<Crash_Box>().Damage_Once = true;
             //Enemy_CB.Damage_Once = true;
             BR_Not_Attacking.Value = false;
-            Attack_Time = 0.0f;
         }
-    }
-
-    public void Axe_Attack_End()
-    {
-        BR_Not_Attacking.Value = true;
     }
 
     public void Enemy_Stun(float Duration)

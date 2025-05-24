@@ -1064,7 +1064,7 @@ MonoBehaviour:
     key: is_Stunned
     constantValue: 0
   f_Chasing_Speed: 3
-  f_Before_Delay: 0.3
+  f_Before_Delay: 0.5
   f_After_Delay: 2
   BR_Chasing:
     useConstant: 0

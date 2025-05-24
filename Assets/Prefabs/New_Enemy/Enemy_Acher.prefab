@@ -40,7 +40,6 @@ Transform:
   - {fileID: 8497464451462537890}
   - {fileID: 5167390969829477657}
   - {fileID: 1296120270646301420}
-  - {fileID: 8793943584317112950}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4638719355493180462
@@ -226,7 +225,6 @@ MonoBehaviour:
     constantValue: 0
   Bullet_Prefab: {fileID: 8333097592702568372, guid: 11ba6240cc42a0243a0641d2fc307506, type: 3}
   Acher_Animator: {fileID: 3050924242845109254}
-  Throw_Point: {fileID: 4310676390181124166}
 --- !u!95 &3050924242845109254
 Animator:
   serializedVersion: 5
@@ -248,37 +246,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!1 &4310676390181124166
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8793943584317112950}
-  m_Layer: 9
-  m_Name: Acher_Point
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8793943584317112950
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4310676390181124166}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.7, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5941962539299783738}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7380151953747770808
 GameObject:
   m_ObjectHideFlags: 0

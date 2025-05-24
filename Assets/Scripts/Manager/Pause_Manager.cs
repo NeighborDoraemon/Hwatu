@@ -18,7 +18,6 @@ public class Pause_Manager : MonoBehaviour
     [SerializeField] private PlayerCharacter_Controller p_control;
     [SerializeField] private New_Fade_Controller new_Fade;
     [SerializeField] private Text Result_Text;
-    [SerializeField] private Input_Data_Manager input_Data_Manager;
 
 
     // Start is called before the first frame update
@@ -77,7 +76,6 @@ public class Pause_Manager : MonoBehaviour
         //{
             Setting_Can.gameObject.SetActive(false);
             Pause_Can.gameObject.SetActive(true);
-        input_Data_Manager.Btn_Option_Quit();
         //}
     }
 
@@ -111,11 +109,6 @@ public class Pause_Manager : MonoBehaviour
     {
         Pause_Stop();
         //fade_Con.Scene_Reload_Fade();
-        Save_Manager.Instance.Modify(data =>
-        {
-            data.is_Map_Saved = false;
-        });
-        Save_Manager.Instance.SaveAll();
         new_Fade.Scene_Fade_Out("MainScene");
     }
 
