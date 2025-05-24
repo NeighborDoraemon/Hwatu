@@ -6381,7 +6381,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -0.00024414062}
   m_SizeDelta: {x: 0, y: 5680}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &245285469
@@ -6457,7 +6457,7 @@ MonoBehaviour:
   Setting_Can: {fileID: 363980092}
   Main_Can: {fileID: 1354925987}
   Result_Can: {fileID: 669653358}
-  JokBo_Can: {fileID: 0}
+  JokBo_Can: {fileID: 376919493}
   p_control: {fileID: 1097749508849876877}
   new_Fade: {fileID: 470908299}
   Result_Text: {fileID: 1819180735}
@@ -11548,7 +11548,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 242147925}
-  - {fileID: 842239020}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -53942,7 +53941,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 750302617}
   m_HandleRect: {fileID: 750302616}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 1.0000001
   m_Size: 0.17515846
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -55108,6 +55107,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 1748260980326366450}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &712434373
 GameObject:
   m_ObjectHideFlags: 0
@@ -56645,8 +56649,9 @@ RectTransform:
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &743822820
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7333667443573020758, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
-  m_PrefabInstance: {fileID: 1097749508849876858}
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 743822818}
   m_Enabled: 1
@@ -94845,6 +94850,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5851955677099079189, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
     - targetCorrespondingSourceObject: {fileID: 2362209712626208303, guid: a34a89a43291ba34d8778086f31bec45, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -95571,3 +95578,4 @@ SceneRoots:
   - {fileID: 229031027}
   - {fileID: 1502630094}
   - {fileID: 40592790}
+  - {fileID: 376919494}
