@@ -94,6 +94,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     private GameObject Now_New_Platform;
     private bool is_Down_Performed = false;
 
+    private List<GameObject> OneWays = new List<GameObject>();
+    private List<GameObject> Platforms = new List<GameObject>();
+
     private bool is_Player_Dead = false;
 
     //NPC
@@ -124,7 +127,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         Dialogue,
         Dialogue_Choice,
         Event_Doing,
-        Trap_Minigame
+        Trap_Minigame,
+        Player_Dead
     }
 
     public enum Event_State
@@ -184,6 +188,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
 
         teleporting_Cooltime_Timer = teleporting_CoolTime * teleport_Cooltime_Mul;
+
+        Current_Player_State = Player_State.Normal; // 플레이어 현재상태 초기화 KYH
     }
     // Update is called once per frame
     void Update()
@@ -494,7 +500,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             if (ctx.phase != InputActionPhase.Started || is_Player_Dead)
                 return;
 
-            map_Manager.Use_Portal();
+            map_Manager.Use_Portal(false);
             Handle_Npc_Interaction();
             Handle_Item_Interaction();
         }
@@ -1400,6 +1406,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         animator.SetTrigger("Player_Dead");
 
         pause_Manager.Show_Result(true);
+        Current_Player_State = Player_State.Player_Dead;
     }
 
     private IEnumerator End_Invisible_After_Delay(float delay)
@@ -1460,6 +1467,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
             if (other.gameObject.CompareTag("Platform") || other.gameObject.CompareTag("Trap_Platform"))
             {
+                if(other.gameObject.CompareTag("Platform"))
+                {
+                    Platforms.Add(other.gameObject);
+                }
+
                 bool was_Ground = isGrounded;
                 isGrounded = true;
                 i_platform++;
@@ -1477,6 +1489,12 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             }
             else if (other.gameObject.CompareTag("OneWayPlatform"))
             {
+                EdgeCollider2D edge = other.gameObject.GetComponent<EdgeCollider2D>() ? other.gameObject.GetComponent<EdgeCollider2D>() : null; 
+                if (edge != null)
+                {
+                    OneWays.Add(other.gameObject);
+                }
+                
                 if (normal.y > 0.5f)
                 {
                     bool was_Ground = isGrounded;
@@ -1504,8 +1522,16 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         if (other.gameObject.CompareTag("Platform") || other.gameObject.CompareTag("OneWayPlatform"))
         {
             i_platform--;
+            if (other.gameObject.CompareTag("OneWayPlatform"))
+            {
+                OneWays.Remove(other.gameObject);
+            }
+            else if(other.gameObject.CompareTag("Platform"))
+            {
+                Platforms.Remove(other.gameObject);
+            }
 
-            if (i_platform <= 0)
+            if (OneWays.Count == 0 && Platforms.Count == 0)
             {
                 isGrounded = false;
                 i_platform = 0;
@@ -1624,10 +1650,47 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     private IEnumerator DisableCollision()
     {
         BoxCollider2D platform_Collider = current_Platform.GetComponent<BoxCollider2D>();
+        //CompositeCollider2D platform_Composite = current_Platform.GetComponent<CompositeCollider2D>();
 
-        Physics2D.IgnoreCollision(player_Platform_Collider, platform_Collider);
+        List<GameObject> Copy_Oneway = new List<GameObject>(OneWays);
+
+        if (Copy_Oneway.Count != 0)
+        {
+            foreach (GameObject objects in Copy_Oneway)
+            {
+                EdgeCollider2D edges = objects.GetComponent<EdgeCollider2D>();
+                Physics2D.IgnoreCollision(player_Platform_Collider, edges);
+            }
+        }
+
+        if(platform_Collider != null)
+        {
+            Physics2D.IgnoreCollision(player_Platform_Collider, platform_Collider);
+        }
+
+        //if(platform_Composite != null)
+        //{
+        //    platform_Composite.isTrigger = true;
+        //}
         yield return new WaitForSeconds(0.5f);
-        Physics2D.IgnoreCollision(player_Platform_Collider, platform_Collider, false);
+
+        if(platform_Collider != null)
+        {
+            Physics2D.IgnoreCollision(player_Platform_Collider, platform_Collider, false);
+        }
+
+        if (Copy_Oneway.Count != 0)
+        {
+            foreach (GameObject objects in Copy_Oneway)
+            {
+                EdgeCollider2D edges = objects.GetComponent<EdgeCollider2D>();
+                Physics2D.IgnoreCollision(player_Platform_Collider, edges, false);
+            }
+        }
+        //if(platform_Composite != null)
+        //{
+        //    platform_Composite.isTrigger = false;
+        //}
     }
 
     public void Weak_Knock_Back(int Left_Num, float Knock_Back_time, float Power) //Left = 1, Right = -1

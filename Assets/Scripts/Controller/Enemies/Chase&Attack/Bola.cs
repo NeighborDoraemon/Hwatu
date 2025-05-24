@@ -23,6 +23,7 @@ public class Bola : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
     [Header("Others")]
     [SerializeField] private GameObject Bullet_Prefab;
     [SerializeField] private Animator Bola_Animator;
+    [SerializeField] private GameObject Throw_Point;
 
     private float arrowSpeed = 15.0f;
 
@@ -107,7 +108,7 @@ public class Bola : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
 
     public void Acher_Attack(/*int Alpha*/) //Left = -1, Right = 1;
     {
-        GameObject projectile = MonoBehaviour.Instantiate(Bullet_Prefab, this.gameObject.transform.position, this.gameObject.transform.rotation);
+        GameObject projectile = MonoBehaviour.Instantiate(Bullet_Prefab, Throw_Point.transform.position, Throw_Point.transform.rotation);
 
         projectile.GetComponent<Enemy_Porjectile>().i_Projectile_Damage = IR_Attack_Damage.Value;
 

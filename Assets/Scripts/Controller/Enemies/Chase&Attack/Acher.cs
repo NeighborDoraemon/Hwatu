@@ -28,6 +28,7 @@ public class Acher : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
     //[SerializeField] private GameObject Target_Player;
     [SerializeField] private GameObject Bullet_Prefab;
     [SerializeField] private Animator Acher_Animator;
+    [SerializeField] private GameObject Throw_Point;
 
     private float arrowSpeed = 15.0f;
 
@@ -110,7 +111,7 @@ public class Acher : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
 
     private void Acher_Attack(int Alpha) //Left = -1, Right = 1;
     {
-        Vector3 v3 = this.gameObject.transform.position;
+        Vector3 v3 = Throw_Point.transform.position;
         v3.y += 0.15f;
         GameObject projectile = MonoBehaviour.Instantiate(Bullet_Prefab, v3, this.gameObject.transform.rotation);
 

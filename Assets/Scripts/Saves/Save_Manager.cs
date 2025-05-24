@@ -5,28 +5,41 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-public class Save_Manager : MonoBehaviour
+public class Save_Manager
 {
-    public static Save_Manager Instance { get; private set; }
+    private static Save_Manager _instance;
+    public static Save_Manager Instance => _instance ??= new Save_Manager();
 
     private SaveData currentData;
+    private readonly List<ISaveable> saveables = new();
+    private readonly string savePath;
 
-    private string savePath;
-
-    private void Awake()
+    private Save_Manager()
     {
-        if (Instance != null && Instance != this) 
-        { 
-            Destroy(gameObject); 
-            return; 
-        }
-        Instance = this;
-
         savePath = Path.Combine(Application.persistentDataPath, "save_data.json");
         currentData = LoadFromFile() ?? new SaveData();
     }
 
-    // 직접적인 SaveData 접근은 막음
+    public void Register(ISaveable saveable)
+    {
+        if (!saveables.Contains(saveable))
+            saveables.Add(saveable);
+    }
+
+    public void Unregister(ISaveable saveable)
+    {
+        if (saveables.Contains(saveable))
+            saveables.Remove(saveable);
+    }
+
+    public void SaveAll()
+    {
+        foreach (var saveable in saveables)
+            saveable.Save(currentData);
+
+        SaveToFile(currentData);
+    }
+
     public T Get<T>(Func<SaveData, T> selector)
     {
         return selector(currentData);
@@ -37,9 +50,6 @@ public class Save_Manager : MonoBehaviour
         modifier(currentData);
     }
 
-    public void Save() => SaveToFile(currentData);
-
-    // 내부 저장/불러오기
     private void SaveToFile(SaveData data)
     {
         string json = JsonUtility.ToJson(data, true);
@@ -57,17 +67,70 @@ public class Save_Manager : MonoBehaviour
     private string Decrypt(string encoded) => Encoding.UTF8.GetString(Convert.FromBase64String(encoded));
 }
 
+//How To Use
+//public class PlayerStatus : MonoBehaviour, ISaveable
+//{
+//    public int hp;
+
+//    private void Start()
+//    {
+//        Save_Manager.Instance.Register(this); // 생성이 아니라, 등록만
+//    }
+
+//    public void Save(SaveData data)
+//    {
+//        data.playerHp = this.hp;
+//    }
+
+//    private void OnDestroy()
+//    {
+//        Save_Manager.Instance.Unregister(this);
+//    }
+
+//    private How_To_Save_All()
+//    {
+//        Save_Manager.Instance.SaveAll();
+//    }
+
+//    public void IncreaseMaxHP(int amount)
+//    {
+//        // SaveData 내 값만 수정
+//        Save_Manager.Instance.Modify(data =>
+//        {
+//            data.permanentStats.maxHP += amount;
+//        });
+
+//        // 변경 후 즉시 저장
+//        Save_Manager.Instance.Save();
+//    }
+//}
+
+
 public class SaveData
 {
     //Maps
+    public List<Map_Value> Map_Queue_List = new List<Map_Value>();
     public List<Map_Value> Map_List = new List<Map_Value>();
+    public List<int> Map_List_Index = new List<int>();
+
+    public Map_Value Current_Map;
+    public Map_Value Next_Map;
     public int Map_Index;
-
-    //Player
-
-    //Event
-
-    //Market
+    public bool is_Map_Saved = false;
+    public bool is_Tutorial_Cleared = false;
+    //Map-market
     public bool is_Market_Now = false;
     public bool is_take_Market = false;
+    //Map-Event
+
+    //Map_Boss
+    public bool is_Boss_Stage = false;
+
+    //Player
+}
+
+public interface ISaveable
+{
+    void Save(SaveData data);
+    //void Load(SaveData data);
 }

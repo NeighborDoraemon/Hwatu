@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6590aefe33c94a4439480e4ecfa8b6ba, type: 3}
   m_Name: Armor_Effect
   m_EditorClassIdentifier: 
+  damage_Reduce_Min: 2
+  damage_Reduce_Max: 4
+  dec_MoveSpeed_Mul: 0.2

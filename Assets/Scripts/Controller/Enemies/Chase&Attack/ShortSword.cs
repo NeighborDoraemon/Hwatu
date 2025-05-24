@@ -89,7 +89,7 @@ public class ShortSword : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
 
         if (!is_Attack_Turn) // 공격 시작 시, 플레이어 방향 보게하기
         {
-            TurnAround();
+            //TurnAround();
 
             Attack_Time = 0.0f;
 
