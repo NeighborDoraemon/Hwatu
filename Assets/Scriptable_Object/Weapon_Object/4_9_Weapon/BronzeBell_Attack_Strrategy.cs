@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "BronzeBell_Attack", menuName = "Weapon/Attack Strategy/BronzeBell")]
@@ -104,12 +105,15 @@ public class BronzeBell_Attack_Strrategy : ScriptableObject, IAttack_Strategy
 
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
+        Debug.Log("Skill called");
         if (has_Rerolled)
             return;
-
+        
         var Obj_Manager = Object_Manager.instance;
 
-        // 리롤할 카드 수집
+        var inventory_Items = new HashSet<Item>(player.player_Inventory);
+
+        // 카드 리롤
         var old_Cards = Obj_Manager.current_Spawned_Card
         .Where(c => c != null)
         .Select(c => new
@@ -119,8 +123,24 @@ public class BronzeBell_Attack_Strrategy : ScriptableObject, IAttack_Strategy
             sprite = c.GetComponent<SpriteRenderer>().sprite
         })
         .ToList();
+        Debug.Log($"[BronzeBell] oldCards={old_Cards.Count}");
 
-        // 리롤할 필드 아이템 수집
+        if (old_Cards.Count > 0)
+        {
+            foreach (var c in old_Cards)
+            {
+                Obj_Manager.Remove_Used_Sprite(c.sprite);
+                Obj_Manager.Remove_From_Spawned_Cards(c.gameObject);
+                Destroy(c.gameObject);
+            }
+
+            foreach (var c in old_Cards)
+            {
+                Obj_Manager.Spawn_Cards(c.position);
+            }
+        }
+
+        // 필드 아이템 리롤
         var old_Items_Data = GameObject.FindGameObjectsWithTag("Item")
         .Where(obj => obj != null)
         .Select(obj => new {
@@ -129,80 +149,54 @@ public class BronzeBell_Attack_Strrategy : ScriptableObject, IAttack_Strategy
             gameObject = obj
         })
         .ToList();
+        Debug.Log($"[BronzeBell] oldItems={old_Items_Data.Count}");
 
-        // 상점 아이템 수집
-        var old_Market_Items = GameObject.FindGameObjectsWithTag("Market_Item")
-            .Where(obj => obj != null)
-            .Select(obj => new
+        if (old_Items_Data.Count > 0)
+        {
+            foreach (var it in old_Items_Data)
+                Destroy(it.gameObject);
+
+            var used_New_Items = new HashSet<Item>();
+
+            foreach (var it in old_Items_Data)
             {
-                gameObject = obj,
-                position = (Vector2)obj.transform.position,
-                itemData = obj.GetComponent<Item_Prefab>().GetItem()
-            })
-            .ToList();
+                var candidates = Obj_Manager.item_Database
+                    .Get_Items_By_Rarity(it.itemData.item_Rarity)
+                    .Where(i => i != it.itemData && !used_New_Items.Contains(i) && !inventory_Items.Contains(i))
+                    .ToList();
+
+                if (candidates.Count == 0)
+                {
+                    candidates = Obj_Manager.item_Database
+                        .Get_All_Items()
+                        .Where(i => i != it.itemData && !inventory_Items.Contains(i) && !used_New_Items.Contains(i))
+                        .ToList();
+                }
+
+                if (candidates.Count == 0)
+                {
+                    Debug.LogWarning("[Bronze Bell] Field Reroll Items not enough.");
+                    continue;
+                }
+
+                var new_Item = candidates[Random.Range(0, candidates.Count)];
+                used_New_Items .Add(new_Item);
+                Obj_Manager.Spawn_Specific_Item(it.position, new_Item);
+            }
+        }
 
         // 리롤 대상이 없을 시 리턴
-        if (old_Cards.Count == 0 && old_Items_Data.Count == 0 && old_Market_Items.Count == 0)
-            return;
+        //if (old_Cards.Count == 0 && old_Items_Data.Count == 0 /*&& old_Market_Items.Count == 0*/)
+        //    return;
 
-        // 카드 리롤
-        foreach (var card in old_Cards)
+        var market_Stall = GameObject.FindObjectOfType<Obj_Market_Stall>();
+        if (market_Stall != null)
         {
-            Obj_Manager.Remove_Used_Sprite(card.sprite);
-            Obj_Manager.Remove_From_Spawned_Cards(card.gameObject);
-            Destroy(card.gameObject);
+            market_Stall.Reroll_Market();
         }
-        foreach (var card in old_Cards)
+        else
         {
-            Obj_Manager.Spawn_Cards(card.position);
-        }
-
-        // 아이템 리롤
-        foreach(var item in old_Items_Data)
-        {
-            Destroy(item.gameObject);
-        }
-        foreach (var item_Obj in old_Items_Data)
-        {
-            var candidates = Obj_Manager.item_Database.
-                Get_Items_By_Rarity(item_Obj.itemData.item_Rarity).
-                Where(i => i != item_Obj.itemData).
-                ToList();
-
-            if (candidates.Count == 0)
-            {
-                candidates = Obj_Manager.item_Database
-                    .Get_All_Items()
-                    .Where(i => i != item_Obj.itemData)
-                    .ToList();
-            }
-
-            var new_Item = candidates[Random.Range(0, candidates.Count)];
-            Obj_Manager.Spawn_Specific_Item(item_Obj.position, new_Item);
-        }
-
-        // 상점 아이템 리롤
-        foreach(var mk_Item in old_Market_Items)
-        {
-            Destroy(mk_Item.gameObject);
-        }
-        foreach(var mk_Item in old_Market_Items)
-        {
-            var candidates = Obj_Manager.item_Database
-                .Get_Items_By_Rarity(mk_Item.itemData.item_Rarity)
-                .Where(i => i != mk_Item.itemData)
-                .ToList();
-
-            if (candidates.Count == 0)
-            {
-                candidates = Obj_Manager.item_Database
-                    .Get_All_Items()
-                    .Where(i => i != mk_Item.itemData)
-                    .ToList();
-            }
-
-            var new_MarketItem = candidates[Random.Range(0, candidates.Count)];
-            Obj_Manager.Spawn_Market_Item(mk_Item.position, new_MarketItem, Obj_Manager.gameObject);
+            Debug.LogWarning("[Bronze Bell] Can't find Obj_Market_Stall instance.");
         }
 
         // 리롤 완료 처리

@@ -10,8 +10,10 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
     public const int max_Inventory_Size = 6;
 
     public List<Item> player_Inventory = new List<Item>();
-    [SerializeField] private List<Item_Slot> item_Slots;
+    [SerializeField] private List<Item_Slot> item_Slots = new List<Item_Slot>();
     [SerializeField] private Item_Description item_Description_UI;
+
+    public GameObject inventoryPanel;
 
     private int selected_Slot_Index = 0;
 
@@ -23,13 +25,20 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
 
     [HideInInspector] public GameObject earRing_Explosion_Prefab;
 
-    private void Awake()
+    protected virtual void Start()
     {
-        PlayerCharacter_Controller player = this.GetComponent<PlayerCharacter_Controller>();
+        var slot_Array = inventoryPanel
+            .GetComponentsInChildren<Item_Slot>(true);
+        item_Slots = new List<Item_Slot>(slot_Array);
+
+        var player_Con = GetComponent<PlayerCharacter_Controller>();
+
         for (int i = 0; i < item_Slots.Count; i++)
         {
-            item_Slots[i].Initialized(i, this);
+            item_Slots[i].Initialized(i, player_Con);
         }
+
+        Update_Inventory();
     }
 
     public void AddItem(Item newItem)
@@ -144,7 +153,7 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
 
     public void Navigate_Inventory(int direction)
     {
-        if (player_Inventory.Count == 0) return;
+        if (item_Slots.Count == 0) return;
 
         item_Slots[selected_Slot_Index].Set_Selected(false);
 
@@ -162,8 +171,8 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
 
     public void On_Slot_Hover(int index)
     {
-        if (index < 0 || index >= player_Inventory.Count)
-            return;
+        //if (index < 0 || index >= item_Slots.Count)
+        //    return;
 
         item_Slots[selected_Slot_Index].Set_Selected(false);
         selected_Slot_Index = index;

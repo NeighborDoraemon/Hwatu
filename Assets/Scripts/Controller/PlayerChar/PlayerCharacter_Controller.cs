@@ -15,7 +15,6 @@ using System.Xml.Schema;
 public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 {
     private Player_InputActions inputActions;
-    [SerializeField] private GameObject inventoryPanel;
     private bool isInventory_Visible = false;
     [HideInInspector] public bool is_StatUI_Visible = false;
 
@@ -168,8 +167,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         inputActions.Player.Disable();
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
+
         camera_Manager = FindObjectOfType<Camera_Manager>();
         sprite_Renderer = GetComponent<SpriteRenderer>();
 
