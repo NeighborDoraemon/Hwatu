@@ -239,6 +239,7 @@ GameObject:
   - component: {fileID: 7176479664842509862}
   - component: {fileID: 5313680075559245708}
   - component: {fileID: 8493215699372668814}
+  - component: {fileID: 5784557124523607565}
   m_Layer: 0
   m_Name: Axe_Behavior
   m_TagString: Untagged
@@ -273,7 +274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b25af8627659c6949b60949c3aa8d91d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedEditorNode: {fileID: 8729037264560287077}
+  selectedEditorNode: {fileID: 5784557124523607565}
   repeatOnFinish: 0
   maxExecutionsPerTick: 1000
   parent: {fileID: 0}
@@ -424,7 +425,7 @@ MonoBehaviour:
   title: Sequence
   rect:
     serializedVersion: 2
-    x: 320
+    x: 400
     y: 240
     width: 160
     height: 44
@@ -551,8 +552,8 @@ MonoBehaviour:
   title: BH_Turn
   rect:
     serializedVersion: 2
-    x: 520
-    y: 220
+    x: 560
+    y: 240
     width: 160
     height: 44
   parent: {fileID: 5784849056835368834}
@@ -707,7 +708,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: f_Attack_Range
-  val: 0.4
+  val: 0.6
 --- !u!114 &2809375382101516068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -737,7 +738,7 @@ MonoBehaviour:
   title: BH_Check_Bool
   rect:
     serializedVersion: 2
-    x: 120
+    x: 20
     y: 240
     width: 160
     height: 44
@@ -785,7 +786,7 @@ MonoBehaviour:
   title: BH_Check_Bool
   rect:
     serializedVersion: 2
-    x: -60
+    x: -160
     y: 240
     width: 160
     height: 44
@@ -802,6 +803,40 @@ MonoBehaviour:
     mode: 0
     blackboard: {fileID: 4351954510036595518}
     key: is_Stunned
+    constantValue: 0
+  Boolean: 0
+--- !u!114 &5784557124523607565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3407601862050417313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3702a634de274fe47b0b9e5ff37c881f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: BH_Check_Bool
+  rect:
+    serializedVersion: 2
+    x: 200
+    y: 240
+    width: 160
+    height: 44
+  parent: {fileID: 0}
+  children: []
+  behaviourTree: {fileID: 0}
+  runtimePriority: 0
+  breakpoint: 0
+  interval: 1
+  randomDeviation: 0
+  callOnEnter: 1
+  BR_To_Check:
+    useConstant: 0
+    mode: 0
+    blackboard: {fileID: 4351954510036595518}
+    key: is_Chasing
     constantValue: 0
   Boolean: 0
 --- !u!1 &4613599432572727373

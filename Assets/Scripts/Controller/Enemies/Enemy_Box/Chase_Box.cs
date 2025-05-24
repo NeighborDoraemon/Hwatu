@@ -9,6 +9,7 @@ public class Chase_Box : MonoBehaviour
     [SerializeField] private Animator enemy_Animator;
     //private GameObject Target_Player;
 
+    private bool is_Attack_End = false;
 
     // Start is called before the first frame update
     void Start()
