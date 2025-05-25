@@ -40,6 +40,8 @@ public class Enemy_Generator : MonoBehaviour
     public static Enemy_Generator Instance { get; private set; }
     [HideInInspector]
     public static int i_Enemy_Count = 0;
+
+    private Map_Value Current_Map;
     
 
     //Box Enum
@@ -142,6 +144,44 @@ public class Enemy_Generator : MonoBehaviour
         }
     }
 
+    public void New_Enemy_Spawn(Map_Value Current)
+    {
+        Current_Map = Current;
+        if(Current_Map.i_How_Many_Wave == 0)
+        {
+            return;
+        }
+
+        if (Is_Next_Spawn && !Is_Room_Clear && !b_boss_Stage)
+        {
+            foreach (Vector3 v_Spawn in Current.v_New_Spawn_Points[Wave_Count - 1].v_Dataes)
+            {
+                new_Enemy = Enemy_Prefabs[Current.i_Enemy_Index[Wave_Count - 1].i_enemy_Index[Enemy_Count]];
+
+                GameObject spawned_Enemy = Instantiate(new_Enemy, v_Spawn, Quaternion.identity);
+
+                foreach (Enemy_Interface enemy_interface in spawned_Enemy.GetComponentsInChildren<Enemy_Interface>(true)) //적에게 플레이어 전달
+                {
+                    enemy_interface.Player_Initialize(p_Controller);
+                }
+
+                i_Enemy_Count++;
+                Enemy_Count++;
+            }
+            Enemy_Count = 0;
+
+            is_Do_Once = false;
+
+            is_Now_Started = true;
+            Is_Next_Spawn = false;
+
+            if (Wave_Count != 1)
+            {
+                Wave_Print(0);
+            }
+        }
+    }
+
     protected void Check_Need_Spawn() //적 전부 파괴 시 다음Wave로 올리고 스폰을 True로 변경
     {
         if (i_Enemy_Count <= 0 && Is_Room_Clear == false && !is_Do_Once)
@@ -153,12 +193,12 @@ public class Enemy_Generator : MonoBehaviour
             i_Enemy_Count = 0;
             Wave_Count++;
 
-            if (Map_Manager.Map_Shuffled_List[i_Map_Count].i_How_Many_Wave + 1 <= Wave_Count)
+            if (Current_Map.i_How_Many_Wave + 1 <= Wave_Count)
             {
                 Debug.Log("Clear");
                 if (is_Now_Started) // 게임 시작 시 바로 스폰되는걸 방지
                 {
-                    Vector3 cardBox_SpawnPoint = Map_Manager.Map_Shuffled_List[i_Map_Count].v_CardBox_SpawnPoint;
+                    Vector3 cardBox_SpawnPoint = Current_Map.v_CardBox_SpawnPoint;
                     Instantiate(Box_Random(), cardBox_SpawnPoint, Quaternion.identity);
 
                     Wave_Print(1);
@@ -178,7 +218,8 @@ public class Enemy_Generator : MonoBehaviour
             }
 
             Is_Next_Spawn = true;
-            New_Enemy_Spawn();
+            //New_Enemy_Spawn();
+            New_Enemy_Spawn(Current_Map);
         }
     }
 
@@ -261,5 +302,10 @@ public class Enemy_Generator : MonoBehaviour
 
         color.a = 0.0f;
         sprite.color = color;
+    }
+
+    public void Set_Current(Map_Value map)
+    {
+        Current_Map = map;
     }
 }

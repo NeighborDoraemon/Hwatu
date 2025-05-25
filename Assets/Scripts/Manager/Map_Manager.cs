@@ -174,7 +174,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        map_Index = 0;
+        map_Index = -1;
         Boss_map_Index = 0;
         Map_Shuffled_List.Clear();
 
@@ -190,30 +190,31 @@ public class Map_Manager : MonoBehaviour, ISaveable
             //    Debug.Log("Map : " + map.name);
             //}
 
-            Portal_Method(true);
-
-            if (is_Tutorial_Cleared && !is_Market_Now)
-            {
-                Obj_e_Generator.Set_Next();
-                Obj_e_Generator.New_Enemy_Spawn(); // First Spawn in map
-            }
-            if(mv_Current_Map != Map_Tutorial)
-            {
-                is_Tutorial_Cleared = true;
-            }
+            //Portal_Method(true);
+            New_Portal_Method(false);
+            //if (is_Tutorial_Cleared && !is_Market_Now)
+            //{
+            //    Obj_e_Generator.Set_Next();
+            //    //Obj_e_Generator.New_Enemy_Spawn(); // First Spawn in map
+            //    Obj_e_Generator.New_Enemy_Spawn(mv_Current_Map); // First Spawn in map
+            //}
+            //if(mv_Current_Map != Map_Tutorial)
+            //{
+            //    is_Tutorial_Cleared = true;
+            //}
         }
         else
         {
             Shuffle_Maps();
 
-            if (is_Tutorial_Cleared)
-            {
-                Set_Next_Point();
-            }
-            else
-            {
-                v_Next_SpawnPoint = Map_Tutorial.v_Map_Spawnpoint;
-            }
+            //if (is_Tutorial_Cleared)
+            //{
+            //    Set_Next_Point();
+            //}
+            //else
+            //{
+            //    v_Next_SpawnPoint = Map_Tutorial.v_Map_Spawnpoint;
+            //}
 
             //Update_Map_Boundary();
             IsOnPortal = false;
@@ -244,8 +245,8 @@ public class Map_Manager : MonoBehaviour, ISaveable
                     player_Input.SwitchCurrentActionMap("Menu");
                     new_Fade.Fade_Out(() =>
                     {
-                        Portal_Method(instrument);
-
+                        //Portal_Method(instrument);
+                        New_Portal_Method(true);
 
                         new_Fade.Fade_In(() =>
                         {
@@ -260,6 +261,48 @@ public class Map_Manager : MonoBehaviour, ISaveable
                     Object_Manager.instance.Destroy_All_Cards_And_Items();
                 }
             }
+        }
+    }
+
+    private void New_Portal_Method(bool b_index)
+    {
+        if (mv_Current_Map == Map_Tutorial && !is_Tutorial_Cleared)
+        {
+            is_Tutorial_Cleared = true;
+        }
+
+        if (b_index)
+        {
+            Set_New_Current(); // Set mv_Current Map
+        }
+        else
+        {
+            Obj_e_Generator.Set_Current(mv_Current_Map);
+        }
+            Obj_Player.transform.position = mv_Current_Map.v_Map_Spawnpoint;
+
+        Save_Manager.Instance.Modify(data =>
+        {
+            data.is_Map_Saved = true;
+        });
+        Save_Manager.Instance.SaveAll();
+
+        if (is_Boss_Stage)
+        {
+            First_Boss.GetComponent<FB_Castle_Wall>().Call_Start();
+        }
+
+        if (!is_Market_Now)
+        {
+            Obj_e_Generator.Set_Next();
+            //Obj_e_Generator.New_Enemy_Spawn(); // First Spawn in map
+            Obj_e_Generator.New_Enemy_Spawn(mv_Current_Map); // First Spawn in map
+            map_Index++;    // Plus map's Index when the map is Battle map
+        }
+
+        if (is_Market_Now)
+        {
+            Market_Stall.GetComponent<Obj_Market_Stall>().Market_Call();
         }
     }
 
@@ -288,7 +331,8 @@ public class Map_Manager : MonoBehaviour, ISaveable
         if (is_Tutorial_Cleared && !is_Market_Now)
         {
             Obj_e_Generator.Set_Next();
-            Obj_e_Generator.New_Enemy_Spawn(); // First Spawn in map
+            //Obj_e_Generator.New_Enemy_Spawn(); // First Spawn in map
+            Obj_e_Generator.New_Enemy_Spawn(mv_Current_Map); // First Spawn in map
             map_Index++;    // Plus map's Index when the map is Battle map
         }
 
@@ -297,12 +341,69 @@ public class Map_Manager : MonoBehaviour, ISaveable
             Market_Stall.GetComponent<Obj_Market_Stall>().Market_Call();
         }
 
-        if (mv_Current_Map != Map_Start && mv_Current_Map != Map_Tutorial)
+        if (mv_Current_Map != Map_Start/* && mv_Current_Map != Map_Tutorial*/)
         {
             is_Tutorial_Cleared = true;
         }
 
-        Set_Next_Point();
+        //Set_Next_Point();
+    }
+
+    private void Set_New_Current()
+    {
+        if(!is_Tutorial_Cleared)
+        {
+            mv_Current_Map = Map_Tutorial; // Tutorial Map
+            Obj_e_Generator.Set_Current(mv_Current_Map);
+            return;
+        }
+
+        if (Map_Shuffled_Queue.Count > 0)
+        {
+            if(Map_Shuffled_Queue.Count <= i_Using_Map_Count / 2 && !is_take_Market) // Goto Market
+            {
+                mv_Current_Map = Market_Data; // Market Map
+                is_take_Market = true;
+                is_Market_Now = true;
+                Obj_e_Generator.Set_Current(mv_Current_Map);
+                return;
+            }
+            else
+            {
+                int rand = 10;
+                if (map_Index >= 2 && map_Index <= 4)
+                {
+                    rand = Random.Range(1, 11);
+                    Debug.Log("Event Random Index : " + rand);
+                }
+
+                if (rand < 4 && Event_Map_Shuffled_Queue.Count != 0)
+                {
+                    Set_Current_Event();
+                    is_Market_Now = true;
+
+                    is_Card_Set = false;
+                    Obj_e_Generator.Set_Current(mv_Current_Map);
+                    return;
+                }
+                else
+                {
+                    mv_Current_Map = Map_Shuffled_Queue.Dequeue();
+                    is_Market_Now = false;
+
+                    is_Card_Set = false;
+                    Obj_e_Generator.Set_Current(mv_Current_Map);
+                    return;
+                }
+            }
+        }
+        else
+        {
+            mv_Current_Map = FB_Map_Data[Boss_map_Index]; // Boss Map
+            is_Boss_Stage = true;
+            Obj_e_Generator.Set_Current(mv_Current_Map);
+            return;
+        }
     }
 
     private void Shuffle_Maps()
@@ -434,5 +535,12 @@ public class Map_Manager : MonoBehaviour, ISaveable
         is_Next_Event = true;
 
         Debug.Log("Event Map Next!");
+    }
+
+    private void Set_Current_Event()
+    {
+        mv_Current_Map = Event_Map_Shuffled_Queue.Dequeue();
+        v_Next_SpawnPoint = mv_Current_Map.v_Map_Spawnpoint;
+        is_Next_Event = false;
     }
 }
