@@ -49,7 +49,6 @@ public class Healer : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
     {
         if(f_Attack_Time >= f_Delay && !is_First_End)
         {
-            Debug.Log("Heal Called");
             Healer_Animator.SetBool("is_Attacking",true);
             Obj_HealBox.GetComponent<Heal_Box>().Heal();
             //f_Attack_Time = 0.0f;
