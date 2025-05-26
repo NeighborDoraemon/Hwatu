@@ -4312,6 +4312,7 @@ MonoBehaviour:
   scarecrow: {fileID: 0}
   min_Money_Drop: 0
   Max_Money_Drop: 0
+  Effect_Animator: {fileID: 0}
 --- !u!1001 &174048127
 PrefabInstance:
   m_ObjectHideFlags: 0

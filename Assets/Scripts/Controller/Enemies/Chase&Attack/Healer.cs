@@ -14,6 +14,9 @@ public class Healer : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
 
     [Header("Animator")]
     [SerializeField] private Animator Healer_Animator;
+    [SerializeField] private Animator Effect_Animator;
+    [SerializeField] private Animator Heal_Front;
+    [SerializeField] private Animator Heal_Back;
 
     private bool is_First_End = false;
     //[SerializeField] private BoolReference BR_Stunned;
@@ -51,6 +54,9 @@ public class Healer : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
             Obj_HealBox.GetComponent<Heal_Box>().Heal();
             //f_Attack_Time = 0.0f;
             is_First_End = true;
+            Effect_Animator.SetTrigger("Trigger_Healer");
+            Heal_Front.SetTrigger("Healer_Front");
+            Heal_Back.SetTrigger("Healer_Back");
         }
 
         if (f_Attack_Time >= f_After_Delay + f_Delay && is_First_End)

@@ -18,6 +18,9 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
     [SerializeField] private int min_Money_Drop;
     [SerializeField] private int Max_Money_Drop;
 
+    [Header("Effects")]
+    [SerializeField] private Animator Effect_Animator;
+
     private PlayerCharacter_Controller player_Con;
 
     private GameObject Target_Player;
@@ -108,5 +111,10 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
             yield return new WaitForSeconds(Delay);
             TakeDamage(Tick_Damage);
         }
+    }
+
+    public void Effect_Healed()
+    {
+        Effect_Animator.SetTrigger("Trigger_Healed");
     }
 }

@@ -35,6 +35,7 @@ public class TilemapColliderTool : EditorWindow
     private void GenerateColliders()
     {
         Transform parent = targetTilemap.transform;
+        Vector3 scale = parent.lossyScale;
 
         foreach (Transform child in parent)
         {
@@ -84,12 +85,12 @@ public class TilemapColliderTool : EditorWindow
             }
         }
 
-        CreateBoxColliders(normalRows, parent, "Platform", "Platform", addEffector: true); // ÀÏ¹Ý ÇÃ·§Æûµµ Effector Ãß°¡
-        CreateBoxColliders(GroupByX(wallTiles), parent, "Walls", "Walls", vertical: true, addEffector: true);
-        CreateEdgeColliders(oneWayRows, parent);
+        CreateBoxColliders(normalRows, parent, "Platform", "Platform", scale, false, true);
+        CreateBoxColliders(GroupByX(wallTiles), parent, "Walls", "Walls", scale, true, true);
+        CreateEdgeColliders(oneWayRows, parent, scale);
     }
 
-    private void CreateBoxColliders(Dictionary<int, List<Vector3Int>> tileRows, Transform parent, string tag, string layer, bool vertical = false, bool addEffector = false)
+    private void CreateBoxColliders(Dictionary<int, List<Vector3Int>> tileRows, Transform parent, string tag, string layer, Vector3 scale, bool vertical = false, bool useEffector = false)
     {
         foreach (var row in tileRows)
         {
@@ -103,7 +104,7 @@ public class TilemapColliderTool : EditorWindow
             {
                 if (last.HasValue && (vertical ? pos.y != last.Value.y + 1 || pos.x != last.Value.x : pos.x != last.Value.x + 1 || pos.y != last.Value.y))
                 {
-                    CreateBox(currentGroup, parent, tag, layer, vertical, addEffector);
+                    CreateBox(currentGroup, parent, tag, layer, scale, vertical, useEffector);
                     currentGroup.Clear();
                 }
                 currentGroup.Add(pos);
@@ -111,28 +112,25 @@ public class TilemapColliderTool : EditorWindow
             }
             if (currentGroup.Count > 0)
             {
-                CreateBox(currentGroup, parent, tag, layer, vertical, addEffector);
+                CreateBox(currentGroup, parent, tag, layer, scale, vertical, useEffector);
             }
         }
     }
 
-    private void CreateBox(List<Vector3Int> positions, Transform parent, string tag, string layer, bool vertical, bool addEffector)
+    private void CreateBox(List<Vector3Int> positions, Transform parent, string tag, string layer, Vector3 scale, bool vertical, bool useEffector)
     {
-        Vector3 min = parent.GetComponent<Tilemap>().CellToWorld(positions[0]);
-        Vector3 max = parent.GetComponent<Tilemap>().CellToWorld(positions[positions.Count - 1]);
+        Tilemap tilemap = parent.GetComponent<Tilemap>();
 
-        float width = vertical ? 1f : positions.Count;
-        float height = vertical ? positions.Count : 0.8f;
+        Vector3 min = tilemap.CellToWorld(positions[0]);
+        Vector3 max = tilemap.CellToWorld(positions[positions.Count - 1]);
+
+        float width = (vertical ? 1f : positions.Count) * scale.x;
+        float height = (vertical ? positions.Count : 0.8f) * scale.y;
 
         Vector3 center = min + new Vector3(
-            (vertical ? 0 : width - 1) * 0.5f + 0.5f,
-            (vertical ? height - 1 : 0) * 0.5f + (vertical ? 0.5f : 0.4f),
+            ((vertical ? 0 : positions.Count - 1) * 0.5f + 0.5f) * scale.x,
+            ((vertical ? positions.Count - 1 : 0) * 0.5f + (vertical ? 0.5f : 0.4f)) * scale.y,
             0);
-
-        if (vertical)
-        {
-            //center.y -= 0.1f; // º® À§Ä¡ º¸Á¤
-        }
 
         GameObject colObj = new($"Collider_{tag}_{positions[0].x}_{positions[0].y}");
         colObj.transform.parent = parent;
@@ -143,28 +141,17 @@ public class TilemapColliderTool : EditorWindow
         BoxCollider2D box = colObj.AddComponent<BoxCollider2D>();
         box.size = new Vector2(width, height);
 
-        if (addEffector)
+        if (useEffector)
         {
             box.usedByEffector = true;
-
             PlatformEffector2D effector = colObj.AddComponent<PlatformEffector2D>();
-
-            if (tag == "Walls")
-            {
-                effector.rotationalOffset = 180f;
-                effector.surfaceArc = 355f;
-            }
-            else // ÀÏ¹Ý ÇÃ·§Æû
-            {
-                effector.rotationalOffset = 0f;
-                effector.surfaceArc = 360f;
-            }
-
+            effector.surfaceArc = (tag == "Platform") ? 360f : 355f;
+            effector.rotationalOffset = (tag == "Platform") ? 0f : 180f;
             effector.useSideFriction = false;
         }
     }
 
-    private void CreateEdgeColliders(Dictionary<int, List<Vector3Int>> tileRows, Transform parent)
+    private void CreateEdgeColliders(Dictionary<int, List<Vector3Int>> tileRows, Transform parent, Vector3 scale)
     {
         foreach (var row in tileRows)
         {
@@ -172,8 +159,9 @@ public class TilemapColliderTool : EditorWindow
             positions.Sort((a, b) => a.x.CompareTo(b.x));
 
             List<Vector3> points = new();
+            int groupStartX = positions[0].x;
             int currentY = positions[0].y;
-            int lastX = positions[0].x - 1;
+            int lastX = groupStartX - 1;
 
             for (int i = 0; i < positions.Count; i++)
             {
@@ -182,46 +170,39 @@ public class TilemapColliderTool : EditorWindow
                 {
                     if (points.Count > 0)
                     {
-                        CreateEdge(points, parent, currentY);
+                        CreateEdge(points, parent, currentY, scale);
                     }
                     points.Clear();
                 }
 
-                Vector3 world = parent.GetComponent<Tilemap>().CellToWorld(pos) + new Vector3(0.5f, 0.5f, 0);
+                Vector3 world = parent.GetComponent<Tilemap>().CellToWorld(pos) + new Vector3(0.5f * scale.x, (0.5f + 0.3f) * scale.y, 0); // Y offset
                 points.Add(world);
                 lastX = pos.x;
             }
 
             if (points.Count > 0)
             {
-                CreateEdge(points, parent, currentY);
+                CreateEdge(points, parent, currentY, scale);
             }
         }
     }
 
-    private void CreateEdge(List<Vector3> points, Transform parent, int yLevel)
+    private void CreateEdge(List<Vector3> points, Transform parent, int yLevel, Vector3 scale)
     {
+        if (points.Count < 2) return;
+
+        points[0] += new Vector3(-0.5f * scale.x, 0, 0);
+        points[^1] += new Vector3(0.5f * scale.x, 0, 0);
+
         GameObject edgeObj = new($"Collider_OneWay_{yLevel}");
         edgeObj.transform.parent = parent;
         edgeObj.tag = "OneWayPlatform";
         edgeObj.layer = LayerMask.NameToLayer("Platform");
 
-        if (points.Count > 0)
-        {
-            Vector3 first = points[0];
-            first.x -= 0.5f;
-            points[0] = first;
-
-            Vector3 last = points[points.Count - 1];
-            last.x += 0.5f;
-            points[points.Count - 1] = last;
-        }
-
         EdgeCollider2D edge = edgeObj.AddComponent<EdgeCollider2D>();
         Vector2[] edgePoints = points.ConvertAll(p => (Vector2)edgeObj.transform.InverseTransformPoint(p)).ToArray();
         edge.points = edgePoints;
         edge.usedByEffector = true;
-        edge.offset = new Vector2(0, 0.3f);
 
         PlatformEffector2D effector = edgeObj.AddComponent<PlatformEffector2D>();
         effector.useOneWay = true;
