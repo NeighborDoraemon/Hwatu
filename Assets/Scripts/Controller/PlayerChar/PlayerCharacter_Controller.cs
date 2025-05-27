@@ -411,8 +411,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
                 Vector2 direction = is_Facing_Right ? Vector2.right : Vector2.left;
 
-                RaycastHit2D topHit = Physics2D.Raycast(top_Pos, direction, teleporting_Distance, LayerMask.GetMask("Walls"));
-                RaycastHit2D bottomHit = Physics2D.Raycast(bottom_Pos, direction, teleporting_Distance, LayerMask.GetMask("Walls"));
+                int mask = LayerMask.GetMask("Walls", "Platform");
+
+                RaycastHit2D topHit = Physics2D.Raycast(top_Pos, direction, teleporting_Distance, mask);
+                RaycastHit2D bottomHit = Physics2D.Raycast(bottom_Pos, direction, teleporting_Distance, mask);
 
                 if (topHit.collider != null)
                 {
