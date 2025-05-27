@@ -128,6 +128,7 @@ public class WideSword : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
             Attack_Time = 0.0f;
             BR_Not_Attacking.Value = true;
             Wide_Animator.SetBool("is_Delay_End", true);
+            TurnAround();
         }
     }
 

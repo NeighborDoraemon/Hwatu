@@ -1465,7 +1465,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             Vector2 normal = contact.normal;
 
-            if (other.gameObject.CompareTag("Platform") || other.gameObject.CompareTag("Trap_Platform"))
+            if ((other.gameObject.CompareTag("Platform") || other.gameObject.CompareTag("Trap_Platform")) && normal.y > 0.5f)
             {
                 if(other.gameObject.CompareTag("Platform"))
                 {

@@ -118,7 +118,7 @@ public class ShortSword : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
             BR_Not_Attacking.Value = true;
 
             ShortSword_Animator.SetBool("is_Attacking", false);
-
+            TurnAround();
         }
     }
 
