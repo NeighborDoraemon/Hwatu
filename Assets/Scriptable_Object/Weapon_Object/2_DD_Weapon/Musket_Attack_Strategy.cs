@@ -106,6 +106,10 @@ public class Musket_Attack_Strategy : ScriptableObject, IAttack_Strategy
         Vector2 shootDirection = (player.is_Facing_Right) ? Vector2.right : Vector2.left;
         rb.velocity = shootDirection * projectile_Speed;
 
+        Vector3 projectile_Scale = projectile.transform.localScale;
+        projectile_Scale.x = (player.is_Facing_Right) ? Mathf.Abs(projectile_Scale.x) : -Mathf.Abs(projectile_Scale.x);
+        projectile.transform.localScale = projectile_Scale;
+
         Update_WeaponState(WeaponState.Empty);
     }
     public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
@@ -146,6 +150,11 @@ public class Musket_Attack_Strategy : ScriptableObject, IAttack_Strategy
         GameObject proj = Instantiate(skill_Projectile_Prefab, spawn_Pos, Quaternion.identity);
         Rigidbody2D rb = proj.GetComponent<Rigidbody2D>();
         rb.velocity = (player.is_Facing_Right ? Vector2.right : Vector2.left) * projectile_Speed;
+
+        Vector3 projectile_Scale = proj.transform.localScale;
+        projectile_Scale.x = (player.is_Facing_Right) ? Mathf.Abs(projectile_Scale.x) : -Mathf.Abs(projectile_Scale.x);
+        proj.transform.localScale = projectile_Scale;
+
         player.animator.SetTrigger("Skill");
         //Destroy(proj, 5.0f);
 
