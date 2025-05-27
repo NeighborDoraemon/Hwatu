@@ -38,8 +38,8 @@ public class Enemy_Generator : MonoBehaviour
 
 
     public static Enemy_Generator Instance { get; private set; }
-    [HideInInspector]
-    public static int i_Enemy_Count = 0;
+
+    [HideInInspector]public static int i_Enemy_Count = 0;
 
     private Map_Value Current_Map;
     
@@ -69,7 +69,7 @@ public class Enemy_Generator : MonoBehaviour
     void Start()
     {
         Is_Next_Spawn = false;
-        i_Enemy_Count = 0;
+        //i_Enemy_Count = 0;
 
         Is_Next_Spawn = true;
     }
@@ -88,7 +88,7 @@ public class Enemy_Generator : MonoBehaviour
     {
         Is_Next_Spawn = false;
         Is_Room_Clear = true;
-        i_Enemy_Count = 0;
+        //i_Enemy_Count = 0;
 
         Enemy_Count = 0;
 
@@ -98,6 +98,7 @@ public class Enemy_Generator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log("Room Clear : " + Is_Room_Clear);
         if (i_Enemy_Count <= 0 && !Is_Room_Clear)
         {
             Check_Need_Spawn();
@@ -152,6 +153,9 @@ public class Enemy_Generator : MonoBehaviour
             return;
         }
 
+        Debug.Log("Wave : " + Wave_Count);
+        Debug.Log("is_Room_Clear : " + Is_Room_Clear);
+
         if (Is_Next_Spawn && !Is_Room_Clear && !b_boss_Stage)
         {
             foreach (Vector3 v_Spawn in Current.v_New_Spawn_Points[Wave_Count - 1].v_Dataes)
@@ -184,7 +188,7 @@ public class Enemy_Generator : MonoBehaviour
 
     protected void Check_Need_Spawn() //적 전부 파괴 시 다음Wave로 올리고 스폰을 True로 변경
     {
-        if (i_Enemy_Count <= 0 && Is_Room_Clear == false && !is_Do_Once)
+        if (/*i_Enemy_Count <= 0 && !Is_Room_Clear && */!is_Do_Once)
         {
             is_Do_Once = true;
 
@@ -227,8 +231,13 @@ public class Enemy_Generator : MonoBehaviour
     {
         Is_Next_Spawn = true;
         Is_Room_Clear = false;
+        Wave_Count = 1;
     }
 
+    public void Room_Clear_Setter()
+    {
+        Is_Room_Clear = false;
+    }
 
     public void From_Other_Add_Enemy()
     {

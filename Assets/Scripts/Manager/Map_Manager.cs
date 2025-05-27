@@ -192,6 +192,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
 
             //Portal_Method(true);
             New_Portal_Method(false);
+            StartCoroutine(Wait_For_Enemy_Spawn());
             //if (is_Tutorial_Cleared && !is_Market_Now)
             //{
             //    Obj_e_Generator.Set_Next();
@@ -219,6 +220,12 @@ public class Map_Manager : MonoBehaviour, ISaveable
             //Update_Map_Boundary();
             IsOnPortal = false;
         }
+    }
+
+    private IEnumerator Wait_For_Enemy_Spawn()
+    {
+        yield return null;
+        Obj_e_Generator.Room_Clear_Setter();
     }
 
     public void Use_Portal(bool instrument)
