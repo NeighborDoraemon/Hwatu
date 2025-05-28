@@ -168,7 +168,21 @@ public class Map_Manager : MonoBehaviour, ISaveable
         }
         else
         {
-            mv_Current_Map = Map_Shuffled_Queue.Dequeue(); // Current Map
+            if (is_Market_Now)
+            {
+                mv_Current_Map = Market_Data; // Market Map
+                return;
+            }
+            else if (is_Boss_Stage)
+            {
+                mv_Current_Map = FB_Map_Data[Boss_map_Index]; // Boss Map
+                return;
+            }
+            else
+            {
+                mv_Current_Map = Map_Shuffled_Queue.Dequeue(); // Current Map
+                return;
+            }
         }
     }
 
@@ -185,39 +199,12 @@ public class Map_Manager : MonoBehaviour, ISaveable
         {
             Load_Saved_Data();
             Make_Lists();
-            //foreach (Map_Value map in Map_Shuffled_List)
-            //{
-            //    Debug.Log("Map : " + map.name);
-            //}
-
-            //Portal_Method(true);
             New_Portal_Method(false);
             StartCoroutine(Wait_For_Enemy_Spawn());
-            //if (is_Tutorial_Cleared && !is_Market_Now)
-            //{
-            //    Obj_e_Generator.Set_Next();
-            //    //Obj_e_Generator.New_Enemy_Spawn(); // First Spawn in map
-            //    Obj_e_Generator.New_Enemy_Spawn(mv_Current_Map); // First Spawn in map
-            //}
-            //if(mv_Current_Map != Map_Tutorial)
-            //{
-            //    is_Tutorial_Cleared = true;
-            //}
         }
         else
         {
             Shuffle_Maps();
-
-            //if (is_Tutorial_Cleared)
-            //{
-            //    Set_Next_Point();
-            //}
-            //else
-            //{
-            //    v_Next_SpawnPoint = Map_Tutorial.v_Map_Spawnpoint;
-            //}
-
-            //Update_Map_Boundary();
             IsOnPortal = false;
         }
     }
@@ -299,7 +286,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
             First_Boss.GetComponent<FB_Castle_Wall>().Call_Start();
         }
 
-        if (!is_Market_Now)
+        if (!is_Market_Now && mv_Current_Map != Map_Tutorial)
         {
             Obj_e_Generator.Set_Next();
             //Obj_e_Generator.New_Enemy_Spawn(); // First Spawn in map

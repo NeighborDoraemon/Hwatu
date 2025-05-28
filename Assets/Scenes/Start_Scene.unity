@@ -197,6 +197,59 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 21644238}
   m_CullTransparentMesh: 1
+--- !u!1 &42523568
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 42523570}
+  - component: {fileID: 42523569}
+  m_Layer: 0
+  m_Name: Pause_Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &42523569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 42523568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc05ff35eb2af1b46a59bd3dbabe2f41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Pause_Can: {fileID: 206126145}
+  Setting_Can: {fileID: 816877083}
+  Main_Can: {fileID: 0}
+  Result_Can: {fileID: 0}
+  JokBo_Can: {fileID: 0}
+  p_control: {fileID: 0}
+  new_Fade: {fileID: 1811896162}
+  Result_Text: {fileID: 0}
+  input_Data_Manager: {fileID: 1703342913}
+--- !u!4 &42523570
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 42523568}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1019.8201, y: 526.2148, z: 5.233396}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &45836079
 GameObject:
   m_ObjectHideFlags: 0
@@ -2002,9 +2055,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1703342913}
-        m_TargetAssemblyTypeName: Input_Data_Manager, Assembly-CSharp
-        m_MethodName: Btn_Option_Quit
+      - m_Target: {fileID: 42523569}
+        m_TargetAssemblyTypeName: Pause_Manager, Assembly-CSharp
+        m_MethodName: Btn_Setting_Out
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13535,3 +13588,4 @@ SceneRoots:
   - {fileID: 816877084}
   - {fileID: 1980003974}
   - {fileID: 1461682598}
+  - {fileID: 42523570}

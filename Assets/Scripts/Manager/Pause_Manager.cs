@@ -76,8 +76,11 @@ public class Pause_Manager : MonoBehaviour
         //if (Setting_Can.gameObject.activeSelf)
         //{
             Setting_Can.gameObject.SetActive(false);
+        if (Pause_Can != null)
+        {
             Pause_Can.gameObject.SetActive(true);
-        input_Data_Manager.Btn_Option_Quit();
+        }
+            input_Data_Manager.Btn_Option_Quit();
         //}
     }
 
