@@ -103,11 +103,11 @@ public class BronzeBell_Attack_Strrategy : ScriptableObject, IAttack_Strategy
 
     }
 
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         Debug.Log("Skill called");
         if (has_Rerolled)
-            return;
+            return false;
         
         var Obj_Manager = Object_Manager.instance;
 
@@ -201,6 +201,7 @@ public class BronzeBell_Attack_Strrategy : ScriptableObject, IAttack_Strategy
 
         // 府费 肯丰 贸府
         has_Rerolled = true;
+        return true;
     }
 
     public void Reset_Reroll_Count()

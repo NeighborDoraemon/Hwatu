@@ -166,11 +166,16 @@ public class ExecutionSword_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point) { }
 
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         if (player.es_Stack >= 5)
         {
             player.StartCoroutine(Skill_Coroutine());
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 

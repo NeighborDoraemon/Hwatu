@@ -9,10 +9,12 @@ using System;
 using Unity.Mathematics;
 using System.Linq;
 using System.Xml.Schema;
+using UnityEngine.SceneManagement;
+using System.Runtime.Serialization;
 //using UnityEngine.UIElements;
 
 // PlayerCharacter_Controller Created By JBJ, KYH
-public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
+public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveable
 {
     private Player_InputActions inputActions;
     private bool isInventory_Visible = false;
@@ -40,6 +42,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     [HideInInspector] public bool can_JumpAtk = true;
     private float combo_Deadline;
 
+    [Header("Ground Check")]
+    public Transform ground_Check_Point;
+    public float ground_Check_Radius = 0.1f;
+    public LayerMask ground_Layer;
+
     [Header("Cinemachine")]
     private Camera_Manager camera_Manager;
     private Collider2D cur_Cinemachine_Collider;
@@ -59,6 +66,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     public event Action On_Enemy_Hit;
     public event Action On_Enemy_Killed;
     public event Action<PlayerCharacter_Controller> On_Teleport;
+    public event Action On_Player_Use_Skill;
     [HideInInspector] public bool isInvincible = false;
 
     private Item pending_SwapItem = null;
@@ -80,9 +88,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     [SerializeField] private Card_Preview_UI card_Preview_UI;
 
     [Header("Skill Cooltime UI")]
-    public Image skill_cTime_Image;
-    public Color ready_Color = Color.blue;
-    public Color cooldown_Color = Color.red;
+    public Image skill_Icon_Image;
+    [SerializeField] private Image skill_Cooldown_Overlay;
+    private bool is_Skill_Coolingdown = false;
+    //public Color ready_Color = Color.blue;
+    //public Color cooldown_Color = Color.red;
     
     [Header("Map_Manager")]
     [SerializeField] private Map_Manager map_Manager;
@@ -155,17 +165,24 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
         Set_Weapon(0);
 
+        skill_Cooldown_Overlay.fillAmount = 0.0f;
+        skill_Cooldown_Overlay.enabled = false;
+
         Current_Player_State = Player_State.Normal; // 플레이어 현재상태 초기화 KYH
         Current_Event_State = Event_State.None; //이벤트 상태 초기화
     }
     private void OnEnable()
     {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
         inputActions.Player.Inventory.started += OnInventory_Pressed;
         inputActions.Player.Inventory.canceled += OnInventory_Released;
         inputActions.Player.Enable();
     }
     private void OnDisable()
     {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+
         inputActions.Player.Inventory.started -= OnInventory_Pressed;
         inputActions.Player.Inventory.canceled -= OnInventory_Released;
         inputActions.Player.Disable();
@@ -173,6 +190,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
 
     protected override void Start()
     {
+        Save_Manager.Instance.Register(this);
+
         base.Start();
 
         camera_Manager = FindObjectOfType<Camera_Manager>();
@@ -190,6 +209,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         teleporting_Cooltime_Timer = teleporting_CoolTime * teleport_Cooltime_Mul;
 
         Current_Player_State = Player_State.Normal; // 플레이어 현재상태 초기화 KYH
+
+        
     }
     // Update is called once per frame
     void Update()
@@ -223,8 +244,119 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     }
     private void FixedUpdate()
     {
-        
         Update_Skill_Cooldown_UI();
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        var data = Save_Manager.Instance.Get(d => d);
+        if (data.is_Inventory_Saved)
+            Load_From_Save(data);
+
+        Refresh_UI();
+    }
+
+    private void OnDestroy()
+    {
+        Save_Manager.Instance.Unregister(this);
+    }
+
+    public void Save(SaveData data)
+    {
+        if (!data.is_Inventory_Saved) return;
+
+        data.saved_Card_IDs.Clear();
+        foreach (var card_Obj in card_Inventory)
+        {
+            if (card_Obj != null)
+            {
+                var month = card_Obj.GetComponent<Card>().cardValue.Month;
+                data.saved_Card_IDs.Add(month);
+            }
+            else
+            {
+                data.saved_Card_IDs.Add(0);
+            }
+        }
+
+        data.saved_Item_IDs.Clear();
+        var item_DB_List = Object_Manager.instance.item_Database.all_Items;
+        for (int i = 0; i < player_Inventory.Count; i++)
+        {
+            Item item_SO = player_Inventory[i];
+            int idx = item_DB_List.IndexOf(item_SO);
+            if (idx < 0)
+            {
+                Debug.LogWarning($"[Item Save] 아이템 {item_SO.itemName}을 데이터베이스 내에서 찾을 수 없습니다.");
+            }
+            data.saved_Item_IDs.Add(idx);
+        }
+
+        data.is_Inventory_Saved = true;
+    }
+
+    private void Load_From_Save(SaveData data)
+    {
+        if (!data.is_Inventory_Saved) return;
+
+        for (int i = 0; i < card_Inventory.Length; i++)
+        {
+            if (card_Inventory[i] != null)
+                Destroy(card_Inventory[i]);
+            card_Inventory[i] = null;
+        }
+        cardCount = 0;
+        isCombDone = false;
+        player_Inventory.Clear();
+
+        for (int i =0;
+            i < data.saved_Card_IDs.Count && i < card_Inventory.Length;
+            i++)
+        {
+            int month = data.saved_Card_IDs[i];
+            if (month <= 0)
+                continue;
+
+            var card_SO = Object_Manager.instance.card_Values
+                .FirstOrDefault(cv => cv.Month == month);
+            if (card_SO == null)
+                continue;
+
+            Sprite sprite = card_SO.GetRandomSprite();
+
+            GameObject go = Instantiate(
+                Object_Manager.instance.card_Prefab,
+                transform
+                );
+
+            var sr = go.GetComponent<SpriteRenderer>();
+            sr.sprite = sprite;
+            var card_Comp = go.GetComponent<Card>();
+            card_Comp.cardValue = card_SO;
+            card_Comp.selected_Sprite = sprite;
+
+            AddCard(go);
+        }
+
+        foreach (var old_Item in player_Inventory.ToList())
+        {
+            Remove_Item_Effect(old_Item);
+        }
+        player_Inventory.Clear();
+
+        var item_DB_List = Object_Manager.instance.item_Database.all_Items;
+        foreach (int idx in data.saved_Item_IDs)
+        {
+            if (idx >= 0 && idx < item_DB_List.Count)
+            {
+                Item item_SO = item_DB_List[idx];
+                AddItem(item_SO);
+            }
+            else
+            {
+                Debug.LogWarning($"[Item Load] 잘못된 아이템 인덱스: {idx}");
+            }
+        }
     }
 
     void Update_Animation_Parameters()
@@ -776,7 +908,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         {
             Debug.LogError($"'{cur_Weapon_Data.weapon_Name}' Weapon Equipe");            
             return;
-        }        
+        }
         
         Apply_Weapon_Data();
 
@@ -790,6 +922,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
             {
                 player_Clone.Copy_Player_Weapon();
             }
+        }
+
+        if (cur_Weapon_Data.skill_Icon != null)
+        {
+            skill_Icon_Image.sprite = cur_Weapon_Data.skill_Icon;
         }
     }
 
@@ -1047,9 +1184,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         }
         else if (can_JumpAtk && !isGrounded)
         {
-            can_JumpAtk = false;
             animator.SetBool("Can_JumpAtk", true);
             attack_Strategy.Attack(this, cur_Weapon_Data);
+            can_JumpAtk = false;
             StartCoroutine(Reset_JumpAtk_Param_Next_Frame());
         }
     }
@@ -1191,16 +1328,22 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
     {
         if (Current_Player_State == Player_State.Normal)    //상태조건
         {
-            if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f
-                && !is_Player_Dead && Is_Skill_Cooldown_Complete())
+            if (ctx.phase == InputActionPhase.Started
+                && Time.timeScale == 1.0f
+                && !is_Player_Dead
+                && Is_Skill_Cooldown_Complete())
             {
-                attack_Strategy.Skill(this, cur_Weapon_Data);
+                bool excuted = attack_Strategy.Skill(this, cur_Weapon_Data);
+                if (!excuted) return;
+
+                //attack_Strategy.Skill(this, cur_Weapon_Data);
                 if (attack_Strategy is not Musket_Attack_Strategy musket)
                 {
                     Update_Skill_Timer();
                 }
+                Start_Skill_Cooldown_UI();
 
-                skill_cTime_Image.color = cooldown_Color;
+                On_Player_Use_Skill?.Invoke();
             }
         }
     }
@@ -1224,17 +1367,27 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         last_Skill_Time = Time.time;
     }
 
+    private void Start_Skill_Cooldown_UI()
+    {
+        is_Skill_Coolingdown = true;
+        skill_Cooldown_Overlay.enabled = true;
+        skill_Cooldown_Overlay.fillAmount = 1.0f;
+    }
+
     private void Update_Skill_Cooldown_UI()
     {
-        float cooldown = cur_Weapon_Data.skill_Cooldown * skill_Cooltime_Mul;
+        float cd = cur_Weapon_Data.skill_Cooldown * skill_Cooltime_Mul;
         float elapsed = Time.time - last_Skill_Time;
+        float t = Mathf.Clamp01(elapsed / cd);
 
-        float t = Mathf.Clamp01(elapsed / cooldown);
-        skill_cTime_Image.fillAmount = t;
-
-        if (elapsed >= cooldown)
+        if (t < 1.0f)
         {
-            skill_cTime_Image.color = ready_Color;
+            skill_Cooldown_Overlay.enabled = true;
+            skill_Cooldown_Overlay.fillAmount = 1.0f - t;
+        }
+        else
+        {
+            skill_Cooldown_Overlay.enabled = false;
         }
     }
     // ======================================================================================================
@@ -1474,19 +1627,22 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
                     Platforms.Add(other.gameObject);
                 }
 
-                bool was_Ground = isGrounded;
-                isGrounded = true;
-                i_platform++;
-
-                can_JumpAtk = true;
-                animator.SetBool("Can_JumpAtk", true);
-
-                //Now_New_Platform = other.gameObject; //Reset condition
-
-                if (!was_Ground)
+                if (normal.y > 0.5f)
                 {
-                    has_Jumped = false;
-                    jumpCount = 0;
+                    bool was_Ground = isGrounded;
+                    isGrounded = true;
+                    i_platform++;
+
+                    can_JumpAtk = true;
+                    animator.SetBool("Can_JumpAtk", true);
+
+                    //Now_New_Platform = other.gameObject; //Reset condition
+
+                    if (!was_Ground)
+                    {
+                        has_Jumped = false;
+                        jumpCount = 0;
+                    }
                 }
             }
             else if (other.gameObject.CompareTag("OneWayPlatform"))
@@ -1857,5 +2013,3 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager
         movement = Vector2.zero;
     }
 }
-
-

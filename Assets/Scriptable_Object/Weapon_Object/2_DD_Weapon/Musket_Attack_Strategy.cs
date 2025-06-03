@@ -112,13 +112,15 @@ public class Musket_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
         Update_WeaponState(WeaponState.Empty);
     }
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         //Debug.Log($"[Musket.Skill] Time.time={Time.time:f2}, forcedEnd={forced_Cooltime_End_Time:f2}, isCh={is_Channeling}");
-        if (Time.time < forced_Cooltime_End_Time) return;
-        if (is_Channeling) return;
+        if (Time.time < forced_Cooltime_End_Time) return false;
+        if (is_Channeling) return false;
 
         player.StartCoroutine(Channel_And_Fire(player));
+
+        return true;
     }
 
     private IEnumerator Channel_And_Fire(PlayerCharacter_Controller player)

@@ -47,10 +47,12 @@ public class Scythe_Attack_Strategy : ScriptableObject, IAttack_Strategy
         
     }
 
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         player.animator.SetTrigger("Skill");
         player.StartCoroutine(Dash_Skill(player));        
+
+        return true;
     }
 
     private IEnumerator Dash_Skill(PlayerCharacter_Controller player)

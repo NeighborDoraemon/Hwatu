@@ -302,6 +302,9 @@ public class Crow_Controller : MonoBehaviour
     {
         if (shield_Effect != null)
             shield_Effect.SetActive(false);
+
+        isAttacking = false;
+        can_Attack = true;
     }
     #endregion
 

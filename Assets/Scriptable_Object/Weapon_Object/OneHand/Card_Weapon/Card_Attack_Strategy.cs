@@ -48,8 +48,8 @@ public class Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
         Vector2 shootDirection = (player.is_Facing_Right) ? Vector2.right : Vector2.left;
         rb.velocity = shootDirection * projectile_Speed;
     }
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
-
+        return false;
     }
 }

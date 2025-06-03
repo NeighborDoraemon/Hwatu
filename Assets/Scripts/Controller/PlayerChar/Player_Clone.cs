@@ -47,6 +47,8 @@ public class Player_Clone : MonoBehaviour
         fire_Point = weapon_Holder;
 
         Copy_Player_Weapon();
+
+        player.On_Player_Use_Skill += On_Player_Use_Skill;
     }
 
     private void Update()
@@ -250,5 +252,19 @@ public class Player_Clone : MonoBehaviour
         {
             Debug.LogError("Weapon Projectile is Missing!");
         }
+    }
+
+    private void On_Player_Use_Skill()
+    {
+        if (attack_Strategy != null && cur_Weapon_Data != null)
+        {
+            attack_Strategy.Skill(player, cur_Weapon_Data);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (player != null)
+            player.On_Player_Use_Skill -= On_Player_Use_Skill;
     }
 }

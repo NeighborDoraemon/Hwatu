@@ -46,7 +46,7 @@ public class SnakeWine_Attack_Strategy : ScriptableObject, IAttack_Strategy
     {
 
     }
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         player.animator.SetTrigger("Skill");
 
@@ -55,5 +55,7 @@ public class SnakeWine_Attack_Strategy : ScriptableObject, IAttack_Strategy
             player.Player_Take_Heal(weapon_Data.skill_Damage);
             skill_Count--;
         }
+
+        return true;
     }
 }

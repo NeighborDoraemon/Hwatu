@@ -96,7 +96,7 @@ public class Crow_Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
         }
     }
 
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         Debug.Log("Crow_Card_Attack_Strategy.Skill called");
 
@@ -104,10 +104,14 @@ public class Crow_Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
         {
             Debug.Log($"Crow_Controller found: {crow_Controller.name}");
             Start_Protection();
+
+            return true;
         }
         else
         {
             Debug.LogWarning("Crow_Controller is null.");
+
+            return false;
         }
     }
 }

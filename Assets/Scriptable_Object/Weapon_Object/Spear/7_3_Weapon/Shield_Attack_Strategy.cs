@@ -142,14 +142,14 @@ public class Shield_Attack_Strategy : ScriptableObject, IAttack_Strategy
     }
 
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point) { }
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         Debug.Log("[Shield_Strategy] Skill called");
 
         if (shield_Thrown)
         {
             Debug.Log("[Shield_Startegy] 이미 던져짐, 돌아오는 중");
-            return;
+            return false;
         }
         shield_Thrown = true;
 
@@ -169,6 +169,8 @@ public class Shield_Attack_Strategy : ScriptableObject, IAttack_Strategy
             );
 
         //player.animator.SetTrigger("Skill");
+
+        return true;
     }
 
     public void On_Shield_Returned()

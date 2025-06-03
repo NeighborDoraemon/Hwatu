@@ -77,7 +77,7 @@ public class Tiger_Attack_Strategy : ScriptableObject, IAttack_Strategy
     {
         
     }
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         player.animator.SetTrigger("Skill");
 
@@ -96,5 +96,7 @@ public class Tiger_Attack_Strategy : ScriptableObject, IAttack_Strategy
                 enemy_Stun.Enemy_Stun(roar_Stun_Duration);
             }
         }
+
+        return true;
     }
 }

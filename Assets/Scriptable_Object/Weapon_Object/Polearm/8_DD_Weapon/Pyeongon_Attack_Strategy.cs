@@ -48,10 +48,12 @@ public class Pyeongon_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     }
 
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         player.animator.SetTrigger("Skill");
         player.StartCoroutine(Air_Move(player, duration, move_Speed));
+
+        return true;
     }
 
     private IEnumerator Air_Move(PlayerCharacter_Controller player, float duration, float move_Speed)

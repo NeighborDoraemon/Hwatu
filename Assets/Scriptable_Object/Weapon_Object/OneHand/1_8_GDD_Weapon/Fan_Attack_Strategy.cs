@@ -81,7 +81,7 @@ public class Fan_Attack_Strategy : ScriptableObject, IAttack_Strategy
         return null;
     }
 
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         Vector3 spawn_Pos = new Vector3(player.transform.position.x, player.transform.position.y - 0.5f, player.transform.position.z);
 
@@ -96,5 +96,7 @@ public class Fan_Attack_Strategy : ScriptableObject, IAttack_Strategy
         Rigidbody2D rb = skill_Projectile.GetComponent<Rigidbody2D>();
         Vector2 shoot_Direction = (player.is_Facing_Right ? Vector2.right : Vector2.left);
         rb.velocity = shoot_Direction * projectile_Speed;
+
+        return true;
     }
 }

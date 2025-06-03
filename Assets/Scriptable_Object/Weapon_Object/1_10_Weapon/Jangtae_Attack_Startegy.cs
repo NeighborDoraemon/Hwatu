@@ -8,21 +8,25 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
     private PlayerCharacter_Controller player;
     private Weapon_Data weapon_Data;
 
+    [Header("Jangtae Settings")]
     public GameObject jangtae_Prefab;
-    public GameObject explosion_Effect_Prefab;
     public float roll_Speed = 5.0f;
-    public float explosion_Radius = 3.0f;
-
-    private GameObject cur_Jangtae;
     public bool isRiding = false;
+    public GameObject cur_Jangtae;
+    private bool is_Mounting_In_Progress = false;
 
     private CapsuleCollider2D player_Col;
     private Vector2 og_Offset;
     private Vector2 og_Size;
     private bool og_Stored = false;
 
+    [Header("Jangtae Collider Settings")]
     public float mount_Col_Offset;
     public float mount_Col_Height_Inc;
+
+    [Header("Jangtae Skill Settings")]
+    public GameObject explosion_Effect_Prefab;
+    public float explosion_Radius = 3.0f;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
@@ -61,6 +65,8 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
     {
         Debug.Log("Attack called!");
 
+        if (is_Mounting_In_Progress) return;
+
         if (isRiding)
         {
             if (cur_Jangtae == null)
@@ -90,11 +96,11 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
     {
         
     }
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         if (cur_Jangtae == null || isRiding)
         {
-            return;
+            return false;
         }
 
         if (explosion_Effect_Prefab != null)
@@ -116,12 +122,15 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
         Destroy(cur_Jangtae);
         cur_Jangtae = null;
         isRiding = false;
+
+        return true;
     }
 
     private IEnumerator Mount_Jangtae(PlayerCharacter_Controller player, float delay)
     {
-        player.can_Card_Change = false;
+        is_Mounting_In_Progress = true;
 
+        player.can_Card_Change = false;
         player.rb.AddForce(new Vector2(0, player.jumpPower), ForceMode2D.Impulse);
         //if (player.isGrounded)
         //{
@@ -133,6 +142,7 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
         if (jangtae_Prefab == null)
         {
             Debug.LogError("Jangtae Prefab is not assigned!");
+            is_Mounting_In_Progress = false;
             yield break;
         }
 
@@ -149,14 +159,6 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
                 old_Collider.enabled = false;
         }
 
-        if (cur_Jangtae == null)
-        {
-            Debug.LogError("Failed to instantiate Jangtae prefab!");
-            yield break;
-        }
-
-        Debug.Log("Jangtae instantiated successfully.");
-
         Collider2D jangtae_Collider = cur_Jangtae.GetComponent<Collider2D>();
         if (jangtae_Collider != null)
         {
@@ -170,6 +172,8 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
             player_Col.offset = og_Offset + new Vector2(0, mount_Col_Offset);
             player_Col.size = og_Size + new Vector2(0, mount_Col_Height_Inc);
         }
+
+        is_Mounting_In_Progress = false;
     }
 
     private void Start_Rolling(PlayerCharacter_Controller player)

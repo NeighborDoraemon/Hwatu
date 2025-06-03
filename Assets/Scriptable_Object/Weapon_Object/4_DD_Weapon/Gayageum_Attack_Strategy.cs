@@ -97,23 +97,33 @@ public class Gayageum_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     }
 
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
-        if (is_Skill_Active) return;
+        if (is_Skill_Active) return false;
 
         is_Skill_Active = true;
         player.last_Skill_Time = Time.time;
-        player.StartCoroutine(Skill_Effect());
+        player.StartCoroutine(Skill_Effect(player));
+
+        return true;
     }
     
-    private IEnumerator Skill_Effect()
+    private IEnumerator Skill_Effect(PlayerCharacter_Controller player)
     {
         float original_Range = attack_Range;
         attack_Range *= 2;
         Debug.Log($"Cur Attack Range = {attack_Range}");
+
+        Vector3 og_Scale = player.effect_Render.transform.localScale;
+        player.effect_Render.transform.localScale *= 2;
+
         yield return new WaitForSeconds(skill_Active_Time);
+
         attack_Range = original_Range;
         is_Skill_Active = false;
+
+        player.effect_Render.transform.localScale = og_Scale;
+
         Debug.Log($"Cur Attack Range = {attack_Range}");
     }
 }

@@ -47,6 +47,8 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
         UpdateCardUI();
         Card_Combination();
 
+        Save_Manager.Instance.SaveAll();
+
         if (Object_Manager.instance != null)
         {
             Sprite collected_Sprite = card.GetComponent<SpriteRenderer>().sprite;
@@ -426,5 +428,11 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
         }
 
         return weapon_Manager.Get_Weapon_Data(weaponID);
+    }
+
+    public void Refresh_UI()
+    {
+        UpdateCardUI();
+        Card_Combination();
     }
 }

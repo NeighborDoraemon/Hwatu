@@ -74,26 +74,28 @@ public class Handgun_Attack_Strategy : ScriptableObject, IAttack_Strategy
         rb.velocity = shootDirection * projectile_Speed;
         projectile.transform.rotation = Quaternion.identity;
     }
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         player.animator.SetTrigger("Skill");
         remaining_Bullet = skill_Bullet_Count;
+
+        return true;
         //player.StartCoroutine(Skill_Coroutine(player));
     }
 
-    private IEnumerator Skill_Coroutine(PlayerCharacter_Controller player)
-    {
-        yield return new WaitForSeconds(0.3f);
+    //private IEnumerator Skill_Coroutine(PlayerCharacter_Controller player)
+    //{
+    //    yield return new WaitForSeconds(0.3f);
 
-        GameObject projectile = Instantiate(skill_Projectile_Prefab, player.weapon_Anchor.position, Quaternion.identity);
+    //    GameObject projectile = Instantiate(skill_Projectile_Prefab, player.weapon_Anchor.position, Quaternion.identity);
 
-        Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
-        Vector2 shootDirection = (player.is_Facing_Right) ? Vector2.right : Vector2.left;
-        Vector3 projectile_Scale = projectile.transform.localScale;
-        projectile_Scale.x = (player.is_Facing_Right) ? Mathf.Abs(projectile_Scale.x) : -Mathf.Abs(projectile_Scale.x);
-        projectile.transform.localScale = projectile_Scale;
+    //    Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
+    //    Vector2 shootDirection = (player.is_Facing_Right) ? Vector2.right : Vector2.left;
+    //    Vector3 projectile_Scale = projectile.transform.localScale;
+    //    projectile_Scale.x = (player.is_Facing_Right) ? Mathf.Abs(projectile_Scale.x) : -Mathf.Abs(projectile_Scale.x);
+    //    projectile.transform.localScale = projectile_Scale;
 
-        rb.velocity = shootDirection * projectile_Speed;
-        projectile.transform.rotation = Quaternion.identity;
-    }
+    //    rb.velocity = shootDirection * projectile_Speed;
+    //    projectile.transform.rotation = Quaternion.identity;
+    //}
 }

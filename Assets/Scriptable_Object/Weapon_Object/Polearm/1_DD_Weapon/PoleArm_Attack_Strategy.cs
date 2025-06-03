@@ -42,24 +42,27 @@ public class PoleArm_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     }
 
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
-        if (player.is_Skill_Active) return;
+        if (player.is_Skill_Active) return false;
 
         player.is_Skill_Active = true;
-        float original_Cooldown = player.attack_Cooldown;
+        //float original_Cooldown = player.attack_Cooldown;
 
-        player.attack_Cooldown *= 0.5f;
+        player.attack_Cooltime_Mul -= 0.5f;
         Debug.Log("공격 속도 증가!");
 
-        player.StartCoroutine(Reset_Attack_Speed(player, original_Cooldown, 3f));
+        player.StartCoroutine(Reset_Attack_Speed(player, 3f));
+
+        return true;
     }
 
-    private IEnumerator Reset_Attack_Speed(PlayerCharacter_Controller player, float original_Cooldown, float delay)
+    private IEnumerator Reset_Attack_Speed(PlayerCharacter_Controller player, float delay)
     {
         yield return new WaitForSeconds(delay);
 
-        player.attack_Cooldown = original_Cooldown;
+        player.attack_Cooltime_Mul += 0.5f;
+        //player.attack_Cooldown = original_Cooldown;
         player.is_Skill_Active = false;
         Debug.Log("공격 속도 복구..");
     }
