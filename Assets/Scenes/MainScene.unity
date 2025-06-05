@@ -5493,6 +5493,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: New_Portal
       objectReference: {fileID: 0}
+    - target: {fileID: 4230995346585225675, guid: 7fd5d5fc7f7b50146ad8b8f57f5a97cb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5756525227531329824, guid: 7fd5d5fc7f7b50146ad8b8f57f5a97cb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 14
