@@ -43,6 +43,7 @@ public class Obj_Market_Stall : MonoBehaviour
     void Start()
     {
         //Market_Reset();
+        //Market_Call();
     }
 
     // Update is called once per frame

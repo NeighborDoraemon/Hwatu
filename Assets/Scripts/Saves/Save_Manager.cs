@@ -109,19 +109,20 @@ public class Save_Manager
 public class SaveData
 {
     //Maps
-    public List<Map_Value> Map_Queue_List = new List<Map_Value>();
-    public List<Map_Value> Map_List = new List<Map_Value>();
     public List<int> Map_List_Index = new List<int>();
+    public List<int> Second_Map_Index_List = new List<int>();
 
     public Map_Value Current_Map;
     public Map_Value Next_Map;
     public int Map_Index;
+    public int Second_Map_Index;
     public bool is_Map_Saved = false;
     public bool is_Tutorial_Cleared = false;
     //Map-market
     public bool is_Market_Now = false;
     public bool is_take_Market = false;
     //Map-Event
+    public bool is_Event_Now = false;
 
     //Map_Boss
     public bool is_Boss_Stage = false;

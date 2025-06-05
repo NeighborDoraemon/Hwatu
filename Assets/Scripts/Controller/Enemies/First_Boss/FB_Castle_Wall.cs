@@ -30,6 +30,7 @@ public class FB_Castle_Wall : MonoBehaviour, Npc_Interface
     [SerializeField] private bool is_Started = false;
     [SerializeField] private bool is_Second_Phase = false;
     [SerializeField] private GameObject Boss_Canvas;
+    [SerializeField] private Map_Manager map_manager;
 
     [Header("Value")]
     [SerializeField] private IntReference IR_Health;
@@ -431,11 +432,17 @@ public class FB_Castle_Wall : MonoBehaviour, Npc_Interface
             player.State_Change(PlayerCharacter_Controller.Player_State.Normal);
 
             Obj_FB_Peasent.SetActive(false);
-            pause_Manager.Show_Result(false);
+            //pause_Manager.Show_Result(false);
 
             boundary_01.gameObject.SetActive(false);
             boundary_02.gameObject.SetActive(true);
-            Destroy(gameObject);
+
+            map_manager.End_Stage(1);
+
+            Boss_Canvas.SetActive(false);
+            Destroy(gameObject);    //Change it to Connect with Second Stage
+
+
             //Debug.Log("Boss Dead");
         }
     }
