@@ -87,7 +87,11 @@ public class TilemapColliderTool : EditorWindow
 
         CreateBoxColliders(normalRows, parent, "Platform", "Platform", scale, false, true);
         CreateBoxColliders(GroupByX(wallTiles), parent, "Walls", "Walls", scale, true, true);
-        CreateEdgeColliders(oneWayRows, parent, scale);
+        //CreateEdgeColliders(oneWayRows, parent, scale);
+
+        Vector2 positionOffset = new Vector2(0.25f, 0.0f);    // Y 오프셋 
+        Vector2 sizeAdjustment = new Vector2(0.0f, -0.2f); // 크기 미세 조정
+        CreateBoxCollidersForOneWayPlatforms(oneWayRows, parent, scale, positionOffset, sizeAdjustment);
     }
 
     private void CreateBoxColliders(Dictionary<int, List<Vector3Int>> tileRows, Transform parent, string tag, string layer, Vector3 scale, bool vertical = false, bool useEffector = false)
@@ -208,6 +212,76 @@ public class TilemapColliderTool : EditorWindow
         effector.useOneWay = true;
         effector.surfaceArc = 160f;
         effector.useSideFriction = false;
+    }
+
+    private void CreateBoxCollidersForOneWayPlatforms(Dictionary<int, List<Vector3Int>> tileRows, Transform parent, Vector3 scale, Vector2 positionOffset, Vector2 sizeAdjustment)
+    {
+        foreach (var row in tileRows)
+        {
+            List<Vector3Int> positions = row.Value;
+            positions.Sort((a, b) => a.x.CompareTo(b.x));
+
+            int groupStartX = positions[0].x;
+            int currentY = positions[0].y;
+            int lastX = groupStartX - 1;
+
+            // 그룹으로 연속된 타일 묶기
+            List<Vector3Int> group = new();
+
+            void CreateBoxFromGroup(List<Vector3Int> groupPositions)
+            {
+                if (groupPositions.Count == 0) return;
+
+                // 시작과 끝 x값 구하기
+                int startX = groupPositions[0].x;
+                int endX = groupPositions[^1].x;
+
+                // 월드 위치 계산 (타일 중심 기준)
+                Vector3 startWorld = parent.GetComponent<Tilemap>().CellToWorld(new Vector3Int(startX, currentY, 0));
+                Vector3 endWorld = parent.GetComponent<Tilemap>().CellToWorld(new Vector3Int(endX, currentY, 0));
+
+                // 박스 크기 계산 (가로: 끝 - 시작 + 1 tile 폭, 세로: tile 높이)
+                float width = (endX - startX + 1) * scale.x;
+                float height = scale.y;
+
+                // GameObject 생성
+                GameObject boxObj = new GameObject($"Collider_OneWay_{currentY}_{startX}_{endX}");
+                boxObj.transform.parent = parent;
+
+                // 타일맵 월드 좌표 기준, 가로 중앙에 위치시키고 Y는 타일 중앙 + offset 적용
+                float posX = (startWorld.x + endWorld.x) / 2f + positionOffset.x;
+                float posY = startWorld.y + 0.5f * scale.y + positionOffset.y; // 타일 중심 Y 기준 + offset
+                boxObj.transform.position = new Vector3(posX, posY, 0);
+
+                boxObj.tag = "OneWayPlatform";
+                boxObj.layer = LayerMask.NameToLayer("Platform");
+
+                BoxCollider2D box = boxObj.AddComponent<BoxCollider2D>();
+                box.size = new Vector2(width + sizeAdjustment.x, height + sizeAdjustment.y);
+                box.usedByEffector = true;
+
+                PlatformEffector2D effector = boxObj.AddComponent<PlatformEffector2D>();
+                effector.useOneWay = true;
+                effector.surfaceArc = 160f;
+                effector.useSideFriction = false;
+            }
+
+            for (int i = 0; i < positions.Count; i++)
+            {
+                var pos = positions[i];
+                if (pos.x != lastX + 1 || pos.y != currentY)
+                {
+                    CreateBoxFromGroup(group);
+                    group.Clear();
+                    currentY = pos.y;
+                }
+
+                group.Add(pos);
+                lastX = pos.x;
+            }
+
+            CreateBoxFromGroup(group); // 마지막 그룹 처리
+        }
     }
 
     private Dictionary<int, List<Vector3Int>> GroupByX(List<Vector3Int> positions)

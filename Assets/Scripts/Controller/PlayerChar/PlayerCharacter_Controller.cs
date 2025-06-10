@@ -1653,7 +1653,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
                     OneWays.Add(other.gameObject);
                 }
                 
-                if (normal.y > 0.5f)
+                if (normal.y > 0.1f)
                 {
                     bool was_Ground = isGrounded;
                     isGrounded = true;

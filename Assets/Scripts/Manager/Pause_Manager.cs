@@ -136,6 +136,15 @@ public class Pause_Manager : MonoBehaviour
     public void Btn_Result_Newgame()
     {
         //fade_Con.Scene_Reload_Fade();
+        Save_Manager.Instance.Modify(data =>
+        {
+            data.is_Map_Saved = false;
+            data.is_Inventory_Saved = false;
+
+            data.saved_Card_IDs.Clear();
+            data.saved_Item_IDs.Clear();
+        });
+        Save_Manager.Instance.SaveAll();
         new_Fade.Scene_Fade_Out("MainScene");
     }
 
