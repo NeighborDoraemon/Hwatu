@@ -54,8 +54,7 @@ public class Screen_Manager : MonoBehaviour
     {
         // 선택한 해상도 인덱스에 맞는 해상도로 변경
         string resolution = Dropdown_Resolution.options[index].text;
-        //string[] resParts = resolution.Split(' '); // "1920x1080 (60Hz)" 이런 식으로 나누기
-        string[] dimensions = resolution/*[0].*/.Split('×'); // "1920x1080"에서 x로 분리
+        string[] dimensions = resolution.Split('×'); // "1920x1080"에서 x로 분리
 
         int width = int.Parse(dimensions[0]);
         int height = int.Parse(dimensions[1]);
@@ -87,12 +86,10 @@ public class Screen_Manager : MonoBehaviour
 
     private void UpdateResolutionDropdown()
     {
-        // 현재 해상도와 가장 가까운 옵션 찾기
         for (int i = 0; i < Dropdown_Resolution.options.Count; i++)
         {
             string resolution = Dropdown_Resolution.options[i].text;
-            //string[] resParts = resolution.Split(' '); // "1920x1080 (60Hz)" 이런 식으로 나누기
-            string[] dimensions = resolution/*[0]*/.Split('×'); // "1920x1080"에서 x로 분리
+            string[] dimensions = resolution.Split('×'); // "1920x1080"에서 x로 분리
 
             int width = int.Parse(dimensions[0]);
             int height = int.Parse(dimensions[1]);

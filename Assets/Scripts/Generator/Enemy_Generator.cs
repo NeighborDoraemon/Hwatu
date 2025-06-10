@@ -32,9 +32,7 @@ public class Enemy_Generator : MonoBehaviour
 
 
     // New Values
-    private int i_Map_Count = 0;
     private bool is_Do_Once = false;
-    private bool b_boss_Stage = false;
 
 
     public static Enemy_Generator Instance { get; private set; }
@@ -42,7 +40,8 @@ public class Enemy_Generator : MonoBehaviour
     [HideInInspector]public static int i_Enemy_Count = 0;
 
     private Map_Value Current_Map;
-    
+
+    private int How_Many_Maps = 0;
 
     //Box Enum
     private enum Box_Rate
@@ -105,46 +104,6 @@ public class Enemy_Generator : MonoBehaviour
         }
     }
 
-    public void New_Enemy_Spawn()
-    {
-        if (Is_Next_Spawn && !Is_Room_Clear && !b_boss_Stage)
-        {
-            foreach (Vector3 v_Spawn in Map_Manager.Map_Shuffled_List[i_Map_Count].v_New_Spawn_Points[Wave_Count - 1].v_Dataes)
-            {
-                new_Enemy = Enemy_Prefabs[Map_Manager.Map_Shuffled_List[i_Map_Count].i_Enemy_Index[Wave_Count - 1].i_enemy_Index[Enemy_Count]];
-
-                GameObject spawned_Enemy = Instantiate(new_Enemy, v_Spawn, Quaternion.identity);
-
-                foreach(Enemy_Interface enemy_interface in spawned_Enemy.GetComponentsInChildren<Enemy_Interface>(true)) //적에게 플레이어 전달
-                {
-                    enemy_interface.Player_Initialize(p_Controller);
-                }
-
-                i_Enemy_Count++;
-                Enemy_Count++;
-            }
-            Enemy_Count = 0;
-
-            is_Do_Once = false;
-
-            is_Now_Started = true;
-            Is_Next_Spawn = false;
-
-            if(Wave_Count != 1)
-            {
-                Wave_Print(0);
-            }
-
-            //Box Spawn
-
-            //if (is_Now_Started) // 게임 시작 시 바로 스폰되는걸 방지
-            //{
-            //    Vector3 cardBox_SpawnPoint = ScObj_Map[i_Room_Number].v_CardBox_SpawnPoint;
-            //    Instantiate(CardBox_Prefab, cardBox_SpawnPoint, Quaternion.identity);
-            //}
-        }
-    }
-
     public void New_Enemy_Spawn(Map_Value Current)
     {
         Current_Map = Current;
@@ -153,10 +112,9 @@ public class Enemy_Generator : MonoBehaviour
             return;
         }
 
-        Debug.Log("Wave : " + Wave_Count);
-        Debug.Log("is_Room_Clear : " + Is_Room_Clear);
+        Debug.Log("Enemy Spawn Start!!!!!!!");
 
-        if (Is_Next_Spawn && !Is_Room_Clear && !b_boss_Stage)
+        if (Is_Next_Spawn && !Is_Room_Clear)
         {
             foreach (Vector3 v_Spawn in Current.v_New_Spawn_Points[Wave_Count - 1].v_Dataes)
             {
@@ -210,15 +168,6 @@ public class Enemy_Generator : MonoBehaviour
 
                 Is_Room_Clear = true;
                 Wave_Count = 1;
-
-                if(i_Map_Count < Map_Manager.Map_Shuffled_List.Count - 1)
-                {
-                    i_Map_Count++;
-                }
-                else
-                {
-                    b_boss_Stage = true;
-                }
             }
 
             Is_Next_Spawn = true;
@@ -316,5 +265,10 @@ public class Enemy_Generator : MonoBehaviour
     public void Set_Current(Map_Value map)
     {
         Current_Map = map;
+    }
+
+    public void Set_Use_Count(int Count)
+    {
+        How_Many_Maps = Count;
     }
 }

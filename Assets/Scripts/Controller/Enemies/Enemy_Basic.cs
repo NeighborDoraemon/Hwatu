@@ -64,15 +64,6 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
         }
     }
 
-    //public void Take_Stun(float duration)
-    //{
-    //    if (!is_Boos_Object)
-    //    { 
-    //        BR_Stunned.Value = true; 
-    //    }
-    //    StartCoroutine(Stun_Durable(duration));
-    //}
-
 
     private void Die() 
     {

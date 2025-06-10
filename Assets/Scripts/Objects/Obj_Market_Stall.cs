@@ -43,6 +43,7 @@ public class Obj_Market_Stall : MonoBehaviour
     void Start()
     {
         //Market_Reset();
+        //Market_Call();
     }
 
     // Update is called once per frame
@@ -117,7 +118,6 @@ public class Obj_Market_Stall : MonoBehaviour
             rand_index = Random.Range(0, Database_List.Count);
 
             Market_List.Add(Database_List[rand_index]);
-            Debug.Log(Database_List[rand_index].name);
 
             Database_List.RemoveAt(rand_index);
         }
