@@ -40,8 +40,10 @@ public class No_Weapon_Strategy : ScriptableObject, IAttack_Strategy
     {
 
     }
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         Debug.Log("맨손 상태입니다.");
+
+        return false;
     }
 }

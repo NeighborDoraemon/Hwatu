@@ -49,11 +49,13 @@ public class DokkaebiBat_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     }    
 
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         player.animator.SetTrigger("Skill");
 
         player.StartCoroutine(Skill_Routine(player));
+
+        return true;
     }
 
     private IEnumerator Skill_Routine(PlayerCharacter_Controller player)

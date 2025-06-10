@@ -45,6 +45,10 @@ public class DoubleHandsSword_Attack_Strategy : ScriptableObject, IAttack_Strate
     {
         if (!player.isGrounded)
         {
+            if (!player.can_JumpAtk)
+                return;
+            
+            player.isAttacking = true;
             player.StartCoroutine(JumpAttack(player));
             return;
         }
@@ -57,11 +61,11 @@ public class DoubleHandsSword_Attack_Strategy : ScriptableObject, IAttack_Strate
 
     private IEnumerator JumpAttack(PlayerCharacter_Controller player)
     {
-        player.animator.SetTrigger("Attack");
         player.jumpCount = player.maxJumpCount;
 
-        float tp_Fall_Speed = fallSpeed;
+        player.animator.SetTrigger("Attack");
 
+        float tp_Fall_Speed = fallSpeed;
         float elapsed = 0.0f;
 
         //player.is_Knock_Back = true;
@@ -79,6 +83,7 @@ public class DoubleHandsSword_Attack_Strategy : ScriptableObject, IAttack_Strate
         }
 
         //player.is_Knock_Back = false;
+        player.can_JumpAtk = true;
     }
 
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point)
@@ -86,10 +91,12 @@ public class DoubleHandsSword_Attack_Strategy : ScriptableObject, IAttack_Strate
 
     }
 
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         player.animator.SetTrigger("Skill");
         player.StartCoroutine(Skill_Coroutine(player));
+
+        return true;
     }
 
     private IEnumerator Skill_Coroutine(PlayerCharacter_Controller player)

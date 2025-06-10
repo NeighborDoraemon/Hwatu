@@ -59,7 +59,7 @@ public class Canon_Attack_Strategy : ScriptableObject, IAttack_Strategy
         Vector2 launch_Velocity = Quaternion.Euler(0, 0, angle) * Vector2.right * projectile_Speed;
         rb.velocity = launch_Velocity;
     }
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         player.animator.SetTrigger("Skill");
 
@@ -80,5 +80,7 @@ public class Canon_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
         Vector2 launch_Velocity = Quaternion.Euler(0, 0, angle) * Vector2.right * projectile_Speed;
         rb.velocity = launch_Velocity;
+
+        return true;
     }
 }

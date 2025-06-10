@@ -50,9 +50,11 @@ public class GreatAsx_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     }
 
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         player.StartCoroutine(Skill_Coroutine(player));
+
+        return true;
     }
 
     private IEnumerator Skill_Coroutine(PlayerCharacter_Controller player)

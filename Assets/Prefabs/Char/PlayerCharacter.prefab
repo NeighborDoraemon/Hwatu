@@ -772,11 +772,11 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   item_Description_UI: {fileID: 0}
+  inventoryPanel: {fileID: 0}
   has_BowSheath_Effect: 0
   has_EarRing_Effect: 0
   has_Dice_Effect: 0
   earRing_Explosion_Prefab: {fileID: 0}
-  inventoryPanel: {fileID: 0}
   is_StatUI_Visible: 0
   rb: {fileID: 3124059131931867968}
   isMoving: 0
@@ -788,6 +788,11 @@ MonoBehaviour:
   isGrounded: 0
   canAttack: 1
   can_JumpAtk: 1
+  ground_Check_Point: {fileID: 0}
+  ground_Check_Radius: 0.1
+  ground_Layer:
+    serializedVersion: 2
+    m_Bits: 64
   weapon_Prefab: {fileID: 0}
   effect_Render: {fileID: 4522405444115821180}
   effect_Animator: {fileID: 4023915199526736471}
@@ -805,9 +810,8 @@ MonoBehaviour:
   player_render: {fileID: 8434130835688464816}
   item_Preview_UI: {fileID: 0}
   card_Preview_UI: {fileID: 0}
-  skill_cTime_Image: {fileID: 0}
-  ready_Color: {r: 0, g: 0, b: 1, a: 1}
-  cooldown_Color: {r: 1, g: 0, b: 0, a: 1}
+  skill_Icon_Image: {fileID: 0}
+  skill_Cooldown_Overlay: {fileID: 0}
   map_Manager: {fileID: 0}
   use_Portal: 0
   player_Platform_Collider: {fileID: 3641037530319108596}

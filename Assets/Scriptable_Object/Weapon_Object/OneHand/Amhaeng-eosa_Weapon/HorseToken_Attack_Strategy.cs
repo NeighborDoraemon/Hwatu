@@ -116,7 +116,7 @@ public class HorseToken_Attack_Strategy : ScriptableObject, IAttack_Strategy
         }
     }
 
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         is_Skill_On = !is_Skill_On;
 
@@ -129,5 +129,7 @@ public class HorseToken_Attack_Strategy : ScriptableObject, IAttack_Strategy
         {
             Debug.Log("마패 스킬 OFF");
         }
+
+        return true;
     }
 }

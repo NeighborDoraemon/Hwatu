@@ -20,6 +20,7 @@ MonoBehaviour:
   max_Attack_Count: 1
   skill_Damage: 10
   skill_Cooldown: 3
+  skill_Icon: {fileID: 21300000, guid: 4b15cebcbfc44584a98ac9862bac43ee, type: 3}
   weapon_Prefab: {fileID: 3276080815781264926, guid: 88b70f7f6f8655044a2c4051757742f9, type: 3}
   overrideController: {fileID: 22100000, guid: 234ce6eb61555b14487c37275c10b68a, type: 2}
   weapon_overrideController: {fileID: 22100000, guid: 36b203dd9f7f02c458b7754f157d413e, type: 2}

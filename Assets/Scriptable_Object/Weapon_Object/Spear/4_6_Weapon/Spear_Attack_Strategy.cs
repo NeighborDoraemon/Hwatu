@@ -51,9 +51,9 @@ public class Spear_Attack_Strategy : ScriptableObject, IAttack_Strategy
     {
 
     }
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
-        if (is_Dashing) return;
+        if (is_Dashing) return false;
 
         Vector2 input_Dir = new Vector2(
             Input.GetAxisRaw("Horizontal"),
@@ -70,6 +70,8 @@ public class Spear_Attack_Strategy : ScriptableObject, IAttack_Strategy
         input_Dir.Normalize();
 
         player.StartCoroutine(Dash_Coroutine(input_Dir));
+
+        return true;
     }
 
     private IEnumerator Dash_Coroutine(Vector2 dir)

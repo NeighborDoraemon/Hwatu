@@ -47,10 +47,12 @@ public class EnergyAttack_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     }
 
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         player.animator.SetTrigger("Skill");
         player.StartCoroutine(EnergyWave(player));
+
+        return true;
     }
 
     private IEnumerator EnergyWave(PlayerCharacter_Controller player)

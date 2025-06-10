@@ -127,6 +127,9 @@ public class SaveData
     public bool is_Boss_Stage = false;
 
     //Player
+    public bool is_Inventory_Saved = false;
+    public List<int> saved_Card_IDs = new List<int>();
+    public List<int> saved_Item_IDs = new List<int>();
 }
 
 public interface ISaveable

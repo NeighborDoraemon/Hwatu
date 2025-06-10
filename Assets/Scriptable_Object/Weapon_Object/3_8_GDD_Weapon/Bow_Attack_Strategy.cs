@@ -130,13 +130,13 @@ public class Bow_Attack_Strategy : ScriptableObject, IAttack_Strategy
         return Mathf.Clamp(calculated_Damage, min_Damage, max_Damage);
     }
 
-    public void Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
+    public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         Camera mainCamera = Camera.main;
         if (mainCamera == null)
         {
             Debug.LogError("Main Camera not found!");
-            return;
+            return false;
         }
 
         int mask = LayerMask.GetMask("Enemy", "Boss_Enemy");
@@ -160,6 +160,8 @@ public class Bow_Attack_Strategy : ScriptableObject, IAttack_Strategy
         }
 
         player.animator.SetTrigger("Skill");
+
+        return true;
     }
 
     private IEnumerator Skill_Effect_Coroutine(Enemy_Basic enemy, PlayerCharacter_Controller player)

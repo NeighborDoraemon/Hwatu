@@ -114,6 +114,10 @@ public class Pause_Manager : MonoBehaviour
         Save_Manager.Instance.Modify(data =>
         {
             data.is_Map_Saved = false;
+            data.is_Inventory_Saved = false;
+
+            data.saved_Card_IDs.Clear();
+            data.saved_Item_IDs.Clear();
         });
         Save_Manager.Instance.SaveAll();
         new_Fade.Scene_Fade_Out("MainScene");

@@ -96,7 +96,7 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
         }
     }
 
-    private void Remove_Item_Effect(Item item)
+    protected void Remove_Item_Effect(Item item)
     {
         PlayerCharacter_Controller player = this.GetComponent<PlayerCharacter_Controller>();
         if (player == null || item.itemEffect == null) return;

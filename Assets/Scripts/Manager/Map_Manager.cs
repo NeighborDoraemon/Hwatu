@@ -291,6 +291,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
         Save_Manager.Instance.Modify(data =>
         {
             data.is_Map_Saved = true;
+            data.is_Inventory_Saved = true;
         });
         Save_Manager.Instance.SaveAll();
 
