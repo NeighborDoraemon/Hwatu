@@ -154,7 +154,7 @@ public class Hunting_Npc : MonoBehaviour, Npc_Interface
                 }
                 else
                 {
-
+                    Debug.Log("Out of Case!");
                 }
 
                 for(int i = 0; i < Birds_List.Count; i++)
@@ -164,8 +164,6 @@ public class Hunting_Npc : MonoBehaviour, Npc_Interface
                         Destroy(Birds_List[i].gameObject);
                     }
                 }
-
-
                 is_Result_Once = true;
             }
         }
