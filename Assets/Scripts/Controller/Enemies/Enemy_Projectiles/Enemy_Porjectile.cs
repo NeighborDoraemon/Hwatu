@@ -32,7 +32,7 @@ public class Enemy_Porjectile : MonoBehaviour
 
             Destroy(gameObject);
         }
-        else if (collision.gameObject.CompareTag("Platform") || collision.gameObject.CompareTag("OneWayPlatform") || collision.gameObject.CompareTag("Walls"))
+        else if (collision.gameObject.CompareTag("Platform") /*|| collision.gameObject.CompareTag("OneWayPlatform")*/ || collision.gameObject.CompareTag("Walls"))
         {
             Destroy(gameObject);
         }
