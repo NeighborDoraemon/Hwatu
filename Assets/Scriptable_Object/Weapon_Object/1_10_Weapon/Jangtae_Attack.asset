@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: Jangtae_Attack
   m_EditorClassIdentifier: 
   jangtae_Prefab: {fileID: 1335327918262151755, guid: 74c7d616ea5923b429470c350b35ab65, type: 3}
-  explosion_Effect_Prefab: {fileID: 2072432503961053385, guid: a59d3413f36e0844cb93a0d7715bf66f, type: 3}
   roll_Speed: 5
-  explosion_Radius: 3
   isRiding: 0
+  cur_Jangtae: {fileID: 0}
   mount_Col_Offset: -0.14
   mount_Col_Height_Inc: 0.3
+  explosion_Effect_Prefab: {fileID: 2072432503961053385, guid: a59d3413f36e0844cb93a0d7715bf66f, type: 3}
+  explosion_Radius: 3
+  enemy_LayerMask:
+    serializedVersion: 2
+    m_Bits: 16896

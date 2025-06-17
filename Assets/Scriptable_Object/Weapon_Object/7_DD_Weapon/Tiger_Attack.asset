@@ -12,3 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b26de4f8bd54f28419a515f910f426d9, type: 3}
   m_Name: Tiger_Attack
   m_EditorClassIdentifier: 
+  roar_Size: {x: 4, y: 2}
+  roar_Offset: {x: 2, y: 0}
+  roar_Stun_Duration: 2
+  enemy_LayerMask:
+    serializedVersion: 2
+    m_Bits: 512

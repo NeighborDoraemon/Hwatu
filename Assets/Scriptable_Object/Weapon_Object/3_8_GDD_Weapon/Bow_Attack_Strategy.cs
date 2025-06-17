@@ -9,25 +9,31 @@ public class Bow_Attack_Strategy : ScriptableObject, IAttack_Strategy
     private PlayerCharacter_Controller player;
     private Weapon_Data weapon_Data;
 
+    [Header("Projectile Settings")]
     public float projectile_Speed = 10.0f;
     public float charge_Projectile_Speed = 20.0f;
     public float charge_Time_Threshold = 4.0f;
 
-    public int min_Damage = 5;
-    public int max_Damage = 20;
-
+    [Header("Projectile Prefab")]
     public GameObject normal_Arrow_Prefab;
     public GameObject charged_Arrow_Prefab;
+
+    [Header("Effect Prefab")]
     public GameObject skillTarget_Effect_Prefab;
     public GameObject skill_Effect_Prefab;
-
     public GameObject bow_Charging_Effect_Prefab;
+
+    [Header("Base Attack Settings")]
+    public int min_Damage = 5;
+    public int max_Damage = 20;
+    public float charge_Start_Time = 0.0f;
     public float charging_Effect_Duration = 1.0f;
 
     private GameObject cur_Charging_Effect;
-
     private bool is_Charging = false;
-    public float charge_Start_Time = 0.0f;
+
+    [Header("Skill Settings")]
+    public LayerMask enemy_LayerMask;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
@@ -139,12 +145,11 @@ public class Bow_Attack_Strategy : ScriptableObject, IAttack_Strategy
             return false;
         }
 
-        int mask = LayerMask.GetMask("Enemy", "Boss_Enemy");
         Collider2D[] enemies = Physics2D.OverlapBoxAll(
             mainCamera.transform.position,
             new Vector2(mainCamera.orthographicSize * 2 * mainCamera.aspect, mainCamera.orthographicSize * 2),
             0,
-            mask
+            enemy_LayerMask
             );
 
         if (enemies.Length > 0)
