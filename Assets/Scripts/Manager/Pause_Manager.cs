@@ -42,7 +42,7 @@ public class Pause_Manager : MonoBehaviour
         }
         else
         {
-            Result_Text.text = "Demo Clear!";
+            Result_Text.text = "데모는 여기까지!\n즐겨주셔서 감사합니다.";
         }
         Result_Can.gameObject.SetActive(true);
     }
