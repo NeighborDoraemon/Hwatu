@@ -541,7 +541,13 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
                 Vector2 top_Pos = new Vector2(transform.position.x, transform.position.y + GetComponent<Collider2D>().bounds.extents.y);
                 Vector2 bottom_Pos = new Vector2(transform.position.x, transform.position.y - GetComponent<Collider2D>().bounds.extents.y);
 
-                Vector2 direction = is_Facing_Right ? Vector2.right : Vector2.left;
+                Vector2 direction;
+                if (movement.x > 0.1f) direction = Vector2.right;
+                else if (movement.x < -0.1f) direction = Vector2.left;
+                else
+                {
+                     direction = is_Facing_Right ? Vector2.right : Vector2.left;
+                }
 
                 int mask = LayerMask.GetMask("Walls", "Platform");
 
@@ -557,14 +563,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
                     adjusted_Distance = Mathf.Min(adjusted_Distance, bottomHit.distance);
                 }
 
-                if (!is_Facing_Right)
-                {
-                    transform.Translate(Vector2.left * adjusted_Distance);
-                }
-                else
-                {
-                    transform.Translate(Vector2.right * adjusted_Distance);
-                }
+                transform.Translate(direction * adjusted_Distance);
 
                 animator.SetTrigger("Teleport");
                 cur_Teleport_Count--;
