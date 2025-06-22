@@ -19,12 +19,17 @@ public class Dialogue_Manager : MonoBehaviour
     private Queue<string> called_Script = new Queue<string>();
     private bool called_is_Choice;
 
+    private Queue<string> called_Speaker = new Queue<string>();
+    private Queue<string> called_Portrait = new Queue<string>();
+
+
     [Header("Objects")]
     [SerializeField] private Text Name_Text;
     [SerializeField] private Text Script_Text;
     [SerializeField] private GameObject Dialogue_Canvas;
     [SerializeField] private GameObject UI_Canvas;
     [SerializeField] private PlayerCharacter_Controller p_Controller;
+    [SerializeField] private RawImage Portrait_Image;
 
     [Header("Choose Object")]
     [SerializeField] private GameObject Chose_Cursor_01;
@@ -92,6 +97,9 @@ public class Dialogue_Manager : MonoBehaviour
                 {
                     Dialogue_Dict[Keyvalue].Character_Name.Add(data[1]);
                     Dialogue_Dict[Keyvalue].Scripts.Add(ReplaceSpecialChars(data[2]));
+
+                    Dialogue_Dict[Keyvalue].Speaker.Add(data[4]);
+                    Dialogue_Dict[Keyvalue].Portrait.Add(data[5]);
                 }
                 else
                 {
@@ -110,10 +118,18 @@ public class Dialogue_Manager : MonoBehaviour
 
                     bool.TryParse(data[3], out Temp_Data.is_Choice);    //bool 데이터 파싱 성공시 데이터 입력. 실패시 false 입력
 
+                    Temp_Data.Speaker.Add(data[4]);
+                    Temp_Data.Portrait.Add(data[5]);
+
                     Dialogue_Dict.Add(Keyvalue, Temp_Data);
                 }
             }
         }
+    }
+
+    private void Set_illust()
+    {
+
     }
 
     private void Item_Pharsing()
@@ -181,6 +197,8 @@ public class Dialogue_Manager : MonoBehaviour
     {
         called_Name.Clear();
         called_Script.Clear();
+        called_Speaker.Clear();
+        called_Portrait.Clear();
 
         foreach (string alpha in Dialogue_Dict[Key].Character_Name)
         {
@@ -193,6 +211,18 @@ public class Dialogue_Manager : MonoBehaviour
         }
         called_is_Choice = Dialogue_Dict[Key].is_Choice;
 
+        foreach (string gamma in Dialogue_Dict[Key].Speaker)
+        {
+            called_Speaker.Enqueue(gamma);
+        }
+
+        foreach (string delta in Dialogue_Dict[Key].Portrait)
+        {
+            called_Portrait.Enqueue(delta);
+        }
+        Debug.Log("Speaker Count : " + called_Speaker.Count);
+        Debug.Log("Portrait Count : " + called_Portrait.Count);
+
         Print_Next_Dialogue();
     }
 
@@ -204,6 +234,29 @@ public class Dialogue_Manager : MonoBehaviour
             UI_Canvas.SetActive(false);
             Name_Text.text = called_Name.Dequeue();
             Script_Text.text = called_Script.Dequeue();
+
+            if (called_Portrait.Count > 0 && !string.IsNullOrEmpty(called_Portrait.Peek()))
+            {
+                Portrait_Image.gameObject.SetActive(true);
+                string path = $"Portraits/{called_Speaker.Dequeue()}/{called_Portrait.Dequeue()}";
+                Sprite portraitSprite = Resources.Load<Sprite>(path);
+
+                if (portraitSprite != null)
+                {
+                    Portrait_Image.texture = portraitSprite.texture;
+                }
+                else
+                {
+                    Debug.LogError($"Portrait not found at path: {path}");
+                    Portrait_Image.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                Portrait_Image.gameObject.SetActive(false);
+                Debug.Log("There's no portrait for this dialogue or the portrait is empty.");
+            }
+            //Portrait_Image.texture = Resources.Load<Texture2D>("Portraits/" + called_Portrait.Dequeue());
         }
         else    //대화 완료 이후 선택지 실행문 (선택지 있는지 검사 필요!!) else if로 실행하고 이거 밑으로 내려서 else로 연결
         {
@@ -290,6 +343,9 @@ public class Dialogue_Data
     public List<string> Scripts = new List<string>();
 
     public bool is_Choice;
+
+    public List<string> Speaker = new List<string>();
+    public List<string> Portrait = new List<string>();
 }
 
 public class Item_Data
