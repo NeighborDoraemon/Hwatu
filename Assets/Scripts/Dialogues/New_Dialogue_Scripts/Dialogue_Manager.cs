@@ -36,6 +36,8 @@ public class Dialogue_Manager : MonoBehaviour
     [SerializeField] private GameObject Chose_Cursor_02;
     [SerializeField] private GameObject Chose_Text_01;
     [SerializeField] private GameObject Chose_Text_02;
+    [SerializeField] private GameObject Chose_Btn_01;
+    [SerializeField] private GameObject Chose_Btn_02;
 
     private bool is_First_Chosing = true;   //커서의 위치 true = 1번, false = 2번
 
@@ -262,9 +264,14 @@ public class Dialogue_Manager : MonoBehaviour
         {
             if (called_is_Choice)   //선택지 실행
             {
-                Chose_Text_01.SetActive(true);
-                Chose_Text_02.SetActive(true);
-                Chose_Cursor_01.SetActive(true);
+                //선택지 pc버전
+                //Chose_Text_01.SetActive(true);
+                //Chose_Text_02.SetActive(true);
+                //Chose_Cursor_01.SetActive(true);
+
+                // 선택지 모바일 버전
+                Chose_Btn_01.SetActive(true);
+                Chose_Btn_02.SetActive(true);
 
                 p_Controller.State_Change(PlayerCharacter_Controller.Player_State.Dialogue_Choice);
 
@@ -292,6 +299,9 @@ public class Dialogue_Manager : MonoBehaviour
             Chose_Cursor_02.SetActive(false);
             is_First_Chosing = true;
         }
+
+        Chose_Btn_01.SetActive(false);
+        Chose_Btn_02.SetActive(false);
     }
 
     public void Start_Dialogue(int Num)
@@ -305,6 +315,19 @@ public class Dialogue_Manager : MonoBehaviour
         Chose_Cursor_01.SetActive(false);
         Chose_Cursor_02.SetActive(false);
     }
+
+    public void Btn_Choice_Accept()
+    {
+        is_First_Chosing = true;
+        Chose_Complete();
+    }
+
+    public void Btn_Choice_Cancel()
+    {
+        is_First_Chosing = false;
+        Chose_Complete();
+    }
+
     public void Chose_Complete()
     {
         if (is_First_Chosing)

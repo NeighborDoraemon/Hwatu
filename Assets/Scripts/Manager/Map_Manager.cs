@@ -27,6 +27,8 @@ public class Map_Manager : MonoBehaviour, ISaveable
     //First Stage Queue
     private Queue<Map_Value> Map_Shuffled_Queue = new Queue<Map_Value>(); // new Shuffled
     private Queue<Map_Value> Event_Map_Shuffled_Queue = new Queue<Map_Value>(); // Event Shuffled
+    //private List<bool> is_Events_Cleared = new List<bool>(); // Event Cleared List
+    private bool is_Hunting_Cleared = false;
 
     //Second Stage Queue
     private Queue<Map_Value> Second_Map_Shuffled_Queue = new Queue<Map_Value>();
@@ -135,6 +137,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
         data.is_Boss_Stage = is_Boss_Stage;
         data.is_Tutorial_Cleared = is_Tutorial_Cleared; // Tutorial Cleared
         data.is_Event_Now = is_Event_Now;
+        data.is_Hunting_Cleared = is_Hunting_Cleared; // Hunting Cleared
     }
 
     private void Load_Saved_Data()
@@ -158,6 +161,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
 
         is_Tutorial_Cleared = Save_Manager.Instance.Get<bool>(data => data.is_Tutorial_Cleared); //Tutorial Cleared
         is_Event_Now = Save_Manager.Instance.Get<bool>(data => data.is_Event_Now); //Event Now
+        is_Hunting_Cleared = Save_Manager.Instance.Get<bool>(data => data.is_Hunting_Cleared); //Hunting Cleared
     }
 
     private void Make_Lists()
@@ -185,6 +189,16 @@ public class Map_Manager : MonoBehaviour, ISaveable
             {
                 Second_Map_Shuffled_Queue.Dequeue();
             }
+        }
+
+        //Event Map Lists
+        for(int i = 0; i < Event_Map_Data.Count; i++)
+        {
+            Event_Map_Shuffled_Queue.Enqueue(Event_Map_Data[i]);
+        }
+        if(!is_Event_Now && is_Hunting_Cleared)
+        {
+            Event_Map_Shuffled_Queue.Dequeue(); // Remove First Event Map
         }
 
         if (!is_Tutorial_Cleared)
@@ -298,6 +312,11 @@ public class Map_Manager : MonoBehaviour, ISaveable
 
         if (b_index)
         {
+            if(is_Event_Now && !is_Hunting_Cleared)
+            {
+                is_Hunting_Cleared = true; // Hunting Cleared
+            }
+
             Set_New_Current(); // Set mv_Current Map
         }
         else
@@ -306,6 +325,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
         }
         
         Obj_Player.transform.position = mv_Current_Map.v_Map_Spawnpoint;
+
         //Debug.Log("Current Map's Name :" + mv_Current_Map.name);
 
         Save_Manager.Instance.Modify(data =>

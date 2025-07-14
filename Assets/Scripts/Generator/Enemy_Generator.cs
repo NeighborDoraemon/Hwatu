@@ -62,6 +62,7 @@ public class Enemy_Generator : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        i_Enemy_Count = 0;
     }
 
     // Start is called before the first frame update

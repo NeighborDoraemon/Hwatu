@@ -123,6 +123,7 @@ public class SaveData
     public bool is_take_Market = false;
     //Map-Event
     public bool is_Event_Now = false;
+    public bool is_Hunting_Cleared = false;
 
     //Map_Boss
     public bool is_Boss_Stage = false;
