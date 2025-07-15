@@ -1740,7 +1740,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2711856429474510077
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4839,10 +4839,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eec6cd86ddaa672429809f98c3f35ee7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardSlots:
+  pc_CardSlots:
   - {fileID: 8768677251645729771}
   - {fileID: 5744082106871343135}
   - {fileID: 8197046620192965909}
+  mobile_CardSlots:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  pc_Comb_Text: {fileID: 579775776813008403}
+  mobile_Comb_Text: {fileID: 0}
 --- !u!1 &7133342097366029541
 GameObject:
   m_ObjectHideFlags: 0
@@ -5381,7 +5387,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1602162260110999817
 RectTransform:
   m_ObjectHideFlags: 0

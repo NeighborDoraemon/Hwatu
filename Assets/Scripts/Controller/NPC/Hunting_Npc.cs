@@ -12,6 +12,8 @@ public class Hunting_Npc : MonoBehaviour, Npc_Interface
     private GameObject Player_Object = null;
 
     private Vector2 v_Horizontal = new Vector2(0.0f, 0.0f);
+    private Vector2 v_Direction;
+
 
     [Header("Event Objects")]
     [SerializeField] private GameObject Bow_Point;
@@ -192,6 +194,16 @@ public class Hunting_Npc : MonoBehaviour, Npc_Interface
             Input_Value = input.x;
 
             //Debug.Log("Move Input Detected");
+        }
+    }
+
+    public void Event_Move_Direction(Vector2 dir)
+    {
+        if (is_Event_Acting)
+        {
+            v_Direction = dir;
+            v_Direction = new Vector2(dir.x, 0.0f);
+            Input_Value = dir.x;
         }
     }
 

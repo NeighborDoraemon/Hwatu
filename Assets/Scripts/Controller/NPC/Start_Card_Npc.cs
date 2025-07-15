@@ -113,6 +113,9 @@ public class Start_Card_Npc : MonoBehaviour, Npc_Interface
     public void Event_Move(InputAction.CallbackContext ctx) //Not used
     {
     }
+    public void Event_Move_Direction(Vector2 dir) //Not used
+    {
+    }
     public void Event_Attack(InputAction.CallbackContext ctx)   //Not used
     {
     }

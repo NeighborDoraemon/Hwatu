@@ -88,7 +88,6 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     public int i_Money = 0;
 
     [Header("UI_Text")]
-    public TextMeshProUGUI comb_Text;
     public TextMeshProUGUI money_Text;
 
     public Weapon_Data cur_Weapon_Data { get; private set; }
@@ -104,7 +103,7 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
             cur_Weapon_Data = new_Weapon;
         }
 
-        comb_Text.text = new_Weapon.comb_Name;
+        //comb_Text.text = new_Weapon.comb_Name;
     }
 
     public void Increase_AttackDamage()
