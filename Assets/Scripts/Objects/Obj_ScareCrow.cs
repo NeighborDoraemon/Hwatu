@@ -27,7 +27,10 @@ public class Obj_ScareCrow : MonoBehaviour
         TextMesh.alpha = 1f;
         StartCoroutine(FadeOut());
 
-        Scarecrow_Animator.SetTrigger("Hit");
+        if (Scarecrow_Animator != null)
+        {
+            Scarecrow_Animator.SetTrigger("Hit");
+        }
     }
 
     private IEnumerator FadeOut()
