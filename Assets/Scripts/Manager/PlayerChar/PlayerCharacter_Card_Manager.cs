@@ -119,6 +119,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
     public void Card_Combination()
     {
         isCombDone = false;
+        string comb_Name = string.Empty;
 
         PlayerCharacter_Controller player = GetComponent<PlayerCharacter_Controller>();
 
@@ -133,16 +134,19 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                     || (card_1.Month == 13 && card_2.Month == 11))
                 {
                     Set_Weapon(21);
+                    comb_Name = "1 3 ±¤¶¯";
                 }
                 else if ((card_1.Month == 11 && card_2.Month == 18)
                     || (card_1.Month == 18 && card_2.Month == 11))
                 {
                     Set_Weapon(15);
+                    comb_Name = "1 8 ±¤¶¯";
                 }
                 else if ((card_1.Month == 13 && card_2.Month == 18)
                     || (card_1.Month == 18 && card_2.Month == 13))
                 {
                     Set_Weapon(6);
+                    comb_Name = "3 8 ±¤¶¯";
                 }
                 isCombDone = true;
             }
@@ -152,33 +156,43 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                 {
                     case 1:
                         Set_Weapon(4);
+                        comb_Name = "1 ¶¯";
                         break;
                     case 2:
                         Set_Weapon(11);
+                        comb_Name = "2 ¶¯";
                         break;
                     case 3:
                         Set_Weapon(12);
+                        comb_Name = "3 ¶¯";
                         break;
                     case 4:
                         Set_Weapon(18);
+                        comb_Name = "4 ¶¯";
                         break;
                     case 5:
                         Set_Weapon(20);
+                        comb_Name = "5 ¶¯";
                         break;
                     case 6:
                         Set_Weapon(16);
+                        comb_Name = "6 ¶¯";
                         break;
                     case 7:
                         Set_Weapon(24);
+                        comb_Name = "7 ¶¯";
                         break;
                     case 8:
                         Set_Weapon(10);
+                        comb_Name = "8 ¶¯";
                         break;
                     case 9:
                         Set_Weapon(14);
+                        comb_Name = "9 ¶¯";
                         break;
                     case 0:
                         Set_Weapon(25);
+                        comb_Name = "Àå¶¯";
                         break;
                     default:
                         Debug.Log("ÇØ´ç ¿ùÀÌ ¾øÀ½");
@@ -194,41 +208,49 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                         || (card_1.Month == 4 && card_2.Month % 10 == 1))
                     {
                         Set_Weapon(7);
+                        comb_Name = "µ¶»ç";
                     }
                     else if ((card_1.Month % 10 == 1 && card_2.Month == 2)
                         || (card_1.Month == 2 && card_2.Month % 10 == 1))
                     {
                         Set_Weapon(9);
+                        comb_Name = "¾Ë¸®";
                     }
                     else if ((card_1.Month % 10 == 1 && card_2.Month == 10)
                         || (card_1.Month == 10 && card_2.Month % 10 == 1))
                     {
                         Set_Weapon(22);
+                        comb_Name = "Àå»æ";
                     }
                     else if ((card_1.Month == 10 && card_2.Month == 4)
                         || (card_1.Month == 4 && card_2.Month == 10))
                     {
                         Set_Weapon(17);
+                        comb_Name = "Àå»ç";
                     }
                     else if ((card_1.Month == 7 && card_2.Month == 4)
                         || (card_1.Month == 4 && card_2.Month == 7))
                     {
                         Set_Weapon(13);
+                        comb_Name = "¾ÏÇà¾î»ç";
                     }
                     else if ((card_1.Month == 9 && card_2.Month == 4)
                         || (card_1.Month == 4 && card_2.Month == 9))
                     {
                         Set_Weapon(19);
+                        comb_Name = "±¸»ç";
                     }
                     else
                     {
                         Set_Weapon(2);
-                        comb_Text.text = ((card_1.Month + card_2.Month) % 10) + " " + cur_Weapon_Data.comb_Name;
+                        comb_Name = ((card_1.Month + card_2.Month) % 10) + " ²ý";
+                        //comb_Text.text = ((card_1.Month + card_2.Month) % 10) + " " + cur_Weapon_Data.comb_Name;
                     }
                 }
                 else if ((card_1.Month + card_2.Month) % 10 == 9)
                 {
                     Set_Weapon(3);
+                    comb_Name = "°©¿À";
                 }
                 else
                 {
@@ -236,20 +258,24 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
                         || (card_1.Month == 9 && (card_2.Month % 10) == 1))
                     {
                         Set_Weapon(8);
+                        comb_Name = "±¸»æ";
                     }
                     else if ((card_1.Month == 4 && card_2.Month == 6)
                         || (card_1.Month == 6 && card_2.Month == 4))
                     {
                         Set_Weapon(5);
+                        comb_Name = "¼¼·ú";
                     }
                     else if ((card_1.Month == 7 && card_2.Month % 10 == 3)
                         || (card_1.Month % 10 == 3 && card_2.Month == 7))
                     {
                         Set_Weapon(23);
+                        comb_Name = "¶¯ÀâÀÌ";
                     }
                     else
                     {
                         Set_Weapon(1);
+                        comb_Name = "¸ÁÅë";
                     }
                 }
                 isCombDone = true;
@@ -258,6 +284,11 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
             {
                 Debug.Log("ÇØ´ç Á¶ÇÕ ¾øÀ½");
             }
+
+            if (string.IsNullOrEmpty(comb_Name))
+                comb_Name = "";
+
+            card_UI_Manager.Update_CombText(comb_Name);
         }
     }
 

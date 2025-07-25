@@ -11,6 +11,7 @@ using System.Linq;
 using System.Xml.Schema;
 using UnityEngine.SceneManagement;
 using System.Runtime.Serialization;
+using UnityEngine.Windows;
 //using UnityEngine.UIElements;
 
 // PlayerCharacter_Controller Created By JBJ, KYH
@@ -23,7 +24,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
     public Rigidbody2D rb;
     GameObject current_Item;
 
-    Vector2 movement = new Vector2();
+    public Vector2 movement = new Vector2();
     public bool isMoving;
     [HideInInspector] public int jumpCount = 0;
     public int maxJumpCount = 2;
@@ -61,13 +62,19 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
     public Animator weapon_Animator;
     private Weapon_Collision_Handler weapon_Handler;
     private bool is_AtkCoroutine_Running = false;
+    private float last_Combo_End_Time = -1.0f;
+    [SerializeField] private float combo_Input_Lock = 0.05f;
 
     public event Action On_Player_Damaged;
     public event Action On_Enemy_Hit;
     public event Action On_Enemy_Killed;
     public event Action<PlayerCharacter_Controller> On_Teleport;
     public event Action On_Player_Use_Skill;
+    public event System.Action<bool> On_Interactable_Changed;
+    public event System.Action<bool> On_ItemChange_State_Changed;
     [HideInInspector] public bool isInvincible = false;
+    private bool is_Near_Interactable = false;
+    private HashSet<Collider2D> interactables = new HashSet<Collider2D>();
 
     private Item pending_SwapItem = null;
     //[HideInInspector] public bool is_UI_Open = false;
@@ -90,6 +97,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
     [Header("Skill Cooltime UI")]
     public Image skill_Icon_Image;
     [SerializeField] private Image skill_Cooldown_Overlay;
+    [SerializeField] private Image attack_Cooldown_Overlay;
+    [SerializeField] private Image teleport_Cooldown_Overlay;
+    private float teleport_Cooldown_Duration => teleporting_CoolTime * teleport_Cooltime_Mul;
     private bool is_Skill_Coolingdown = false;
     //public Color ready_Color = Color.blue;
     //public Color cooldown_Color = Color.red;
@@ -231,15 +241,14 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
                 Move();
             }
 
-            //if (!isCombDone)
-            //{
-            //    Card_Combination();
-            //}
-
             Update_Animation_Parameters();
             HandleCombo();
             Handle_Teleportation_Time();
             Update_WeaponAnchor_Position();
+
+            if (attack_Cooldown_Overlay.gameObject.activeSelf)
+                Update_Attack_CooldownUI();
+            Update_Teleport_CooldownUI();
         }
     }
     private void FixedUpdate()
@@ -471,50 +480,105 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
 
         if (!is_Knock_Back)
         {
-            Vector2 normalized_Movement = movement.normalized;
-            float total_Speed = movementSpeed * movementSpeed_Mul;
-            rb.velocity = new Vector2(normalized_Movement.x * total_Speed, rb.velocity.y);
+            //Vector2 normalized_Movement = movement.normalized;
+            //float total_Speed = movementSpeed * movementSpeed_Mul;
+            //rb.velocity = new Vector2(normalized_Movement.x * total_Speed, rb.velocity.y);
+
+            float speed = movementSpeed * movementSpeed_Mul;
+            rb.velocity = new Vector2(movement.x * speed, rb.velocity.y);
+        }
+    }
+
+    public void On_Move_Input(Vector2 input)
+    {
+        switch (Current_Player_State)
+        {
+            case Player_State.Normal:
+                movement = input;
+                break;
+            case Player_State.UI_Open:
+                if (isInventory_Visible && Mathf.Abs(input.x) > 0.1f)
+                    Navigate_Inventory((int)Mathf.Sign(input.x));
+                else if (is_StatUI_Visible)
+                    Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.Navigate_Stats(input);
+                break;
+            case Player_State.Event_Doing:
+                Now_Contact_Npc.GetComponent<Npc_Interface>()?.Event_Move_Direction(input);
+                break;
+            case Player_State.Trap_Minigame:
+                movement = input;
+                if (is_Minigame)
+                {
+                    current_gauge += increase_rate;
+                    Debug.Log("게이지 증가" + current_gauge);
+                }
+                break;
+            default:
+                return;
+        }
+    }
+
+    public void On_Move_Stop()
+    {
+        switch (Current_Player_State)
+        {
+            case Player_State.Normal:
+            case Player_State.Trap_Minigame:
+                movement = Vector2.zero;
+                rb.velocity = new Vector2(0, rb.velocity.y);
+                break;
+            case Player_State.Event_Doing:
+                Now_Contact_Npc.GetComponent<Npc_Interface>()?.Event_Move_Direction(Vector2.zero);
+                break;
+            case Player_State.UI_Open:
+                return;
+            default:
+                return;
         }
     }
 
     public void Input_Jump(InputAction.CallbackContext ctx)
     {
-        if (Current_Player_State == Player_State.Normal)    //상태조건
+        //if (Current_Player_State == Player_State.Normal)    //상태조건
+        //{
+        //    if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
+        //    {
+        //        if (is_Down_Performed)
+        //        {
+        //            if (current_Platform != null)
+        //            {
+        //                StartCoroutine(DisableCollision());
+        //            }
+        //        }
+        //        else
+        //        {
+        //            if (jumpCount < maxJumpCount)
+        //            {
+        //                Do_Jump();
+        //            }
+        //        }
+        //    }
+        //}
+        //else if (Current_Player_State == Player_State.UI_Open)
+        //{
+        //    if (is_StatUI_Visible)
+        //    {
+        //        Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.Exit_UI();
+        //    }
+        //    else if (isInventory_Visible && is_Item_Change && pending_SwapItem != null)
+        //    {
+        //        Vector2 spawn_Pos = new Vector2(transform.position.x, transform.position.y - 0.2f);
+        //        Object_Manager.instance.Spawn_Specific_Item(spawn_Pos, pending_SwapItem);
+        //        pending_SwapItem = null;
+        //        is_Item_Change = false;
+        //        HideInventory();
+        //        Time.timeScale = 1.0f;
+        //        return;
+        //    }
+        //}
+        if (ctx.phase == InputActionPhase.Started)
         {
-            if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
-            {
-                if (is_Down_Performed)
-                {
-                    if (current_Platform != null)
-                    {
-                        StartCoroutine(DisableCollision());
-                    }
-                }
-                else
-                {
-                    if (jumpCount < maxJumpCount)
-                    {
-                        Do_Jump();
-                    }
-                }
-            }
-        }
-        else if (Current_Player_State == Player_State.UI_Open)
-        {
-            if (is_StatUI_Visible)
-            {
-                Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.Exit_UI();
-            }
-            else if (isInventory_Visible && is_Item_Change && pending_SwapItem != null)
-            {
-                Vector2 spawn_Pos = new Vector2(transform.position.x, transform.position.y - 0.2f);
-                Object_Manager.instance.Spawn_Specific_Item(spawn_Pos, pending_SwapItem);
-                pending_SwapItem = null;
-                is_Item_Change = false;
-                HideInventory();
-                Time.timeScale = 1.0f;
-                return;
-            }
+            On_Jump_Button();
         }
     }
 
@@ -527,61 +591,139 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         has_Jumped = true;
         isGrounded = false;
     }
+
+    public void On_Jump_Button()
+    {
+        if (Current_Player_State == Player_State.Normal
+        && Time.timeScale == 1.0f
+        && !is_Player_Dead)
+        {
+            if (is_Down_Performed)
+            {
+                if (current_Platform != null)
+                    StartCoroutine(DisableCollision());
+            }
+            else
+            {
+                if (jumpCount < maxJumpCount)
+                    Do_Jump();
+            }
+        }
+        // 2) UI 열려 있는 상태 처리 (기존과 동일)
+        else if (Current_Player_State == Player_State.UI_Open)
+        {
+            if (is_StatUI_Visible)
+            {
+                Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.Exit_UI();
+            }
+            else if (isInventory_Visible && is_Item_Change && pending_SwapItem != null)
+            {
+                Vector2 spawn_Pos = new Vector2(transform.position.x, transform.position.y - 0.2f);
+                Object_Manager.instance.Spawn_Specific_Item(spawn_Pos, pending_SwapItem);
+                pending_SwapItem = null;
+                HideInventory();
+                Cancel_Item_Change();
+                Time.timeScale = 1.0f;
+            }
+        }
+    }
     
     public void Input_Teleportation(InputAction.CallbackContext ctx)
     {
-        if (Current_Player_State == Player_State.Normal)    //상태조건
-        {
-            if (is_Player_Dead) return;
+        //if (Current_Player_State == Player_State.Normal)    //상태조건
+        //{
+        //    if (is_Player_Dead) return;
 
-            if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && canTeleporting)
-            {
-                float adjusted_Distance = teleporting_Distance;
+        //    if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && canTeleporting)
+        //    {
+        //        float adjusted_Distance = teleporting_Distance;
 
-                Vector2 top_Pos = new Vector2(transform.position.x, transform.position.y + GetComponent<Collider2D>().bounds.extents.y);
-                Vector2 bottom_Pos = new Vector2(transform.position.x, transform.position.y - GetComponent<Collider2D>().bounds.extents.y);
+        //        Vector2 top_Pos = new Vector2(transform.position.x, transform.position.y + GetComponent<Collider2D>().bounds.extents.y);
+        //        Vector2 bottom_Pos = new Vector2(transform.position.x, transform.position.y - GetComponent<Collider2D>().bounds.extents.y);
 
-                Vector2 direction = is_Facing_Right ? Vector2.right : Vector2.left;
+        //        Vector2 direction;
+        //        if (movement.x > 0.1f) direction = Vector2.right;
+        //        else if (movement.x < -0.1f) direction = Vector2.left;
+        //        else
+        //        {
+        //             direction = is_Facing_Right ? Vector2.right : Vector2.left;
+        //        }
 
-                int mask = LayerMask.GetMask("Walls", "Platform");
+        //        int mask = LayerMask.GetMask("Walls", "Platform");
 
-                RaycastHit2D topHit = Physics2D.Raycast(top_Pos, direction, teleporting_Distance, mask);
-                RaycastHit2D bottomHit = Physics2D.Raycast(bottom_Pos, direction, teleporting_Distance, mask);
+        //        RaycastHit2D topHit = Physics2D.Raycast(top_Pos, direction, teleporting_Distance, mask);
+        //        RaycastHit2D bottomHit = Physics2D.Raycast(bottom_Pos, direction, teleporting_Distance, mask);
 
-                if (topHit.collider != null)
-                {
-                    adjusted_Distance = Mathf.Min(adjusted_Distance, topHit.distance);
-                }
-                if (bottomHit.collider != null)
-                {
-                    adjusted_Distance = Mathf.Min(adjusted_Distance, bottomHit.distance);
-                }
+        //        if (topHit.collider != null)
+        //        {
+        //            adjusted_Distance = Mathf.Min(adjusted_Distance, topHit.distance);
+        //        }
+        //        if (bottomHit.collider != null)
+        //        {
+        //            adjusted_Distance = Mathf.Min(adjusted_Distance, bottomHit.distance);
+        //        }
 
-                if (!is_Facing_Right)
-                {
-                    transform.Translate(Vector2.left * adjusted_Distance);
-                }
-                else
-                {
-                    transform.Translate(Vector2.right * adjusted_Distance);
-                }
+        //        transform.Translate(direction * adjusted_Distance);
 
-                animator.SetTrigger("Teleport");
-                cur_Teleport_Count--;
+        //        animator.SetTrigger("Teleport");
+        //        cur_Teleport_Count--;
 
-                if (cur_Teleport_Count <= 0)
-                {
-                    canTeleporting = false;
-                }
+        //        if (cur_Teleport_Count <= 0)
+        //        {
+        //            canTeleporting = false;
+        //        }
 
-                On_Teleport?.Invoke(this);
+        //        On_Teleport?.Invoke(this);
 
-                if (invicible_Teleport)
-                {
-                    StartCoroutine(Invicible_After_Teleport());
-                }
-            }
-        }
+        //        if (invicible_Teleport)
+        //        {
+        //            StartCoroutine(Invicible_After_Teleport());
+        //        }
+        //    }
+        //}
+        if (ctx.phase == InputActionPhase.Started)
+            On_Teleport_Button();
+    }
+
+    public void On_Teleport_Button()
+    {
+        if (Current_Player_State != Player_State.Normal
+            || is_Player_Dead
+            || !canTeleporting
+            || Time.timeScale != 1.0f)
+            return;
+
+        Vector2 direction = movement.x > 0.1f ? Vector2.right
+                            : movement.x < -0.1f ? Vector2.left
+                            : is_Facing_Right ? Vector2.right
+                                                : Vector2.left;
+        float max_Dist = teleporting_Distance;
+        float adjusted_Dist = max_Dist;
+
+        int mask = LayerMask.GetMask("Walls", "Platform");
+        var col = GetComponent<Collider2D>();
+        Vector2 size = col.bounds.size;
+        Vector2 origin = (Vector2)transform.position + col.offset;
+
+        RaycastHit2D hit = Physics2D.BoxCast(
+            origin,
+            size,
+            0.0f,
+            direction,
+            max_Dist,
+            mask);
+
+        if (hit.collider != null)
+            adjusted_Dist = hit.distance;
+        transform.Translate(direction * adjusted_Dist);
+
+        animator.SetTrigger("Teleport");
+        cur_Teleport_Count--;
+        if (cur_Teleport_Count <= 0) canTeleporting = false;
+        On_Teleport?.Invoke(this);
+
+        if (invicible_Teleport)
+            StartCoroutine(Invicible_After_Teleport());
     }
 
     private IEnumerator Invicible_After_Teleport()
@@ -608,6 +750,24 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             }
         }
     }
+
+    private void Update_Teleport_CooldownUI()
+    {
+        if (cur_Teleport_Count == 0)
+        {
+            float t = Mathf.Clamp01(teleporting_Cooltime_Timer / teleport_Cooldown_Duration);
+
+            if (!teleport_Cooldown_Overlay.gameObject.activeSelf)
+                teleport_Cooldown_Overlay.gameObject.SetActive(true);
+
+            teleport_Cooldown_Overlay.fillAmount = t;
+        }
+        else
+        {
+            if (teleport_Cooldown_Overlay.gameObject.activeSelf)
+                teleport_Cooldown_Overlay.gameObject.SetActive(false);
+        }
+    }
     // Created By KYH ---------------------------------------------------------------
     public void Input_Down_Jump(InputAction.CallbackContext ctx)
     {
@@ -622,6 +782,16 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
                 is_Down_Performed = false;
             }
         }
+    }
+
+    public void On_Down_Button_Down()
+    {
+        is_Down_Performed = true;
+    }
+
+    public void On_Down_Button_Up()
+    {
+        is_Down_Performed = false;
     }
     // ----------------------------------------------------------------------------
     // ======================================================================================================
@@ -672,6 +842,59 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
                 Dialogue_Manager.instance.Chose_Complete();
             }
         }
+    }
+
+    public void On_Interact_Button()
+    {
+        if (Current_Player_State == Player_State.Normal)
+        {
+            map_Manager.Use_Portal(false);
+            Handle_Npc_Interaction();
+            Handle_Item_Interaction();
+        }
+        else if (Current_Player_State == Player_State.UI_Open)
+        {
+            if (isInventory_Visible && is_Item_Change && pending_SwapItem != null)
+            {
+                SwapItem(pending_SwapItem);
+                pending_SwapItem = null;
+                HideInventory();
+                Complete_Item_Change();
+                Time.timeScale = 1.0f;
+                return;
+            }
+            else if (is_StatUI_Visible)
+            {
+                Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.Confirm_Selection();
+            }
+        }
+        else if (Current_Player_State == Player_State.Dialogue)
+        {
+            Dialogue_Manager.instance.Print_Next_Dialogue();
+        }
+        else if (Current_Player_State == Player_State.Dialogue_Choice)
+        {
+            Dialogue_Manager.instance.Chose_Complete();
+        }
+    }
+
+    private void Add_Interactable(Collider2D col)
+    {
+        if (interactables.Add(col))
+            On_Interactable_Changed?.Invoke(true);
+    }
+
+    private void Remove_Interactable(Collider2D col)
+    {
+        if (interactables.Remove(col))
+            On_Interactable_Changed?.Invoke(interactables.Count > 0);
+    }
+
+    private void Update_Interactable_Flag(bool flag)
+    {
+        if (is_Near_Interactable == flag) return;
+        is_Near_Interactable = flag;
+
     }
 
     private void Handle_Npc_Interaction()
@@ -846,6 +1069,58 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         }
     }
 
+    public void On_Change_FirstCard_Button()
+    {
+        if (Current_Player_State != Player_State.Normal ||
+           Time.timeScale != 1.0f ||
+           is_Player_Dead ||
+           !can_Card_Change ||
+           isAttacking ||
+           card_Inventory[2] == null)
+            return;
+
+        if (attack_Strategy is Jangtae_Attack_Startegy jt && jt.isRiding)
+        {
+            can_Card_Change = false;
+            return;
+        }
+
+        Change_FirstAndThird_Card();
+        if (card_Inventory[0] != null && card_Inventory[1] != null)
+        {
+            match_manager.Give_Player_Cards(card_Inventory[0], card_Inventory[1]);
+            match_manager.Match_Reset();
+            match_manager.Start_Match();
+        }
+        StartCoroutine(Card_Change_Cooldown_Routine());
+    }
+
+    public void On_Change_SecondCard_Button()
+    {
+        if (Current_Player_State != Player_State.Normal ||
+            Time.timeScale != 1.0f ||
+            is_Player_Dead ||
+            !can_Card_Change ||
+            isAttacking ||
+            card_Inventory[2] == null)
+            return;
+
+        if (attack_Strategy is Jangtae_Attack_Startegy jt && jt.isRiding)
+        {
+            can_Card_Change = false;
+            return;
+        }
+
+        Change_SecondAndThird_Card();
+        if (card_Inventory[0] != null && card_Inventory[1] != null)
+        {
+            match_manager.Give_Player_Cards(card_Inventory[0], card_Inventory[1]);
+            match_manager.Match_Reset();
+            match_manager.Start_Match();
+        }
+        StartCoroutine(Card_Change_Cooldown_Routine());
+    }
+
     private IEnumerator Card_Change_Cooldown_Routine()
     {
         can_Card_Change = false;
@@ -985,6 +1260,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             return;
         }
 
+        if (animator.IsInTransition(0))
+            return;
+
         AnimatorStateInfo state_Info = animator.GetCurrentAnimatorStateInfo(0);
         string cur_Animation_Name = Get_Cur_Animation_Name(animator);
 
@@ -999,14 +1277,12 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
                 AnimationClip cur_Clip = clipInfo[0].clip;
                 int total_Frames = Mathf.RoundToInt(cur_Clip.length * cur_Clip.frameRate);
 
-                float norm_Time = state_Info.normalizedTime;
+                float norm_Time = state_Info.normalizedTime % 1.0f;
                 if (!cur_Clip.isLooping)
                     norm_Time = Mathf.Clamp01(norm_Time);
 
-                int cur_Frame = Mathf.Min(
-                    Mathf.FloorToInt(norm_Time * total_Frames),
-                    total_Frames - 1
-                    );
+                int cur_Frame = Mathf.FloorToInt(norm_Time * total_Frames);
+                cur_Frame = Mathf.Clamp(cur_Frame, 0, total_Frames - 1);
 
                 Vector3 new_Pos = animation_Data.Get_Position(cur_Frame);
                 Quaternion new_Rotation = animation_Data.Get_Rotation(cur_Frame);
@@ -1113,22 +1389,24 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
                 switch (ctx.phase)
                 {
                     case InputActionPhase.Started:
-                        if (!is_AtkCoroutine_Running)
-                        {
-                            isAttacking = true;
-                            can_Card_Change = false;
-                            animator.SetBool("isHoldAtk", true);
-                            StartCoroutine(Continuous_Attack());
-                        }
+                        //if (!is_AtkCoroutine_Running)
+                        //{
+                        //    isAttacking = true;
+                        //    can_Card_Change = false;
+                        //    animator.SetBool("isHoldAtk", true);
+                        //    StartCoroutine(Continuous_Attack());
+                        //}
+                        On_Attack_Button_Down();
                         break;
                     case InputActionPhase.Canceled:
-                        if (attack_Strategy is Bow_Attack_Strategy bowAttack)
-                        {
-                            bowAttack.Release_Attack(this);
-                        }
-                        isAttacking = false;
-                        animator.SetBool("isHoldAtk", false);
-                        can_Card_Change = true;
+                        //if (attack_Strategy is Bow_Attack_Strategy bowAttack)
+                        //{
+                        //    bowAttack.Release_Attack(this);
+                        //}
+                        //isAttacking = false;
+                        //animator.SetBool("isHoldAtk", false);
+                        //can_Card_Change = true;
+                        On_Attack_Button_Up();
                         break;
                 }
             }
@@ -1136,24 +1414,29 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             {
                 if (ctx.phase == InputActionPhase.Performed)
                 {
-                    if (Is_Last_Attack())
-                    {
-                        End_Attack();
-                        return;
-                    }
+                    //if (Is_Last_Attack())
+                    //{
+                    //    End_Attack();
+                    //    return;
+                    //}
 
-                    if (Is_Cooldown_Complete())
-                    {
-                        Perform_Attack();
-                    }
-                    else if (Can_Combo_Attack())
-                    {
-                        Perform_Attack();
-                    }
-                    else if (Is_Combo_Complete())
-                    {
-                        End_Attack();
-                    }
+                    //if (Is_Cooldown_Complete())
+                    //{
+                    //    Perform_Attack();
+                    //}
+                    //else if (Can_Combo_Attack())
+                    //{
+                    //    Perform_Attack();
+                    //}
+                    //else if (Is_Combo_Complete())
+                    //{
+                    //    End_Attack();
+                    //}
+
+                    if (!canAttack)
+                        return;
+
+                    On_Attack_Button_Click();
                 }
             }
         }
@@ -1161,6 +1444,65 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         {
             Now_Contact_Npc.GetComponent<Npc_Interface>().Event_Attack(ctx);
         }
+    }
+
+    public void On_Attack_Button_Down()
+    {
+        if (!cur_Weapon_Data.is_HoldAttack_Enabled) return;
+
+        if (!is_AtkCoroutine_Running)
+        {
+            isAttacking = true;
+            can_Card_Change = false;
+            animator.SetBool("isHoldAtk", true);
+            StartCoroutine(Continuous_Attack());
+        }
+    }
+
+    public void On_Attack_Button_Up()
+    {
+        if (!cur_Weapon_Data.is_HoldAttack_Enabled)
+            return;
+
+        if (attack_Strategy is Bow_Attack_Strategy bow)
+            bow.Release_Attack(this);
+        
+        isAttacking = false;
+        animator.SetBool("isHoldAtk", false);
+        can_Card_Change = true;
+    }
+
+    public void On_Attack_Button_Click()
+    {
+        if (Time.time - last_Combo_End_Time < combo_Input_Lock)
+            return;
+
+        if (!canAttack)
+            return;
+
+        if (cur_Weapon_Data.is_HoldAttack_Enabled)
+            return;
+
+        if (Current_Player_State != Player_State.Normal ||
+            Time.timeScale != 1.0f ||
+            is_Player_Dead ||
+            attack_Strategy == null)
+            return;
+
+        if (Is_Last_Attack())
+        {
+            End_Attack();
+        }
+        else if (Is_Cooldown_Complete() || Can_Combo_Attack())
+        {
+            Perform_Attack();
+        }
+        else if (Is_Combo_Complete())
+        {
+            End_Attack();
+        }
+
+        //Debug.Log($"Frame {Time.frameCount}: canAttack={canAttack}, last_Attack_Time={last_Attack_Time}");
     }
 
     private void Perform_Attack()
@@ -1205,6 +1547,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         can_Card_Change = true;
 
         StartCoroutine(Attack_Cooltime());
+        Start_Attack_CooldownUI();
+
+        last_Combo_End_Time = Time.time;
+
+        Debug.Log($"Frame {Time.frameCount}: canAttack={canAttack}, last_Attack_Time={last_Attack_Time}");
     }
 
     private IEnumerator Attack_Cooltime()
@@ -1243,16 +1590,33 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         return false;
     }
 
-    public void On_Attack_Animation_End()
-    {
-        if (Is_Last_Attack())
-            End_Attack();
-    }
-    
     private void Update_Attack_Timers()
     {
         last_Attack_Time = Time.time;
         combo_Deadline = Time.time + comboTime;
+    }
+
+    private void Start_Attack_CooldownUI()
+    {
+        Debug.Log("[플레이어 공격 UI] 현재 상태 True!");
+        attack_Cooldown_Overlay.gameObject.SetActive(true);
+        attack_Cooldown_Overlay.fillAmount = 1.0f;
+    }
+
+    private void Update_Attack_CooldownUI()
+    {
+        float cd = cur_Weapon_Data.attack_Cooldown * attack_Cooltime_Mul;
+        float elapsed = Time.time - last_Attack_Time;
+        float t = Mathf.Clamp01(elapsed / cd);
+
+        if (t < 1.0f)
+        {
+            attack_Cooldown_Overlay.fillAmount = 1.0f - t;
+        }
+        else
+        {
+            attack_Cooldown_Overlay.gameObject.SetActive(false);
+        }
     }
 
     private IEnumerator Continuous_Attack()
@@ -1348,6 +1712,24 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         }
     }
 
+    public void On_Skill_Button()
+    {
+        if (Current_Player_State != Player_State.Normal
+        || Time.timeScale != 1.0f
+        || is_Player_Dead
+        || !Is_Skill_Cooldown_Complete())
+            return;
+
+        bool executed = attack_Strategy.Skill(this, cur_Weapon_Data);
+        if (!executed) return;
+
+        if (attack_Strategy is not Musket_Attack_Strategy)
+            Update_Skill_Timer();
+
+        Start_Skill_Cooldown_UI();
+        On_Player_Use_Skill?.Invoke();
+    }
+
     public void Input_UpDown(InputAction.CallbackContext ctx)
     {
         if (ctx.phase == InputActionPhase.Started && Current_Player_State == Player_State.Dialogue_Choice)
@@ -1393,6 +1775,15 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
     // ======================================================================================================
 
     // Player Character UI ==========================================================================================
+    private bool Can_Close_Inventory()
+    {
+        bool isFull = player_Inventory.Count >= max_Inventory_Size;
+        if (isInventory_Visible && isFull && is_Item_Change)
+            return false;
+
+        return true;
+    }
+    
     void OnInventory_Pressed(InputAction.CallbackContext context)
     {
         if (is_StatUI_Visible)
@@ -1405,6 +1796,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
     }
     void OnInventory_Released(InputAction.CallbackContext context)
     {
+        if (!Can_Close_Inventory())
+            return;
+
         HideInventory();
         Time.timeScale = 1.0f;
         Current_Player_State = Player_State.Normal;
@@ -1435,14 +1829,50 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         }
     }
 
+    public void Toggle_Inventory()
+    {
+        if (is_StatUI_Visible) return;
+
+        if (isInventory_Visible)
+        {
+            if (!Can_Close_Inventory())
+                return;
+
+            HideInventory();
+            Time.timeScale = 1.0f;
+            Current_Player_State = Player_State.Normal;
+            movement = Vector2.zero;
+            rb.velocity = new Vector2(0, rb.velocity.y);
+        }
+        else
+        {
+            ShowInventory();
+            stat_Object.Set_Stat_Panel();
+            Time.timeScale = 0.0f;
+        }
+    }
+
     private void Shift_Selected_Item()
     {
         is_Item_Change = true;
+        On_ItemChange_State_Changed?.Invoke(true);
+
         Current_Player_State = Player_State.UI_Open;
         Time.timeScale = 0.0f;
         ShowInventory();
     }
 
+    private void Complete_Item_Change()
+    {
+        is_Item_Change = false;
+        On_ItemChange_State_Changed?.Invoke(false);
+    }
+
+    private void Cancel_Item_Change()
+    {
+        is_Item_Change = false;
+        On_ItemChange_State_Changed?.Invoke(false);
+    }
     // Created By KYH -------------------------------------------------------------------
     public void Update_Player_Health(float health_Multiplier)
     {
@@ -1606,6 +2036,19 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             }
         }
     }
+
+    public void Open_Settings()
+    {
+        if (Current_Player_State != Player_State.Normal)
+            return;
+
+        if (Time.timeScale == 1.0f)
+        {
+            pause_Manager.Pause_Start();
+        }
+
+        Debug.Log("일시정지 호출됨");
+    }
     // --------------------------------------------------------------------------------
 
     // ======================================================================================================
@@ -1712,8 +2155,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         if (other.gameObject.tag == "Portal" && map_Manager.IsOnPortal == false)
         {
             map_Manager.IsOnPortal = true;
-
             use_Portal = true;
+            Add_Interactable(other);
         }
 
         if (other.CompareTag("CM_Boundary"))
@@ -1722,11 +2165,39 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             camera_Manager.Update_Confiner(cur_Cinemachine_Collider);
         }
 
-        if(other.gameObject.tag == "NPC")
+        if (other.gameObject.tag == "NPC")
         {
             is_Npc_Contack = true;
             Now_Contact_Npc = other.gameObject;
-        }        
+            Add_Interactable(other);
+        }
+
+        //if (other.CompareTag("Portal") && !map_Manager.IsOnPortal)
+        //{
+        //    map_Manager.IsOnPortal = true;
+        //    use_Portal = true;
+        //    Add_Interactable(other);
+        //}
+        //else if (other.CompareTag("NPC"))
+        //{
+        //    is_Npc_Contack = true;
+        //    Now_Contact_Npc = other.gameObject;
+        //    Add_Interactable(other);
+        //}
+        //else if (other.CompareTag("Card")
+        //    || other.CompareTag("Item")
+        //    || other.CompareTag("Market_Item")
+        //    || other.CompareTag("Chest"))
+        //{
+        //    current_Item = other.gameObject;
+        //    Add_Interactable(other);
+        //}
+
+        //if (other.CompareTag("CM_Boundary"))
+        //{
+        //    cur_Cinemachine_Collider = other;
+        //    camera_Manager.Update_Confiner(cur_Cinemachine_Collider);
+        //}
     }
 
     private void OnTriggerStay2D(Collider2D other)
@@ -1755,10 +2226,13 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             }
 
             current_Item = other.gameObject;
+            Add_Interactable(other);
         }
-        else if (other.CompareTag("Item") || other.CompareTag("Market_Item"))
+        else if ((other.CompareTag("Item") || other.CompareTag("Market_Item"))
+            && other.TryGetComponent<Item_Prefab>(out var itemComp))
         {
             current_Item = other.gameObject;
+            Add_Interactable(other);
 
             var item_Comp = other.GetComponent<Item_Prefab>();
             if (item_Comp != null)
@@ -1772,37 +2246,76 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         else if (other.CompareTag("Chest"))
         {
             current_Item = other.gameObject;
+            Add_Interactable(other);
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if(other.gameObject.tag == "Portal" && map_Manager.IsOnPortal == true)
+        if (other.gameObject.tag == "Portal" && map_Manager.IsOnPortal == true)
         {
             map_Manager.IsOnPortal = false;
-
             use_Portal = false;
+            Remove_Interactable(other);
         }
 
         if (other.CompareTag("Card"))
         {
             current_Item = null;
             card_Preview_UI.Hide();
+            Remove_Interactable(other);
         }
         else if (other.CompareTag("Item") || other.CompareTag("Market_Item"))
         {
             current_Item = null;
             item_Preview_UI.Hide();
+            Remove_Interactable(other);
         }
         else if (other.CompareTag("Chest"))
         {
             current_Item = null;
+            Remove_Interactable(other);
         }
-                
+
         if (other.gameObject.tag == "NPC")
         {
             is_Npc_Contack = false;
+            Remove_Interactable(other);
         }
+
+        //// ◼ Portal 탈출
+        //if (other.CompareTag("Portal") && map_Manager.IsOnPortal)
+        //{
+        //    map_Manager.IsOnPortal = false;
+        //    use_Portal = false;
+        //    Remove_Interactable(other);
+        //}
+        //// ◼ NPC 탈출
+        //else if (other.CompareTag("NPC"))
+        //{
+        //    is_Npc_Contack = false;
+        //    Remove_Interactable(other);
+        //}
+        //// ◼ Card 탈출
+        //else if (other.CompareTag("Card"))
+        //{
+        //    current_Item = null;
+        //    card_Preview_UI.Hide();
+        //    Remove_Interactable(other);
+        //}
+        //// ◼ Item / Market_Item 탈출
+        //else if (other.CompareTag("Item") || other.CompareTag("Market_Item"))
+        //{
+        //    current_Item = null;
+        //    item_Preview_UI.Hide();
+        //    Remove_Interactable(other);
+        //}
+        //// ◼ Chest 탈출
+        //else if (other.CompareTag("Chest"))
+        //{
+        //    current_Item = null;
+        //    Remove_Interactable(other);
+        //}
     }
 
     private IEnumerator DisableCollision()

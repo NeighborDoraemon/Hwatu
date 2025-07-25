@@ -27,6 +27,7 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
     [Header("Jangtae Skill Settings")]
     public GameObject explosion_Effect_Prefab;
     public float explosion_Radius = 3.0f;
+    public LayerMask enemy_LayerMask;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
@@ -108,7 +109,7 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
             Instantiate(explosion_Effect_Prefab, cur_Jangtae.transform.position, Quaternion.identity);
         }
 
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(cur_Jangtae.transform.position, explosion_Radius, LayerMask.GetMask("Enemy"));
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(cur_Jangtae.transform.position, explosion_Radius, enemy_LayerMask);
 
         foreach (Collider2D enemy in enemies)
         {

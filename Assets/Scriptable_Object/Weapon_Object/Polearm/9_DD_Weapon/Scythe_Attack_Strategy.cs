@@ -8,9 +8,14 @@ public class Scythe_Attack_Strategy : ScriptableObject, IAttack_Strategy
     private PlayerCharacter_Controller player;
     private Weapon_Data weapon_Data;
 
+    [Header("Skill Settings")]
     public float dash_Speed = 10.0f;
     public float dash_Duration = 0.5f;
     public int heal_Amount = 10;
+
+    [Header("LayerMask Settings")]
+    public LayerMask enemy_LayerMask;
+    public LayerMask wall_LayerMask;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
@@ -63,10 +68,6 @@ public class Scythe_Attack_Strategy : ScriptableObject, IAttack_Strategy
         float check_Interval = 0.05f;
         float check_Radius = 0.5f;
 
-        int mask = LayerMask.GetMask("Enemy", "Boss_Enemy");
-
-        LayerMask enemy_Layer = LayerMask.GetMask("Enemy");
-        LayerMask wall_Layer = LayerMask.GetMask("Walls");
         LayerMask boss_Layer = LayerMask.GetMask("Boss_Enemy");
 
         player.rb.velocity = dash_Direction * dash_Speed;
@@ -76,7 +77,7 @@ public class Scythe_Attack_Strategy : ScriptableObject, IAttack_Strategy
         {
             player.is_Knock_Back = true;
 
-            RaycastHit2D hit = Physics2D.Raycast(player.transform.position, dash_Direction, 0.1f, wall_Layer);
+            RaycastHit2D hit = Physics2D.Raycast(player.transform.position, dash_Direction, 0.1f, wall_LayerMask);
             RaycastHit2D hit_boss = Physics2D.Raycast(player.transform.position, dash_Direction, 0.1f, boss_Layer);
 
             if (hit.collider != null || hit_boss.collider != null)
@@ -87,7 +88,7 @@ public class Scythe_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
             if (elapsed % check_Interval < Time.deltaTime)
             {
-                Collider2D[] hit_Enemies = Physics2D.OverlapCircleAll(player.transform.position, check_Radius, mask);
+                Collider2D[] hit_Enemies = Physics2D.OverlapCircleAll(player.transform.position, check_Radius, enemy_LayerMask);
 
                 foreach (Collider2D enemyCollider in hit_Enemies)
                 {

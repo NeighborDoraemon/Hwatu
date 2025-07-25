@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fbe5366b554b0246870650b991afd26, type: 3}
   m_Name: LongBlade_Weapon_Attack_Strategy
   m_EditorClassIdentifier: 
+  skill_Effect_Prefab: {fileID: 2508306186793910756, guid: e5a7641134ecd264e998804b31275296, type: 3}

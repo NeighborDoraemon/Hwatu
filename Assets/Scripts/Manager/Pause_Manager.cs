@@ -13,6 +13,7 @@ public class Pause_Manager : MonoBehaviour
     [SerializeField] private Canvas Main_Can;
     [SerializeField] private Canvas Result_Can;
     [SerializeField] private Canvas JokBo_Can;
+    [SerializeField] private Canvas Mobile_Can;
 
     [Header("Objects")]
     [SerializeField] private PlayerCharacter_Controller p_control;
@@ -51,6 +52,7 @@ public class Pause_Manager : MonoBehaviour
     {
         Time.timeScale = 0.0f;
         Main_Can.gameObject.SetActive(false);
+        Mobile_Can.gameObject.SetActive(false);
         Pause_Can.gameObject.SetActive(true);
     }
 
@@ -61,6 +63,7 @@ public class Pause_Manager : MonoBehaviour
             Time.timeScale = 1.0f;
             Pause_Can.gameObject.SetActive(false);
             Main_Can.gameObject.SetActive(true);
+            Mobile_Can.gameObject.SetActive(true);
             Setting_Can.gameObject.SetActive(false);
         }
     }

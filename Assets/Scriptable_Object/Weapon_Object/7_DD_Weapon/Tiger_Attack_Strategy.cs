@@ -9,9 +9,11 @@ public class Tiger_Attack_Strategy : ScriptableObject, IAttack_Strategy
     private PlayerCharacter_Controller player;
     private Weapon_Data weapon_Data;
 
+    [Header("Skill Settings")]
     public Vector2 roar_Size = new Vector2(4.0f, 2.0f);
     public Vector2 roar_Offset = new Vector2(2.0f, 0.0f);
     public float roar_Stun_Duration = 2.0f;
+    public LayerMask enemy_LayerMask;
 
     private CapsuleCollider2D og_Collider;
     private BoxCollider2D tiger_Collider;
@@ -84,7 +86,7 @@ public class Tiger_Attack_Strategy : ScriptableObject, IAttack_Strategy
         Vector2 roar_Center = player.transform.position;
         roar_Center += (player.is_Facing_Right ? roar_Offset : new Vector2(-roar_Offset.x, roar_Offset.y));
 
-        Collider2D[] enemies = Physics2D.OverlapBoxAll(roar_Center, roar_Size, 0, LayerMask.GetMask("Enemy"));
+        Collider2D[] enemies = Physics2D.OverlapBoxAll(roar_Center, roar_Size, 0, enemy_LayerMask);
 
         foreach (Collider2D enemy in enemies)
         {
