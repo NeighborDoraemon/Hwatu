@@ -24,7 +24,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
     public Rigidbody2D rb;
     GameObject current_Item;
 
-    Vector2 movement = new Vector2();
+    public Vector2 movement = new Vector2();
     public bool isMoving;
     [HideInInspector] public int jumpCount = 0;
     public int maxJumpCount = 2;
@@ -480,9 +480,12 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
 
         if (!is_Knock_Back)
         {
-            Vector2 normalized_Movement = movement.normalized;
-            float total_Speed = movementSpeed * movementSpeed_Mul;
-            rb.velocity = new Vector2(normalized_Movement.x * total_Speed, rb.velocity.y);
+            //Vector2 normalized_Movement = movement.normalized;
+            //float total_Speed = movementSpeed * movementSpeed_Mul;
+            //rb.velocity = new Vector2(normalized_Movement.x * total_Speed, rb.velocity.y);
+
+            float speed = movementSpeed * movementSpeed_Mul;
+            rb.velocity = new Vector2(movement.x * speed, rb.velocity.y);
         }
     }
 
@@ -1257,6 +1260,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             return;
         }
 
+        if (animator.IsInTransition(0))
+            return;
+
         AnimatorStateInfo state_Info = animator.GetCurrentAnimatorStateInfo(0);
         string cur_Animation_Name = Get_Cur_Animation_Name(animator);
 
@@ -1276,6 +1282,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
                     norm_Time = Mathf.Clamp01(norm_Time);
 
                 int cur_Frame = Mathf.FloorToInt(norm_Time * total_Frames);
+                cur_Frame = Mathf.Clamp(cur_Frame, 0, total_Frames - 1);
 
                 Vector3 new_Pos = animation_Data.Get_Position(cur_Frame);
                 Quaternion new_Rotation = animation_Data.Get_Rotation(cur_Frame);

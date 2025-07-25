@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PoleArm_Attack", menuName = "Weapon/Attack Strategy/PoleArm")]
@@ -7,6 +8,9 @@ public class PoleArm_Attack_Strategy : ScriptableObject, IAttack_Strategy
 {
     private PlayerCharacter_Controller player;
     private Weapon_Data weapon_Data;
+
+    [SerializeField] GameObject skill_Effect_Prefab;
+    private GameObject active_Effect;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
@@ -47,13 +51,16 @@ public class PoleArm_Attack_Strategy : ScriptableObject, IAttack_Strategy
         if (player.is_Skill_Active) return false;
 
         player.is_Skill_Active = true;
-        //float original_Cooldown = player.attack_Cooldown;
-
         player.attack_Cooltime_Mul -= 0.5f;
         Debug.Log("공격 속도 증가!");
 
-        player.StartCoroutine(Reset_Attack_Speed(player, 3f));
+        if (skill_Effect_Prefab != null)
+        {
+            active_Effect = Instantiate(skill_Effect_Prefab, player.transform);
+            active_Effect.transform.localPosition = new Vector3(0.0f, -0.15f, 0.0f);
+        }
 
+        player.StartCoroutine(Reset_Attack_Speed(player, 3f));
         return true;
     }
 
@@ -61,8 +68,13 @@ public class PoleArm_Attack_Strategy : ScriptableObject, IAttack_Strategy
     {
         yield return new WaitForSeconds(delay);
 
+        if (active_Effect != null)
+        {
+            Destroy(active_Effect);
+            active_Effect = null;
+        }
+
         player.attack_Cooltime_Mul += 0.5f;
-        //player.attack_Cooldown = original_Cooldown;
         player.is_Skill_Active = false;
         Debug.Log("공격 속도 복구..");
     }
