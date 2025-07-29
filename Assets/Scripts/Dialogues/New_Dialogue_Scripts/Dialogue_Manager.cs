@@ -58,7 +58,8 @@ public class Dialogue_Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Dialogue_Pharsing();
+        //Dialogue_Pharsing();
+        StartCoroutine(Dialogue_Pharsing());
         Item_Pharsing();
     }
 
@@ -68,72 +69,144 @@ public class Dialogue_Manager : MonoBehaviour
         
     }
 
-    private void Dialogue_Pharsing()
+    //private void Dialogue_Pharsing()
+    //{
+    //    int? Lastkey = null;
+    //    string path = Path.Combine(Application.streamingAssetsPath, "Hwatu_Dialogue" + ".csv"); // 파일 이름 넣기
+
+
+    //    if (!File.Exists(path))
+    //    {
+    //        Debug.LogError("Path File Missing!");
+    //        return;
+    //    }
+    //    string[] Lines = File.ReadAllLines(path);
+
+    //    for (int i = 1; i < Lines.Length; i++)
+    //    {
+    //        Dialogue_Data Temp_Data = new Dialogue_Data();
+
+    //        string[] data = Lines[i].Split(',');
+
+    //        if (!int.TryParse(data[0], out int Keyvalue))
+    //        {
+    //            Debug.LogError("Event Number Conversion Error!");
+    //            return;
+    //        }
+
+    //        if (Lastkey == Keyvalue) //키가 존재하니 바로 문장 추가
+    //        {
+    //            if (Dialogue_Dict.ContainsKey(Keyvalue))
+    //            {
+    //                Dialogue_Dict[Keyvalue].Character_Name.Add(data[1]);
+    //                Dialogue_Dict[Keyvalue].Scripts.Add(ReplaceSpecialChars(data[2]));
+
+    //                Dialogue_Dict[Keyvalue].Speaker.Add(data[4]);
+    //                Dialogue_Dict[Keyvalue].Portrait.Add(data[5]);
+    //            }
+    //            else
+    //            {
+    //                Debug.LogError("Dictionary Error!");
+    //                return;
+    //            }
+    //        }
+    //        else
+    //        {
+    //            if (!Dialogue_Dict.ContainsKey(Keyvalue))   //키가 없으니 마지막키에 키값넣고, 데이터넣기
+    //            {
+    //                Lastkey = Keyvalue;
+    //                Temp_Data.Event_Num = Keyvalue;
+    //                Temp_Data.Character_Name.Add(data[1]);
+    //                Temp_Data.Scripts.Add(ReplaceSpecialChars(data[2]));
+
+    //                bool.TryParse(data[3], out Temp_Data.is_Choice);    //bool 데이터 파싱 성공시 데이터 입력. 실패시 false 입력
+
+    //                Temp_Data.Speaker.Add(data[4]);
+    //                Temp_Data.Portrait.Add(data[5]);
+
+    //                Dialogue_Dict.Add(Keyvalue, Temp_Data);
+    //            }
+    //        }
+    //    }
+    //}
+
+    private IEnumerator Dialogue_Pharsing()
     {
         int? Lastkey = null;
-        string path = Path.Combine(Application.streamingAssetsPath, "Hwatu_Dialogue" + ".csv"); // 파일 이름 넣기
+        string path = Path.Combine(Application.streamingAssetsPath, "Hwatu_Dialogue.csv");
 
+        string[] Lines;
 
-        if (!File.Exists(path))
+#if UNITY_ANDROID
+        UnityEngine.Networking.UnityWebRequest www = UnityEngine.Networking.UnityWebRequest.Get(path);
+        yield return www.SendWebRequest();
+
+        if (www.result != UnityEngine.Networking.UnityWebRequest.Result.Success)
         {
-            Debug.LogError("Path File Missing!");
-            return;
+            Debug.LogError("Failed to load dialogue CSV: " + www.error);
+            yield break;
         }
-        string[] Lines = File.ReadAllLines(path);
+
+        Lines = www.downloadHandler.text.Split(new[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
+#else
+    if (!File.Exists(path))
+    {
+        Debug.LogError("Path File Missing!");
+        yield break;
+    }
+
+    Lines = File.ReadAllLines(path);
+#endif
 
         for (int i = 1; i < Lines.Length; i++)
         {
             Dialogue_Data Temp_Data = new Dialogue_Data();
 
-            string[] data = Lines[i].Split(',');
+            string[] data = Lines[i].Trim().Split(',');
 
-            if (!int.TryParse(data[0], out int Keyvalue))
+            if (!int.TryParse(data[0].Trim(), out int Keyvalue))
             {
-                Debug.LogError("Event Number Conversion Error!");
-                return;
+                Debug.LogError($"[Row {i}] Event Number Conversion Error: {data[0]}");
+                continue;
             }
 
-            if (Lastkey == Keyvalue) //키가 존재하니 바로 문장 추가
+            if (Lastkey == Keyvalue)
             {
                 if (Dialogue_Dict.ContainsKey(Keyvalue))
                 {
-                    Dialogue_Dict[Keyvalue].Character_Name.Add(data[1]);
+                    Dialogue_Dict[Keyvalue].Character_Name.Add(data[1].Trim());
                     Dialogue_Dict[Keyvalue].Scripts.Add(ReplaceSpecialChars(data[2]));
 
-                    Dialogue_Dict[Keyvalue].Speaker.Add(data[4]);
-                    Dialogue_Dict[Keyvalue].Portrait.Add(data[5]);
+                    Dialogue_Dict[Keyvalue].Speaker.Add(data[4].Trim());
+                    Dialogue_Dict[Keyvalue].Portrait.Add(data[5].Trim());
                 }
                 else
                 {
-                    Debug.LogError("Dictionary Error!");
-                    return;
+                    Debug.LogError($"[Row {i}] Key {Keyvalue} not found in dictionary.");
+                    continue;
                 }
             }
             else
             {
-                if (!Dialogue_Dict.ContainsKey(Keyvalue))   //키가 없으니 마지막키에 키값넣고, 데이터넣기
+                if (!Dialogue_Dict.ContainsKey(Keyvalue))
                 {
                     Lastkey = Keyvalue;
                     Temp_Data.Event_Num = Keyvalue;
-                    Temp_Data.Character_Name.Add(data[1]);
+                    Temp_Data.Character_Name.Add(data[1].Trim());
                     Temp_Data.Scripts.Add(ReplaceSpecialChars(data[2]));
 
-                    bool.TryParse(data[3], out Temp_Data.is_Choice);    //bool 데이터 파싱 성공시 데이터 입력. 실패시 false 입력
+                    bool.TryParse(data[3], out Temp_Data.is_Choice);
 
-                    Temp_Data.Speaker.Add(data[4]);
-                    Temp_Data.Portrait.Add(data[5]);
+                    Temp_Data.Speaker.Add(data[4].Trim());
+                    Temp_Data.Portrait.Add(data[5].Trim());
 
                     Dialogue_Dict.Add(Keyvalue, Temp_Data);
                 }
             }
         }
+
+        Debug.Log("Dialogue CSV Parsing Complete. Loaded Keys: " + Dialogue_Dict.Count);
     }
-
-    private void Set_illust()
-    {
-
-    }
-
     private void Item_Pharsing()
     {
         int? Lastkey = null;
