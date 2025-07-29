@@ -23,6 +23,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
 
     public Rigidbody2D rb;
     GameObject current_Item;
+    [SerializeField] private Animator player_Effect_Animator;
 
     public Vector2 movement = new Vector2();
     public bool isMoving;
@@ -590,6 +591,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         jumpCount++;
         has_Jumped = true;
         isGrounded = false;
+
+        if (jumpCount == 1)
+            player_Effect_Animator.SetTrigger("Jump_Effect");
+        else if (jumpCount == 2)
+            player_Effect_Animator.SetTrigger("DoubleJump_Effect");
     }
 
     public void On_Jump_Button()
@@ -2086,6 +2092,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
                         has_Jumped = false;
                         jumpCount = 0;
                     }
+                    player_Effect_Animator.SetTrigger("Land_Effect");
                 }
             }
             else if (other.gameObject.CompareTag("OneWayPlatform"))
@@ -2110,6 +2117,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
                         has_Jumped = false;
                         jumpCount = 0;
                     }
+                    player_Effect_Animator.SetTrigger("Land_Effect");
 
                     break;
                 }
