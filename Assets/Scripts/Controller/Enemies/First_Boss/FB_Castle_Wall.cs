@@ -431,6 +431,8 @@ public class FB_Castle_Wall : MonoBehaviour, Npc_Interface
             Debug.Log("End_02");
             player.State_Change(PlayerCharacter_Controller.Player_State.Normal);
 
+            player.i_Token += 30; // Token Reward
+
             Obj_FB_Peasent.SetActive(false);
             pause_Manager.Show_Result(false);
 

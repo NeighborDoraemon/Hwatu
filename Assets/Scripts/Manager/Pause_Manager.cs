@@ -154,6 +154,15 @@ public class Pause_Manager : MonoBehaviour
     public void Btn_Result_Quit()
     {
         //fade_Con.Scene_Fade_Out();
+        Save_Manager.Instance.Modify(data =>
+        {
+            data.is_Map_Saved = false;
+            data.is_Inventory_Saved = false;
+
+            data.saved_Card_IDs.Clear();
+            data.saved_Item_IDs.Clear();
+        });
+        Save_Manager.Instance.SaveAll();
         new_Fade.Scene_Fade_Out("Start_Scene");
     }
 }

@@ -73,7 +73,6 @@ public class Map_Manager : MonoBehaviour, ISaveable
     // Map_Move Values
     private int map_Index = -1;
     private int Second_map_Index = -1;  // Second Stage Map Index
-    private bool is_Tutorial_Cleared = false;
 
     [HideInInspector] public bool is_Boss_Stage = false;
 
@@ -97,6 +96,8 @@ public class Map_Manager : MonoBehaviour, ISaveable
     //Stage Clear Inform
     private bool is_First_Cleared = false; // First Stage Cleared
     private bool is_Second_Cleared = false; // Second Stage Cleared
+
+    private int i_player_token = 0;
 
     // Create By JBJ
     [Header("BronzeBell Reroll Strategy")]
@@ -135,9 +136,9 @@ public class Map_Manager : MonoBehaviour, ISaveable
         data.is_take_Market = is_take_Market;
         //data.is_Map_Saved = true;
         data.is_Boss_Stage = is_Boss_Stage;
-        data.is_Tutorial_Cleared = is_Tutorial_Cleared; // Tutorial Cleared
         data.is_Event_Now = is_Event_Now;
         data.is_Hunting_Cleared = is_Hunting_Cleared; // Hunting Cleared
+        data.player_token = i_player_token; // Player Token
     }
 
     private void Load_Saved_Data()
@@ -159,9 +160,18 @@ public class Map_Manager : MonoBehaviour, ISaveable
 
         is_Boss_Stage = Save_Manager.Instance.Get<bool>(data => data.is_Boss_Stage); //Boss Stage
 
-        is_Tutorial_Cleared = Save_Manager.Instance.Get<bool>(data => data.is_Tutorial_Cleared); //Tutorial Cleared
         is_Event_Now = Save_Manager.Instance.Get<bool>(data => data.is_Event_Now); //Event Now
         is_Hunting_Cleared = Save_Manager.Instance.Get<bool>(data => data.is_Hunting_Cleared); //Hunting Cleared
+        i_player_token = Save_Manager.Instance.Get<int>(data => data.player_token); // Player Token
+    }
+
+    private void Load_Token()
+    {
+        i_player_token = Save_Manager.Instance.Get<int>(data => data.player_token); // Player Token
+        if (i_player_token < 0)
+        {
+            i_player_token = 0; // Reset Token
+        }
     }
 
     private void Make_Lists()
@@ -169,11 +179,11 @@ public class Map_Manager : MonoBehaviour, ISaveable
         Map_Shuffled_Queue.Clear(); // Queue Clear
 
         //First Stage Lists
-        for(int i = 0; i < Map_Index_List.Count; i++)
+        for (int i = 0; i < Map_Index_List.Count; i++)
         {
             Map_Shuffled_Queue.Enqueue(Map_Data[Map_Index_List[i]]);
         }
-        for(int i = 1; i < map_Index; i++)
+        for (int i = 1; i < map_Index; i++)
         {
             Map_Shuffled_Queue.Dequeue();
         }
@@ -192,43 +202,38 @@ public class Map_Manager : MonoBehaviour, ISaveable
         }
 
         //Event Map Lists
-        for(int i = 0; i < Event_Map_Data.Count; i++)
+        for (int i = 0; i < Event_Map_Data.Count; i++)
         {
             Event_Map_Shuffled_Queue.Enqueue(Event_Map_Data[i]);
         }
-        if(!is_Event_Now && is_Hunting_Cleared)
+       
+        if (!is_Event_Now && is_Hunting_Cleared)
         {
             Event_Map_Shuffled_Queue.Dequeue(); // Remove First Event Map
         }
 
-        if (!is_Tutorial_Cleared)
+        if (is_Event_Now)
         {
-            mv_Current_Map = Map_Tutorial; // Current Map
+            Set_Current_Event();
+            return;
+        }
+
+        if (is_Market_Now)
+        {
+            mv_Current_Map = Market_Data; // Market Map
+            return;
+        }
+        else if (is_Boss_Stage)
+        {
+            mv_Current_Map = FB_Map_Data; // Boss Map
+            return;
         }
         else
         {
-            if(is_Event_Now)
-            {
-                Set_Current_Event();
-                return;
-            }
-
-            if (is_Market_Now)
-            {
-                mv_Current_Map = Market_Data; // Market Map
-                return;
-            }
-            else if (is_Boss_Stage)
-            {
-                mv_Current_Map = FB_Map_Data; // Boss Map
-                return;
-            }
-            else
-            {
-                mv_Current_Map = Map_Shuffled_Queue.Dequeue(); // Current Map
-                return;
-            }
+            mv_Current_Map = Map_Shuffled_Queue.Dequeue(); // Current Map
+            return;
         }
+
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -248,6 +253,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
         }
         else
         {
+            Load_Token();
             Shuffle_Maps();
             IsOnPortal = false;
         }
@@ -305,11 +311,6 @@ public class Map_Manager : MonoBehaviour, ISaveable
 
     private void New_Portal_Method(bool b_index)
     {
-        if (mv_Current_Map == Map_Tutorial && !is_Tutorial_Cleared)
-        {
-            is_Tutorial_Cleared = true;
-        }
-
         if (b_index)
         {
             if(is_Event_Now && !is_Hunting_Cleared)
@@ -323,7 +324,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
         {
             Obj_e_Generator.Set_Current(mv_Current_Map);
         }
-        
+        i_player_token = Obj_Player.GetComponent<PlayerCharacter_Controller>().i_Token; // Player Token
         Obj_Player.transform.position = mv_Current_Map.v_Map_Spawnpoint;
 
         //Debug.Log("Current Map's Name :" + mv_Current_Map.name);
@@ -372,13 +373,6 @@ public class Map_Manager : MonoBehaviour, ISaveable
 
     private void Set_New_Current()
     {
-        if(!is_Tutorial_Cleared)
-        {
-            mv_Current_Map = Map_Tutorial; // Tutorial Map
-            Obj_e_Generator.Set_Current(mv_Current_Map);
-            return;
-        }
-
         if (!is_First_Cleared)
         {
             if (Map_Shuffled_Queue.Count > 0)
@@ -600,5 +594,20 @@ public class Map_Manager : MonoBehaviour, ISaveable
                 Debug.LogError("Invalid Stage Index");
                 break;
         }
+    }
+
+    public void Move_Tutorial()
+    {
+        if(mv_Current_Map != Map_Tutorial)
+        {
+            mv_Current_Map = Map_Tutorial; // Tutorial Map
+        }
+        else
+        {
+            mv_Current_Map = Map_Start; // Start Map
+        }
+
+        Obj_e_Generator.Set_Current(mv_Current_Map);
+        Obj_Player.transform.position = mv_Current_Map.v_Map_Spawnpoint;
     }
 }
