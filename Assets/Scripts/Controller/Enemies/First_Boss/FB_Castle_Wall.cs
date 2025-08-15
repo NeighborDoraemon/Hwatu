@@ -447,6 +447,7 @@ public class FB_Castle_Wall : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
             //map_manager.End_Stage(1);
 
             Boss_Canvas.SetActive(false);
+            map_manager.Custom_Save();
             Destroy(gameObject);    //Change it to Connect with Second Stage
 
 
