@@ -10,6 +10,8 @@ public class SnakeWine_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public int skill_Count = 3;
 
+    private bool prev_Has_OneFour = false;
+
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         if (player == null || weapon_Data == null)
@@ -20,9 +22,10 @@ public class SnakeWine_Attack_Strategy : ScriptableObject, IAttack_Strategy
         this.player = player;
         this.weapon_Data = weapon_Data;
 
-        skill_Count = 3;
-
         Initialize_Weapon_Data();
+
+        prev_Has_OneFour = this.player.Has_One_And_Four();
+        Debug.Log(prev_Has_OneFour);
     }
 
     private void Initialize_Weapon_Data()
@@ -33,7 +36,7 @@ public class SnakeWine_Attack_Strategy : ScriptableObject, IAttack_Strategy
         player.skill_Cooldown = weapon_Data.skill_Cooldown;
     }
 
-    public void Reset_Stats() { }
+    public void Reset_Stats() { Reset_SkillCount(); }
 
     public void Attack(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
@@ -48,14 +51,25 @@ public class SnakeWine_Attack_Strategy : ScriptableObject, IAttack_Strategy
     }
     public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
-        player.animator.SetTrigger("Skill");
-
         if (skill_Count > 0)
         {
+            player.animator.SetTrigger("Skill");
             player.Player_Take_Heal(weapon_Data.skill_Damage);
             skill_Count--;
+            return true;
         }
+        else
+        {
+            return false;
+        }
+    }
 
-        return true;
+    private void Reset_SkillCount()
+    {
+        bool has_OneFour = player.Has_One_And_Four();
+        if (!has_OneFour)
+        {
+            skill_Count = 3;
+        }
     }
 }

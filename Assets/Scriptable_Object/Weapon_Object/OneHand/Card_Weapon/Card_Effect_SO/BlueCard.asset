@@ -9,7 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 734ae35591d804849ace78f8dc820d0f, type: 3}
-  m_Name: SnakeWine_Weapon_Attack_Strategy
+  m_Script: {fileID: 11500000, guid: 266ca0e43b8a34f478ab9a35c5ce93b0, type: 3}
+  m_Name: BlueCard
   m_EditorClassIdentifier: 
-  skill_Count: 1
+  tint: {r: 0.15218942, g: 0.29536304, b: 0.7169812, a: 1}
+  second_Delay: 0.07
+  second_Damage_Scale: 1

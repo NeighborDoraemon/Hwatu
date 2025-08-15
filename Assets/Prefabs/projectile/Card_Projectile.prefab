@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 7010885604755225396}
   - component: {fileID: 8585625955109905298}
   - component: {fileID: -3873603157392868242}
-  - component: {fileID: 7292497364329268012}
-  - component: {fileID: 4758685549957708341}
+  - component: {fileID: 2437392828150620785}
+  - component: {fileID: -7889721597804431504}
   m_Layer: 13
   m_Name: Card_Projectile
   m_TagString: Attack
@@ -114,7 +114,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &7292497364329268012
+--- !u!61 &2437392828150620785
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -126,10 +126,10 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 18944
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 112119
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -157,9 +157,9 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 6, y: 6}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &4758685549957708341
+--- !u!114 &-7889721597804431504
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,7 +168,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4150010414422937313}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10dc13abdcb00304a929cdc4671990f5, type: 3}
+  m_Script: {fileID: 11500000, guid: ddbcfe1d9f6ef3642a73008ef9228019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  effect: {fileID: 0}
   final_Damage: 0
+  life_Time: 3
+  is_Secondary_Spawn: 0

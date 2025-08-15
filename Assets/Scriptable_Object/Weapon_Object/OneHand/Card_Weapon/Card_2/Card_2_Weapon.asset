@@ -17,12 +17,12 @@ MonoBehaviour:
   comb_Name: "\uB057"
   attack_Damage: 6
   attack_Cooldown: 1.5
-  max_Attack_Count: 2
+  max_Attack_Count: 1
   skill_Damage: 0
   skill_Cooldown: 0
   skill_Icon: {fileID: 21300000, guid: e0b4fca1ccad7b04cb9efa907d50f412, type: 3}
   weapon_Prefab: {fileID: 7843703564842448239, guid: 3438e58655288c242938845a37924cc5, type: 3}
-  overrideController: {fileID: 22100000, guid: 58c7d26d032b1b9478887bae7f3331ab, type: 2}
+  overrideController: {fileID: 22100000, guid: 6a5c5bf234af12f419fdad473446ae34, type: 2}
   weapon_overrideController: {fileID: 0}
   animation_Pos_Data_List:
   - {fileID: 11400000, guid: 8131d1f4cd9e7034c9f2a641d22477e2, type: 2}

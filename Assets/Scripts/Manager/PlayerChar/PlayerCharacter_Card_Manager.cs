@@ -19,6 +19,37 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
 
     protected bool isCombDone = false;                              // 화투 조합이 이루어졌는지 체크하는 변수
 
+    private readonly HashSet<int> months_Exact = new();
+    private readonly HashSet<int> months_Norm = new();
+
+    private const int Snake_Wine_Weapon_ID = 7;
+
+    private static int Normalize_Month(int m)
+    {
+        if (m == 10) return 10;
+        return m % 10;
+    }
+
+    private void Rebuild_Month_Sets()
+    {
+        months_Exact.Clear();
+        months_Norm.Clear();
+
+        foreach(var go in card_Inventory)
+        {
+            if (go == null) continue;
+            if (!go.TryGetComponent<Card>(out var card) || card.cardValue == null) continue;
+
+            int exact = card.cardValue.Month;
+            int norm = Normalize_Month(exact);
+
+            months_Exact.Add(exact);
+            months_Norm.Add(norm);
+        }
+
+        Debug.Log($"[Player CardManager] months_Exact={months_Exact},{months_Exact}, months_Norm={months_Norm}");
+    }
+
     public void AddCard(GameObject card)
     {
         //isCombDone = false;
@@ -44,8 +75,8 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
             cardCount++;
             Debug.Log("카드 추가" + card.name);
         }
-        UpdateCardUI();
-        Card_Combination();
+
+        Refresh_UI();
 
         Save_Manager.Instance.SaveAll();
 
@@ -93,27 +124,27 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
     public void Change_FirstAndThird_Card()
     {
         if (card_Inventory[2] != null)
-        {
-            GameObject temp = card_Inventory[0];
-            card_Inventory[0] = card_Inventory[2];
-            card_Inventory[2] = temp;
-        }
+            (card_Inventory[0], card_Inventory[2]) = (card_Inventory[2], card_Inventory[0]);
+        //{
+        //    GameObject temp = card_Inventory[0];
+        //    card_Inventory[0] = card_Inventory[2];
+        //    card_Inventory[2] = temp;
+        //}
 
-        UpdateCardUI();
-        Card_Combination();
+        Refresh_UI();
     }
 
     public void Change_SecondAndThird_Card()
     {
         if (card_Inventory[2] != null)
-        {
-            GameObject temp = card_Inventory[1];
-            card_Inventory[1] = card_Inventory[2];
-            card_Inventory[2] = temp;
-        }
+            (card_Inventory[1], card_Inventory[2]) = (card_Inventory[2], card_Inventory[1]);
+        //{
+        //    GameObject temp = card_Inventory[1];
+        //    card_Inventory[1] = card_Inventory[2];
+        //    card_Inventory[2] = temp;
+        //}
 
-        UpdateCardUI();
-        Card_Combination();
+        Refresh_UI() ;
     }
 
     public void Card_Combination()
@@ -290,45 +321,43 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
 
             card_UI_Manager.Update_CombText(comb_Name);
         }
+
+        
     }
 
-    public bool Has_Three_And_ThreeG()
+    public bool Has_All_Exact(params int[] months)
     {
-        bool has_Three = card_Inventory.Any(go => go != null && go.GetComponent<Card>().cardValue.Month == 3);
-        bool has_ThreeG = card_Inventory.Any(go => go != null && go.GetComponent<Card>().cardValue.Month == 13);
-
-        bool both_Have;
-
-        if (has_Three && has_ThreeG)
-        {
-            both_Have = true;
-        }
-        else
-        {
-            both_Have = false;
-        }
-
-        return both_Have;
+        if (months == null || months.Length == 0) return false;
+        foreach (var m in months)
+            if (!months_Exact.Contains(m)) return false;
+        return true;
     }
-
-    public bool Has_Four_And_Nine()
+    public bool Has_Any_Exact(params int[] months)
     {
-        bool has_Four = card_Inventory.Any(go => go != null && go.GetComponent<Card>().cardValue.Month == 4);
-        bool has_Nine = card_Inventory.Any(go => go != null && go.GetComponent<Card>().cardValue.Month == 9);
-
-        bool both_Have;
-
-        if (has_Four && has_Nine)
-        {
-            both_Have = true;
-        }
-        else
-        {
-            both_Have = false;
-        }
-
-        return both_Have;
+        if (months == null || months.Length == 0) return false;
+        foreach (var m in months)
+            if (months_Exact.Contains(m)) return true;
+        return false;
     }
+
+    public bool Has_All_Norm(params int[] months)
+    {
+        if (months == null || months.Length == 0) return false;
+        foreach (var m in months)
+            if (!months_Norm.Contains(Normalize_Month(m))) return false;
+        return true;
+    }
+    public bool Has_Any_Norm(params int[] months)
+    {
+        if (months == null || months.Length == 0) return false;
+        foreach (var m in months)
+            if (months_Norm.Contains(Normalize_Month(m))) return true;
+        return false;
+    }
+
+    public bool Has_Three_And_ThreeG() => Has_Any_Exact(3, 13);
+    public bool Has_Four_And_Nine() => Has_All_Exact(4, 9);
+    public bool Has_One_And_Four() => Has_All_Norm(1, 4);
 
     public Weapon_Data Compute_Weapon(Card_Value c1, Card_Value c2)
     {
@@ -341,7 +370,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
             {
                 weaponID = 21;
             }
-            else if ((c1.Month == 11 && c1.Month == 18)
+            else if ((c1.Month == 11 && c2.Month == 18)
                 || (c1.Month == 18 && c2.Month == 11))
             {
                 weaponID = 15;
@@ -463,7 +492,26 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
 
     public void Refresh_UI()
     {
+        Rebuild_Month_Sets();
         UpdateCardUI();
+
+        Enforce_SnakeWine_SkillPolicy();
+
         Card_Combination();
+    }
+
+    private void Enforce_SnakeWine_SkillPolicy()
+    {
+        bool has_OneFour = Has_All_Norm(1, 4);
+
+        var snake_Data = weapon_Manager.Get_Weapon_Data(Snake_Wine_Weapon_ID);
+        var snake = snake_Data != null ? (snake_Data.attack_Strategy as SnakeWine_Attack_Strategy) : null;
+
+        if (snake == null) return;
+
+        if (!has_OneFour)
+        {
+            snake.skill_Count = 3;
+        }
     }
 }

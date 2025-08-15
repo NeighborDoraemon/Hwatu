@@ -9,7 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 734ae35591d804849ace78f8dc820d0f, type: 3}
-  m_Name: SnakeWine_Weapon_Attack_Strategy
+  m_Script: {fileID: 11500000, guid: befe8ddf7d9ddaa48a98f93f26aa549f, type: 3}
+  m_Name: YellowCard
   m_EditorClassIdentifier: 
-  skill_Count: 1
+  tint: {r: 1, g: 0.89811766, b: 0.25943398, a: 1}
+  max_Bounces: 3
+  search_Radius: 6
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 16896
+  speed_Multiplier: 1
+  damage_Falloff: 1
