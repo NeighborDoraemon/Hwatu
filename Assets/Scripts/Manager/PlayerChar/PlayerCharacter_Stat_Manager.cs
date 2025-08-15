@@ -90,6 +90,7 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
 
     [Header("UI_Text")]
     public TextMeshProUGUI money_Text;
+    public TextMeshProUGUI token_Text;
 
     public Weapon_Data cur_Weapon_Data { get; private set; }
 

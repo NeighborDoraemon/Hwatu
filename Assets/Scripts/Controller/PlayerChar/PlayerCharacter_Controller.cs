@@ -2441,6 +2441,18 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         //Debug.Log("Player Money : " + i_Money);
     }
 
+    public void Add_Player_Token(int income)
+    {
+        i_Token += income;
+
+        if (i_Token <= 0)
+        {
+            i_Token = 0;
+        }
+
+        token_Text.text = i_Token.ToString();
+    }
+
     public void Update_Player_Money()
     {
         money_Text.text = i_Money.ToString();

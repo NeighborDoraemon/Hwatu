@@ -159,7 +159,7 @@ public class Hunting_Npc : MonoBehaviour, Npc_Interface
                     Debug.Log("Out of Case!");
                 }
 
-                p_control.i_Token += 10; //Give Token
+                p_control.Add_Player_Token(10); // Token Reward
 
                 for (int i = 0; i < Birds_List.Count; i++)
                 {
