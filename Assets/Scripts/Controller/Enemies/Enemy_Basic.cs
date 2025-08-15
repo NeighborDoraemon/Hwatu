@@ -21,10 +21,16 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
     [Header("Effects")]
     [SerializeField] private Animator Effect_Animator;
 
+    [Header("Others")]
+    [SerializeField] private MonoBehaviour Second_Phase_Script;
+    private Enemy_Second_Phase Second_Phase_Controller;
+
     private PlayerCharacter_Controller player_Con;
 
     private GameObject Target_Player;
     private int i_Max_Health;
+
+    private bool is_Immortal = false; // 적이 무적 상태인지 확인
 
 
     [HideInInspector]
@@ -38,11 +44,22 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
         i_Max_Health = IR_Health.Value;
     }
 
+    public void Change_Immortal()
+    {
+        is_Immortal = !is_Immortal;
+    }
+
     public void TakeDamage(int damage)
     {
         if(damage < 0)
         {
             Debug.Log("Get Heal");
+        }
+
+        if(is_Immortal)
+        {
+            Debug.Log("Enemy is Immortal, no damage taken.");
+            return;
         }
 
         IR_Health.Value -= damage;
@@ -57,13 +74,25 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
         {
             Die();
         }
+        else if(IR_Health.Value <= 0 && is_Boos_Object)
+        {
+            if (Second_Phase_Script != null)
+            {
+                Second_Phase_Controller = Second_Phase_Script as Enemy_Second_Phase;
+                Second_Phase_Controller.Call_Second_Phase();
+            }
+        }
 
-        if(scarecrow != null)
+        if (scarecrow != null)
         {
             scarecrow.ShowDamage(damage);
         }
     }
 
+    public void Call_Custom_Die()
+    {
+        Die();
+    }
 
     private void Die() 
     {

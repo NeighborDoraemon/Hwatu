@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class FB_Castle_Wall : MonoBehaviour, Npc_Interface
+public class FB_Castle_Wall : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
 {
     [SerializeField] private PlayerCharacter_Controller player;
 
@@ -115,22 +115,27 @@ public class FB_Castle_Wall : MonoBehaviour, Npc_Interface
         {
             f_Pattern_Time += Time.deltaTime;
 
-            if (IR_Health.Value <= 0 && !is_Second_Phase)
-            {
-                Fade_Stop();
-                Do_Second_Phase();
-            }
-            else if (IR_Health.Value <= 0 && is_Second_Phase && !is_Boss_Dead)
-            {
-                Fade_Stop();
-                is_Boss_Dead = true;
-                is_Started = false;
-                Obj_FB_Peasent.GetComponent<FB_Peasent>().Stop_Pattern();
-                Npc_Interaction_Start();
-            }
+            
 
             Health_Calculate();
             State_Setter();
+        }
+    }
+
+    void Enemy_Second_Phase.Call_Second_Phase()
+    {
+        if (!is_Second_Phase)
+        {
+            Fade_Stop();
+            Do_Second_Phase();
+        }
+        else if (is_Second_Phase && !is_Boss_Dead)
+        {
+            Fade_Stop();
+            is_Boss_Dead = true;
+            is_Started = false;
+            Obj_FB_Peasent.GetComponent<FB_Peasent>().Stop_Pattern();
+            Npc_Interaction_Start();
         }
     }
 
