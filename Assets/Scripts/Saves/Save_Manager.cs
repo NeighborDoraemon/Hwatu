@@ -117,7 +117,6 @@ public class SaveData
     public int Map_Index;
     public int Second_Map_Index;
     public bool is_Map_Saved = false;
-    public bool is_Tutorial_Cleared = false;
     //Map-market
     public bool is_Market_Now = false;
     public bool is_take_Market = false;
@@ -132,6 +131,7 @@ public class SaveData
     public bool is_Inventory_Saved = false;
     public List<int> saved_Card_IDs = new List<int>();
     public List<int> saved_Item_IDs = new List<int>();
+    public int player_token = 0;
 }
 
 public interface ISaveable

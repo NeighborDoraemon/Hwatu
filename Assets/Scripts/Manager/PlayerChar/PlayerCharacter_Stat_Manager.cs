@@ -86,6 +86,7 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
 
     [Header("Money")]
     public int i_Money = 0;
+    public int i_Token = 0;
 
     [Header("UI_Text")]
     public TextMeshProUGUI money_Text;
