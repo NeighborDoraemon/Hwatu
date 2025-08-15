@@ -172,6 +172,8 @@ public class Map_Manager : MonoBehaviour, ISaveable
         {
             i_player_token = 0; // Reset Token
         }
+
+        Obj_Player.GetComponent<PlayerCharacter_Controller>().Add_Player_Token(i_player_token); // Add Player Token to Player
     }
 
     private void Make_Lists()
@@ -236,6 +238,11 @@ public class Map_Manager : MonoBehaviour, ISaveable
 
     }
 
+    public void Custom_Save()
+    {
+        Save_Manager.Instance.SaveAll();
+    }
+
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         map_Index = -1;
@@ -250,6 +257,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
             Make_Lists();
             New_Portal_Method(false);
             StartCoroutine(Wait_For_Enemy_Spawn());
+            Load_Token();
         }
         else
         {

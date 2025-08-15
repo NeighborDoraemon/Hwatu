@@ -20,6 +20,7 @@ public class Pause_Manager : MonoBehaviour
     [SerializeField] private New_Fade_Controller new_Fade;
     [SerializeField] private Text Result_Text;
     [SerializeField] private Input_Data_Manager input_Data_Manager;
+    [SerializeField] private Map_Manager map_Manager;
 
 
     // Start is called before the first frame update
@@ -148,6 +149,7 @@ public class Pause_Manager : MonoBehaviour
             data.saved_Item_IDs.Clear();
         });
         Save_Manager.Instance.SaveAll();
+        map_Manager.Custom_Save();
         new_Fade.Scene_Fade_Out("MainScene");
     }
 
@@ -163,6 +165,7 @@ public class Pause_Manager : MonoBehaviour
             data.saved_Item_IDs.Clear();
         });
         Save_Manager.Instance.SaveAll();
+        map_Manager.Custom_Save();
         new_Fade.Scene_Fade_Out("Start_Scene");
     }
 }

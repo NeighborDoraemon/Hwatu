@@ -392,12 +392,16 @@ public class Dialogue_Manager : MonoBehaviour
     public void Btn_Choice_Accept()
     {
         is_First_Chosing = true;
+        Chose_Btn_01.SetActive(false);
+        Chose_Btn_02.SetActive(false);
         Chose_Complete();
     }
 
     public void Btn_Choice_Cancel()
     {
         is_First_Chosing = false;
+        Chose_Btn_01.SetActive(false);
+        Chose_Btn_02.SetActive(false);
         Chose_Complete();
     }
 
