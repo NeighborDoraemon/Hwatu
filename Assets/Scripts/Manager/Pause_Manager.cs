@@ -47,6 +47,7 @@ public class Pause_Manager : MonoBehaviour
             Result_Text.text = "데모는 여기까지!\n즐겨주셔서 감사합니다.";
         }
         Result_Can.gameObject.SetActive(true);
+        map_Manager.Token_Call();
     }
 
     public void Pause_Start()
@@ -126,6 +127,7 @@ public class Pause_Manager : MonoBehaviour
             data.saved_Card_IDs.Clear();
             data.saved_Item_IDs.Clear();
         });
+        map_Manager.Token_Call();
         Save_Manager.Instance.SaveAll();
         new_Fade.Scene_Fade_Out("MainScene");
     }
@@ -148,8 +150,8 @@ public class Pause_Manager : MonoBehaviour
             data.saved_Card_IDs.Clear();
             data.saved_Item_IDs.Clear();
         });
+        map_Manager.Token_Call();
         Save_Manager.Instance.SaveAll();
-        map_Manager.Custom_Save();
         new_Fade.Scene_Fade_Out("MainScene");
     }
 
@@ -164,8 +166,8 @@ public class Pause_Manager : MonoBehaviour
             data.saved_Card_IDs.Clear();
             data.saved_Item_IDs.Clear();
         });
+        map_Manager.Token_Call();
         Save_Manager.Instance.SaveAll();
-        map_Manager.Custom_Save();
         new_Fade.Scene_Fade_Out("Start_Scene");
     }
 }

@@ -115,8 +115,6 @@ public class FB_Castle_Wall : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
         {
             f_Pattern_Time += Time.deltaTime;
 
-            
-
             Health_Calculate();
             State_Setter();
         }
@@ -391,6 +389,7 @@ public class FB_Castle_Wall : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
         if (is_Boss_Dead)
         {
             Dialogue_Manager.instance.Start_Dialogue(After_Boss);
+            player.Add_Player_Token(30); // Token Reward
             return;
         }
         else
@@ -436,18 +435,15 @@ public class FB_Castle_Wall : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
             Debug.Log("End_02");
             player.State_Change(PlayerCharacter_Controller.Player_State.Normal);
 
-            player.Add_Player_Token(30); // Token Reward
+            //player.Add_Player_Token(30); // Token Reward
 
             Obj_FB_Peasent.SetActive(false);
             pause_Manager.Show_Result(false);
 
-            //boundary_01.gameObject.SetActive(false);
-            //boundary_02.gameObject.SetActive(true);
-
             //map_manager.End_Stage(1);
 
             Boss_Canvas.SetActive(false);
-            map_manager.Custom_Save();
+            map_manager.Token_Call();
             Destroy(gameObject);    //Change it to Connect with Second Stage
 
 

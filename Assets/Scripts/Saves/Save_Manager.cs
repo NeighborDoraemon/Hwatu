@@ -38,6 +38,8 @@ public class Save_Manager
             saveable.Save(currentData);
 
         SaveToFile(currentData);
+
+        Debug.Log("Saved");
     }
 
     public T Get<T>(Func<SaveData, T> selector)

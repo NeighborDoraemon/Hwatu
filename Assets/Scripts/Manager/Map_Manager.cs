@@ -238,15 +238,17 @@ public class Map_Manager : MonoBehaviour, ISaveable
 
     }
 
-    public void Custom_Save()
+    public void Token_Call()
     {
-        Save_Manager.Instance.SaveAll();
+        i_player_token = Obj_Player.GetComponent<PlayerCharacter_Controller>().i_Token; // Player Token
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         map_Index = -1;
         //Map_Shuffled_List.Clear();
+
+        Load_Token();
 
         Map_Shuffled_Queue.Clear(); // Queue Clear
         Event_Map_Shuffled_Queue.Clear();
@@ -257,11 +259,9 @@ public class Map_Manager : MonoBehaviour, ISaveable
             Make_Lists();
             New_Portal_Method(false);
             StartCoroutine(Wait_For_Enemy_Spawn());
-            Load_Token();
         }
         else
         {
-            Load_Token();
             Shuffle_Maps();
             IsOnPortal = false;
         }
