@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 9b910dfe9b58f9a4da1ff02701bf5855
+guid: 9dc1f1d93d7c9ce47bc3f963e4fe5d91
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 128
+  spritePixelsToUnits: 64
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -93,32 +93,24 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "7\uB561 \uC2A4\uD0AC \uC774\uD399\uD2B8_0"
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b44bf995d0153434aaaa9efece6a5fb9
-      internalID: -36546596
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "7\uB561 \uC2A4\uD0AC \uC774\uD399\uD2B8_1"
+      name: Effect_PC_Tiger_Skill_0
       rect:
         serializedVersion: 2
         x: 64
@@ -132,14 +124,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cd87e666fce19354a8b4035d8b3623d0
-      internalID: -1184578287
+      spriteID: 2f2a7b5ce439f734b9deaf92b6fba255
+      internalID: 745432840
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "7\uB561 \uC2A4\uD0AC \uC774\uD399\uD2B8_2"
+      name: Effect_PC_Tiger_Skill_1
       rect:
         serializedVersion: 2
         x: 128
@@ -153,14 +145,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f7d6c785292ac604fa19d261537f1dfa
-      internalID: 1673184239
+      spriteID: 17a60d0cef80c524a88acf9f808d54e7
+      internalID: -523544959
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "7\uB561 \uC2A4\uD0AC \uC774\uD399\uD2B8_3"
+      name: Effect_PC_Tiger_Skill_2
       rect:
         serializedVersion: 2
         x: 192
@@ -174,14 +166,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2fbffa16597beaf44bd67563d81b95ee
-      internalID: 130260790
+      spriteID: 2f1a24cd1deb36b45b217cb67f5251cd
+      internalID: -55517419
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "7\uB561 \uC2A4\uD0AC \uC774\uD399\uD2B8_4"
+      name: Effect_PC_Tiger_Skill_3
       rect:
         serializedVersion: 2
         x: 256
@@ -195,8 +187,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 628321f7ac3ebfc4b880fd6a7c9f15e5
-      internalID: 1880008340
+      spriteID: 7e0511215df368948b8908963dc1cea1
+      internalID: -930402555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_PC_Tiger_Skill_4
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f398d8a15633bbc42b54f7f7f0883df7
+      internalID: 632992883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_PC_Tiger_Skill_5
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68db0b4ab73557144b59520c1feb8f4b
+      internalID: -330358992
       vertices: []
       indices: 
       edges: []
@@ -212,11 +246,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      "7\uB561 \uC2A4\uD0AC \uC774\uD399\uD2B8_0": -36546596
-      "7\uB561 \uC2A4\uD0AC \uC774\uD399\uD2B8_1": -1184578287
-      "7\uB561 \uC2A4\uD0AC \uC774\uD399\uD2B8_2": 1673184239
-      "7\uB561 \uC2A4\uD0AC \uC774\uD399\uD2B8_3": 130260790
-      "7\uB561 \uC2A4\uD0AC \uC774\uD399\uD2B8_4": 1880008340
+      Effect_PC_Tiger_Skill_0: 745432840
+      Effect_PC_Tiger_Skill_1: -523544959
+      Effect_PC_Tiger_Skill_2: -55517419
+      Effect_PC_Tiger_Skill_3: -930402555
+      Effect_PC_Tiger_Skill_4: 632992883
+      Effect_PC_Tiger_Skill_5: -330358992
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

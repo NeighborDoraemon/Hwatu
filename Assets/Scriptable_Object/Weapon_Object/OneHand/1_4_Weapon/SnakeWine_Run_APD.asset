@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c8e7cc7e5bf5a124f842638c93b025ba, type: 3}
-  m_Name: SnakeWine_Atk_Animation_Pos_Data
+  m_Name: SnakeWine_Run_APD
   m_EditorClassIdentifier: 
-  animation_Name: PC_SnakeWine_Atk
-  frame_Pos:
-  - {x: 0.173, y: -0.158, z: 0}
-  - {x: 0.173, y: -0.158, z: 0}
-  - {x: 0.173, y: -0.158, z: 0}
-  - {x: 0.173, y: -0.158, z: 0}
-  - {x: 0.173, y: -0.158, z: 0}
-  - {x: 0.173, y: -0.158, z: 0}
-  - {x: 0.173, y: -0.158, z: 0}
-  - {x: 0.056, y: -0.333, z: 0}
+  animation_Name: PC_OH_Run
+  frame_Pos: []
   frame_Rotations: []
-  frame_Scales: []
+  frame_Scales:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}

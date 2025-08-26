@@ -27,5 +27,6 @@ MonoBehaviour:
   animation_Pos_Data_List:
   - {fileID: 11400000, guid: 461b8309ee38b574e86dd3f8a0bc5409, type: 2}
   effect_Data: {fileID: 11400000, guid: 011bb5fec465cb9448fd420276142aec, type: 2}
+  skill_Effect_Data: {fileID: 11400000, guid: 7cc6c306941d64643923b0b5ca27f6a7, type: 2}
   attack_Strategy: {fileID: 11400000, guid: 7d227f858243efd419d588691a5a85f8, type: 2}
   is_HoldAttack_Enabled: 0

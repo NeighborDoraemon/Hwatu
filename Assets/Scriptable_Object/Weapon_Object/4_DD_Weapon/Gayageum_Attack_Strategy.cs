@@ -20,6 +20,10 @@ public class Gayageum_Attack_Strategy : ScriptableObject, IAttack_Strategy
     [Header("Skill Settings")]
     [SerializeField] private float skill_Active_Time = 5.0f;
 
+    [Header("Effect Data")]
+    [SerializeField] private Weapon_Effect_Data normal_Attack_EffectData;
+    [SerializeField] private Weapon_Effect_Data skill_Attack_EffectData;
+
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         if (player == null || weapon_Data == null)

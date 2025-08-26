@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6bcebc6c3bf1402419b08aa73fc297f5
+guid: ad010940f2ce75e43b76f31a973dcf31
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -93,17 +93,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "4\uB561 \uACF5\uACA9 \uC774\uD399\uD2B8_3~ (256x256)_0"
+      name: Tiger_SecondAtk_Effect_Sprites_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 256
-        height: 256
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,20 +124,41 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f60837aada2dc6546b3ad367768ce006
-      internalID: 1734540263
+      spriteID: 8104446f412533d4b850e6365de193b2
+      internalID: -1727331554
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "4\uB561 \uACF5\uACA9 \uC774\uD399\uD2B8_3~ (256x256)_1"
+      name: Tiger_SecondAtk_Effect_Sprites_1
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 776b43ac65dcc3046ac1f3d5b7480561
+      internalID: 1740398952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tiger_SecondAtk_Effect_Sprites_2
       rect:
         serializedVersion: 2
         x: 256
         y: 0
-        width: 256
-        height: 256
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,92 +166,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f9e0d80b5c58e864e974cc30dad9b763
-      internalID: 1396047725
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "4\uB561 \uACF5\uACA9 \uC774\uD399\uD2B8_3~ (256x256)_2"
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 0
-        width: 256
-        height: 256
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8a7816817e1d4ca49b4e61697fab16f3
-      internalID: -1907194331
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "4\uB561 \uACF5\uACA9 \uC774\uD399\uD2B8_3~ (256x256)_3"
-      rect:
-        serializedVersion: 2
-        x: 768
-        y: 0
-        width: 256
-        height: 256
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 524d80c293eee63498ce87e9301b83e7
-      internalID: -473604674
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "4\uB561 \uACF5\uACA9 \uC774\uD399\uD2B8_3~ (256x256)_4"
-      rect:
-        serializedVersion: 2
-        x: 1024
-        y: 0
-        width: 256
-        height: 256
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 390639b934bbf1147a5d3642fed9e8ca
-      internalID: -80748344
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "4\uB561 \uACF5\uACA9 \uC774\uD399\uD2B8_3~ (256x256)_5"
-      rect:
-        serializedVersion: 2
-        x: 1280
-        y: 0
-        width: 256
-        height: 256
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 242e71e7296b0484b9883d18ce4e76c6
-      internalID: -904698501
+      spriteID: 7e7978a595ed7ea4a8af8254e844e8e6
+      internalID: -53327554
       vertices: []
       indices: 
       edges: []
@@ -233,12 +183,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      "4\uB561 \uACF5\uACA9 \uC774\uD399\uD2B8_3~ (256x256)_0": 1734540263
-      "4\uB561 \uACF5\uACA9 \uC774\uD399\uD2B8_3~ (256x256)_1": 1396047725
-      "4\uB561 \uACF5\uACA9 \uC774\uD399\uD2B8_3~ (256x256)_2": -1907194331
-      "4\uB561 \uACF5\uACA9 \uC774\uD399\uD2B8_3~ (256x256)_3": -473604674
-      "4\uB561 \uACF5\uACA9 \uC774\uD399\uD2B8_3~ (256x256)_4": -80748344
-      "4\uB561 \uACF5\uACA9 \uC774\uD399\uD2B8_3~ (256x256)_5": -904698501
+      Tiger_SecondAtk_Effect_Sprites_0: -1727331554
+      Tiger_SecondAtk_Effect_Sprites_1: 1740398952
+      Tiger_SecondAtk_Effect_Sprites_2: -53327554
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

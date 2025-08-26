@@ -13,13 +13,6 @@ MonoBehaviour:
   m_Name: Tiger_Effect
   m_EditorClassIdentifier: 
   effects:
-  - motion_Name: PC_Tiger_Skill
-    frame_Effects:
-    - frame_Number: 1
-      effect_Sprites: {fileID: 0}
-      effect_Animator: {fileID: 9100000, guid: c4a71b2f683c1484eb36ce31259df708, type: 2}
-      position_Offset: {x: 0.563, y: -0.198, z: 0}
-      duration: 0.5
   - motion_Name: PC_Tiger_FirstAtk
     frame_Effects:
     - frame_Number: 1

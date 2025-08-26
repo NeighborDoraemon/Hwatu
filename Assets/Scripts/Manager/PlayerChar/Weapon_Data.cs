@@ -20,6 +20,7 @@ public class Weapon_Data : ScriptableObject
     public AnimatorOverrideController weapon_overrideController;                // 무기의 애니메이션 컨트롤러
     public List<Weapon_Animation_Position_Data> animation_Pos_Data_List;        // 플레이어의 무기 앵커 위치값 리스트
     public Weapon_Effect_Data effect_Data;                                      // 무기 이펙트 데이터
+    public Weapon_Effect_Data skill_Effect_Data;                                // 무기 스킬 이펙트 데이터
     public ScriptableObject attack_Strategy;                                    // 공격 방식 스크립터블 오브젝트
     public bool is_HoldAttack_Enabled = false;                                  // 무기의 홀딩 조작 여부
 }

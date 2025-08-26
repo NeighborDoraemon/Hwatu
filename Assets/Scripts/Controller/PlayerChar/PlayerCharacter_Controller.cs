@@ -66,6 +66,23 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
     private float last_Combo_End_Time = -1.0f;
     [SerializeField] private float combo_Input_Lock = 0.05f;
 
+    public enum Effect_Channel { Normal, Skill }
+
+    [System.Serializable]
+    public class Effect_Channel_Refs
+    {
+        public SpriteRenderer render;
+        public Animator animator;
+        public Transform root => render != null ? render.transform : null;
+    }
+
+    [Header("Weapon Effect Channels")]
+    public Effect_Channel_Refs normal_Effect;
+    public Effect_Channel_Refs skill_Effect;
+
+    private Coroutine normal_Reset_CR;
+    private Coroutine skill_Reset_CR;
+
     public event Action On_Player_Damaged;
     public event Action On_Enemy_Hit;
     public event Action On_Enemy_Killed;
@@ -275,6 +292,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
     {
         if (!data.is_Inventory_Saved) return;
 
+        // Card Save
         data.saved_Card_IDs.Clear();
         foreach (var card_Obj in card_Inventory)
         {
@@ -289,6 +307,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             }
         }
 
+        // Item Save
         data.saved_Item_IDs.Clear();
         var item_DB_List = Object_Manager.instance.item_Database.all_Items;
         for (int i = 0; i < player_Inventory.Count; i++)
@@ -302,6 +321,29 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             data.saved_Item_IDs.Add(idx);
         }
 
+        // Money Save
+        data.player_Money = i_Money;
+
+        //Player Stat Save
+        data.health_Ratio = (max_Health > 0) ? Mathf.Clamp01((float)health / max_Health) : 0.0f;
+
+        data.attack_Phase = cur_AttackInc_Phase;
+        data.health_Phase = cur_HealthInc_Phase;
+        data.atk_Cooltime_Phase = cur_AttackCoolTimeInc_Phase;
+        data.move_Phase = cur_MoveSpeedInc_Phase;
+
+        data.inc_AttackDamage = cur_Inc_AttackDamage;
+        data.inc_Health = cur_Inc_Health;
+        data.inc_Damage_Reduction = cur_Inc_DamageReduction;
+        data.dec_AttackCooltime = cur_Dec_AttackCoolTime;
+        data.inc_MoveSpeed = cur_Inc_MoveSpeed;
+
+        data.dmg_Inc_To_Lost_Health = dmg_Inc_To_Lost_Health;
+        data.card_Match_Dmg_Inc = card_Match_Dmg_Inc;
+        data.skill_Coomtime_Has_Dec = skill_Cooltime_Has_Dec;
+        data.money_Earned_Has_Inc = money_Earned_Has_Inc;
+        data.invisible_Teleport = invicible_Teleport;
+
         data.is_Inventory_Saved = true;
     }
 
@@ -309,6 +351,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
     {
         if (!data.is_Inventory_Saved) return;
 
+        // Organize existing card and items
         for (int i = 0; i < card_Inventory.Length; i++)
         {
             if (card_Inventory[i] != null)
@@ -317,8 +360,12 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         }
         cardCount = 0;
         isCombDone = false;
+
+        foreach (var old_Item in player_Inventory.ToList())
+            Remove_Item_Effect(old_Item);
         player_Inventory.Clear();
 
+        // Restore card
         for (int i =0;
             i < data.saved_Card_IDs.Count && i < card_Inventory.Length;
             i++)
@@ -341,6 +388,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
 
             var sr = go.GetComponent<SpriteRenderer>();
             sr.sprite = sprite;
+
             var card_Comp = go.GetComponent<Card>();
             card_Comp.cardValue = card_SO;
             card_Comp.selected_Sprite = sprite;
@@ -348,12 +396,30 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             AddCard(go);
         }
 
-        foreach (var old_Item in player_Inventory.ToList())
-        {
-            Remove_Item_Effect(old_Item);
-        }
-        player_Inventory.Clear();
+        // Load money and stat
+        i_Money = data.player_Money;
+        if (money_Text) money_Text.text = i_Money.ToString();
 
+        cur_AttackInc_Phase = data.attack_Phase;
+        cur_HealthInc_Phase = data.health_Phase;
+        cur_AttackCoolTimeInc_Phase = data.atk_Cooltime_Phase;
+        cur_MoveSpeedInc_Phase = data.move_Phase;
+
+        cur_Inc_AttackDamage = data.inc_AttackDamage;
+        cur_Inc_Health = data.inc_Health;
+        cur_Inc_DamageReduction = data.inc_Damage_Reduction;
+        cur_Dec_AttackCoolTime = data.dec_AttackCooltime;
+        cur_Inc_MoveSpeed = data.inc_MoveSpeed;
+
+        dmg_Inc_To_Lost_Health = data.dmg_Inc_To_Lost_Health;
+        card_Match_Dmg_Inc = data.card_Match_Dmg_Inc;
+        skill_Cooltime_Has_Dec = data.skill_Coomtime_Has_Dec;
+        money_Earned_Has_Inc = data.money_Earned_Has_Inc;
+        invicible_Teleport = data.invisible_Teleport;
+
+        Recalculate_Stat_Without_Items(data.health_Ratio);
+
+        // Restore items
         var item_DB_List = Object_Manager.instance.item_Database.all_Items;
         foreach (int idx in data.saved_Item_IDs)
         {
@@ -367,6 +433,65 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
                 Debug.LogWarning($"[Item Load] 잘못된 아이템 인덱스: {idx}");
             }
         }
+
+        Refresh_UI();
+    }
+
+    private void Recalculate_Stat_Without_Items(float saved_HealthRatio)
+    {
+        movementSpeed = base_MovementSpeed;
+        jumpPower = base_JumpPower;
+        max_Health = base_Max_Health;
+        attackDamage = 0;
+        skill_Damage = 0;
+
+        damage_Mul = 1.0f;
+        takenDamage_Mul = 1.0f;
+        movementSpeed_Mul = 1.0f;
+
+        attack_Cooltime_Mul = 1.0f;
+        skill_Cooltime_Mul = 1.0f;
+
+        damage_Reduce_Min = 0;
+        damage_Reduce_Max = 0;
+
+        heal_Amount_Mul = 1.0f;
+        money_Earned_Mul = 1.0f;
+
+        max_Teleport_Count = 1;
+
+        attackDamage += cur_Inc_AttackDamage;
+
+        max_Health += cur_Inc_Health;
+        damage_Reduce_Min += cur_Inc_DamageReduction;
+        damage_Reduce_Max += cur_Inc_DamageReduction;
+
+        movementSpeed += cur_Inc_MoveSpeed;
+        movementSpeed = (float)System.Math.Round(movementSpeed, 1);
+
+        attack_Cooltime_Mul = Mathf.Round((1.0f - (cur_Dec_AttackCoolTime * 0.1f)) * 100.0f) / 100.0f;
+        attack_Cooltime_Mul = Mathf.Max(0.1f, attack_Cooltime_Mul);
+
+        if (skill_Cooltime_Has_Dec)
+        {
+            skill_Cooltime_Mul -= inhance_Skillcooltime_Value;
+            skill_Cooltime_Mul = Mathf.Max(0.1f, skill_Cooltime_Mul);
+        }
+
+        if (cur_HealthInc_Phase >= 3)
+        {
+            heal_Amount_Mul += 0.2f;
+            heal_Amount_Mul = Mathf.Round(heal_Amount_Mul * 100.0f) / 100.0f;
+        }
+
+        if (money_Earned_Has_Inc)
+            money_Earned_Mul += 0.2f;
+
+        if (cur_AttackCoolTimeInc_Phase >= 3)
+            max_Teleport_Count = 2;
+
+        int new_Health = Mathf.RoundToInt(max_Health * Mathf.Clamp01(saved_HealthRatio));
+        health = Mathf.Clamp(new_Health, 0, max_Health);
     }
 
     void Update_Animation_Parameters()
@@ -1320,57 +1445,117 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         }
     }
 
-    public void Show_Effect(string motion_Name_And_Frame)
+    public void Show_Normal_Effect(string motion_Name_And_Frame)
     {
+        var data = cur_Weapon_Data != null ? cur_Weapon_Data.effect_Data : null;
+        Show_Effect_Internal(motion_Name_And_Frame, Effect_Channel.Normal, data);
+    }
+
+    public void Show_Skill_Effect(string motion_Name_And_Frame)
+    {
+        var data = cur_Weapon_Data != null ? cur_Weapon_Data.skill_Effect_Data : null;
+        if (data == null) data = cur_Weapon_Data != null ? cur_Weapon_Data.effect_Data : null;
+
+        Show_Effect_Internal(motion_Name_And_Frame, Effect_Channel.Skill, data);
+    }
+
+    private void Show_Effect_Internal(string motion_Name_And_Frame,
+                                      Effect_Channel channel,
+                                      Weapon_Effect_Data data)
+    {
+        if (data == null) return;
+
         var parts = motion_Name_And_Frame.Split(',');
         if (parts.Length < 2) return;
 
-        string motion_Name = parts[0];
-        int frame_Num;
-        if (!int.TryParse(parts[1], out frame_Num)) return;
+        string motion_Name = parts[0].Trim();
+        if (!int.TryParse(parts[1], out int frame_Num)) return;
 
-        var effect_Info = cur_Weapon_Data.effect_Data.Get_Effect_Info(motion_Name);
-        if (effect_Info != null)
+        var effect_Info = data.Get_Effect_Info(motion_Name);
+        if (effect_Info == null) return;
+
+        var frame_Effect_Info = effect_Info.frame_Effects.Find(fe => fe.frame_Number == frame_Num);
+        if (frame_Effect_Info == null) return;
+
+        var ch = (channel == Effect_Channel.Normal) ? normal_Effect : skill_Effect;
+        if (ch == null || ch.render == null) return;
+
+        Vector3 local_Pos = frame_Effect_Info.position_Offset;
+        if (!is_Facing_Right) local_Pos.x = -local_Pos.x;
+
+        if (ch.root != null)
         {
-            var frame_Effect_Info = effect_Info.frame_Effects.Find(fe => fe.frame_Number == frame_Num);
-            if (frame_Effect_Info != null)
-            {
-                Vector3 effect_Pos = frame_Effect_Info.position_Offset;
-                if (!is_Facing_Right)
-                {
-                    effect_Pos.x = -effect_Pos.x;
-                }
-                effect_Render.transform.localPosition = effect_Pos;
-                effect_Render.transform.localScale = new Vector3(is_Facing_Right ? 1 : -1, 1, 1);
-                //Debug.Log($"Saved Offset: {effect_Pos}");
+            ch.root.localPosition = local_Pos;
+            ch.root.localScale = new Vector3(is_Facing_Right ? 1 : -1, 1, 1);
+        }
 
-                if (frame_Effect_Info.effect_Animator != null)
-                {
-                    effect_Animator.runtimeAnimatorController = frame_Effect_Info.effect_Animator;
-                    effect_Render.enabled = true;
-                    effect_Animator.Play("Effect_Start");
-                    StartCoroutine(Reset_Effect_After_Animation(frame_Effect_Info.duration));
-                }
-                else if (frame_Effect_Info.effect_Sprites != null)
-                {
-                    effect_Render.sprite = frame_Effect_Info.effect_Sprites;
-                    effect_Render.enabled = true;
-                    Invoke("HideEffect", frame_Effect_Info.duration);
-                }
-            }
+        if (frame_Effect_Info.effect_Animator != null && ch.animator != null)
+        {
+            ch.render.enabled = true;
+            ch.animator.runtimeAnimatorController = frame_Effect_Info.effect_Animator;
+            ch.animator.Play("Effect_Start", 0, 0.0f);
+
+            Stop_ResetCR(channel);
+            Start_ResetCR(channel, Reset_Effect_After_Animation(channel, frame_Effect_Info.duration));
+        }
+        else if (frame_Effect_Info.effect_Sprites != null)
+        {
+            ch.render.sprite = frame_Effect_Info.effect_Sprites;
+            ch.render.enabled = true;
+
+            Stop_ResetCR(channel);
+            Start_ResetCR(channel, HideEffect_After(channel, frame_Effect_Info.duration));
         }
     }
 
-    private IEnumerator Reset_Effect_After_Animation(float duration)
+    private void Stop_ResetCR(Effect_Channel channel)
     {
-        yield return new WaitForSeconds(duration);
-        effect_Animator.runtimeAnimatorController = null;
+        if (channel == Effect_Channel.Normal)
+        {
+            if (normal_Reset_CR != null) StopCoroutine(normal_Reset_CR);
+        }
+        else
+        {
+            if (skill_Reset_CR != null) StopCoroutine(skill_Reset_CR);
+        }
     }
 
-    public void HideEffect()
+    private void Start_ResetCR(Effect_Channel channel, IEnumerator routine)
     {
-        effect_Render.enabled = false;
-        effect_Render.sprite = null;
+        if (channel == Effect_Channel.Normal)
+            normal_Reset_CR = StartCoroutine(routine);
+        else
+            skill_Reset_CR = StartCoroutine(routine);
+    }
+
+    private IEnumerator Reset_Effect_After_Animation(Effect_Channel channel, float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        var ch = (channel == Effect_Channel.Normal) ? normal_Effect : skill_Effect;
+        if (ch != null && ch.animator != null)
+            ch.animator.runtimeAnimatorController = null;
+    }
+
+    private IEnumerator HideEffect_After(Effect_Channel channel, float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        HideEffect(channel);
+    }
+
+    public void HideEffect(Effect_Channel channel)
+    {
+        var ch = (channel == Effect_Channel.Normal) ? normal_Effect : skill_Effect;
+        if (ch != null && ch.render != null)
+        {
+            ch.render.enabled = false;
+            ch.render.sprite = null;
+        }
+    }
+
+    public void Hide_All_Effects()
+    {
+        HideEffect(Effect_Channel.Normal);
+        HideEffect(Effect_Channel.Skill);
     }
     // ======================================================================================================
 

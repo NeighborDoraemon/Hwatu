@@ -93,7 +93,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.25
-    functionName: Show_Effect
+    functionName: Show_Normal_Effect
     data: PC_TH_Atk,1
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
