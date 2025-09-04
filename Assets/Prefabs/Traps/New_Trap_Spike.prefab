@@ -98,8 +98,8 @@ MonoBehaviour:
   Obj_Player: {fileID: 0}
   Animators:
   - {fileID: 5534955864905148280}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 5177286255862800877}
+  - {fileID: 7080304614829125434}
 --- !u!1001 &5364311601165712986
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -160,6 +160,11 @@ PrefabInstance:
 --- !u!4 &3236443874463324794 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7393771995182998560, guid: ca3e4eb476f0d2d44aeb430173ddac0f, type: 3}
+  m_PrefabInstance: {fileID: 5364311601165712986}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &7080304614829125434 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2896825502948905312, guid: ca3e4eb476f0d2d44aeb430173ddac0f, type: 3}
   m_PrefabInstance: {fileID: 5364311601165712986}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7269806484268856856
@@ -289,5 +294,10 @@ PrefabInstance:
 --- !u!4 &680335385043408045 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7393771995182998560, guid: ca3e4eb476f0d2d44aeb430173ddac0f, type: 3}
+  m_PrefabInstance: {fileID: 8064536367427301517}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &5177286255862800877 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2896825502948905312, guid: ca3e4eb476f0d2d44aeb430173ddac0f, type: 3}
   m_PrefabInstance: {fileID: 8064536367427301517}
   m_PrefabAsset: {fileID: 0}
