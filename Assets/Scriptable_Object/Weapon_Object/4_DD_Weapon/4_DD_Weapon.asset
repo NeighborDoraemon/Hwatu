@@ -26,6 +26,6 @@ MonoBehaviour:
   weapon_overrideController: {fileID: 0}
   animation_Pos_Data_List:
   - {fileID: 11400000, guid: c6378a49970f16d45ad994f8dc645074, type: 2}
-  effect_Data: {fileID: 11400000, guid: 051081895166a9f42835a0903b526d06, type: 2}
+  effect_Data: {fileID: 11400000, guid: 4019c5a32b297df44865ceb1dae3cc13, type: 2}
   attack_Strategy: {fileID: 11400000, guid: 7052b354207d49240a7b2e96e2b7517b, type: 2}
   is_HoldAttack_Enabled: 1

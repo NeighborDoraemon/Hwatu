@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 94964672fae58ff45a0542694c0fe160
+guid: 9b910dfe9b58f9a4da1ff02701bf5855
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -93,17 +93,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Tiger_FirstAtk_Effect_Sprites_0
+      name: "7\uB561 \uC2A4\uD0AC \uC774\uD399\uD2B8_0"
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 128
-        height: 128
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,20 +124,41 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 073b1b6f3635d0249bf020d86bab2ae3
-      internalID: -768372864
+      spriteID: b44bf995d0153434aaaa9efece6a5fb9
+      internalID: -36546596
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiger_FirstAtk_Effect_Sprites_1
+      name: "7\uB561 \uC2A4\uD0AC \uC774\uD399\uD2B8_1"
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cd87e666fce19354a8b4035d8b3623d0
+      internalID: -1184578287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "7\uB561 \uC2A4\uD0AC \uC774\uD399\uD2B8_2"
       rect:
         serializedVersion: 2
         x: 128
         y: 0
-        width: 128
-        height: 128
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,20 +166,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9e8462f79ce7cd24098b542b55921798
-      internalID: 1536775449
+      spriteID: f7d6c785292ac604fa19d261537f1dfa
+      internalID: 1673184239
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiger_FirstAtk_Effect_Sprites_2
+      name: "7\uB561 \uC2A4\uD0AC \uC774\uD399\uD2B8_3"
       rect:
         serializedVersion: 2
-        x: 256
+        x: 192
         y: 0
-        width: 128
-        height: 128
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,8 +187,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: df3c2ff4536294040be9c5e41bc65d82
-      internalID: -2025358611
+      spriteID: 2fbffa16597beaf44bd67563d81b95ee
+      internalID: 130260790
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "7\uB561 \uC2A4\uD0AC \uC774\uD399\uD2B8_4"
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 628321f7ac3ebfc4b880fd6a7c9f15e5
+      internalID: 1880008340
       vertices: []
       indices: 
       edges: []
@@ -170,9 +225,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Tiger_FirstAtk_Effect_Sprites_0: -768372864
-      Tiger_FirstAtk_Effect_Sprites_1: 1536775449
-      Tiger_FirstAtk_Effect_Sprites_2: -2025358611
+      "7\uB561 \uC2A4\uD0AC \uC774\uD399\uD2B8_0": -36546596
+      "7\uB561 \uC2A4\uD0AC \uC774\uD399\uD2B8_1": -1184578287
+      "7\uB561 \uC2A4\uD0AC \uC774\uD399\uD2B8_2": 1673184239
+      "7\uB561 \uC2A4\uD0AC \uC774\uD399\uD2B8_3": 130260790
+      "7\uB561 \uC2A4\uD0AC \uC774\uD399\uD2B8_4": 1880008340
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

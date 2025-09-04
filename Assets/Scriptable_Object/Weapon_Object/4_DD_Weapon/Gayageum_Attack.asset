@@ -18,3 +18,5 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16896
   skill_Active_Time: 5
+  normal_Attack_EffectData: {fileID: 11400000, guid: 051081895166a9f42835a0903b526d06, type: 2}
+  skill_Attack_EffectData: {fileID: 11400000, guid: 4019c5a32b297df44865ceb1dae3cc13, type: 2}

@@ -69,12 +69,20 @@ public class Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
         if (probabilities == null || probabilities.Count != effects.Count)
             return effects[0];
 
-        float r = Random.value;
+        float total = 0.0f;
+        for (int i = 0; i < probabilities.Count; i++)
+            total += Mathf.Max(0.0f, probabilities[i]);
+
+        if (total <= 0.0f)
+            return effects[0];
+
+        float pick = Random.value * total;
+
         float acc = 0.0f;
         for (int i = 0; i < effects.Count; i++)
         {
-            acc += probabilities[i];
-            if (r <= acc) return effects[i];
+            acc += Mathf.Max(0.0f, probabilities[i]);
+            if (pick <= acc) return effects[i];
         }
         return effects[effects.Count - 1];
     }

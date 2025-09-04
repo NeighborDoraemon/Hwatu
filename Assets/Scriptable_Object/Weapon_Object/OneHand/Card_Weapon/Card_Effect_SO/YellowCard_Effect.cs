@@ -1,3 +1,4 @@
+using MBT;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,8 @@ public class YellowCard_Effect : Card_Effect
     public LayerMask enemyLayer;
     public float speed_Multiplier = 1.0f;
     public float damage_Falloff = 1.0f;
+
+    private readonly Dictionary<Enemy_Basic, Transform> bt_Anchor_Cache = new();
 
     private readonly Dictionary<int, Bounce_State> states = new();
 
@@ -46,7 +49,7 @@ public class YellowCard_Effect : Card_Effect
             return;
         }
 
-        var enemy = target.GetComponent<Enemy_Basic>();
+        var enemy = target.GetComponentInParent<Enemy_Basic>();
         if (enemy != null)
             st.hit_Enemies.Add(enemy);
 
@@ -59,6 +62,8 @@ public class YellowCard_Effect : Card_Effect
             return;
         }
 
+        Vector2 center = enemy != null ? Get_Target_Position(enemy) : (Vector2)proj.transform.position;
+
         var next = Find_Next_Target(proj.transform.position, st.hit_Enemies);
         if (next == null)
         {
@@ -67,9 +72,10 @@ public class YellowCard_Effect : Card_Effect
             return;
         }
 
-        Vector2 dir = ((Vector2)next.transform.position - (Vector2)proj.transform.position).normalized;
+        Vector2 aim_Pos = Get_Target_Position(next);
+        Vector2 dir = (aim_Pos - center).normalized;
 
-        st.cur_Speed = Mathf.Max(0.01f, st.cur_Speed * speed_Multiplier);
+        st.cur_Speed = Mathf.Max(0.01f, st.cur_Speed * Mathf.Max(0.0001f, speed_Multiplier));
 
         if (damage_Falloff > 0.0f && damage_Falloff < 1.0f)
         {
@@ -101,17 +107,38 @@ public class YellowCard_Effect : Card_Effect
 
         foreach (var h in hits)
         {
-            var e = h.GetComponent<Enemy_Basic>();
+            var e = h.GetComponentInParent<Enemy_Basic>();
             if (e == null) continue;
             if (excluded != null && excluded.Contains(e)) continue;
 
-            float d = Vector2.SqrMagnitude((Vector2)e.transform.position - from);
-            if (d < best_Dist)
+            Vector2 aim_Pos = Get_Target_Position(e);
+            float dSq = (aim_Pos - from).sqrMagnitude;
+            if (dSq < best_Dist)
             {
-                best_Dist = d;
+                best_Dist = dSq;
                 best = e;
             }
         }
         return best;
     }
+
+    private Vector2 Get_Target_Position(Enemy_Basic e)
+    {
+        if (e == null) return Vector2.zero;
+
+        if (!bt_Anchor_Cache.TryGetValue(e, out var anchor) || anchor == null)
+        {
+            var bt = e.GetComponentInChildren<MonoBehaviourTree>(true);
+            anchor = bt != null ? bt.transform : null;
+            bt_Anchor_Cache[e] = anchor;
+        }
+
+        if (anchor != null) return anchor.position;
+
+        var col = e.GetComponentInChildren<Collider2D>();
+        if (col != null) return col.bounds.center;
+
+        return e.transform.position;
+    }
+
 }

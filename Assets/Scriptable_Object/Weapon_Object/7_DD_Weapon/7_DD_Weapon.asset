@@ -29,5 +29,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8ce62a03312befe4586387f9239b78a8, type: 2}
   - {fileID: 11400000, guid: 6232fa81c15ea214a9fe9adee81e89d5, type: 2}
   effect_Data: {fileID: 11400000, guid: 3d2220b0b5bd85745b6175f3ed02f691, type: 2}
+  skill_Effect_Data: {fileID: 11400000, guid: cf7e6a13df73e2b409182f5d3fc45b76, type: 2}
   attack_Strategy: {fileID: 11400000, guid: 24d47a252d5eabc4f9928028c0041152, type: 2}
   is_HoldAttack_Enabled: 0

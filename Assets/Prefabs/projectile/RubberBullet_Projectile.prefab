@@ -176,6 +176,9 @@ MonoBehaviour:
   speed: 15
   max_Bounces: 3
   bounce_Range: 6
+  enemy_Mask:
+    serializedVersion: 2
+    m_Bits: 16896
 --- !u!1001 &998438332460620053
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -129,11 +129,34 @@ public class SaveData
     //Map_Boss
     public bool is_Boss_Stage = false;
 
-    //Player
+    //Player Inventory
     public bool is_Inventory_Saved = false;
     public List<int> saved_Card_IDs = new List<int>();
     public List<int> saved_Item_IDs = new List<int>();
+
+    //Player Money
+    public int player_Money = 0;
     public int player_token = 0;
+
+    //Player Stat
+    public float health_Ratio;
+
+    public int attack_Phase;
+    public int health_Phase;
+    public int atk_Cooltime_Phase;
+    public int move_Phase;
+
+    public int inc_AttackDamage;
+    public int inc_Health;
+    public int inc_Damage_Reduction;
+    public float dec_AttackCooltime;
+    public float inc_MoveSpeed;
+
+    public bool dmg_Inc_To_Lost_Health;
+    public bool card_Match_Dmg_Inc;
+    public bool skill_Coomtime_Has_Dec;
+    public bool money_Earned_Has_Inc;
+    public bool invisible_Teleport;
 }
 
 public interface ISaveable
