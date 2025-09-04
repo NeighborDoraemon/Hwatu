@@ -32,6 +32,7 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
 
     private bool is_Immortal = false; // 적이 무적 상태인지 확인
 
+    private Coroutine bleedingCoroutine;
 
     [HideInInspector]
     public void Player_Initialize(PlayerCharacter_Controller player)
@@ -96,6 +97,12 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
 
     private void Die() 
     {
+        if (bleedingCoroutine != null)
+        {
+            StopCoroutine(bleedingCoroutine);
+            bleedingCoroutine = null;
+        }
+
         Enemy_Generator.i_Enemy_Count--; 
         Debug.Log(Enemy_Generator.i_Enemy_Count);
 
@@ -121,7 +128,11 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
 
     public void Bleeding_Attack(int Tick_Damage, int Count, float Delay)
     {
-        StartCoroutine(Bleeding_Coroutine(Tick_Damage, Count, Delay));
+        if (bleedingCoroutine != null)
+        {
+            StopCoroutine(bleedingCoroutine);
+        }
+        bleedingCoroutine = StartCoroutine(Bleeding_Coroutine(Tick_Damage, Count, Delay));
     }
 
     private IEnumerator Bleeding_Coroutine(int Tick_Damage, int Count, float Delay)
