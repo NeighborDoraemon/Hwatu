@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Gayageum_Attack", menuName = "Weapon/Attack Strategy/Gayageum")]
-public class Gayageum_Attack_Strategy : ScriptableObject, IAttack_Strategy
+public class Gayageum_Attack_Strategy : ScriptableObject, IAttack_Strategy, IWeapon_Effect_Provider
 {
     private PlayerCharacter_Controller player;
     private Weapon_Data weapon_Data;
@@ -23,6 +23,12 @@ public class Gayageum_Attack_Strategy : ScriptableObject, IAttack_Strategy
     [Header("Effect Data")]
     [SerializeField] private Weapon_Effect_Data normal_Attack_EffectData;
     [SerializeField] private Weapon_Effect_Data skill_Attack_EffectData;
+
+    public Weapon_Effect_Data Get_Normal_Attack_EffectData()
+        => normal_Attack_EffectData;
+
+    public Weapon_Effect_Data Get_Normal_Attack_EffectData_WhileSkill()
+        => is_Skill_Active ? skill_Attack_EffectData : null;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
@@ -106,7 +112,6 @@ public class Gayageum_Attack_Strategy : ScriptableObject, IAttack_Strategy
         if (is_Skill_Active) return false;
 
         is_Skill_Active = true;
-        player.last_Skill_Time = Time.time;
         player.StartCoroutine(Skill_Effect(player));
 
         return true;
@@ -116,18 +121,16 @@ public class Gayageum_Attack_Strategy : ScriptableObject, IAttack_Strategy
     {
         float original_Range = attack_Range;
         attack_Range *= 2;
-        Debug.Log($"Cur Attack Range = {attack_Range}");
 
         Vector3 og_Scale = player.effect_Render.transform.localScale;
-        player.effect_Render.transform.localScale *= 2;
+        player.effect_Render.transform.localScale = og_Scale * 2f;
 
         yield return new WaitForSeconds(skill_Active_Time);
 
         attack_Range = original_Range;
-        is_Skill_Active = false;
-
         player.effect_Render.transform.localScale = og_Scale;
 
+        is_Skill_Active = false;
         Debug.Log($"Cur Attack Range = {attack_Range}");
     }
 }

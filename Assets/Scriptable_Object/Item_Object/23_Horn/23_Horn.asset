@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86385ed30deb3bf4094345f126ce6a87, type: 3}
+  m_Name: 23_Horn
+  m_EditorClassIdentifier: 
+  itemName: "\uAD34\uC774\uC758 \uBFD4\uD53C\uB9AC"
+  item_Description: "\uC801\uC744 \uC77C\uC815\uB7C9 \uCC98\uCE58 \uC2DC, \uC77C\uC815
+    \uC2DC\uAC04\uB3D9\uC548 \uACF5\uACA9\uC18D\uB3C4 40%\uC99D\uAC00."
+  item_Icon: {fileID: 7482667652216324306, guid: bd702dbf9f587554cb53d2010b881b9b, type: 3}
+  item_Price: 0
+  itemEffect: {fileID: 11400000, guid: 32c99ce1909add24f8a45a243d765d20, type: 2}
+  isConsumable: 0
+  item_Rarity: 4

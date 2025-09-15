@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: "\uC5FD\uC804 \uC8FC\uBA38\uB2C8"
   item_Description: "500\uC6D0\uC744 \uD68D\uB4DD\uD569\uB2C8\uB2E4"
-  item_Icon: {fileID: 7482667652216324306, guid: ec079c767d78a984687f36367b5aec9a, type: 3}
+  item_Icon: {fileID: 21300000, guid: a33f1c6945fc11b4dbad745b349351d4, type: 3}
   item_Price: 0
   itemEffect: {fileID: 11400000, guid: 43a69a5187de4504db5dae8d0b706c92, type: 2}
   isConsumable: 1

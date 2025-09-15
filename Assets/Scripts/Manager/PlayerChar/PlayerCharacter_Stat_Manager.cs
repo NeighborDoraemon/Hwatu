@@ -32,7 +32,7 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     public float takenDamage_Mul = 1.0f;          // 받는 데미지 증감 배율
     public float defend_Attack_Rate = 0.0f;       // 적의 공격 방어 확률
     public float movementSpeed_Mul = 1.0f;        // 이동속도 증감 배율
-    //public float health_Mul = 1.0f;               // 최대체력 증감 배율
+    //public float health_Mul = 1.0f;             // 최대체력 증감 배율
     public float attack_Cooltime_Mul = 1.0f;      // 공격속도 쿨타임 증감 배율
     public float skill_Cooltime_Mul = 1.0f;       // 스킬 쿨타임 증감 배율
     public int damage_Reduce_Min = 0;             // 데미지 감소 최소치
@@ -41,6 +41,9 @@ public class PlayerCharacter_Stat_Manager : MonoBehaviour
     public float money_Earned_Mul = 1.0f;         // 돈 획득량 배율
     public float teleport_Cooltime_Mul = 1.0f;    // 텔레포트 쿨타임 증감 배율
     public float bleeding_Rate = 0.0f;            // 출혈 확률
+    public int bleed_Damage = 2;                  // 출혈 데미지
+    public int bleed_Count = 5;                   // 출혈 카운트
+    public float bleed_Delay = 1.2f;              // 출혈 적용 딜레이
     public float stun_Rate = 0.0f;                // 기절 확률
 
     [Header("공격 관련 변수")]

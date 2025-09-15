@@ -65,6 +65,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
     private bool is_AtkCoroutine_Running = false;
     private float last_Combo_End_Time = -1.0f;
     [SerializeField] private float combo_Input_Lock = 0.05f;
+    [SerializeField] private LayerMask enemy_LayerMask;
 
     public enum Effect_Channel { Normal, Skill }
 
@@ -834,6 +835,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         int mask = LayerMask.GetMask("Walls", "Platform");
         var col = GetComponent<Collider2D>();
         Vector2 size = col.bounds.size;
+
+        Vector2 start_Pos = transform.position;
         Vector2 origin = (Vector2)transform.position + col.offset;
 
         RaycastHit2D hit = Physics2D.BoxCast(
@@ -846,6 +849,35 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
 
         if (hit.collider != null)
             adjusted_Dist = hit.distance;
+
+        Vector2 end_Pos = start_Pos + direction * adjusted_Dist;
+        if (has_VineAmulet_Effect && adjusted_Dist > 0.01f)
+        {
+            Vector2 mid = (start_Pos + end_Pos) * 0.5f;
+
+            Vector2 box_Size = new Vector2(size.x + adjusted_Dist, size.y);
+
+            float angle_Z = transform.eulerAngles.z;
+
+            Collider2D[] enemies = Physics2D.OverlapBoxAll(mid, box_Size, angle_Z, enemy_LayerMask);
+
+            if (enemies != null && enemies.Length > 0)
+            {
+                HashSet<Collider2D> visited = new HashSet<Collider2D>();
+                foreach (var e_Col in enemies)
+                {
+                    if (e_Col == null || visited.Contains(e_Col)) continue;
+                    visited.Add(e_Col);
+
+                    var enemy = e_Col.GetComponent<Enemy_Basic>();
+                    if (enemy != null)
+                    {
+                        enemy.TakeDamage(10);
+                    }
+                }
+            }
+        }
+
         transform.Translate(direction * adjusted_Dist);
 
         animator.SetTrigger("Teleport");
@@ -1445,10 +1477,32 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         }
     }
 
+    private static bool Has_Frame(Weapon_Effect_Data data, string motion, int frame)
+    {
+        if (data == null) return false;
+        var effect_Info = data.Get_Effect_Info(motion);
+        if (effect_Info == null || effect_Info.frame_Effects == null) return false;
+        return effect_Info.frame_Effects.Exists(fe => fe.frame_Number == frame);
+    }
+
     public void Show_Normal_Effect(string motion_Name_And_Frame)
     {
-        var data = cur_Weapon_Data != null ? cur_Weapon_Data.effect_Data : null;
-        Show_Effect_Internal(motion_Name_And_Frame, Effect_Channel.Normal, data);
+        var parts = motion_Name_And_Frame.Split(',');
+        if (parts.Length < 2) return;
+        string motion = parts[0].Trim();
+        if (!int.TryParse(parts[1], out int frame)) return;
+
+        var provider = attack_Strategy as IWeapon_Effect_Provider;
+
+        var base_Data = provider?.Get_Normal_Attack_EffectData()
+                       ?? (cur_Weapon_Data != null ? cur_Weapon_Data.effect_Data : null);
+
+        var override_Data = provider?.Get_Normal_Attack_EffectData_WhileSkill();
+        var data_To_Use = (override_Data != null && Has_Frame(override_Data, motion, frame))
+                          ? override_Data
+                          : base_Data;
+
+        Show_Effect_Internal(motion_Name_And_Frame, Effect_Channel.Normal, data_To_Use);
     }
 
     public void Show_Skill_Effect(string motion_Name_And_Frame)

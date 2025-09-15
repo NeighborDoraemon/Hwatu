@@ -724,6 +724,9 @@ MonoBehaviour:
   money_Earned_Mul: 1
   teleport_Cooltime_Mul: 1
   bleeding_Rate: 0
+  bleed_Damage: 2
+  bleed_Count: 5
+  bleed_Delay: 1.2
   stun_Rate: 0
   comboTime: 0.3
   attack_Cooldown: 1
@@ -779,6 +782,7 @@ MonoBehaviour:
   has_BowSheath_Effect: 0
   has_EarRing_Effect: 0
   has_Dice_Effect: 0
+  has_VineAmulet_Effect: 0
   earRing_Explosion_Prefab: {fileID: 0}
   is_StatUI_Visible: 0
   rb: {fileID: 3124059131931867968}
@@ -806,12 +810,15 @@ MonoBehaviour:
   is_Facing_Right: 1
   weapon_Animator: {fileID: 0}
   combo_Input_Lock: 0.05
+  enemy_LayerMask:
+    serializedVersion: 2
+    m_Bits: 16896
   normal_Effect:
-    render: {fileID: 0}
-    animator: {fileID: 0}
+    render: {fileID: 4522405444115821180}
+    animator: {fileID: 4023915199526736471}
   skill_Effect:
-    render: {fileID: 0}
-    animator: {fileID: 0}
+    render: {fileID: 8787919947622842568}
+    animator: {fileID: 6925280399157165396}
   isInvincible: 0
   is_Item_Change: 0
   card_Change_Cooldown: 2

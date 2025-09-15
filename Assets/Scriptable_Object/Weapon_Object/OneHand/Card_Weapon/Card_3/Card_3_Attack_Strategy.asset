@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 802b02bf1cee9514d9cc3576078ab689, type: 3}
-  m_Name: Card_1_Attack_Strategy
+  m_Name: Card_3_Attack_Strategy
   m_EditorClassIdentifier: 
   projectile_Prefab: {fileID: 4150010414422937313, guid: 382a799ee5aa5834e9a23ce7c7cdc1af, type: 3}
   effects:
@@ -20,8 +20,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4e3ef04dc2158ee4c9768b74b848ca0d, type: 2}
   - {fileID: 11400000, guid: a8d2e518ce553da4aa8f09dbc914afc3, type: 2}
   probabilities:
-  - 0
-  - 1
-  - 0
-  - 0
-  - 0
+  - 0.4
+  - 0.3
+  - 0.17
+  - 0.1
+  - 0.03

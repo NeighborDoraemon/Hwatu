@@ -19,4 +19,3 @@ public class Item : ScriptableObject
         itemEffect.ApplyEffect(player);
     }
 }
-
