@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86385ed30deb3bf4094345f126ce6a87, type: 3}
+  m_Name: 24_Bullet
+  m_EditorClassIdentifier: 
+  itemName: "\uBD80\uC2DD\uB41C \uCD1D\uC54C"
+  item_Description: "\uCD1D\uB958\uC758 \uBB34\uAE30 \uD22C\uC0AC\uCCB4\uC5D0 \uCD9C\uD608\uC774
+    \uBD80\uC5EC\uB429\uB2C8\uB2E4."
+  item_Icon: {fileID: 21300000, guid: e20dc9d25cd4ded42bef8311bead91aa, type: 3}
+  item_Price: 350
+  itemEffect: {fileID: 11400000, guid: 2e13bb64672f4a845887ecde3d3a0e0b, type: 2}
+  isConsumable: 0
+  item_Rarity: 1

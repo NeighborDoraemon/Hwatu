@@ -23,6 +23,7 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
     [HideInInspector] public bool has_EarRing_Effect = false;
     [HideInInspector] public bool has_Dice_Effect = false;
     [HideInInspector] public bool has_VineAmulet_Effect = false;
+    [HideInInspector] public bool has_CorrodedBullet_Effect = false;
 
     [HideInInspector] public GameObject earRing_Explosion_Prefab;
 

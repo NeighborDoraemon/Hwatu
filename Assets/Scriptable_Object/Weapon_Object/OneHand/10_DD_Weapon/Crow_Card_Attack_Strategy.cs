@@ -16,6 +16,10 @@ public class Crow_Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
     public GameObject projectile_Prefab;
     private float projectile_Speed = 10.0f;
 
+    [Header("Effect Table")]
+    public List<Card_Effect> effects;
+    [Range(0f, 1f)] public List<float> probabilities;
+
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
         if (player == null || weapon_Data == null)
@@ -66,11 +70,39 @@ public class Crow_Card_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public void Shoot(PlayerCharacter_Controller player, Transform fire_Point)
     {
-        GameObject projectile = Instantiate(projectile_Prefab, fire_Point.position, Quaternion.identity);
-        Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
+        if (projectile_Prefab == null) return;
 
-        Vector2 shootDirection = (player.is_Facing_Right) ? Vector2.right : Vector2.left;
-        rb.velocity = shootDirection * projectile_Speed;
+        Card_Effect selected = Select_Effect();
+
+        GameObject go = Object.Instantiate(projectile_Prefab, fire_Point.position, Quaternion.identity);
+        var proj = go.GetComponent<Card_Projectile>();
+
+        Vector2 dir = (player.is_Facing_Right) ? Vector2.right : Vector2.left;
+        proj.Initialized(player, selected, dir, projectile_Speed);
+    }
+
+    private Card_Effect Select_Effect()
+    {
+        if (effects == null || effects.Count == 0) return null;
+        if (probabilities == null || probabilities.Count != effects.Count)
+            return effects[0];
+
+        float total = 0.0f;
+        for (int i = 0; i < probabilities.Count; i++)
+            total += Mathf.Max(0.0f, probabilities[i]);
+
+        if (total <= 0.0f)
+            return effects[0];
+
+        float pick = Random.value * total;
+
+        float acc = 0.0f;
+        for (int i = 0; i < effects.Count; i++)
+        {
+            acc += Mathf.Max(0.0f, probabilities[i]);
+            if (pick <= acc) return effects[i];
+        }
+        return effects[effects.Count - 1];
     }
 
     public bool Crow_Is_Protecting()

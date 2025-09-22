@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 1077115963123132123}
   - component: {fileID: 3012034399490944275}
   - component: {fileID: 7744226479381433081}
-  - component: {fileID: 523025914981271775}
   - component: {fileID: 1973879340841274005}
+  - component: {fileID: -6691001006632022269}
   m_Layer: 13
   m_Name: Bullet_Projectile
   m_TagString: Attack
@@ -115,19 +115,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &523025914981271775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1335327918262151755}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10dc13abdcb00304a929cdc4671990f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  final_Damage: 0
 --- !u!61 &1973879340841274005
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -140,10 +127,10 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 18944
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 112064
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -173,6 +160,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.01}
   m_EdgeRadius: 0
+--- !u!114 &-6691001006632022269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335327918262151755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45c8794b6fc7d8044915fb8bd4d4e3be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  final_Damage: 0
 --- !u!1001 &8378294403429797603
 PrefabInstance:
   m_ObjectHideFlags: 0

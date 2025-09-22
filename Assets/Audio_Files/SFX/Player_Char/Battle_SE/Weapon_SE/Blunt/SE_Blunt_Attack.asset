@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed60aa285a9ca8b409501b86eaae8a6e, type: 3}
+  m_Name: SE_Blunt_Attack
+  m_EditorClassIdentifier: 
+  clips:
+  - {fileID: 8300000, guid: f26ec1b495774dd4badf451d38a71b05, type: 3}
+  volume: 0.5
+  pitch_Random: {x: 0.98, y: 1.02}
+  max_Simultaneous: 5
+  cooldown: 0
+  mixer_Group: {fileID: 3274265400699389529, guid: d38e156d187e2f24aaa6014d8b10d34b, type: 2}
+  spatial_Blend: 0

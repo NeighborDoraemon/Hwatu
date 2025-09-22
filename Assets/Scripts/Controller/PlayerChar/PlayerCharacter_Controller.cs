@@ -67,6 +67,16 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
     [SerializeField] private float combo_Input_Lock = 0.05f;
     [SerializeField] private LayerMask enemy_LayerMask;
 
+    [Header("Audio/Sound")]
+    [SerializeField] private PlayerChar_Audio_Proxy audio_Proxy;
+    [SerializeField] private float base_Step_Interval = 0.45f;
+    [SerializeField] private float min_Step_Interval = 0.18f;
+    [SerializeField] private float footstep_MinSpeed = 0.05f;
+    [SerializeField, Range(0.25f, 1.0f)]
+    private float footstep_Interval_Scale = 0.75f;
+
+    private float footstep_Timer;
+
     public enum Effect_Channel { Normal, Skill }
 
     [System.Serializable]
@@ -196,6 +206,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
 
         skill_Cooldown_Overlay.fillAmount = 0.0f;
         skill_Cooldown_Overlay.enabled = false;
+
+        if (!audio_Proxy) audio_Proxy = GetComponent<PlayerChar_Audio_Proxy>();
 
         Current_Player_State = Player_State.Normal; // 플레이어 현재상태 초기화 KYH
         Current_Event_State = Event_State.None; //이벤트 상태 초기화
@@ -614,6 +626,26 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             float speed = movementSpeed * movementSpeed_Mul;
             rb.velocity = new Vector2(movement.x * speed, rb.velocity.y);
         }
+
+        Try_PlayFootstep_ByTimer();
+    }
+
+    private void Try_PlayFootstep_ByTimer()
+    {
+        if (!isGrounded || is_Knock_Back || Time.timeScale == 0.0f) return;
+
+        float abs_VX = Mathf.Abs(rb.velocity.x);
+        if (abs_VX < footstep_MinSpeed) return;
+
+        float nominal_Max = Mathf.Max(0.01f, movementSpeed * movementSpeed_Mul);
+        float speed01 = Mathf.Clamp01(abs_VX / nominal_Max);
+        float interval = Mathf.Lerp(base_Step_Interval, min_Step_Interval, speed01);
+
+        footstep_Timer -= Time.deltaTime;
+        if (footstep_Timer > 0.0f) return;
+
+        audio_Proxy.Play_Footstep();
+        footstep_Timer = interval;
     }
 
     public void On_Move_Input(Vector2 input)
