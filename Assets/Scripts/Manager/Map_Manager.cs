@@ -17,6 +17,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
     [SerializeField] private List<Map_Value> Map_Data;
     [SerializeField] private Map_Value FB_Map_Data;
     [SerializeField] private List<Map_Value> Event_Map_Data;
+    [SerializeField] private Map_Value Fmb_Map_Data; // First miniboss Map Data
 
     [Header("Second Stage")]
     [SerializeField] private List<Map_Value> Second_Stage_Map_Data;
@@ -48,6 +49,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
 
     [Header("Boss Objects")]
     [SerializeField] private GameObject First_Boss;
+    [SerializeField] private GameObject Obj_Fmb;
 
 
     [Header("Objects")]
@@ -99,6 +101,15 @@ public class Map_Manager : MonoBehaviour, ISaveable
 
     private int i_player_token = 0;
 
+    private bool is_Fmb_Cleared = false; // First Mini Boss Cleared
+    private bool is_Fmb_Now = false; // First Mini Boss Now
+
+    // New Values for New Logic
+    private List<int> New_map_Index_List = new List<int>();
+    private List<int> New_second_map_Index_List = new List<int>();
+    private List<int> event_map_Index_List = new List<int>();
+
+
     // Create By JBJ
     [Header("BronzeBell Reroll Strategy")]
     [SerializeField] private BronzeBell_Attack_Strrategy BB_Strat;
@@ -139,6 +150,11 @@ public class Map_Manager : MonoBehaviour, ISaveable
         data.is_Event_Now = is_Event_Now;
         data.is_Hunting_Cleared = is_Hunting_Cleared; // Hunting Cleared
         data.player_token = i_player_token; // Player Token
+
+        data.new_map_index_list = New_map_Index_List;
+        data.new_event_map_list = event_map_Index_List;
+
+        data.is_Fmb_Now = is_Fmb_Now;
     }
 
     private void Load_Saved_Data()
@@ -163,6 +179,11 @@ public class Map_Manager : MonoBehaviour, ISaveable
         is_Event_Now = Save_Manager.Instance.Get<bool>(data => data.is_Event_Now); //Event Now
         is_Hunting_Cleared = Save_Manager.Instance.Get<bool>(data => data.is_Hunting_Cleared); //Hunting Cleared
         i_player_token = Save_Manager.Instance.Get<int>(data => data.player_token); // Player Token
+
+        New_map_Index_List = Save_Manager.Instance.Get<List<int>>(data => data.new_map_index_list);
+        event_map_Index_List = Save_Manager.Instance.Get<List<int>>(data => data.new_event_map_list);
+
+        is_Fmb_Now = Save_Manager.Instance.Get<bool>(data => data.is_Fmb_Now); // First Mini Boss Now
     }
 
     private void Load_Token()
@@ -255,14 +276,18 @@ public class Map_Manager : MonoBehaviour, ISaveable
 
         if (Save_Manager.Instance.Get<bool>(data => data.is_Map_Saved))
         {
-            Load_Saved_Data();
+            Load_Saved_Data();  // have to Change***********************************
             Make_Lists();
-            New_Portal_Method(false);
+            //New_Portal_Method(false);
+            New_New_Portal_Method(false);
+
             StartCoroutine(Wait_For_Enemy_Spawn());
         }
         else
         {
-            Shuffle_Maps();
+            //Shuffle_Maps();
+            New_Shuffle_Maps();
+
             IsOnPortal = false;
         }
         Obj_e_Generator.Set_Use_Count(First_Using_Map_Count);
@@ -298,8 +323,8 @@ public class Map_Manager : MonoBehaviour, ISaveable
                     player_Input.SwitchCurrentActionMap("Menu");
                     new_Fade.Fade_Out(() =>
                     {
-                        //Portal_Method(instrument);
-                        New_Portal_Method(true);
+                        //New_Portal_Method(true);
+                        New_New_Portal_Method(true);
 
                         new_Fade.Fade_In(() =>
                         {
@@ -335,8 +360,6 @@ public class Map_Manager : MonoBehaviour, ISaveable
         i_player_token = Obj_Player.GetComponent<PlayerCharacter_Controller>().i_Token; // Player Token
         Obj_Player.transform.position = mv_Current_Map.v_Map_Spawnpoint;
 
-        //Debug.Log("Current Map's Name :" + mv_Current_Map.name);
-
         Save_Manager.Instance.Modify(data =>
         {
             data.is_Map_Saved = true;
@@ -346,8 +369,14 @@ public class Map_Manager : MonoBehaviour, ISaveable
 
         if (is_Boss_Stage)
         {
-            //First_Boss.GetComponent<FB_Castle_Wall>().Call_Start();
-            StartCoroutine(Wait_For_Boss());
+            if (!is_Fmb_Now)
+            {
+                StartCoroutine(Wait_For_Boss());
+            }
+            else
+            {
+                StartCoroutine(Wait_For_Fmb());
+            }
             return;
         }
 
@@ -373,10 +402,162 @@ public class Map_Manager : MonoBehaviour, ISaveable
         }
     }
 
+    private void New_New_Portal_Method(bool b_index)
+    {
+        if (!b_index) // Saved Data is already exist  //Have to Load Last Map
+        {
+            if (is_Event_Now)
+            {
+                mv_Current_Map = Event_Map_Data[event_map_Index_List[0]];
+            }
+            else if (is_Market_Now)
+            {
+                mv_Current_Map = Market_Data; // Market Map
+                Market_Stall.GetComponent<Obj_Market_Stall>().Market_Call();
+            }
+            else if (is_Boss_Stage)
+            {
+                if (is_Fmb_Now)
+                {
+                    mv_Current_Map = Fmb_Map_Data; // First Mini Boss Map
+                    StartCoroutine(Wait_For_Fmb());
+                }
+                else
+                {
+                    mv_Current_Map = FB_Map_Data; // Boss Map
+                    StartCoroutine(Wait_For_Boss());
+                }
+            }
+            else
+            {
+                mv_Current_Map = Map_Data[New_map_Index_List[0]];
+            }
+
+            Obj_e_Generator.Set_Current(mv_Current_Map);
+
+            i_player_token = Obj_Player.GetComponent<PlayerCharacter_Controller>().i_Token; // Player Token
+            Obj_Player.transform.position = mv_Current_Map.v_Map_Spawnpoint;
+
+            Save_Manager.Instance.Modify(data =>
+            {
+                data.is_Map_Saved = true;
+                data.is_Inventory_Saved = true;
+            });
+            Save_Manager.Instance.SaveAll();
+
+            if (!is_Market_Now && !is_Event_Now)
+            {
+                Debug.Log("Enemy Spawn Called");
+                Obj_e_Generator.Set_Next();
+                Obj_e_Generator.New_Enemy_Spawn(mv_Current_Map);
+            }
+        }
+        else // Move by Portal
+        {
+            if (is_Event_Now)
+            {
+                is_Event_Now = false;
+                event_map_Index_List.RemoveAt(0);
+            }
+            else if (is_Market_Now)
+            {
+                is_Market_Now = false;
+                is_take_Market = true;
+            }
+            else if (is_Boss_Stage && is_Fmb_Now)
+            {
+                is_Fmb_Now = false;
+                is_Boss_Stage = false;
+
+                is_Fmb_Cleared = true;
+            }
+            else if (!is_Event_Now && !is_Market_Now && is_Boss_Stage) // It was Normal Stage
+            {
+                New_map_Index_List.RemoveAt(0);
+            }
+
+            // Now Set Current Map
+            if (New_map_Index_List.Count == 0) // Goto FB Boss
+            {
+                mv_Current_Map = FB_Map_Data; // Boss Map
+                is_Boss_Stage = true;
+                StartCoroutine(Wait_For_Boss());
+            }
+            else if (New_map_Index_List.Count <= 6 && New_map_Index_List.Count >= 4)
+            {
+                if (New_map_Index_List.Count == 4)
+                {
+                    if (!is_Fmb_Cleared)
+                    {
+                        mv_Current_Map = Fmb_Map_Data; // First Mini Boss Map
+                        is_Boss_Stage = true;
+                        is_Fmb_Now = true;
+                        StartCoroutine(Wait_For_Fmb());
+                    }
+                    else if (!is_take_Market)
+                    {
+                        mv_Current_Map = Market_Data; // Market Map
+                        is_Market_Now = true;
+                        Market_Stall.GetComponent<Obj_Market_Stall>().Market_Call();
+                    }
+                    else
+                    {
+                        int rand = Random.Range(1, 11);
+                        if (rand <= 4 && event_map_Index_List.Count > 0)
+                        {
+                            mv_Current_Map = Event_Map_Data[event_map_Index_List[0]];
+                            is_Event_Now = true;
+                        }
+                    }
+                }
+                else
+                {
+                    int rand = Random.Range(1, 11);
+                    if (rand <= 4 && event_map_Index_List.Count > 0)
+                    {
+                        mv_Current_Map = Event_Map_Data[event_map_Index_List[0]];
+                        is_Event_Now = true;
+                    }
+                }
+            }
+
+            if (!is_Boss_Stage && !is_Market_Now && !is_Event_Now) // It was Normal Stage
+            {
+                mv_Current_Map = Map_Data[New_map_Index_List[0]];
+                New_map_Index_List.RemoveAt(0);
+            }
+
+            Obj_e_Generator.Set_Current(mv_Current_Map);
+
+            i_player_token = Obj_Player.GetComponent<PlayerCharacter_Controller>().i_Token; // Player Token
+            Obj_Player.transform.position = mv_Current_Map.v_Map_Spawnpoint;
+
+            Save_Manager.Instance.Modify(data =>
+            {
+                data.is_Map_Saved = true;
+                data.is_Inventory_Saved = true;
+            });
+            Save_Manager.Instance.SaveAll();
+
+            if (!is_Market_Now && !is_Event_Now)
+            {
+                Debug.Log("Enemy Spawn Called");
+                Obj_e_Generator.Set_Next();
+                Obj_e_Generator.New_Enemy_Spawn(mv_Current_Map);
+            }
+        }
+    }
+
     private IEnumerator Wait_For_Boss()
     {
         yield return null;
         First_Boss.GetComponent<FB_Castle_Wall>().Call_Start();
+    }
+
+    private IEnumerator Wait_For_Fmb()
+    {
+        yield return null;
+        Obj_Fmb.GetComponent<Fmb_Spiritual>().Call_Start();
     }
 
     private void Set_New_Current()
@@ -395,11 +576,27 @@ public class Map_Manager : MonoBehaviour, ISaveable
                 }
                 else
                 {
+                    if(!is_Fmb_Cleared && map_Index == 3)
+                    {
+                        mv_Current_Map = Fmb_Map_Data; // First Mini Boss Map
+                        is_Boss_Stage = true;
+                        is_Fmb_Now = true;
+                        Obj_e_Generator.Set_Current(mv_Current_Map);
+                        return;
+                    }
+
+                    is_Boss_Stage = false; // Reset Boss Stage
+                    is_Fmb_Now = false;
+
+                    if(!is_Fmb_Cleared && map_Index > 3)
+                    {
+                        is_Fmb_Cleared = true; // First Mini Boss Cleared
+                    }
+
                     int rand = 10;
                     if (map_Index >= 2 && map_Index <= 4)
                     {
                         rand = Random.Range(1, 11);
-                        Debug.Log("Event Random Index : " + rand);
                     }
 
                     if (rand < 4 && Event_Map_Shuffled_Queue.Count != 0)
@@ -535,6 +732,51 @@ public class Map_Manager : MonoBehaviour, ISaveable
         }
     }
 
+    private void New_Shuffle_Maps()
+    {
+        New_map_Index_List.Clear();
+        List<int> random_Queue = new List<int>();
+
+        for (int i = 0; i < Map_Data.Count; i++)
+        {
+            random_Queue.Add(i);
+        }
+        for (int i = 0; i < First_Using_Map_Count; i++)
+        {
+            int rand = Random.Range(0, random_Queue.Count);
+
+            New_map_Index_List.Add(random_Queue.ElementAt(rand));
+            random_Queue.RemoveAt(rand);
+        }
+
+        random_Queue.Clear();
+        for (int i = 0; i < Event_Map_Data.Count; i++)
+        {
+            random_Queue.Add(i);
+        }
+        for (int i = 0; i < Event_Map_Data.Count; i++)
+        {
+            int rand = Random.Range(0, random_Queue.Count);
+
+            event_map_Index_List.Add(random_Queue.ElementAt(rand));
+            random_Queue.RemoveAt(rand);
+        }
+        
+        random_Queue.Clear();
+        for (int i = 0; i < Map_Data.Count; i++)
+        {
+            random_Queue.Add(i);
+        }
+        // Second Stage Shuffle
+        for (int i = 0; i < Second_Using_Map_Count; i++)
+        {
+            int rand = Random.Range(0, random_Queue.Count);
+
+            Second_Map_Index_List.Add(random_Queue.ElementAt(rand));
+            random_Queue.RemoveAt(rand);
+        }
+    }
+
     public bool Check_Boss_Stage()
     {
         return true;
@@ -585,6 +827,14 @@ public class Map_Manager : MonoBehaviour, ISaveable
     {
         mv_Current_Map = Event_Map_Shuffled_Queue.Dequeue();
         v_Next_SpawnPoint = mv_Current_Map.v_Map_Spawnpoint;
+        is_Next_Event = false;
+    }
+
+    private void New_Set_Current_Event()
+    {
+        mv_Current_Map = Event_Map_Data[event_map_Index_List[0]];
+        v_Next_SpawnPoint = mv_Current_Map.v_Map_Spawnpoint;
+        event_map_Index_List.RemoveAt(0);
         is_Next_Event = false;
     }
 

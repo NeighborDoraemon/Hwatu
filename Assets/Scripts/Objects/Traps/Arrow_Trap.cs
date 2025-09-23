@@ -10,6 +10,8 @@ public class Arrow_Trap : MonoBehaviour
 
     [SerializeField] private List<Arrow_Trap_List> arrow_list = new List<Arrow_Trap_List>();
 
+    [SerializeField] private Animator trap_Animator;
+
     private bool is_Once = false;
 
     // Start is called before the first frame update
@@ -31,6 +33,10 @@ public class Arrow_Trap : MonoBehaviour
             if (!is_Once)
             {
                 StartCoroutine(Spawn_Arrow());
+                if (trap_Animator != null)
+                {
+                    trap_Animator.SetTrigger("On_Trigger");
+                }
             }
         }
     }

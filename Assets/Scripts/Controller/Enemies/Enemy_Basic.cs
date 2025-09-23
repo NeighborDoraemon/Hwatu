@@ -23,6 +23,8 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
 
     [Header("Others")]
     [SerializeField] private MonoBehaviour Second_Phase_Script;
+    [SerializeField] private bool is_No_Counted = false; // 적이 죽어도 카운트되지 않음
+
     private Enemy_Second_Phase Second_Phase_Controller;
 
     private PlayerCharacter_Controller player_Con;
@@ -103,18 +105,22 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
             bleedingCoroutine = null;
         }
 
-        Enemy_Generator.i_Enemy_Count--; 
-        Debug.Log(Enemy_Generator.i_Enemy_Count);
-
-        if(player_Con == null)
+        if (!is_No_Counted)
         {
-            Debug.Log("Player null");
+            Enemy_Generator.i_Enemy_Count--;
+            Debug.Log(Enemy_Generator.i_Enemy_Count);
+
+
+            if (player_Con == null)
+            {
+                Debug.Log("Player null");
+            }
+
+            int DropMoney = Random.Range(min_Money_Drop, Max_Money_Drop);
+            player_Con.Add_Player_Money(DropMoney);
+
+            player_Con.Enemy_Killed();
         }
-
-        int DropMoney = Random.Range(min_Money_Drop, Max_Money_Drop);
-        player_Con.Add_Player_Money(DropMoney);
-
-        player_Con.Enemy_Killed();
 
         if (this.transform.parent != null)
         {

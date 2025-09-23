@@ -20,8 +20,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4e3ef04dc2158ee4c9768b74b848ca0d, type: 2}
   - {fileID: 11400000, guid: a8d2e518ce553da4aa8f09dbc914afc3, type: 2}
   probabilities:
-  - 0
-  - 1
-  - 0
-  - 0
-  - 0
+  - 0.2
+  - 0.2
+  - 0.2
+  - 0.2
+  - 0.2

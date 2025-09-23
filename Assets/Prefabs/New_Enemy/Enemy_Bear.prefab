@@ -1128,7 +1128,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: -32875214, guid: 478afc754a332504386f2ca8b3517052, type: 3}
+  m_Sprite: {fileID: 1497249454, guid: 058090150ef3e7b42b4c8aba9a472588, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1246,6 +1246,7 @@ MonoBehaviour:
   Max_Money_Drop: 15
   Effect_Animator: {fileID: 6120516786308589915}
   Second_Phase_Script: {fileID: 0}
+  is_No_Counted: 0
 --- !u!114 &9167786879079461760
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,7 +10,7 @@ public class Enemy_Porjectile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Time_Destroy();
+        StartCoroutine(Time_Destroy());
     }
 
     // Update is called once per frame

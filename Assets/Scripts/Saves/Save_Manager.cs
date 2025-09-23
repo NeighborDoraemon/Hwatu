@@ -119,6 +119,11 @@ public class SaveData
     public int Map_Index;
     public int Second_Map_Index;
     public bool is_Map_Saved = false;
+
+    public List<int> new_map_index_list = new List<int>();
+    public List<int> new_event_map_list = new List<int>();
+    public bool is_Fmb_Now = false;
+
     //Map-market
     public bool is_Market_Now = false;
     public bool is_take_Market = false;
