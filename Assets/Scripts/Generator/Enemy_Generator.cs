@@ -200,6 +200,11 @@ public class Enemy_Generator : MonoBehaviour
         Is_Room_Clear = false;
     }
 
+    public void Custom_Room_Cleard()
+    {
+        Is_Room_Clear = true;
+    }
+
     public void From_Other_Add_Enemy()
     {
         i_Enemy_Count++;

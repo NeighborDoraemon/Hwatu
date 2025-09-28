@@ -68,10 +68,10 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
         {
             Debug.Log("Get Heal");
         }
-        //else
-        //{
-        //    Damage_Effect();
-        //}
+        else
+        {
+            Damage_Effect();
+        }
 
 
         if (is_Immortal)
@@ -115,10 +115,10 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
     private void Die() 
     {
         if (is_Dead) return; // 이미 죽은 상태라면 중복 실행 방지
-        //if (colorCoroutine != null)
-        //{
-        //    StopCoroutine(colorCoroutine);
-        //}
+        if (colorCoroutine != null)
+        {
+            StopCoroutine(colorCoroutine);
+        }
 
         if (bleedingCoroutine != null)
         {

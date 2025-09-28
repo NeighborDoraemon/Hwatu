@@ -431,7 +431,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
             else
             {
                 mv_Current_Map = Map_Data[New_map_Index_List[0]];
-                Debug.Log(Map_Data[New_map_Index_List[0]].name);
+                //Debug.Log(Map_Data[New_map_Index_List[0]].name);
             }
 
             Obj_e_Generator.Set_Current(mv_Current_Map);
@@ -474,6 +474,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
             }
             else if (!is_Event_Now && !is_Market_Now && is_Boss_Stage) // It was Normal Stage
             {
+                Debug.Log("Remove Map Index List 0");
                 New_map_Index_List.RemoveAt(0);
             }
 
@@ -524,8 +525,8 @@ public class Map_Manager : MonoBehaviour, ISaveable
 
             if (!is_Boss_Stage && !is_Market_Now && !is_Event_Now) // It was Normal Stage
             {
+                //New_map_Index_List.RemoveAt(0);
                 mv_Current_Map = Map_Data[New_map_Index_List[0]];
-                New_map_Index_List.RemoveAt(0);
             }
 
             Obj_e_Generator.Set_Current(mv_Current_Map);

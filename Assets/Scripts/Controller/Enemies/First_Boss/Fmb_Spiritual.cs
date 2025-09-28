@@ -29,6 +29,11 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
             player.GetComponent<PlayerCharacter_Controller>().Add_Player_Money(DropMoney);
             player.Add_Player_Token(30); // Token Reward
 
+            foreach(GameObject jail in Remain_Jails)
+            {
+                Destroy(jail);
+            }
+            obj_e_Generator.Custom_Room_Cleard();
             Destroy(Fmb_Parent);
         }
         else
@@ -102,6 +107,7 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
     [SerializeField] private GameObject Obj_Groggy_Wall;
     [SerializeField] private List<GameObject> Rock_Position = new List<GameObject>();
     [SerializeField] private GameObject Fmb_Parent;
+    [SerializeField] private Enemy_Generator obj_e_Generator;
 
     [Header("Value")]
     [SerializeField] private IntReference IR_Health;
@@ -154,6 +160,7 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
 
     private bool is_Ending_Text_Shown = false;
 
+    private List<GameObject> Remain_Jails = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
@@ -361,7 +368,8 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
     private IEnumerator Jail_Delay(float delay, Vector3 Player_Position)
     {
         yield return new WaitForSeconds(delay);
-        Instantiate(Obj_Root_Jail, new Vector3(Player_Position.x, gameObject.transform.position.y, 0.0f), Quaternion.identity,this.transform);
+        GameObject new_Jail = Instantiate(Obj_Root_Jail, new Vector3(Player_Position.x, gameObject.transform.position.y, 0.0f), Quaternion.identity/*,this.transform*/);
+        Remain_Jails.Add(new_Jail);
 
         Call_Coroutine();
     }
