@@ -111,13 +111,13 @@ public class Save_Manager
 public class SaveData
 {
     //Maps
-    public List<int> Map_List_Index = new List<int>();
-    public List<int> Second_Map_Index_List = new List<int>();
+    //public List<int> Map_List_Index = new List<int>();
+    //public List<int> Second_Map_Index_List = new List<int>();
 
-    public Map_Value Current_Map;
-    public Map_Value Next_Map;
-    public int Map_Index;
-    public int Second_Map_Index;
+    //public Map_Value Current_Map;
+    //public Map_Value Next_Map;
+    //public int Map_Index;
+    //public int Second_Map_Index;
     public bool is_Map_Saved = false;
 
     public List<int> new_map_index_list = new List<int>();

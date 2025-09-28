@@ -105,6 +105,7 @@ MonoBehaviour:
   arrow_list:
   - Trap: {fileID: 0}
     is_Left: 1
+  trap_Animator: {fileID: 2458955826966970876}
 --- !u!61 &2870981456011438566
 BoxCollider2D:
   m_ObjectHideFlags: 0

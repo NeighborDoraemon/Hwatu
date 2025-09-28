@@ -45,7 +45,7 @@ public class Heal_Box : MonoBehaviour
             e_Basic.TakeDamage(-IR_Attack_Damage.Value);
             e_Basic.Effect_Healed();
         }
-        Debug.Log(healed_Enemy_Basic.Count);
-        Debug.Log("Heal Complete");
+        //Debug.Log(healed_Enemy_Basic.Count);
+        //Debug.Log("Heal Complete");
     }
 }

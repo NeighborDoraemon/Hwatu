@@ -34,6 +34,8 @@ public class Summoner : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
     [SerializeField] private GameObject enemy_Wolf;
 
 
+    private Enemy_Generator Ene_Generator;
+
     private enum Enemies
     {
         HOG,
@@ -169,6 +171,13 @@ public class Summoner : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
         foreach (Enemy_Interface enemy_interface in spawned_Enemy.GetComponentsInChildren<Enemy_Interface>(true)) //적에게 플레이어 전달
         {
             enemy_interface.Player_Initialize(Target_Player.GetComponent<PlayerCharacter_Controller>());
+        }
+
+        Ene_Generator = this.gameObject.GetComponent<Enemy_Basic>().Give_Enemy_Generator();
+
+        foreach (Enemy_Basic enemy in spawned_Enemy.GetComponentsInChildren<Enemy_Basic>(true))
+        {
+            enemy.Get_Enemy_Generator(Ene_Generator);
         }
     }
 

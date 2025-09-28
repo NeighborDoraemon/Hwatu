@@ -135,13 +135,13 @@ public class Map_Manager : MonoBehaviour, ISaveable
 
     public void Save(SaveData data)
     {
-        data.Map_List_Index = Map_Index_List; // Original Index List
-        data.Second_Map_Index_List = Second_Map_Index_List; // Second Stage Original Index List
+        //data.Map_List_Index = Map_Index_List; // Original Index List
+        //data.Second_Map_Index_List = Second_Map_Index_List; // Second Stage Original Index List
 
-        data.Map_Index = map_Index;
-        data.Second_Map_Index = Second_map_Index; // Second Stage Map Index
-        data.Current_Map = mv_Current_Map;
-        data.Next_Map = mv_Next_Map;
+        //data.Map_Index = map_Index;
+        //data.Second_Map_Index = Second_map_Index; // Second Stage Map Index
+        //data.Current_Map = mv_Current_Map;
+        //data.Next_Map = mv_Next_Map;
 
         data.is_Market_Now = is_Market_Now;
         data.is_take_Market = is_take_Market;
@@ -160,19 +160,19 @@ public class Map_Manager : MonoBehaviour, ISaveable
     private void Load_Saved_Data()
     {
         //Load Map Data
-        mv_Next_Map = Save_Manager.Instance.Get<Map_Value>(data=>data.Next_Map);    //Next Map
+        //mv_Next_Map = Save_Manager.Instance.Get<Map_Value>(data=>data.Next_Map);    //Next Map
 
-        Map_Index_List = Save_Manager.Instance.Get<List<int>>(data => data.Map_List_Index); //Original Index List
-        Second_Map_Index_List = Save_Manager.Instance.Get<List<int>>(data => data.Second_Map_Index_List); //Second Stage Original Index List
+        //Map_Index_List = Save_Manager.Instance.Get<List<int>>(data => data.Map_List_Index); //Original Index List
+        //Second_Map_Index_List = Save_Manager.Instance.Get<List<int>>(data => data.Second_Map_Index_List); //Second Stage Original Index List
 
-        map_Index = Save_Manager.Instance.Get<int>(data => data.Map_Index); //Map Index
-        Second_map_Index = Save_Manager.Instance.Get<int>(data => data.Second_Map_Index); //Second Stage Map Index
+        //map_Index = Save_Manager.Instance.Get<int>(data => data.Map_Index); //Map Index
+        //Second_map_Index = Save_Manager.Instance.Get<int>(data => data.Second_Map_Index); //Second Stage Map Index
 
         is_Market_Now = Save_Manager.Instance.Get<bool>(data => data.is_Market_Now); //Market Now
 
         is_take_Market = Save_Manager.Instance.Get<bool>(data => data.is_take_Market); //Market Take
 
-        mv_Current_Map = Save_Manager.Instance.Get<Map_Value>(data => data.Current_Map); //Current Map
+        //mv_Current_Map = Save_Manager.Instance.Get<Map_Value>(data => data.Current_Map); //Current Map
 
         is_Boss_Stage = Save_Manager.Instance.Get<bool>(data => data.is_Boss_Stage); //Boss Stage
 
@@ -277,7 +277,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
         if (Save_Manager.Instance.Get<bool>(data => data.is_Map_Saved))
         {
             Load_Saved_Data();  // have to Change***********************************
-            Make_Lists();
+            //Make_Lists();
             //New_Portal_Method(false);
             New_New_Portal_Method(false);
 
@@ -431,6 +431,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
             else
             {
                 mv_Current_Map = Map_Data[New_map_Index_List[0]];
+                Debug.Log(Map_Data[New_map_Index_List[0]].name);
             }
 
             Obj_e_Generator.Set_Current(mv_Current_Map);

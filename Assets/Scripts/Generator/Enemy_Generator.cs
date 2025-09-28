@@ -37,7 +37,7 @@ public class Enemy_Generator : MonoBehaviour
 
     public static Enemy_Generator Instance { get; private set; }
 
-    [HideInInspector]public static int i_Enemy_Count = 0;
+    [HideInInspector]public int i_Enemy_Count = 0;
 
     private Map_Value Current_Map;
 
@@ -99,10 +99,10 @@ public class Enemy_Generator : MonoBehaviour
     void Update()
     {
         //Debug.Log("Room Clear : " + Is_Room_Clear);
-        if (i_Enemy_Count <= 0 && !Is_Room_Clear)
-        {
-            Check_Need_Spawn();
-        }
+        //if (i_Enemy_Count <= 0 && !Is_Room_Clear)
+        //{
+        //    Check_Need_Spawn();
+        //}
     }
 
     public void New_Enemy_Spawn(Map_Value Current)
@@ -128,6 +128,11 @@ public class Enemy_Generator : MonoBehaviour
                     enemy_interface.Player_Initialize(p_Controller);
                 }
 
+                foreach(Enemy_Basic enemy in spawned_Enemy.GetComponentsInChildren<Enemy_Basic>(true))
+                {
+                    enemy.Get_Enemy_Generator(this);
+                }
+
                 i_Enemy_Count++;
                 Enemy_Count++;
             }
@@ -145,9 +150,15 @@ public class Enemy_Generator : MonoBehaviour
         }
     }
 
-    protected void Check_Need_Spawn() //적 전부 파괴 시 다음Wave로 올리고 스폰을 True로 변경
+    public void Enemy_Died()
     {
-        if (/*i_Enemy_Count <= 0 && !Is_Room_Clear && */!is_Do_Once)
+        i_Enemy_Count--;
+        Check_Need_Spawn();
+    }
+
+    public void Check_Need_Spawn() //적 전부 파괴 시 다음Wave로 올리고 스폰을 True로 변경
+    {
+        if (i_Enemy_Count <= 0 && !Is_Room_Clear && !is_Do_Once)
         {
             is_Do_Once = true;
 

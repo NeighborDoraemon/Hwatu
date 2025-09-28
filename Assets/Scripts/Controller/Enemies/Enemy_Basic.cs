@@ -20,6 +20,8 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
 
     [Header("Effects")]
     [SerializeField] private Animator Effect_Animator;
+    [SerializeField] private SpriteRenderer Sp_Renderer;
+    private Coroutine colorCoroutine;
 
     [Header("Others")]
     [SerializeField] private MonoBehaviour Second_Phase_Script;
@@ -35,11 +37,19 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
     private bool is_Immortal = false; // 적이 무적 상태인지 확인
 
     private Coroutine bleedingCoroutine;
+    private Enemy_Generator Ene_Generator;
+
+    private bool is_Dead = false;
 
     [HideInInspector]
     public void Player_Initialize(PlayerCharacter_Controller player)
     {
         player_Con = player;
+    }
+
+    public void Get_Enemy_Generator(Enemy_Generator enemy_Generator)
+    {
+        Ene_Generator = enemy_Generator;
     }
 
     public void Start()
@@ -58,8 +68,13 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
         {
             Debug.Log("Get Heal");
         }
+        //else
+        //{
+        //    Damage_Effect();
+        //}
 
-        if(is_Immortal)
+
+        if (is_Immortal)
         {
             Debug.Log("Enemy is Immortal, no damage taken.");
             return;
@@ -99,6 +114,12 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
 
     private void Die() 
     {
+        if (is_Dead) return; // 이미 죽은 상태라면 중복 실행 방지
+        //if (colorCoroutine != null)
+        //{
+        //    StopCoroutine(colorCoroutine);
+        //}
+
         if (bleedingCoroutine != null)
         {
             StopCoroutine(bleedingCoroutine);
@@ -107,8 +128,7 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
 
         if (!is_No_Counted)
         {
-            Enemy_Generator.i_Enemy_Count--;
-            Debug.Log(Enemy_Generator.i_Enemy_Count);
+            Ene_Generator.Enemy_Died();
 
 
             if (player_Con == null)
@@ -130,6 +150,7 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
         {
             Destroy(gameObject);
         }
+        is_Dead = true;
     }
 
     public void Bleeding_Attack(int Tick_Damage, int Count, float Delay)
@@ -153,5 +174,38 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
     public void Effect_Healed()
     {
         Effect_Animator.SetTrigger("Trigger_Healed");
+    }
+
+    private void Damage_Effect()
+    {
+        if (Sp_Renderer != null)
+        {
+            Sp_Renderer.color = Color.red;
+
+            if (colorCoroutine != null)
+            {
+                StopCoroutine(colorCoroutine);
+            }
+            colorCoroutine = StartCoroutine(Recover_Color());
+        }
+    }
+
+    private IEnumerator Recover_Color()
+    {
+        // Gradually change the color back to white over time
+        float duration = 0.5f; // Duration of the color change
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            Sp_Renderer.color = Color.Lerp(Color.red, Color.white, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        Sp_Renderer.color = Color.white; // Ensure the color is set to white at the end
+    }
+
+    public Enemy_Generator Give_Enemy_Generator()
+    {
+               return Ene_Generator;
     }
 }

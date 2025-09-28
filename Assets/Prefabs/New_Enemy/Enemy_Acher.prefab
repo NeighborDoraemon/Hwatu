@@ -183,6 +183,9 @@ MonoBehaviour:
   min_Money_Drop: 2
   Max_Money_Drop: 15
   Effect_Animator: {fileID: 1397907357552286468}
+  Sp_Renderer: {fileID: 4638719355493180462}
+  Second_Phase_Script: {fileID: 0}
+  is_No_Counted: 0
 --- !u!114 &611840545369213799
 MonoBehaviour:
   m_ObjectHideFlags: 0
