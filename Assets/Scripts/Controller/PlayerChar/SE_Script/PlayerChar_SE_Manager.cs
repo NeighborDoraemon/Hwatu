@@ -33,6 +33,13 @@ public class Sound_Event : ScriptableObject
 
     [Header("Routing")]
     public AudioMixerGroup mixer_Group;
+
+    public enum Overlap_Policy { Allow_Overlap, Ignore_If_Playing, Steal_Oldest, Restart_On_Same_Emitter }
+
+    [Header("Overlap")]
+    public Overlap_Policy overlap_Policy = Overlap_Policy.Restart_On_Same_Emitter;
+    [Tooltip("같은 발신자에서 같은 사운드를 다시 트리거할 최소 간격(초)")]
+    [Range(0.0f, 0.25f)] public float retrigger_MinInterval = 0.10f;
     
     public AudioClip Pick_Clip()
     {
@@ -61,10 +68,15 @@ public class WeaponType_SFX_Profile : ScriptableObject
 public class SFX_Event_Channel : ScriptableObject
 {
     public event Action<Sound_Event, Vector3> OnPlay;
-
     public void Raise(Sound_Event sound, Vector3 position)
     {
         OnPlay?.Invoke(sound, position);
+    }
+
+    public event Action<Sound_Event, Transform> OnPlay_Attached;
+    public void Raise_Attached(Sound_Event sound, Transform emitter)
+    {
+        OnPlay_Attached?.Invoke(sound, emitter);
     }
 }
 

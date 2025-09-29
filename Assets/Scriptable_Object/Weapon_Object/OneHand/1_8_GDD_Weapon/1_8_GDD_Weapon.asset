@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 1_8_GDD_Weapon
   m_EditorClassIdentifier: 
   weapon_Name: "\uBD80\uCC44"
+  weapon_Type: 4
   weapon_Icon: {fileID: 21300000, guid: 32d6fe097fa71684c9b24e20130336c9, type: 3}
   comb_Name: "1 8 \uAD11\uB561"
   attack_Damage: 10
@@ -35,5 +36,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9c7fd104b5725c24884a40ca0d1bd2fe, type: 2}
   - {fileID: 11400000, guid: a6979e658493ddc44894202d63a47dda, type: 2}
   effect_Data: {fileID: 11400000, guid: c4ad39a5a395963479fbf88c965d8ddf, type: 2}
+  skill_Effect_Data: {fileID: 0}
   attack_Strategy: {fileID: 11400000, guid: 55dc28d23dd44cd40a6637008e2dfc95, type: 2}
   is_HoldAttack_Enabled: 0
+  skill_SE: {fileID: 0}

@@ -1666,23 +1666,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
                 switch (ctx.phase)
                 {
                     case InputActionPhase.Started:
-                        //if (!is_AtkCoroutine_Running)
-                        //{
-                        //    isAttacking = true;
-                        //    can_Card_Change = false;
-                        //    animator.SetBool("isHoldAtk", true);
-                        //    StartCoroutine(Continuous_Attack());
-                        //}
                         On_Attack_Button_Down();
                         break;
                     case InputActionPhase.Canceled:
-                        //if (attack_Strategy is Bow_Attack_Strategy bowAttack)
-                        //{
-                        //    bowAttack.Release_Attack(this);
-                        //}
-                        //isAttacking = false;
-                        //animator.SetBool("isHoldAtk", false);
-                        //can_Card_Change = true;
                         On_Attack_Button_Up();
                         break;
                 }
@@ -1691,25 +1677,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             {
                 if (ctx.phase == InputActionPhase.Performed)
                 {
-                    //if (Is_Last_Attack())
-                    //{
-                    //    End_Attack();
-                    //    return;
-                    //}
-
-                    //if (Is_Cooldown_Complete())
-                    //{
-                    //    Perform_Attack();
-                    //}
-                    //else if (Can_Combo_Attack())
-                    //{
-                    //    Perform_Attack();
-                    //}
-                    //else if (Is_Combo_Complete())
-                    //{
-                    //    End_Attack();
-                    //}
-
                     if (!canAttack)
                         return;
 
@@ -1794,6 +1761,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         {
             animator.SetBool("isAttacking", true);
             attack_Strategy.Attack(this, cur_Weapon_Data);
+
+            audio_Proxy.Play_Attack();
+
             Update_Attack_Timers();
 
             if (Is_Last_Attack())
@@ -1805,6 +1775,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         {
             animator.SetBool("Can_JumpAtk", true);
             attack_Strategy.Attack(this, cur_Weapon_Data);
+
+            audio_Proxy.Play_Attack();
+
             can_JumpAtk = false;
             StartCoroutine(Reset_JumpAtk_Param_Next_Frame());
         }
@@ -1905,6 +1878,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             if (attack_Strategy != null)
             {
                 attack_Strategy.Attack(this, cur_Weapon_Data);
+                audio_Proxy.Play_Attack();
                 can_Card_Change = false;
             }
             else
@@ -2216,6 +2190,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         else
         {
             On_Player_Damaged?.Invoke();
+            audio_Proxy?.Play_Hurt();
         }
 
         camera_Manager.Shake_Camera();

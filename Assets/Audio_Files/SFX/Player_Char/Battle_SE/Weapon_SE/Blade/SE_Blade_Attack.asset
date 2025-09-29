@@ -15,8 +15,15 @@ MonoBehaviour:
   clips:
   - {fileID: 8300000, guid: 8578bc2e3a2dfec4b806dd6604dfe20d, type: 3}
   volume: 0.5
+  volume_Random: {x: 0.95, y: 1.05}
   pitch_Random: {x: 0.98, y: 1.02}
-  max_Simultaneous: 5
+  spatial_Blend: 0
+  rolloff: 1
+  min_Distance: 1
+  max_Distance: 25
+  play_Order: 0
+  max_Simultaneous: 1
   cooldown: 0
   mixer_Group: {fileID: 3274265400699389529, guid: d38e156d187e2f24aaa6014d8b10d34b, type: 2}
-  spatial_Blend: 0
+  overlap_Policy: 3
+  retrigger_MinInterval: 0.2

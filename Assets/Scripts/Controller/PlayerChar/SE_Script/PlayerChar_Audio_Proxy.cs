@@ -4,17 +4,29 @@ using UnityEngine;
 
 public class PlayerChar_Audio_Proxy : MonoBehaviour
 {
-    [SerializeField] private SFX_Event_Channel sfx;
-    [SerializeField] private BGM_Event_Channel bgm;
-    [SerializeField] private Sound_Event footstepSE;
-    [SerializeField] private AudioClip bgm_Clip;
+    [SerializeField] private SFX_Event_Channel sfx_Channel;
+    [SerializeField] private BGM_Event_Channel bgm_Channel;
     [SerializeField] private SFX_Resolver resolver;
+    private PlayerCharacter_Controller player;
 
-    public void Play(SFX_Tag tag, Vector3? pos = null)
+    private void Awake()
     {
-        var se = resolver.Resolve(GetComponent<PlayerCharacter_Controller>(), tag);
-        if (se == null) return;
+        if (!player) player = GetComponent<PlayerCharacter_Controller>();
     }
 
-    public void Play_Footstep() => sfx.Raise(footstepSE, transform.position);
+    public void Play_Footstep() => Play_By_Tag(SFX_Tag.Footstep);
+    public void Play_Hurt() => Play_By_Tag(SFX_Tag.Hurt);
+    public void Play_Attack()
+    {
+        var se = resolver.Resolve(player, SFX_Tag.Attack);
+        if (se != null) sfx_Channel.Raise_Attached(se, transform);
+    }
+    
+    private void Play_By_Tag(SFX_Tag tag)
+    {
+        if (!sfx_Channel || !resolver || !player) return;
+        var se = resolver.Resolve(player, tag);
+        if (se != null)
+            sfx_Channel.Raise(se, transform.position);
+    }
 }

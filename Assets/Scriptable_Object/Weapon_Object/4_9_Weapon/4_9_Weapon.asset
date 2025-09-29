@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 4_9_Weapon
   m_EditorClassIdentifier: 
   weapon_Name: "\uD314\uC8FC\uB839"
+  weapon_Type: 4
   weapon_Icon: {fileID: -1402539730, guid: de182a0045f13224586fc7e21df85715, type: 3}
   comb_Name: "\uAD6C \uC0AC"
   attack_Damage: 8
@@ -26,5 +27,7 @@ MonoBehaviour:
   weapon_overrideController: {fileID: 0}
   animation_Pos_Data_List: []
   effect_Data: {fileID: 11400000, guid: fffef977c45895346897b594066366bf, type: 2}
+  skill_Effect_Data: {fileID: 0}
   attack_Strategy: {fileID: 11400000, guid: 440532370d775cb4589ef36e62ac6a82, type: 2}
   is_HoldAttack_Enabled: 1
+  skill_SE: {fileID: 0}
