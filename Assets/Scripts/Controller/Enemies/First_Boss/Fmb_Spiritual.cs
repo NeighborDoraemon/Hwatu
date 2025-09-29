@@ -34,6 +34,11 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
                 Destroy(jail);
             }
             obj_e_Generator.Custom_Room_Cleard();
+
+            if (groggy_Wall != null)
+            {
+                groggy_Wall.GetComponent<Fmb_Groggy_Wall>().Force_Destroy();
+            }
             Destroy(Fmb_Parent);
         }
         else
@@ -161,6 +166,7 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
     private bool is_Ending_Text_Shown = false;
 
     private List<GameObject> Remain_Jails = new List<GameObject>();
+    private GameObject groggy_Wall;
 
     // Start is called before the first frame update
     void Start()
@@ -272,8 +278,8 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
                     }
                 case Attack_State.Groggy_Wall:
                     {
-                        GameObject Groggy_Wall = Instantiate(Obj_Groggy_Wall, gameObject.transform.position, Quaternion.identity);
-                        Groggy_Wall.GetComponent<Fmb_Groggy_Wall>().Initialize(10.0f, 8.0f, this.gameObject);
+                        groggy_Wall = Instantiate(Obj_Groggy_Wall, gameObject.transform.position, Quaternion.identity);
+                        groggy_Wall.GetComponent<Fmb_Groggy_Wall>().Initialize(10.0f, 8.0f, this.gameObject);
 
                         is_Once_Attacked = true;
                         is_Groggy_Once = true;

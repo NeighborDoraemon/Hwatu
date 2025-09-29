@@ -73,4 +73,10 @@ public class Fmb_Groggy_Wall : MonoBehaviour
             }
         }
     }
+
+    public void Force_Destroy()
+    {
+        StopAllCoroutines();
+        Destroy(this.gameObject);
+    }
 }
