@@ -231,7 +231,7 @@ public class Crow_Controller : MonoBehaviour
 
                     if (Random.value <= player.bleeding_Rate)
                     {
-                        enemy_Controller.GetComponent<Enemy_Basic>().Bleeding_Attack(Calculate_Damage(), 5, 1.1f);
+                        enemy_Controller.GetComponent<Enemy_Basic>().Bleeding_Attack(player.bleed_Damage, player.bleed_Count, player.bleed_Delay);
                     }
 
                     attacking_Forward = false;

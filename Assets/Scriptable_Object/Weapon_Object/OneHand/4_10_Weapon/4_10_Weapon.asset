@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 4_10_Weapon
   m_EditorClassIdentifier: 
   weapon_Name: "\uB3C4\uAE68\uBE44 \uBC29\uB9DD\uC774"
+  weapon_Type: 1
   weapon_Icon: {fileID: 21300000, guid: c4b670c94d9f19f46a0f541473a1aa30, type: 3}
   comb_Name: "\uC7A5 \uC0AC"
   attack_Damage: 8
@@ -38,3 +39,4 @@ MonoBehaviour:
   skill_Effect_Data: {fileID: 11400000, guid: dbbefc6d4080e134dbdb262d8b4e3503, type: 2}
   attack_Strategy: {fileID: 11400000, guid: 0737b7af94737344f9250dc99473f300, type: 2}
   is_HoldAttack_Enabled: 0
+  skill_SE: {fileID: 0}

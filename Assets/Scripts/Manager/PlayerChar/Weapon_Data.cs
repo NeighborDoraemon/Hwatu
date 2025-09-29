@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class Weapon_Data : ScriptableObject
 {
     public string weapon_Name;                                                  // 무기 이름
+    public WeaponType weapon_Type;                                              // 무기 종류
     public Sprite weapon_Icon;                                                  // 무기 아이콘
     public string comb_Name;                                                    // 카드 조합의 이름
     public int attack_Damage;                                                   // 무기 데미지
@@ -23,4 +24,5 @@ public class Weapon_Data : ScriptableObject
     public Weapon_Effect_Data skill_Effect_Data;                                // 무기 스킬 이펙트 데이터
     public ScriptableObject attack_Strategy;                                    // 공격 방식 스크립터블 오브젝트
     public bool is_HoldAttack_Enabled = false;                                  // 무기의 홀딩 조작 여부
+    public Sound_Event skill_SE;                                                // 무기 스킬 사운드 이펙트
 }

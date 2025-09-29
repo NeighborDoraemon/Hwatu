@@ -64,7 +64,7 @@ public class Horse_Projectile : MonoBehaviour
 
             if (Random.value <= player.bleeding_Rate)
             {
-                other.GetComponent<Enemy_Basic>().Bleeding_Attack(final_Damage, 5, 1.1f);
+                other.GetComponent<Enemy_Basic>().Bleeding_Attack(player.bleed_Damage, player.bleed_Count, player.bleed_Delay);
             }
 
             player.Trigger_Enemy_Hit();

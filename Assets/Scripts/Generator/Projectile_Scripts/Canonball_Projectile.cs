@@ -59,7 +59,7 @@ public class Canonball_Projectile : MonoBehaviour
 
             if (Random.value <= player.bleeding_Rate)
             {
-                enemy_Script.GetComponent<Enemy_Basic>().Bleeding_Attack(damage, 5, 1.1f);
+                enemy_Script.GetComponent<Enemy_Basic>().Bleeding_Attack(player.bleed_Damage, player.bleed_Count, player.bleed_Delay);
             }
 
             player.Trigger_Enemy_Hit();

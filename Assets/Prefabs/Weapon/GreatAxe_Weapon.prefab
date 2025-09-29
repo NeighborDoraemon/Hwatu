@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bde04193bb143aa4da28c4d6b6deaf66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack_Damage: 0
+  base_Weapon_Damage: 0
   weapon_Collider: {fileID: 6265516862309932322}
 --- !u!60 &6265516862309932322
 PolygonCollider2D:
@@ -144,8 +144,12 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.11175768, y: -0.058443107}
-      - {x: -0.1115913, y: 0.0068307817}
+    - - {x: -0.10798389, y: -0.05026654}
+      - {x: -0.099210024, y: -0.015202541}
+      - {x: 0.14026871, y: -0.062717214}
+      - {x: 0.14788336, y: -0.044019446}
+      - {x: -0.061031613, y: 0.0060107373}
+      - {x: -0.0971251, y: 0.012491465}
       - {x: -0.1041262, y: 0.07478155}
       - {x: -0.18654032, y: 0.07785567}
       - {x: -0.23797849, y: 0.018086046}

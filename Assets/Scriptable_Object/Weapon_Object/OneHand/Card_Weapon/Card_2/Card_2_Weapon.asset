@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Card_2_Weapon
   m_EditorClassIdentifier: 
   weapon_Name: "\uD654\uD22C\uD328"
+  weapon_Type: 3
   weapon_Icon: {fileID: 21300000, guid: ff96a70494507ce43be3d30b9beefeba, type: 3}
   comb_Name: "\uB057"
   attack_Damage: 6
@@ -36,5 +37,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 07e5899f476ec004bb7802863c4d8ec3, type: 2}
   effect_Data: {fileID: 11400000, guid: 72c283aea0efc5c479ee65ac1a1ee3d4, type: 2}
   skill_Effect_Data: {fileID: 0}
-  attack_Strategy: {fileID: 11400000, guid: 575fdd19e46bd214b98edc30dedbbda7, type: 2}
+  attack_Strategy: {fileID: 11400000, guid: 07d976163d5452d4ca269e305b343c62, type: 2}
   is_HoldAttack_Enabled: 0
+  skill_SE: {fileID: 0}

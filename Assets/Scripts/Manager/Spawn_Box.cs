@@ -59,7 +59,12 @@ public class Spawn_Box : MonoBehaviour
             }
             else if (i == 1)
             {
-                Object_Manager.instance.Spawn_Item(spawnPos, dropRates, player);
+                Object_Manager.instance.Spawn_Item_From_Chest(
+                    spawnPos,
+                    dropRates,
+                    player,
+                    string.IsNullOrWhiteSpace(itemName_To_Spawn) ? null : itemName_To_Spawn
+                    );
             }
         }
 

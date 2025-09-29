@@ -65,6 +65,17 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
     private bool is_AtkCoroutine_Running = false;
     private float last_Combo_End_Time = -1.0f;
     [SerializeField] private float combo_Input_Lock = 0.05f;
+    [SerializeField] private LayerMask enemy_LayerMask;
+
+    [Header("Audio/Sound")]
+    [SerializeField] private PlayerChar_Audio_Proxy audio_Proxy;
+    [SerializeField] private float base_Step_Interval = 0.45f;
+    [SerializeField] private float min_Step_Interval = 0.18f;
+    [SerializeField] private float footstep_MinSpeed = 0.05f;
+    [SerializeField, Range(0.25f, 1.0f)]
+    private float footstep_Interval_Scale = 0.75f;
+
+    private float footstep_Timer;
 
     public enum Effect_Channel { Normal, Skill }
 
@@ -195,6 +206,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
 
         skill_Cooldown_Overlay.fillAmount = 0.0f;
         skill_Cooldown_Overlay.enabled = false;
+
+        if (!audio_Proxy) audio_Proxy = GetComponent<PlayerChar_Audio_Proxy>();
 
         Current_Player_State = Player_State.Normal; // 플레이어 현재상태 초기화 KYH
         Current_Event_State = Event_State.None; //이벤트 상태 초기화
@@ -613,6 +626,26 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             float speed = movementSpeed * movementSpeed_Mul;
             rb.velocity = new Vector2(movement.x * speed, rb.velocity.y);
         }
+
+        Try_PlayFootstep_ByTimer();
+    }
+
+    private void Try_PlayFootstep_ByTimer()
+    {
+        if (!isGrounded || is_Knock_Back || Time.timeScale == 0.0f) return;
+
+        float abs_VX = Mathf.Abs(rb.velocity.x);
+        if (abs_VX < footstep_MinSpeed) return;
+
+        float nominal_Max = Mathf.Max(0.01f, movementSpeed * movementSpeed_Mul);
+        float speed01 = Mathf.Clamp01(abs_VX / nominal_Max);
+        float interval = Mathf.Lerp(base_Step_Interval, min_Step_Interval, speed01);
+
+        footstep_Timer -= Time.deltaTime;
+        if (footstep_Timer > 0.0f) return;
+
+        audio_Proxy.Play_Footstep();
+        footstep_Timer = interval;
     }
 
     public void On_Move_Input(Vector2 input)
@@ -834,6 +867,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         int mask = LayerMask.GetMask("Walls", "Platform");
         var col = GetComponent<Collider2D>();
         Vector2 size = col.bounds.size;
+
+        Vector2 start_Pos = transform.position;
         Vector2 origin = (Vector2)transform.position + col.offset;
 
         RaycastHit2D hit = Physics2D.BoxCast(
@@ -846,6 +881,35 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
 
         if (hit.collider != null)
             adjusted_Dist = hit.distance;
+
+        Vector2 end_Pos = start_Pos + direction * adjusted_Dist;
+        if (has_VineAmulet_Effect && adjusted_Dist > 0.01f)
+        {
+            Vector2 mid = (start_Pos + end_Pos) * 0.5f;
+
+            Vector2 box_Size = new Vector2(size.x + adjusted_Dist, size.y);
+
+            float angle_Z = transform.eulerAngles.z;
+
+            Collider2D[] enemies = Physics2D.OverlapBoxAll(mid, box_Size, angle_Z, enemy_LayerMask);
+
+            if (enemies != null && enemies.Length > 0)
+            {
+                HashSet<Collider2D> visited = new HashSet<Collider2D>();
+                foreach (var e_Col in enemies)
+                {
+                    if (e_Col == null || visited.Contains(e_Col)) continue;
+                    visited.Add(e_Col);
+
+                    var enemy = e_Col.GetComponent<Enemy_Basic>();
+                    if (enemy != null)
+                    {
+                        enemy.TakeDamage(10);
+                    }
+                }
+            }
+        }
+
         transform.Translate(direction * adjusted_Dist);
 
         animator.SetTrigger("Teleport");
@@ -1445,10 +1509,32 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         }
     }
 
+    private static bool Has_Frame(Weapon_Effect_Data data, string motion, int frame)
+    {
+        if (data == null) return false;
+        var effect_Info = data.Get_Effect_Info(motion);
+        if (effect_Info == null || effect_Info.frame_Effects == null) return false;
+        return effect_Info.frame_Effects.Exists(fe => fe.frame_Number == frame);
+    }
+
     public void Show_Normal_Effect(string motion_Name_And_Frame)
     {
-        var data = cur_Weapon_Data != null ? cur_Weapon_Data.effect_Data : null;
-        Show_Effect_Internal(motion_Name_And_Frame, Effect_Channel.Normal, data);
+        var parts = motion_Name_And_Frame.Split(',');
+        if (parts.Length < 2) return;
+        string motion = parts[0].Trim();
+        if (!int.TryParse(parts[1], out int frame)) return;
+
+        var provider = attack_Strategy as IWeapon_Effect_Provider;
+
+        var base_Data = provider?.Get_Normal_Attack_EffectData()
+                       ?? (cur_Weapon_Data != null ? cur_Weapon_Data.effect_Data : null);
+
+        var override_Data = provider?.Get_Normal_Attack_EffectData_WhileSkill();
+        var data_To_Use = (override_Data != null && Has_Frame(override_Data, motion, frame))
+                          ? override_Data
+                          : base_Data;
+
+        Show_Effect_Internal(motion_Name_And_Frame, Effect_Channel.Normal, data_To_Use);
     }
 
     public void Show_Skill_Effect(string motion_Name_And_Frame)
@@ -1580,23 +1666,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
                 switch (ctx.phase)
                 {
                     case InputActionPhase.Started:
-                        //if (!is_AtkCoroutine_Running)
-                        //{
-                        //    isAttacking = true;
-                        //    can_Card_Change = false;
-                        //    animator.SetBool("isHoldAtk", true);
-                        //    StartCoroutine(Continuous_Attack());
-                        //}
                         On_Attack_Button_Down();
                         break;
                     case InputActionPhase.Canceled:
-                        //if (attack_Strategy is Bow_Attack_Strategy bowAttack)
-                        //{
-                        //    bowAttack.Release_Attack(this);
-                        //}
-                        //isAttacking = false;
-                        //animator.SetBool("isHoldAtk", false);
-                        //can_Card_Change = true;
                         On_Attack_Button_Up();
                         break;
                 }
@@ -1605,25 +1677,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             {
                 if (ctx.phase == InputActionPhase.Performed)
                 {
-                    //if (Is_Last_Attack())
-                    //{
-                    //    End_Attack();
-                    //    return;
-                    //}
-
-                    //if (Is_Cooldown_Complete())
-                    //{
-                    //    Perform_Attack();
-                    //}
-                    //else if (Can_Combo_Attack())
-                    //{
-                    //    Perform_Attack();
-                    //}
-                    //else if (Is_Combo_Complete())
-                    //{
-                    //    End_Attack();
-                    //}
-
                     if (!canAttack)
                         return;
 
@@ -1708,6 +1761,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         {
             animator.SetBool("isAttacking", true);
             attack_Strategy.Attack(this, cur_Weapon_Data);
+
+            audio_Proxy.Play_Attack();
+
             Update_Attack_Timers();
 
             if (Is_Last_Attack())
@@ -1719,6 +1775,9 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         {
             animator.SetBool("Can_JumpAtk", true);
             attack_Strategy.Attack(this, cur_Weapon_Data);
+
+            audio_Proxy.Play_Attack();
+
             can_JumpAtk = false;
             StartCoroutine(Reset_JumpAtk_Param_Next_Frame());
         }
@@ -1819,6 +1878,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             if (attack_Strategy != null)
             {
                 attack_Strategy.Attack(this, cur_Weapon_Data);
+                audio_Proxy.Play_Attack();
                 can_Card_Change = false;
             }
             else
@@ -2130,6 +2190,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         else
         {
             On_Player_Damaged?.Invoke();
+            audio_Proxy?.Play_Hurt();
         }
 
         camera_Manager.Shake_Camera();
