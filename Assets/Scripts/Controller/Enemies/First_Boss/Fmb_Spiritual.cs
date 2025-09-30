@@ -29,7 +29,7 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
             player.GetComponent<PlayerCharacter_Controller>().Add_Player_Money(DropMoney);
             player.Add_Player_Token(30); // Token Reward
 
-            foreach(GameObject jail in Remain_Jails)
+            foreach (GameObject jail in Remain_Jails)
             {
                 Destroy(jail);
             }
@@ -39,6 +39,21 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
             {
                 groggy_Wall.GetComponent<Fmb_Groggy_Wall>().Force_Destroy();
             }
+
+
+            if (is_Purified)
+            {
+                obj_Manager.Spawn_Item_From_MiniBoss_Purification(this.transform.position, player);
+            }
+            else
+            {
+                obj_Manager.Spawn_Item_From_MiniBoss_Extinction(this.transform.position, player);
+            }
+
+
+            Txt_Purify.GetComponent<TextMeshProUGUI>().text = "수락";
+            Txt_Kill.GetComponent<TextMeshProUGUI>().text = "거절";
+
             Destroy(Fmb_Parent);
         }
         else
@@ -68,6 +83,19 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
             Txt_Purify.GetComponent<TextMeshProUGUI>().text = "정화";
             Txt_Kill.GetComponent<TextMeshProUGUI>().text = "소멸";
 
+            //StopAllCoroutines();
+
+            //foreach (GameObject jail in Remain_Jails)
+            //{
+            //    Destroy(jail);
+            //}
+            //obj_e_Generator.Custom_Room_Cleard();
+
+            //if (groggy_Wall != null)
+            //{
+            //    groggy_Wall.GetComponent<Fmb_Groggy_Wall>().Force_Destroy();
+            //}
+
             Dialogue_Manager.instance.Start_Dialogue(After_Boss);
             return;
         }
@@ -82,6 +110,8 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
     {
         yield return new WaitForSeconds(0.1f);
         Dialogue_Manager.instance.Start_Dialogue(Purify);
+
+        is_Purified = true;
 
         is_Ending_Text_Shown = true;
     }
@@ -113,6 +143,7 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
     [SerializeField] private List<GameObject> Rock_Position = new List<GameObject>();
     [SerializeField] private GameObject Fmb_Parent;
     [SerializeField] private Enemy_Generator obj_e_Generator;
+    [SerializeField] private Object_Manager obj_Manager;
 
     [Header("Value")]
     [SerializeField] private IntReference IR_Health;
@@ -168,10 +199,15 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
     private List<GameObject> Remain_Jails = new List<GameObject>();
     private GameObject groggy_Wall;
 
+    private bool is_Purified = false;
+
     // Start is called before the first frame update
     void Start()
     {
         Set_Health_Cal();
+
+        //obj_Manager.Spawn_Item_From_MiniBoss_Purification(this.transform.position, player);
+        //obj_Manager.Spawn_Item_From_MiniBoss_Purification(this.transform.position + new Vector3(1.0f, 0.0f, 0.0f), player);
     }
 
     private void Set_Health_Cal()

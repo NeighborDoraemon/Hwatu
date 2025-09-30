@@ -472,7 +472,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
 
                 is_Fmb_Cleared = true;
             }
-            else if (!is_Event_Now && !is_Market_Now && is_Boss_Stage) // It was Normal Stage
+            else/* if (!is_Event_Now && !is_Market_Now && is_Boss_Stage)*/ // It was Normal Stage
             {
                 Debug.Log("Remove Map Index List 0");
                 New_map_Index_List.RemoveAt(0);
