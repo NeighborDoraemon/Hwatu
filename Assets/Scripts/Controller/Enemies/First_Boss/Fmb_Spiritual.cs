@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
 {
@@ -51,8 +52,11 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
             }
 
 
-            Txt_Purify.GetComponent<TextMeshProUGUI>().text = "수락";
-            Txt_Kill.GetComponent<TextMeshProUGUI>().text = "거절";
+            //Txt_Purify.GetComponent<TextMeshProUGUI>().text = "수락";
+            //Txt_Kill.GetComponent<TextMeshProUGUI>().text = "거절";
+
+            Txt_Purify.GetComponent<Text>().text = "수락";
+            Txt_Kill.GetComponent<Text>().text = "거절";
 
             Destroy(Fmb_Parent);
         }
@@ -80,8 +84,11 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
 
         if (is_Boss_Dead)
         {
-            Txt_Purify.GetComponent<TextMeshProUGUI>().text = "정화";
-            Txt_Kill.GetComponent<TextMeshProUGUI>().text = "소멸";
+            //Txt_Purify.GetComponent<TextMeshProUGUI>().text = "정화";
+            //Txt_Kill.GetComponent<TextMeshProUGUI>().text = "소멸";
+
+            Txt_Purify.GetComponent<Text>().text = "정화";
+            Txt_Kill.GetComponent<Text>().text = "소멸";
 
             //StopAllCoroutines();
 
@@ -304,6 +311,10 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
                     }
                 case Attack_State.Root_Wield:
                     {
+                        GameObject Warning = Instantiate(Obj_Warning, new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y + 0.5f, 0.0f), Quaternion.identity);
+                        Warning.transform.localScale = new Vector3(7.0f, 2.0f, 1.0f);
+                        Warning.GetComponent<Warning_Object>().Initialize(1.0f, 0.8f, 0.5f);
+
                         StartCoroutine(Fade_Sprite(SR_Root_Wield, 1.0f, 0.6f, 0.0f));
                         Obj_Root_Wield.GetComponent<FB_DamageBox>().Call_Invoke();
                         

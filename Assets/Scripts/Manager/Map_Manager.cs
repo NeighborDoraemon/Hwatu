@@ -119,8 +119,19 @@ public class Map_Manager : MonoBehaviour, ISaveable
     {
         //Shuffle_Maps();
         //Set_Next_Point();
-        mv_Current_Map = Map_Start;
+        //mv_Current_Map = Map_Start;
         Save_Manager.Instance.Register(this);
+
+        if (Save_Manager.Instance.Get<bool>(data => data.is_Tutorial_Cleared))
+        {
+            Obj_Player.transform.position = Map_Start.v_Map_Spawnpoint;
+            mv_Current_Map = Map_Start;
+        }
+        else
+        {
+            Debug.Log("Tutorial Map Start");
+            mv_Current_Map = Map_Tutorial;
+        }
     }
 
     private void OnEnable()
@@ -290,7 +301,19 @@ public class Map_Manager : MonoBehaviour, ISaveable
 
             IsOnPortal = false;
         }
-        Obj_e_Generator.Set_Use_Count(First_Using_Map_Count);
+
+        //if(Save_Manager.Instance.Get<bool>(data => data.is_Tutorial_Cleared))
+        //{
+        //    Obj_Player.transform.position = Map_Start.v_Map_Spawnpoint;
+        //    mv_Current_Map = Map_Start;
+        //}
+        //else
+        //{
+        //    Debug.Log("Tutorial Map Start");
+        //    mv_Current_Map = Map_Tutorial;
+        //}
+
+            Obj_e_Generator.Set_Use_Count(First_Using_Map_Count);
     }
 
     private IEnumerator Wait_For_Enemy_Spawn()
@@ -865,9 +888,24 @@ public class Map_Manager : MonoBehaviour, ISaveable
         else
         {
             mv_Current_Map = Map_Start; // Start Map
+
+            Save_Manager.Instance.Modify(data =>
+            {
+                data.is_Tutorial_Cleared = true;
+            });
+            Save_Manager.Instance.SaveAll();
         }
 
         Obj_e_Generator.Set_Current(mv_Current_Map);
         Obj_Player.transform.position = mv_Current_Map.v_Map_Spawnpoint;
+    }
+
+    public void Reset_Tutorial()
+    {
+        Save_Manager.Instance.Modify(data =>
+        {
+            data.is_Tutorial_Cleared = false;
+        });
+        Save_Manager.Instance.SaveAll();
     }
 }
