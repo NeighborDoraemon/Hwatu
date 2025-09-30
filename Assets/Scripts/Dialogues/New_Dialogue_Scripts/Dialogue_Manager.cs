@@ -338,13 +338,13 @@ public class Dialogue_Manager : MonoBehaviour
             if (called_is_Choice)   //선택지 실행
             {
                 //선택지 pc버전
-                //Chose_Text_01.SetActive(true);
-                //Chose_Text_02.SetActive(true);
-                //Chose_Cursor_01.SetActive(true);
+                Chose_Text_01.SetActive(true);
+                Chose_Text_02.SetActive(true);
+                Chose_Cursor_01.SetActive(true);
 
                 // 선택지 모바일 버전
-                Chose_Btn_01.SetActive(true);
-                Chose_Btn_02.SetActive(true);
+                //Chose_Btn_01.SetActive(true);
+                //Chose_Btn_02.SetActive(true);
 
                 p_Controller.State_Change(PlayerCharacter_Controller.Player_State.Dialogue_Choice);
 
