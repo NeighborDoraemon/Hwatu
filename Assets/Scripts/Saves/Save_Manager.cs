@@ -42,6 +42,8 @@ public class Save_Manager
         Debug.Log("Saved");
     }
 
+    //public void Save_
+
     public T Get<T>(Func<SaveData, T> selector)
     {
         return selector(currentData);
@@ -123,6 +125,8 @@ public class SaveData
     public List<int> new_map_index_list = new List<int>();
     public List<int> new_event_map_list = new List<int>();
     public bool is_Fmb_Now = false;
+
+    public bool is_Tutorial_Cleared = false;
 
     //Map-market
     public bool is_Market_Now = false;

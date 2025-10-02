@@ -8,6 +8,8 @@ public class Noose_Trap : MonoBehaviour
     [SerializeField] private GameObject bind_spot;
     [SerializeField] private float bind_time;
 
+    [SerializeField] private GameObject Keyboard_Object;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Player"))
@@ -23,6 +25,8 @@ public class Noose_Trap : MonoBehaviour
                 StartCoroutine(Reset_Values(collision.gameObject));
             });
             
+            Keyboard_Object.SetActive(true);
+
             //StartCoroutine(Reset_Values(collision.gameObject));
         }
     }
