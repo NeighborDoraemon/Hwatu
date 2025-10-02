@@ -58,10 +58,11 @@ Event_Num,Name,Dialogue,Choice,Speaker,Portrait
 1503,최건우,다시 오염된다 하더라도^ 그 때도 다시 와서 정화해주마.,FALSE,Player,Normal
 1504,최건우,이미 오염된 존재였어. 소멸시키는게 휄씬 간단해.,FALSE,Player,Normal
 2001,강시헌,수련을 시작하겠다. 내가 주는 가르침들은 도사의 기본이다.,FALSE,Teacher,Normal
-2002,강시헌,가장 기본이 되는 움직임이다. 가고자 하는 방향으로 몸을 움직여라.,FALSE,Teacher,Normal
-2003,강시헌,아무리 높은 벽이여도 넘을 수 있어야 한다. 부족하다면 한번 더 도약해라.,FALSE,Teacher,Normal
-2004,강시헌,위험은 피하는 것이 최우선이다. 기를 모으고^ 몸을 순간이동 시켜라.,FALSE,Teacher,Normal
+2001,강시헌,가장 기본이 되는 움직임이다. 가고자 하는 방향으로 몸을 움직여라.,,Teacher,Normal
+2002,강시헌,아무리 높은 벽이여도 넘을 수 있어야 한다. 부족하다면 한번 더 도약해라.,FALSE,Teacher,Normal
+2003,강시헌,위험은 피하는 것이 최우선이다. 기를 모으고^ 몸을 순간이동 시켜라.,FALSE,Teacher,Normal
+2004,강시헌,눈앞에 놓인 모든 것은 너의 의지에 반응한다. 그것에 다가가 손을 뻗어라.,FALSE,Teacher,Normal
 2005,강시헌,손에 담긴 신기의 기운을 발산하여 허수아비를 공격해봐라.,FALSE,Teacher,Normal
-2006,강시헌,이제 신기의 가장 강한 힘을 꺼내라.,FALSE,Teacher,Normal
-2007,강시헌,됐다. 내가 알려줄 기본은 이게 전부다.,FALSE,Teacher,Normal
-2007,강시헌,이제부터는 너만의 길을 만들어 나가라.,,Teacher,Normal
+2005,강시헌,"기본적인 공격부터, 신기에 담긴 진정한 힘까지 끌어내 봐라.",,Teacher,Normal
+2006,강시헌,됐다. 내가 알려줄 기본은 이게 전부다.,FALSE,Teacher,Normal
+2006,강시헌,이제부터는 너만의 길을 만들어 나가라.,,Teacher,Normal
