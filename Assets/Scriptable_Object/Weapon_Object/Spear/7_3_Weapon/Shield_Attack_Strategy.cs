@@ -9,8 +9,10 @@ public class Shield_Attack_Strategy : ScriptableObject, IAttack_Strategy
     private PlayerCharacter_Controller player;
     private Weapon_Data weapon_Data;
 
+    [Header("Parry Setting")]
     public bool isParrying;
     public float parry_Duration = 0.5f;
+    public bool reset_Skill_OnParry = true;
 
     [Header("Shield Jump Attack Settings")]
     public LayerMask ground_Layer;
@@ -137,6 +139,11 @@ public class Shield_Attack_Strategy : ScriptableObject, IAttack_Strategy
     private void OnParry_Success(PlayerCharacter_Controller player)
     {
         player.animator.SetTrigger("Skill");
+
+        if (reset_Skill_OnParry && player != null)
+        {
+            player.Reset_Skill_Cooldown();
+        }
 
         isParrying = false;
     }

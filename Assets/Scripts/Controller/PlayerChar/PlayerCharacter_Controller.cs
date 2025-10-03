@@ -2007,6 +2007,16 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         skill_Cooldown_Overlay.fillAmount = 1.0f;
     }
 
+    private void Stop_Skill_Cooldown_UI()
+    {
+        is_Skill_Coolingdown = false;
+        if (skill_Cooldown_Overlay != null)
+        {
+            skill_Cooldown_Overlay.enabled = false;
+            skill_Cooldown_Overlay.fillAmount = 0.0f;
+        }
+    }
+
     private void Update_Skill_Cooldown_UI()
     {
         float cd = cur_Weapon_Data.skill_Cooldown * skill_Cooltime_Mul;
@@ -2022,6 +2032,15 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         {
             skill_Cooldown_Overlay.enabled = false;
         }
+    }
+
+    public void Reset_Skill_Cooldown(bool refreshUI = true)
+    {
+        float modified = (cur_Weapon_Data ? cur_Weapon_Data.skill_Cooldown : 0.0f) * skill_Cooltime_Mul;
+
+        last_Skill_Time = Time.time - modified;
+
+        if (refreshUI) Stop_Skill_Cooldown_UI();
     }
     // ======================================================================================================
 

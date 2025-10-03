@@ -44,11 +44,11 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
 
             if (is_Purified)
             {
-                obj_Manager.Spawn_Item_From_MiniBoss_Purification(this.transform.position, player);
+                obj_Manager.Spawn_Item_From_MiniBoss_Purification(this.transform.position, this.transform.position - Vector3.left, player);
             }
             else
             {
-                obj_Manager.Spawn_Item_From_MiniBoss_Extinction(this.transform.position, player);
+                obj_Manager.Spawn_Item_From_MiniBoss_Extinction(this.transform.position, this.transform.position - Vector3.left, player);
             }
 
 

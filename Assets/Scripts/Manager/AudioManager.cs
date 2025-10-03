@@ -17,6 +17,8 @@ public class AudioManager : MonoBehaviour
 
     [Header("BGM")]
     [SerializeField] private AudioSource bgm;
+    [SerializeField] private AudioClip default_Bgm_Clip;
+    [SerializeField] private bool play_On_Awake = true;
 
     // 내부 상태
     private readonly Queue<AudioSource> pool = new();
@@ -51,6 +53,18 @@ public class AudioManager : MonoBehaviour
     {
         for (int i = 0; i < poolSize; i++)
             pool.Enqueue(Create_Source());
+
+        if (!bgm) bgm = gameObject.AddComponent<AudioSource>();
+        bgm.playOnAwake = false;
+        bgm.loop = true;
+        bgm.spatialBlend = 0.0f;
+    }
+
+    private void Start()
+    {
+        if (play_On_Awake && default_Bgm_Clip)
+            Play_BGM(default_Bgm_Clip);
+            
     }
 
     // ------------------------------------------------------------
@@ -255,5 +269,18 @@ public class AudioManager : MonoBehaviour
     // BGM
     // ------------------------------------------------------------
 
+    public void Play_BGM(AudioClip clip = null)
+    {
+        if (clip != null) bgm.clip = clip;
+        if (!bgm.clip) return;
 
+        if (!bgm.isPlaying)
+            bgm.Play();
+    }
+
+    public void Stop_BGM()
+    {
+        if (bgm.isPlaying)
+            bgm.Stop();
+    }
 }

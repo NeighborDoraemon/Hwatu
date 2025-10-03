@@ -166,12 +166,12 @@ public class Object_Manager : MonoBehaviour
     }
 
     public void Spawn_Item_From_MiniBoss_Purification(
-        Vector2 spawnPos,
+        Vector2 spawnPos_A, Vector2 spawnPos_B,
         PlayerCharacter_Controller player)
     {
         if (!Try_Prapare_Spawn(player, out var player_Items)) return;
 
-        Item item = Resolve_Item(
+        Item first = Resolve_Item(
             drop_Rates: null,
             allowed_Rarities: Allowed_Purification,
             force_Specific_Rarity: ItemRarity.Purification,
@@ -179,22 +179,43 @@ public class Object_Manager : MonoBehaviour
             player_Items: player_Items
             );
 
-        if (item == null)
+        if (first == null)
         {
-            Debug.LogError("[Object Manager] Boss-Rarity items are not in the database.");
+            Debug.LogError("[Object Manager] Purification 등급의 아이템이 데이터베이스에 없습니다.");
             return;
         }
 
-        Spawn_Item_Instance(spawnPos, item);
+        var temp_Exclude = new List<Item>(player_Items.Count + 1);
+        temp_Exclude.AddRange(player_Items);
+        temp_Exclude.Add(first);
+
+        Item second = Resolve_Item(
+            drop_Rates: null,
+            allowed_Rarities: Allowed_Purification,
+            force_Specific_Rarity: ItemRarity.Purification,
+            force_Item_Name: null,
+            player_Items: temp_Exclude
+            );
+
+        Spawn_Item_Instance(spawnPos_A, first);
+
+        if (second != null)
+        {
+            Spawn_Item_Instance(spawnPos_B, second);
+        }
+        else
+        {
+            Debug.LogWarning("[Object Manager] Purification 등급에 아이템이 더 이상 없습니다.");
+        }
     }
 
     public void Spawn_Item_From_MiniBoss_Extinction(
-        Vector2 spawnPos,
+        Vector2 spawnPos_A, Vector2 spawnPos_B,
         PlayerCharacter_Controller player)
     {
         if (!Try_Prapare_Spawn(player, out var player_Items)) return;
 
-        Item item = Resolve_Item(
+        Item first = Resolve_Item(
             drop_Rates: null,
             allowed_Rarities: Allowed_Extinction,
             force_Specific_Rarity: ItemRarity.Extinction,
@@ -202,13 +223,34 @@ public class Object_Manager : MonoBehaviour
             player_Items: player_Items
             );
 
-        if (item == null)
+        if (first == null)
         {
-            Debug.LogError("[Object Manager] Boss-Rarity items are not in the database.");
+            Debug.LogError("[Object Manager] Extinction 등급의 아이템이 데이터베이스에 없습니다.");
             return;
         }
 
-        Spawn_Item_Instance(spawnPos, item);
+        var temp_Exclude = new List<Item>(player_Items.Count + 1);
+        temp_Exclude.AddRange(player_Items);
+        temp_Exclude.Add(first);
+
+        Item second = Resolve_Item(
+            drop_Rates: null,
+            allowed_Rarities: Allowed_Extinction,
+            force_Specific_Rarity: ItemRarity.Extinction,
+            force_Item_Name: null,
+            player_Items: temp_Exclude
+            );
+
+        Spawn_Item_Instance(spawnPos_A, first);
+
+        if (second != null)
+        {
+            Spawn_Item_Instance(spawnPos_B, second);
+        }
+        else
+        {
+            Debug.LogWarning("[Object Manager] Extinciton 등급에 아이템이 더 이상 없습니다.");
+        }
     }
 
     public void Spawn_Specific_Item(Vector2 spawn_Pos, Item item_To_Spawn)

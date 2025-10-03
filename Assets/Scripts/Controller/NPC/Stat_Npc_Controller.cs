@@ -22,8 +22,8 @@ public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
     public float critRate_Inc_Value = 0.1f;
     public float critDmg_Inc_Value = 0.1f;
 
-    [Header("Attack_Dmg_Image")]
-
+    [Header("Upgrade Token")]
+    [SerializeField] private int token_Cost = 1;
 
     [Header("Dialogue Index")]
     [SerializeField] private int Interaction_start;
@@ -133,6 +133,20 @@ public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
             return;
         }
 
+        if (player == null)
+        {
+            Debug.LogError("[Stat Npc] Player is null");
+            return;
+        }
+
+        if (player.i_Token < token_Cost)
+        {
+            Debug.LogWarning("[Stat Npc] Player has no token");
+            return;
+        }
+
+        player.i_Token -= token_Cost;
+
         Image selected_Button = stat_Buttons[cur_Index];
         string stat_Name = selected_Button.gameObject.name;
 
@@ -161,6 +175,8 @@ public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
                 Debug.Log($"[{stat_Name}] is null");
                 break;
         }
+
+        player.token_Text.text = player.i_Token.ToString();
     }
 
     private void Update_Stat_Image(string stat_Name, int phase)
