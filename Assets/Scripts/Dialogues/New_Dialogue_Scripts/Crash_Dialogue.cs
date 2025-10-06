@@ -10,6 +10,9 @@ public class Crash_Dialogue : MonoBehaviour, Npc_Interface
     [SerializeField] private int Print_time = 1;
     private PlayerCharacter_Controller p_Controller;
 
+    [Header("Cards")]
+    [SerializeField] private bool give_Card = false;
+
     public void Event_Attack(InputAction.CallbackContext ctx){}
     public void Event_Move(InputAction.CallbackContext ctx){}
     public void Event_Move_Direction(Vector2 dir){}
@@ -22,6 +25,27 @@ public class Crash_Dialogue : MonoBehaviour, Npc_Interface
     {
         if(p_Controller == null) { return; }
         p_Controller.State_Change(PlayerCharacter_Controller.Player_State.Normal);
+
+        if (give_Card)
+        {
+            if (Object_Manager.instance == null)
+            {
+                Debug.LogError("Card Box에서 Card_Spawner 인스턴스 실종");
+                return;
+            }
+
+            int spawnCount = 2;
+
+            for (int i = 0; i < spawnCount; i++)
+            {
+                GameObject spawned_Card = Object_Manager.instance.Spawn_Cards(this.transform.position);
+
+                if (spawned_Card != null)
+                {
+                    p_Controller.AddCard(spawned_Card);
+                }
+            }
+        }
     }
 
     public void Npc_Interaction_Start()
