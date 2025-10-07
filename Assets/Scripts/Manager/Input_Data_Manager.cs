@@ -64,6 +64,13 @@ public class Input_Data_Manager : MonoBehaviour
     [SerializeField] private GameObject Warning_Up;
     [SerializeField] private GameObject Warning_Down;
 
+    [Header("Audio Manager")]
+    [SerializeField] private AudioManager audioManager;
+    [SerializeField] private Slider master_Slider;
+    [SerializeField] private Slider bgm_Slider;
+    [SerializeField] private Slider sfx_Slider;
+    [SerializeField] private bool slider_Use_0to10 = true;
+
     private int Samed_Index = 0; // for warning
 
     //for exchange
@@ -329,6 +336,24 @@ public class Input_Data_Manager : MonoBehaviour
         {
             Warnings.SetActive(false);
         }
+
+        if (audioManager && master_Slider && bgm_Slider && sfx_Slider)
+        {
+            float k = slider_Use_0to10 ? 0.1f : 1.0f;
+            float m = Mathf.Clamp01(master_Slider.value * k);
+            float b = Mathf.Clamp01(bgm_Slider.value * k);
+            float s = Mathf.Clamp01(sfx_Slider.value * k);
+
+            audioManager.Apply_Volumes01(m, b, s, save: true);
+        }
+        else
+        {
+            float k = slider_Use_0to10 ? 0.1f : 1.0f;
+            if (master_Slider) PlayerPrefs.SetFloat("AM_Master_Lin", Mathf.Clamp01(master_Slider.value * k));
+            if (bgm_Slider) PlayerPrefs.SetFloat("AM_Bgm_Lin", Mathf.Clamp01(bgm_Slider.value * k));
+            if (sfx_Slider) PlayerPrefs.SetFloat("AM_Sfx_Lin", Mathf.Clamp01(sfx_Slider.value * k));
+            PlayerPrefs.Save();
+        }
     }
 
     public void Btn_Option()
@@ -341,6 +366,8 @@ public class Input_Data_Manager : MonoBehaviour
         }
         Option_Can.gameObject.SetActive(true);
         is_Option_Setting = true;
+
+        Load_Audio_Sliders_FromSaved();
     }
 
     public void Btn_Option_Quit()
@@ -374,6 +401,16 @@ public class Input_Data_Manager : MonoBehaviour
             }
         }
         Set_Texts();
+
+        if (audioManager)
+        {
+            float m = PlayerPrefs.GetFloat("AM_Master_Lin", audioManager.GetMaster01());
+            float b = PlayerPrefs.GetFloat("AM_Bgm_Lin", audioManager.GetBgm01());
+            float s = PlayerPrefs.GetFloat("AM_Sfx_Lin", audioManager.GetSfx01());
+
+            audioManager.Apply_Volumes01(m, b, s, save: false);
+        }
+        Load_Audio_Sliders_FromSaved();
     }
 
     public void Btn_Quit()
@@ -486,5 +523,19 @@ public class Input_Data_Manager : MonoBehaviour
         {
             RebinComplete(actionIndex, bindingIndex);
         }
+    }
+
+    private void Load_Audio_Sliders_FromSaved()
+    {
+        if (!master_Slider || !bgm_Slider || !sfx_Slider) return;
+
+        float m = audioManager ? audioManager.GetMaster01() : PlayerPrefs.GetFloat("AM_Master_Lin", 0.8f);
+        float b = audioManager ? audioManager.GetBgm01() : PlayerPrefs.GetFloat("AM_Bgm_Lin", 0.8f);
+        float s = audioManager ? audioManager.GetSfx01() : PlayerPrefs.GetFloat("AM_Sfx_Lin", 0.8f);
+
+        float k = slider_Use_0to10 ? 10.0f : 1.0f;
+        master_Slider.value = m * k;
+        bgm_Slider.value = b * k;
+        sfx_Slider.value = s * k;
     }
 }

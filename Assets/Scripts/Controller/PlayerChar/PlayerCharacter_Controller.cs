@@ -1762,8 +1762,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             animator.SetBool("isAttacking", true);
             attack_Strategy.Attack(this, cur_Weapon_Data);
 
-            audio_Proxy.Play_Attack();
-
             Update_Attack_Timers();
 
             if (Is_Last_Attack())
@@ -1878,7 +1876,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             if (attack_Strategy != null)
             {
                 attack_Strategy.Attack(this, cur_Weapon_Data);
-                audio_Proxy.Play_Attack();
                 can_Card_Change = false;
             }
             else
@@ -1921,6 +1918,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         {
             Debug.LogError("Weapon Projectile is Missing!");
         }
+    }
+
+    public void AE_PlayAttackSFX()
+    {
+        audio_Proxy?.Play_Attack();
     }
 
     void HandleCombo()

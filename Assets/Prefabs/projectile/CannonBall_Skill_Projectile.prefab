@@ -167,3 +167,5 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   explosion_Prefab: {fileID: 2072432503961053385, guid: 49dceac48854f7f4985884345ebfb3df, type: 3}
+  sfx_Channel: {fileID: 11400000, guid: 4f2ea531a0ca9894392439b2641a9fff, type: 2}
+  explosion_SFX: {fileID: 11400000, guid: c6901257e20275b4b94a147d6f008ddc, type: 2}
