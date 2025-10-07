@@ -6,10 +6,16 @@ public class Canon_Skill_Projectile : MonoBehaviour
 {
     PlayerCharacter_Controller player;
 
+    [Header("Base Settings")]
     public int damage;
     public float explosion_Radius = 2.0f;
     public LayerMask enemy_Layer;
     public GameObject explosion_Prefab;
+
+    [Header("SFX")]
+    [SerializeField] private SFX_Event_Channel sfx_Channel;
+    [SerializeField] private Sound_Event explosion_SFX;
+    private bool has_Exploded = false;
 
     private void Awake()
     {
@@ -25,9 +31,17 @@ public class Canon_Skill_Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (has_Exploded) return;
+
         if (other.CompareTag("Enemy") || other.CompareTag("Walls") || other.CompareTag("Platform") || other.CompareTag("OneWayPlatform"))
         {
-            Instantiate(explosion_Prefab, transform.position, transform.rotation);
+            has_Exploded = true;
+
+            if (explosion_Prefab)
+                Instantiate(explosion_Prefab, transform.position, transform.rotation);
+
+            if (sfx_Channel && explosion_SFX)
+                sfx_Channel.Raise(explosion_SFX, transform.position);
 
             Explode();
         }

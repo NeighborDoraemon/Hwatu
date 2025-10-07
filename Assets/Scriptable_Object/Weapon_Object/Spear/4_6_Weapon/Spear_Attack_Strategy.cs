@@ -56,13 +56,13 @@ public class Spear_Attack_Strategy : ScriptableObject, IAttack_Strategy
         if (is_Dashing) return false;
 
         // PC버전 변수
-        //Vector2 input_Dir = new Vector2(
-        //    Input.GetAxisRaw("Horizontal"),
-        //    Input.GetAxisRaw("Vertical")
-        //    );
+        Vector2 input_Dir = new Vector2(
+            Input.GetAxisRaw("Horizontal"),
+            Input.GetAxisRaw("Vertical")
+            );
 
         // 모바일버전 변수
-        Vector2 input_Dir = player.movement;
+        //Vector2 input_Dir = player.movement;
 
         if (input_Dir == Vector2.zero)
         {

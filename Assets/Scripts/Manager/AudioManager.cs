@@ -20,6 +20,22 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip default_Bgm_Clip;
     [SerializeField] private bool play_On_Awake = true;
 
+    [Header("Mixer Routing")]
+    [SerializeField] private AudioMixerGroup default_Sfx_Group;
+    [SerializeField] private AudioMixerGroup default_Bgm_Group;
+
+    [Header("Mixer Control")]
+    [SerializeField] private AudioMixer mixer;
+    [SerializeField] private AudioMixerSnapshot start_Snapshot;
+    [SerializeField] private string master_Param = "MasterVol";
+    [SerializeField] private string bgm_Param = "BgmVol";
+    [SerializeField] private string sfx_Param = "SfxVol";
+
+    [Header("Default Volumes (0~1)")]
+    [SerializeField, Range(0.0f, 1.0f)] private float default_Master = 0.8f;
+    [SerializeField, Range(0.0f, 1.0f)] private float default_Bgm = 0.8f;
+    [SerializeField, Range(0.0f, 1.0f)] private float default_Sfx = 0.8f;
+
     // 내부 상태
     private readonly Queue<AudioSource> pool = new();
     private readonly Dictionary<Sound_Event, float> last_Played = new();
@@ -29,7 +45,16 @@ public class AudioManager : MonoBehaviour
     // 발신자별 활성소스/마지막 트리거 시간
     private readonly Dictionary<Sound_Event, Dictionary<Transform, AudioSource>> active_By_Emitter = new();
     private readonly Dictionary<Sound_Event, Dictionary<Transform, float>> last_Trig_By_Emitter = new();
-    
+
+    // PlayerPrefs 키
+    const string KMaster = "AM_Master_Lin";
+    const string KBgm = "AM_Bgm_Lin";
+    const string KSfx = "AM_Sfx_Lin";
+
+    const float kMin_Lin = 0.0001f;
+
+    static float Linear_To_Db(float x) => (x <= 0.0001f) ? -80.0f : Mathf.Log10(x) * 20.0f;
+    static float Db_To_Linear(float dB) => dB <= -79.9f ? 0.0f : Mathf.Pow(10.0f, dB / 20.0f);
 
     private void OnEnable()
     {
@@ -37,6 +62,11 @@ public class AudioManager : MonoBehaviour
         {
             sfx_Channel.OnPlay += Handle_SFX_Play;
             sfx_Channel.OnPlay_Attached += Handle_SFX_Play_Attached;
+        }
+        if (bgm_Channel)
+        {
+            bgm_Channel.OnPlay += Handle_BGM_Play;
+            bgm_Channel.OnStop += Handle_BGM_Stop;
         }
     }
 
@@ -46,6 +76,11 @@ public class AudioManager : MonoBehaviour
         {
             sfx_Channel.OnPlay -= Handle_SFX_Play;
             sfx_Channel.OnPlay_Attached -= Handle_SFX_Play_Attached;
+        }
+        if (bgm_Channel)
+        {
+            bgm_Channel.OnPlay -= Handle_BGM_Play;
+            bgm_Channel.OnStop -= Handle_BGM_Stop;
         }
     }
 
@@ -58,13 +93,39 @@ public class AudioManager : MonoBehaviour
         bgm.playOnAwake = false;
         bgm.loop = true;
         bgm.spatialBlend = 0.0f;
+
+        if (default_Bgm_Group) bgm.outputAudioMixerGroup = default_Bgm_Group;
     }
 
     private void Start()
     {
         if (play_On_Awake && default_Bgm_Clip)
             Play_BGM(default_Bgm_Clip);
-            
+
+        Ensure_Mixer_Ref();
+
+        //if (start_Snapshot) start_Snapshot.TransitionTo(0.0f);
+        var m = Read01("AM_Master_Lin", default_Master);
+        var b = Read01("AM_Bgm_Lin", default_Bgm);
+        var s = Read01("AM_Sfx_Lin", default_Sfx);
+
+        Apply_Volumes01(m,  b, s, save: false);
+    }
+
+    float Read01(string key, float def01)
+    {
+        var v = PlayerPrefs.GetFloat(key, def01);
+        if (v <= kMin_Lin) v = def01;
+        return Mathf.Clamp01(v);
+    }
+
+    [ContextMenu("AudioPrefs: Reset To Defaults")]
+    public void Reset_AudioPrefs()
+    {
+        PlayerPrefs.DeleteKey("AM_Master_Lin");
+        PlayerPrefs.DeleteKey("AM_Bgm_Lin");
+        PlayerPrefs.DeleteKey("AM_Sfx_Lin");
+        Apply_Volumes01(default_Master, default_Bgm, default_Sfx);
     }
 
     // ------------------------------------------------------------
@@ -75,6 +136,9 @@ public class AudioManager : MonoBehaviour
         var s = Instantiate(sfx_Source_Prefab, transform);
         s.playOnAwake = false;
         s.gameObject.SetActive(false);
+
+        if (default_Sfx_Group) s.outputAudioMixerGroup = default_Sfx_Group;
+
         return s;
     }
 
@@ -131,6 +195,8 @@ public class AudioManager : MonoBehaviour
 
         // 라우팅/파라미터
         if (ev.mixer_Group) src.outputAudioMixerGroup = ev.mixer_Group;
+        else if (default_Sfx_Group) src.outputAudioMixerGroup = default_Sfx_Group;
+
         src.spatialBlend = ev.spatial_Blend;
         src.rolloffMode = ev.rolloff;
         src.minDistance = ev.min_Distance;
@@ -145,15 +211,16 @@ public class AudioManager : MonoBehaviour
         playing_Count[ev]++;
 
         src.Play();
+
         StartCoroutine(Return_When_Done(ev, src, clip.length, p));
         last_Played[ev] = Time.unscaledTime;
     }
 
     IEnumerator Return_When_Done(Sound_Event ev, AudioSource s, float len, float pitch)
     {
-        float wait = len / Mathf.Max(0.01f, pitch);
-        yield return new WaitForSeconds(wait);
-        if (playing_Count.ContainsKey(ev)) playing_Count[ev] = Mathf.Max(0, playing_Count[ev] - 1);
+        yield return new WaitForSecondsRealtime(len / Mathf.Max(0.01f, pitch));
+        if (playing_Count.ContainsKey(ev))
+            playing_Count[ev] = Mathf.Max(0, playing_Count[ev] - 1);
         Return_Source(s);
     }
 
@@ -228,11 +295,15 @@ public class AudioManager : MonoBehaviour
     void Setup_Source_Params(AudioSource src, Sound_Event ev, Vector3 pos)
     {
         src.transform.position = pos;
+
         if (ev.mixer_Group) src.outputAudioMixerGroup = ev.mixer_Group;
+        else if (default_Sfx_Group) src.outputAudioMixerGroup = default_Sfx_Group;
+            
         src.spatialBlend = ev.spatial_Blend;
         src.rolloffMode = ev.rolloff;
         src.minDistance = ev.min_Distance;
         src.maxDistance = ev.max_Distance;
+
         src.volume = Mathf.Clamp01(ev.volume * UnityEngine.Random.Range(ev.volume_Random.x, ev.volume_Random.y));
         src.pitch = UnityEngine.Random.Range(ev.pitch_Random.x, ev.pitch_Random.y);
     }
@@ -283,4 +354,73 @@ public class AudioManager : MonoBehaviour
         if (bgm.isPlaying)
             bgm.Stop();
     }
+
+    void Handle_BGM_Play(AudioClip clip, float fade_Seconds, bool loop)
+    {
+        if (!bgm) return;
+        if (default_Bgm_Group) bgm.outputAudioMixerGroup = default_Bgm_Group;
+
+        if (clip && bgm.clip != clip) bgm.clip = clip;
+        bgm.loop = loop;
+
+        if (!bgm.isPlaying) bgm.Play();
+    }
+
+    void Handle_BGM_Stop(float fade_Seconds)
+    {
+        if (bgm && bgm.isPlaying) bgm.Stop();
+    }
+
+    // ------------------------------------------------------------
+    // Mixer Slider
+    // ------------------------------------------------------------
+
+    void Ensure_Mixer_Ref()
+    {
+        if (!mixer)
+        {
+            if (default_Sfx_Group) mixer = default_Sfx_Group.audioMixer;
+            else if (default_Bgm_Group) mixer = default_Bgm_Group.audioMixer;
+        }
+    }
+
+    public float GetMaster01() => PlayerPrefs.GetFloat(KMaster, default_Master);
+    public float GetBgm01() => PlayerPrefs.GetFloat(KBgm, default_Bgm);
+    public float GetSfx01() => PlayerPrefs.GetFloat(KSfx, default_Sfx);
+
+    public void Apply_Volumes01(float master01, float bgm01, float sfx01, bool save = true)
+    {
+        Ensure_Mixer_Ref();
+        master01 = Mathf.Clamp01(master01);
+        bgm01 = Mathf.Clamp01(bgm01);
+        sfx01 = Mathf.Clamp01(sfx01);
+
+        if (mixer)
+        {
+            mixer.SetFloat(master_Param, Linear_To_Db(master01));
+            mixer.SetFloat(bgm_Param, Linear_To_Db(bgm01));
+            mixer.SetFloat(sfx_Param, Linear_To_Db(sfx01));
+        }
+        else
+        {
+            AudioListener.volume = master01;
+            if (bgm) bgm.volume = bgm01;
+        }
+
+        if (save)
+        {
+            PlayerPrefs.SetFloat(KMaster, master01);
+            PlayerPrefs.SetFloat(KBgm, bgm01);
+            PlayerPrefs.SetFloat(KSfx, sfx01);
+            PlayerPrefs.Save();
+        }
+    }
+
+    public void UI_OnMaster_Changed(float v01) => Apply_Volumes01(v01, GetBgm01(), GetSfx01());
+    public void UI_OnBgm_Changed(float v01) => Apply_Volumes01(GetMaster01(), v01, GetSfx01());
+    public void UI_OnSfx_Changed(float v01) => Apply_Volumes01(GetMaster01(), GetBgm01(), v01);
+
+    public void UI_OnMasterChanged_0_10(float v10) => UI_OnMaster_Changed(v10 * 0.1f);
+    public void UI_OnBgmChanged_0_10(float v10) => UI_OnBgm_Changed(v10 * 0.1f);
+    public void UI_OnSfxChanged_0_10(float v10) => UI_OnSfx_Changed(v10 * 0.1f);
 }

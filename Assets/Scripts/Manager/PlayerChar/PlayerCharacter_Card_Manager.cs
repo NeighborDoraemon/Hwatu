@@ -121,6 +121,42 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
         card_UI_Manager.UpdateCardUI(cardSprites);
     }
 
+    public void Recall_All_Cards()
+    {
+        // 1) 인벤토리에 들어있는 카드 정리 + 중복 방지 리스트에서 해제
+        for (int i = 0; i < card_Inventory.Length; i++)
+        {
+            var go = card_Inventory[i];
+            if (go == null) { card_Inventory[i] = null; continue; }
+
+            var card = go.GetComponent<Card>();
+            if (card != null && card.selected_Sprite != null)
+            {
+                Object_Manager.instance?.Remove_Used_Sprite(card.selected_Sprite);
+                Object_Manager.instance?.Remove_Used_Sprite(card.selected_Sprite);
+            }
+
+            Object_Manager.instance?.Remove_From_Spawned_Cards(go);
+
+            Destroy(go);
+            card_Inventory[i] = null;
+        }
+        cardCount = 0;
+
+        // 2) 필드에 남아있는 카드 오브젝트 정리
+        if (Object_Manager.instance != null)
+        {
+            Object_Manager.instance.Destroy_All_Cards(null);
+        }
+
+        // 3) 조합/무기/월 세트/UI 초기화
+        isCombDone = false;
+        Rebuild_Month_Sets();
+        Set_Weapon(0);
+        card_UI_Manager.Update_CombText("");
+        UpdateCardUI();
+    }
+
     public void Change_FirstAndThird_Card()
     {
         if (card_Inventory[2] != null)
@@ -313,6 +349,7 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
             }
             else
             {
+                Set_Weapon(0);
                 Debug.Log("해당 조합 없음");
             }
 

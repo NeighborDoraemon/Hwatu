@@ -25,5 +25,5 @@ MonoBehaviour:
   max_Simultaneous: 1
   cooldown: 0
   mixer_Group: {fileID: 3274265400699389529, guid: d38e156d187e2f24aaa6014d8b10d34b, type: 2}
-  overlap_Policy: 3
+  overlap_Policy: 0
   retrigger_MinInterval: 0.2
