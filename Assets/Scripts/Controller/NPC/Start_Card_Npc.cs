@@ -80,6 +80,11 @@ public class Start_Card_Npc : MonoBehaviour, Npc_Interface
         }
     }
 
+    public void Reset_Bool()
+    {
+        give_Card = false;
+    }
+
     public void Npc_Interaction_Start()
     {
         if (player != null && !give_Card)

@@ -12,6 +12,7 @@ public class Crash_Dialogue : MonoBehaviour, Npc_Interface
 
     [Header("Cards")]
     [SerializeField] private bool give_Card = false;
+    [SerializeField] private bool take_Card = false;
 
     public void Event_Attack(InputAction.CallbackContext ctx){}
     public void Event_Move(InputAction.CallbackContext ctx){}
@@ -45,6 +46,13 @@ public class Crash_Dialogue : MonoBehaviour, Npc_Interface
                     p_Controller.AddCard(spawned_Card);
                 }
             }
+            return;
+        }
+
+        if (take_Card)
+        {
+            p_Controller.Recall_All_Cards();
+            return;
         }
     }
 
@@ -79,5 +87,10 @@ public class Crash_Dialogue : MonoBehaviour, Npc_Interface
             Dialogue_Manager.instance.Get_Npc_Data(this.gameObject);
             Npc_Interaction_Start();
         }
+    }
+
+    public void Reset_value()
+    {
+               Print_time = 1;
     }
 }

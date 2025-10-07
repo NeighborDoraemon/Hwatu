@@ -57,6 +57,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
     [SerializeField] private Enemy_Generator Obj_e_Generator;
     [SerializeField] private New_Fade_Controller new_Fade;
     [SerializeField] private Object_Manager obj_manager;
+    [SerializeField] private Start_Card_Npc start_Card_Npc;
 
     [SerializeField]
     private Camera_Manager camera_Manager;
@@ -894,6 +895,8 @@ public class Map_Manager : MonoBehaviour, ISaveable
                 data.is_Tutorial_Cleared = true;
             });
             Save_Manager.Instance.SaveAll();
+
+            start_Card_Npc.Reset_Bool();
         }
 
         Obj_e_Generator.Set_Current(mv_Current_Map);
