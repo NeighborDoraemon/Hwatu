@@ -124,22 +124,26 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
     public void Recall_All_Cards()
     {
         // 1) 인벤토리에 들어있는 카드 정리 + 중복 방지 리스트에서 해제
+        var sprites_To_Release = new List<Sprite>();
         for (int i = 0; i < card_Inventory.Length; i++)
         {
             var go = card_Inventory[i];
-            if (go == null) { card_Inventory[i] = null; continue; }
+            if (!go) continue;
 
             var card = go.GetComponent<Card>();
             if (card != null && card.selected_Sprite != null)
             {
-                Object_Manager.instance?.Remove_Used_Sprite(card.selected_Sprite);
-                Object_Manager.instance?.Remove_Used_Sprite(card.selected_Sprite);
+                sprites_To_Release.Add(card.selected_Sprite);
             }
+        }
 
-            Object_Manager.instance?.Remove_From_Spawned_Cards(go);
-
-            Destroy(go);
-            card_Inventory[i] = null;
+        for (int i = 0; i < card_Inventory.Length; i++)
+        {
+            if (card_Inventory[i] != null)
+            {
+                Destroy(card_Inventory[i]);
+                card_Inventory[i] = null;
+            }
         }
         cardCount = 0;
 
@@ -147,6 +151,13 @@ public class PlayerCharacter_Card_Manager : PlayerCharacter_Stat_Manager
         if (Object_Manager.instance != null)
         {
             Object_Manager.instance.Destroy_All_Cards(null);
+
+            foreach (var sp in sprites_To_Release)
+                Object_Manager.instance.Remove_Used_Sprite(sp);
+        }
+        else
+        {
+            Debug.LogWarning("[Card Manager] Object Manager is missing.");
         }
 
         // 3) 조합/무기/월 세트/UI 초기화

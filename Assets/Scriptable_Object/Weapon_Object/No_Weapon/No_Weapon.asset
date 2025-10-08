@@ -12,16 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1011f0dca0fd3c642bb1f656031bac71, type: 3}
   m_Name: No_Weapon
   m_EditorClassIdentifier: 
-  weapon_Name: Hand
+  weapon_Name: "\uB9E8\uC190"
+  weapon_Type: 4
+  weapon_Icon: {fileID: 0}
+  comb_Name: 
   attack_Damage: 0
   attack_Cooldown: 0
   max_Attack_Count: 0
   skill_Damage: 0
   skill_Cooldown: 0
+  skill_Icon: {fileID: -2413806693520163455, guid: bf57aa7c7f6803144934aa669bf87134, type: 3}
   weapon_Prefab: {fileID: 7843703564842448239, guid: 665738c1b2f3d1141940e489b7ad0c4d, type: 3}
   overrideController: {fileID: 22100000, guid: 32560cb0b251e0e4d8da42a6456d4d8d, type: 2}
   weapon_overrideController: {fileID: 0}
   animation_Pos_Data_List: []
-  effect_Data: {fileID: 0}
+  effect_Data: {fileID: 11400000, guid: 97c57873bd4223b47b95132cec01741d, type: 2}
+  skill_Effect_Data: {fileID: 11400000, guid: 97c57873bd4223b47b95132cec01741d, type: 2}
   attack_Strategy: {fileID: 11400000, guid: 68b16490c8c32154f8a580b17b1b4888, type: 2}
   is_HoldAttack_Enabled: 0
+  skill_SE: {fileID: 0}
