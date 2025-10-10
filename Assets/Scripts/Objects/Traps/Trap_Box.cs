@@ -22,12 +22,6 @@ public class Trap_Box : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Obj_Player = collision.gameObject;
-
-        //if (collision.gameObject.CompareTag("Player") && !is_Once_Act)
-        //{
-        //    is_Once_Act = true;
-        //    StartCoroutine(Damage_Coroutine());
-        //}
         if (collision.gameObject.CompareTag("Player") && !is_Once_Act)
         {
             is_Once_Act = true;

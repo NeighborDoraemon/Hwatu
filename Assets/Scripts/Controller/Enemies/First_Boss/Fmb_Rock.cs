@@ -7,7 +7,6 @@ public class Fmb_Rock : MonoBehaviour
     [SerializeField] public int i_Projectile_Damage;
     [HideInInspector]public bool is_Big_Rock = true;
 
-    [SerializeField] private int i_Rock_Count = 2;
     [SerializeField] private float f_small_Rock_Power = 5.0f;
     [SerializeField] private float f_small_Rock_Angle = 30.0f;
     [SerializeField] private Vector3 f_small_Rock_Scale = new Vector3(0.5f, 0.5f, 1.0f);

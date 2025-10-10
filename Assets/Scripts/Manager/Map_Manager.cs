@@ -24,16 +24,6 @@ public class Map_Manager : MonoBehaviour, ISaveable
     [SerializeField] private Map_Value SB_Map_Data; // Second Stage Boss Map Data
 
 
-    //[HideInInspector] public static List<Map_Value> Map_Shuffled_List = new List<Map_Value>();
-    //First Stage Queue
-    private Queue<Map_Value> Map_Shuffled_Queue = new Queue<Map_Value>(); // new Shuffled
-    private Queue<Map_Value> Event_Map_Shuffled_Queue = new Queue<Map_Value>(); // Event Shuffled
-    //private List<bool> is_Events_Cleared = new List<bool>(); // Event Cleared List
-    private bool is_Hunting_Cleared = false;
-
-    //Second Stage Queue
-    private Queue<Map_Value> Second_Map_Shuffled_Queue = new Queue<Map_Value>();
-
     [Header("others")]
     [SerializeField] private Vector3 FB_Boss_Point;
     [SerializeField] private Map_Value Map_Tutorial;
@@ -118,9 +108,6 @@ public class Map_Manager : MonoBehaviour, ISaveable
     // Start is called before the first frame update
     void Start()
     {
-        //Shuffle_Maps();
-        //Set_Next_Point();
-        //mv_Current_Map = Map_Start;
         Save_Manager.Instance.Register(this);
 
         if (Save_Manager.Instance.Get<bool>(data => data.is_Tutorial_Cleared))
@@ -146,21 +133,12 @@ public class Map_Manager : MonoBehaviour, ISaveable
     }
 
     public void Save(SaveData data)
-    {
-        //data.Map_List_Index = Map_Index_List; // Original Index List
-        //data.Second_Map_Index_List = Second_Map_Index_List; // Second Stage Original Index List
-
-        //data.Map_Index = map_Index;
-        //data.Second_Map_Index = Second_map_Index; // Second Stage Map Index
-        //data.Current_Map = mv_Current_Map;
-        //data.Next_Map = mv_Next_Map;
-
+    { 
         data.is_Market_Now = is_Market_Now;
         data.is_take_Market = is_take_Market;
-        //data.is_Map_Saved = true;
         data.is_Boss_Stage = is_Boss_Stage;
         data.is_Event_Now = is_Event_Now;
-        data.is_Hunting_Cleared = is_Hunting_Cleared; // Hunting Cleared
+
         data.player_token = i_player_token; // Player Token
 
         data.new_map_index_list = New_map_Index_List;
@@ -172,24 +150,15 @@ public class Map_Manager : MonoBehaviour, ISaveable
     private void Load_Saved_Data()
     {
         //Load Map Data
-        //mv_Next_Map = Save_Manager.Instance.Get<Map_Value>(data=>data.Next_Map);    //Next Map
-
-        //Map_Index_List = Save_Manager.Instance.Get<List<int>>(data => data.Map_List_Index); //Original Index List
-        //Second_Map_Index_List = Save_Manager.Instance.Get<List<int>>(data => data.Second_Map_Index_List); //Second Stage Original Index List
-
-        //map_Index = Save_Manager.Instance.Get<int>(data => data.Map_Index); //Map Index
-        //Second_map_Index = Save_Manager.Instance.Get<int>(data => data.Second_Map_Index); //Second Stage Map Index
 
         is_Market_Now = Save_Manager.Instance.Get<bool>(data => data.is_Market_Now); //Market Now
 
         is_take_Market = Save_Manager.Instance.Get<bool>(data => data.is_take_Market); //Market Take
 
-        //mv_Current_Map = Save_Manager.Instance.Get<Map_Value>(data => data.Current_Map); //Current Map
-
         is_Boss_Stage = Save_Manager.Instance.Get<bool>(data => data.is_Boss_Stage); //Boss Stage
 
         is_Event_Now = Save_Manager.Instance.Get<bool>(data => data.is_Event_Now); //Event Now
-        is_Hunting_Cleared = Save_Manager.Instance.Get<bool>(data => data.is_Hunting_Cleared); //Hunting Cleared
+
         i_player_token = Save_Manager.Instance.Get<int>(data => data.player_token); // Player Token
 
         New_map_Index_List = Save_Manager.Instance.Get<List<int>>(data => data.new_map_index_list);
@@ -209,68 +178,6 @@ public class Map_Manager : MonoBehaviour, ISaveable
         Obj_Player.GetComponent<PlayerCharacter_Controller>().Add_Player_Token(i_player_token); // Add Player Token to Player
     }
 
-    private void Make_Lists()
-    {
-        Map_Shuffled_Queue.Clear(); // Queue Clear
-
-        //First Stage Lists
-        for (int i = 0; i < Map_Index_List.Count; i++)
-        {
-            Map_Shuffled_Queue.Enqueue(Map_Data[Map_Index_List[i]]);
-        }
-        for (int i = 1; i < map_Index; i++)
-        {
-            Map_Shuffled_Queue.Dequeue();
-        }
-
-        //Second Stage Lists
-        for (int i = 0; i < Second_Map_Index_List.Count; i++)
-        {
-            Second_Map_Shuffled_Queue.Enqueue(Second_Stage_Map_Data[Second_Map_Index_List[i]]);
-        }
-        if (Second_Map_Shuffled_Queue.Count > 0)
-        {
-            for (int i = 1; i < Second_map_Index; i++)
-            {
-                Second_Map_Shuffled_Queue.Dequeue();
-            }
-        }
-
-        //Event Map Lists
-        for (int i = 0; i < Event_Map_Data.Count; i++)
-        {
-            Event_Map_Shuffled_Queue.Enqueue(Event_Map_Data[i]);
-        }
-       
-        if (!is_Event_Now && is_Hunting_Cleared)
-        {
-            Event_Map_Shuffled_Queue.Dequeue(); // Remove First Event Map
-        }
-
-        if (is_Event_Now)
-        {
-            Set_Current_Event();
-            return;
-        }
-
-        if (is_Market_Now)
-        {
-            mv_Current_Map = Market_Data; // Market Map
-            return;
-        }
-        else if (is_Boss_Stage)
-        {
-            mv_Current_Map = FB_Map_Data; // Boss Map
-            return;
-        }
-        else
-        {
-            mv_Current_Map = Map_Shuffled_Queue.Dequeue(); // Current Map
-            return;
-        }
-
-    }
-
     public void Token_Call()
     {
         i_player_token = Obj_Player.GetComponent<PlayerCharacter_Controller>().i_Token; // Player Token
@@ -279,18 +186,12 @@ public class Map_Manager : MonoBehaviour, ISaveable
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         map_Index = -1;
-        //Map_Shuffled_List.Clear();
 
         Load_Token();
-
-        Map_Shuffled_Queue.Clear(); // Queue Clear
-        Event_Map_Shuffled_Queue.Clear();
 
         if (Save_Manager.Instance.Get<bool>(data => data.is_Map_Saved))
         {
             Load_Saved_Data();  // have to Change***********************************
-            //Make_Lists();
-            //New_Portal_Method(false);
             New_New_Portal_Method(false);
 
             StartCoroutine(Wait_For_Enemy_Spawn());
@@ -303,18 +204,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
             IsOnPortal = false;
         }
 
-        //if(Save_Manager.Instance.Get<bool>(data => data.is_Tutorial_Cleared))
-        //{
-        //    Obj_Player.transform.position = Map_Start.v_Map_Spawnpoint;
-        //    mv_Current_Map = Map_Start;
-        //}
-        //else
-        //{
-        //    Debug.Log("Tutorial Map Start");
-        //    mv_Current_Map = Map_Tutorial;
-        //}
-
-            Obj_e_Generator.Set_Use_Count(First_Using_Map_Count);
+        Obj_e_Generator.Set_Use_Count(First_Using_Map_Count);
     }
 
     private IEnumerator Wait_For_Enemy_Spawn()
@@ -363,66 +253,6 @@ public class Map_Manager : MonoBehaviour, ISaveable
                     Object_Manager.instance.Destroy_All_Cards_And_Items();
                 }
             }
-        }
-    }
-
-    private void New_Portal_Method(bool b_index)
-    {
-        if (b_index)
-        {
-            if(is_Event_Now && !is_Hunting_Cleared)
-            {
-                is_Hunting_Cleared = true; // Hunting Cleared
-            }
-
-            Set_New_Current(); // Set mv_Current Map
-        }
-        else
-        {
-            Obj_e_Generator.Set_Current(mv_Current_Map);
-        }
-        i_player_token = Obj_Player.GetComponent<PlayerCharacter_Controller>().i_Token; // Player Token
-        Obj_Player.transform.position = mv_Current_Map.v_Map_Spawnpoint;
-
-        Save_Manager.Instance.Modify(data =>
-        {
-            data.is_Map_Saved = true;
-            data.is_Inventory_Saved = true;
-        });
-        Save_Manager.Instance.SaveAll();
-
-        if (is_Boss_Stage)
-        {
-            if (!is_Fmb_Now)
-            {
-                StartCoroutine(Wait_For_Boss());
-            }
-            else
-            {
-                StartCoroutine(Wait_For_Fmb());
-            }
-            return;
-        }
-
-        if (!is_Market_Now && mv_Current_Map != Map_Tutorial)
-        {
-            Debug.Log("Enemy Spawn Called");
-            Obj_e_Generator.Set_Next();
-            //Obj_e_Generator.New_Enemy_Spawn(); // First Spawn in map
-            Obj_e_Generator.New_Enemy_Spawn(mv_Current_Map); // First Spawn in map
-            if (!is_First_Cleared)
-            {
-                map_Index++;    // Plus map's Index when the map is Battle map
-            }
-            else if (is_First_Cleared && !is_Second_Cleared)
-            {
-                Second_map_Index++; // Plus Second Stage map's Index when the map is Battle map
-            }
-        }
-
-        if (is_Market_Now)
-        {
-            Market_Stall.GetComponent<Obj_Market_Stall>().Market_Call();
         }
     }
 
@@ -586,178 +416,6 @@ public class Map_Manager : MonoBehaviour, ISaveable
         Obj_Fmb.GetComponent<Fmb_Spiritual>().Call_Start();
     }
 
-    private void Set_New_Current()
-    {
-        if (!is_First_Cleared)
-        {
-            if (Map_Shuffled_Queue.Count > 0)
-            {
-                if (Map_Shuffled_Queue.Count <= First_Using_Map_Count / 2 && !is_take_Market) // Goto Market
-                {
-                    mv_Current_Map = Market_Data; // Market Map
-                    is_take_Market = true;
-                    is_Market_Now = true;
-                    Obj_e_Generator.Set_Current(mv_Current_Map);
-                    return;
-                }
-                else
-                {
-                    if(!is_Fmb_Cleared && map_Index == 3)
-                    {
-                        mv_Current_Map = Fmb_Map_Data; // First Mini Boss Map
-                        is_Boss_Stage = true;
-                        is_Fmb_Now = true;
-                        Obj_e_Generator.Set_Current(mv_Current_Map);
-                        return;
-                    }
-
-                    is_Boss_Stage = false; // Reset Boss Stage
-                    is_Fmb_Now = false;
-
-                    if(!is_Fmb_Cleared && map_Index > 3)
-                    {
-                        is_Fmb_Cleared = true; // First Mini Boss Cleared
-                    }
-
-                    int rand = 10;
-                    if (map_Index >= 2 && map_Index <= 4)
-                    {
-                        rand = Random.Range(1, 11);
-                    }
-
-                    if (rand < 4 && Event_Map_Shuffled_Queue.Count != 0)
-                    {
-                        Set_Current_Event();
-                        is_Market_Now = true;
-
-                        is_Event_Now = true;
-
-                        is_Card_Set = false;
-                        Obj_e_Generator.Set_Current(mv_Current_Map);
-                        return;
-                    }
-                    else
-                    {
-                        mv_Current_Map = Map_Shuffled_Queue.Dequeue();
-                        is_Market_Now = false;
-
-                        is_Card_Set = false;
-                        Obj_e_Generator.Set_Current(mv_Current_Map);
-                        return;
-                    }
-                }
-            }
-            else
-            {
-                mv_Current_Map = FB_Map_Data; // Boss Map
-                is_Boss_Stage = true;
-                Obj_e_Generator.Set_Current(mv_Current_Map);
-                return;
-            }
-        }
-        else if (is_First_Cleared && !is_Second_Cleared)
-        {
-            if (Second_Map_Shuffled_Queue.Count > 0)
-            {
-                if (Second_Map_Shuffled_Queue.Count <= First_Using_Map_Count / 2 && !is_take_Market) // Goto Market
-                {
-                    mv_Current_Map = Market_Data; // Market Map
-                    is_take_Market = true;
-                    is_Market_Now = true;
-                    Obj_e_Generator.Set_Current(mv_Current_Map);
-                    return;
-                }
-                else
-                {
-                    int rand = 10;
-                    if (map_Index >= 2 && map_Index <= 4)
-                    {
-                        rand = Random.Range(1, 11);
-                        Debug.Log("Event Random Index : " + rand);
-                    }
-
-                    if (rand < 4 && Event_Map_Shuffled_Queue.Count != 0)
-                    {
-                        Set_Current_Event();
-                        is_Market_Now = true;
-
-                        is_Event_Now = true;
-
-                        is_Card_Set = false;
-                        Obj_e_Generator.Set_Current(mv_Current_Map);
-                        return;
-                    }
-                    else
-                    {
-                        if(Second_Map_Shuffled_Queue.Count == Second_Using_Map_Count)
-                        {
-                            is_Boss_Stage = false; // Reset Boss Stage
-                        }
-                        mv_Current_Map = Second_Map_Shuffled_Queue.Dequeue();
-                        is_Market_Now = false;
-
-                        is_Card_Set = false;
-                        Obj_e_Generator.Set_Current(mv_Current_Map);
-                        return;
-                    }
-                }
-            }
-            else
-            {
-                mv_Current_Map = FB_Map_Data; // Boss Map
-                is_Boss_Stage = true;
-                Obj_e_Generator.Set_Current(mv_Current_Map);
-                return;
-            }
-        }
-        else
-        {
-            Debug.LogError("Stage Bool Reference Error");
-        }
-    }
-
-    private void Shuffle_Maps()
-    {
-        List<Map_Value> map_Data_Copy = new List<Map_Value>(Map_Data); // Copy Map Data
-        List<Map_Value> Second_Data_Copy = new List<Map_Value>(Second_Stage_Map_Data); // Copy Second Stage Map Data
-        Map_Index_List.Clear();
-
-        for (int i = 0; i < First_Using_Map_Count && map_Data_Copy.Count > 0 /*Map_Data.Count*/; i++ )
-        {
-            int Index = Random.Range(0, map_Data_Copy.Count);
-            Map_Value Selected_Map = map_Data_Copy[Index];
-
-            //Map_Shuffled_List.Add(Selected_Map);
-            Map_Shuffled_Queue.Enqueue(Selected_Map); // Queue Enqueue
-
-            int Original_Index = Map_Data.IndexOf(Selected_Map);
-            Map_Index_List.Add(Original_Index); // Original Index List
-
-            map_Data_Copy.RemoveAt(Index);
-        }
-
-        List<Map_Value> event_map_data_copy = new List<Map_Value>(Event_Map_Data); // Copy Event Map Data
-        while(event_map_data_copy.Count > 0)
-        {
-            int index = Random.Range(0, event_map_data_copy.Count);
-            Event_Map_Shuffled_Queue.Enqueue(event_map_data_copy[index]);
-            event_map_data_copy.RemoveAt(index);
-        }
-
-        // Second Stage Shuffle
-        for (int i = 0; i < Second_Using_Map_Count && Second_Data_Copy.Count > 0; i++)
-        {
-            int Index = Random.Range(0, Second_Data_Copy.Count);
-            Map_Value Selected_Map = Second_Data_Copy[Index];
-
-            Second_Map_Shuffled_Queue.Enqueue(Selected_Map); // Queue Enqueue
-            int Original_Index = Second_Stage_Map_Data.IndexOf(Selected_Map);
-
-            Second_Map_Index_List.Add(Original_Index); // Original Index List
-            Second_Data_Copy.RemoveAt(Index);
-        }
-    }
-
     private void New_Shuffle_Maps()
     {
         New_map_Index_List.Clear();
@@ -803,11 +461,6 @@ public class Map_Manager : MonoBehaviour, ISaveable
         }
     }
 
-    public bool Check_Boss_Stage()
-    {
-        return true;
-    }
-
     private void Get_Random_Cards()
     {
         int rand;
@@ -838,30 +491,6 @@ public class Map_Manager : MonoBehaviour, ISaveable
 
             map_Card_02 = obj_manager.card_Values[rand].Month;
         } while (map_Card_02 == player_card_Value_01 || map_Card_02 == player_card_Value_02 || map_Card_02 == map_Card_01);
-    }
-
-    private void Set_Event_Next()
-    {
-        mv_Next_Map = Event_Map_Shuffled_Queue.Dequeue();
-        v_Next_SpawnPoint = mv_Next_Map.v_Map_Spawnpoint;
-        is_Next_Event = true;
-
-        Debug.Log("Event Map Next!");
-    }
-
-    private void Set_Current_Event()
-    {
-        mv_Current_Map = Event_Map_Shuffled_Queue.Dequeue();
-        v_Next_SpawnPoint = mv_Current_Map.v_Map_Spawnpoint;
-        is_Next_Event = false;
-    }
-
-    private void New_Set_Current_Event()
-    {
-        mv_Current_Map = Event_Map_Data[event_map_Index_List[0]];
-        v_Next_SpawnPoint = mv_Current_Map.v_Map_Spawnpoint;
-        event_map_Index_List.RemoveAt(0);
-        is_Next_Event = false;
     }
 
     public void End_Stage(int stage_index)
