@@ -49,46 +49,46 @@ public class Sound_Event : ScriptableObject
     }
 }
 
-[CreateAssetMenu(menuName = "Audio/Player_SFX_Profile")]
-public class Player_SFX_Profile : ScriptableObject
-{
-    public Sound_Event footstep;
-    public Sound_Event hurt;
-}
+//[CreateAssetMenu(menuName = "Audio/Player_SFX_Profile")]
+//public class Player_SFX_Profile : ScriptableObject
+//{
+//    public Sound_Event footstep;
+//    public Sound_Event hurt;
+//}
 
-[CreateAssetMenu(menuName = "Audio/WeaponType_SFX_Profile")]
-public class WeaponType_SFX_Profile : ScriptableObject
-{
-    public WeaponType type;
-    public Sound_Event attack;
-    //public Sound_Event skill;
-}
+//[CreateAssetMenu(menuName = "Audio/WeaponType_SFX_Profile")]
+//public class WeaponType_SFX_Profile : ScriptableObject
+//{
+//    public WeaponType type;
+//    public Sound_Event attack;
+//    //public Sound_Event skill;
+//}
 
-[CreateAssetMenu(menuName = "Audio/Channels/SFX")]
-public class SFX_Event_Channel : ScriptableObject
-{
-    public event Action<Sound_Event, Vector3> OnPlay;
-    public void Raise(Sound_Event sound, Vector3 position)
-    {
-        OnPlay?.Invoke(sound, position);
-    }
+//[CreateAssetMenu(menuName = "Audio/Channels/SFX")]
+//public class SFX_Event_Channel : ScriptableObject
+//{
+//    public event Action<Sound_Event, Vector3> OnPlay;
+//    public void Raise(Sound_Event sound, Vector3 position)
+//    {
+//        OnPlay?.Invoke(sound, position);
+//    }
 
-    public event Action<Sound_Event, Transform> OnPlay_Attached;
-    public void Raise_Attached(Sound_Event sound, Transform emitter)
-    {
-        OnPlay_Attached?.Invoke(sound, emitter);
-    }
-}
+//    public event Action<Sound_Event, Transform> OnPlay_Attached;
+//    public void Raise_Attached(Sound_Event sound, Transform emitter)
+//    {
+//        OnPlay_Attached?.Invoke(sound, emitter);
+//    }
+//}
 
-[CreateAssetMenu(menuName = "Audio/Channels/BGM")]
-public class BGM_Event_Channel : ScriptableObject
-{
-    public event Action<AudioClip, float, bool> OnPlay;
-    public event Action<float> OnStop;
+//[CreateAssetMenu(menuName = "Audio/Channels/BGM")]
+//public class BGM_Event_Channel : ScriptableObject
+//{
+//    public event Action<AudioClip, float, bool> OnPlay;
+//    public event Action<float> OnStop;
 
-    public void Raise_Play(AudioClip clip, float fade_Seconds = 0.0f, bool loop = true)
-        => OnPlay?.Invoke(clip, fade_Seconds, loop);
+//    public void Raise_Play(AudioClip clip, float fade_Seconds = 0.0f, bool loop = true)
+//        => OnPlay?.Invoke(clip, fade_Seconds, loop);
 
-    public void Raise_Stop(float fade_Seconds = 0.0f)
-        => OnStop?.Invoke(fade_Seconds);
-}
+//    public void Raise_Stop(float fade_Seconds = 0.0f)
+//        => OnStop?.Invoke(fade_Seconds);
+//}

@@ -698,43 +698,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
 
     public void Input_Jump(InputAction.CallbackContext ctx)
     {
-        //if (Current_Player_State == Player_State.Normal)    //상태조건
-        //{
-        //    if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && !is_Player_Dead)
-        //    {
-        //        if (is_Down_Performed)
-        //        {
-        //            if (current_Platform != null)
-        //            {
-        //                StartCoroutine(DisableCollision());
-        //            }
-        //        }
-        //        else
-        //        {
-        //            if (jumpCount < maxJumpCount)
-        //            {
-        //                Do_Jump();
-        //            }
-        //        }
-        //    }
-        //}
-        //else if (Current_Player_State == Player_State.UI_Open)
-        //{
-        //    if (is_StatUI_Visible)
-        //    {
-        //        Now_Contact_Npc.GetComponent<Stat_Npc_Controller>()?.Exit_UI();
-        //    }
-        //    else if (isInventory_Visible && is_Item_Change && pending_SwapItem != null)
-        //    {
-        //        Vector2 spawn_Pos = new Vector2(transform.position.x, transform.position.y - 0.2f);
-        //        Object_Manager.instance.Spawn_Specific_Item(spawn_Pos, pending_SwapItem);
-        //        pending_SwapItem = null;
-        //        is_Item_Change = false;
-        //        HideInventory();
-        //        Time.timeScale = 1.0f;
-        //        return;
-        //    }
-        //}
         if (ctx.phase == InputActionPhase.Started)
         {
             On_Jump_Button();
@@ -794,57 +757,6 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
     
     public void Input_Teleportation(InputAction.CallbackContext ctx)
     {
-        //if (Current_Player_State == Player_State.Normal)    //상태조건
-        //{
-        //    if (is_Player_Dead) return;
-
-        //    if (ctx.phase == InputActionPhase.Started && Time.timeScale == 1.0f && canTeleporting)
-        //    {
-        //        float adjusted_Distance = teleporting_Distance;
-
-        //        Vector2 top_Pos = new Vector2(transform.position.x, transform.position.y + GetComponent<Collider2D>().bounds.extents.y);
-        //        Vector2 bottom_Pos = new Vector2(transform.position.x, transform.position.y - GetComponent<Collider2D>().bounds.extents.y);
-
-        //        Vector2 direction;
-        //        if (movement.x > 0.1f) direction = Vector2.right;
-        //        else if (movement.x < -0.1f) direction = Vector2.left;
-        //        else
-        //        {
-        //             direction = is_Facing_Right ? Vector2.right : Vector2.left;
-        //        }
-
-        //        int mask = LayerMask.GetMask("Walls", "Platform");
-
-        //        RaycastHit2D topHit = Physics2D.Raycast(top_Pos, direction, teleporting_Distance, mask);
-        //        RaycastHit2D bottomHit = Physics2D.Raycast(bottom_Pos, direction, teleporting_Distance, mask);
-
-        //        if (topHit.collider != null)
-        //        {
-        //            adjusted_Distance = Mathf.Min(adjusted_Distance, topHit.distance);
-        //        }
-        //        if (bottomHit.collider != null)
-        //        {
-        //            adjusted_Distance = Mathf.Min(adjusted_Distance, bottomHit.distance);
-        //        }
-
-        //        transform.Translate(direction * adjusted_Distance);
-
-        //        animator.SetTrigger("Teleport");
-        //        cur_Teleport_Count--;
-
-        //        if (cur_Teleport_Count <= 0)
-        //        {
-        //            canTeleporting = false;
-        //        }
-
-        //        On_Teleport?.Invoke(this);
-
-        //        if (invicible_Teleport)
-        //        {
-        //            StartCoroutine(Invicible_After_Teleport());
-        //        }
-        //    }
-        //}
         if (ctx.phase == InputActionPhase.Started)
             On_Teleport_Button();
     }

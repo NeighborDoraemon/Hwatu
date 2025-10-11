@@ -960,7 +960,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sfx_Channel: {fileID: 11400000, guid: 4f2ea531a0ca9894392439b2641a9fff, type: 2}
-  bgm_Channel: {fileID: 11400000, guid: 2695ec4b3ce5e404492af98f34ed27ef, type: 2}
+  bgm_Channel: {fileID: 11400000, guid: 14a954c2bec58374b96d05e49ff86329, type: 2}
   resolver: {fileID: 4365928160332045575}
 --- !u!114 &4365928160332045575
 MonoBehaviour:
@@ -974,13 +974,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08a1b0fe4c45a3d469e8efe5bced3f29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player_Profile: {fileID: 11400000, guid: b5288ba558dc2534a95b9d365122986e, type: 2}
+  player_Profile: {fileID: 11400000, guid: 997cef6388505d64784cb6ce71090f14, type: 2}
   weapon_Type_Profiles:
-  - {fileID: 11400000, guid: 61536a0f975a7144886ec8d65535b0b4, type: 2}
-  - {fileID: 11400000, guid: 0724e028f5db8184aac51350eed71357, type: 2}
-  - {fileID: 11400000, guid: 9e49b0755e69e8344812bc4d47693063, type: 2}
-  - {fileID: 11400000, guid: dbfa6fb55a90eba4b816ce4e42f0d8b3, type: 2}
-  - {fileID: 11400000, guid: 577a18bf3f7cd1e4ab97d1e223050106, type: 2}
+  - {fileID: 11400000, guid: f97a5297d427c7746803e7cb4a4337a7, type: 2}
+  - {fileID: 11400000, guid: 8a39a24a858786c4489a96adb96f78b2, type: 2}
+  - {fileID: 11400000, guid: fe5990cfaea70b04ca6bfa8f3f0cbe71, type: 2}
+  - {fileID: 11400000, guid: 3a3bb2872270b6843879d955a4adef1d, type: 2}
+  - {fileID: 11400000, guid: 292fa8b8dbf25d842b165e34e0ce391a, type: 2}
 --- !u!81 &8155558374923975503
 AudioListener:
   m_ObjectHideFlags: 0
