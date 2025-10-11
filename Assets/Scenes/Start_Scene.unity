@@ -3625,6 +3625,7 @@ GameObject:
   - component: {fileID: 273305291}
   - component: {fileID: 273305290}
   - component: {fileID: 273305289}
+  - component: {fileID: 273305292}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4220,7 +4221,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!82 &307175127
 AudioSource:
   m_ObjectHideFlags: 0
@@ -25347,7 +25348,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sfx_Channel: {fileID: 11400000, guid: 4f2ea531a0ca9894392439b2641a9fff, type: 2}
-  bgm_Channel: {fileID: 11400000, guid: 2695ec4b3ce5e404492af98f34ed27ef, type: 2}
+  bgm_Channel: {fileID: 11400000, guid: 14a954c2bec58374b96d05e49ff86329, type: 2}
   sfx_Source_Prefab: {fileID: 236119849148806803, guid: f08d06ba259e2a6499a7f5d2b5c5652f, type: 3}
   poolSize: 24
   bgm: {fileID: 2049252008}
@@ -26686,3 +26687,4 @@ SceneRoots:
   - {fileID: 1552262774}
   - {fileID: 287820708}
   - {fileID: 307175129}
+  - {fileID: 2049252010}
