@@ -110,15 +110,18 @@ public class Map_Manager : MonoBehaviour, ISaveable
     {
         Save_Manager.Instance.Register(this);
 
-        if (Save_Manager.Instance.Get<bool>(data => data.is_Tutorial_Cleared))
+        if (!Save_Manager.Instance.Get<bool>(data => data.is_Map_Saved))
         {
-            Obj_Player.transform.position = Map_Start.v_Map_Spawnpoint;
-            mv_Current_Map = Map_Start;
-        }
-        else
-        {
-            Debug.Log("Tutorial Map Start");
-            mv_Current_Map = Map_Tutorial;
+            if (Save_Manager.Instance.Get<bool>(data => data.is_Tutorial_Cleared))
+            {
+                Obj_Player.transform.position = Map_Start.v_Map_Spawnpoint;
+                mv_Current_Map = Map_Start;
+            }
+            else
+            {
+                Debug.Log("Tutorial Map Start");
+                mv_Current_Map = Map_Tutorial;
+            }
         }
     }
 
