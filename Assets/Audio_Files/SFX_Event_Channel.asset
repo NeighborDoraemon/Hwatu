@@ -9,6 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 896cfbe16d2a1784ea0f7756fc2976a1, type: 3}
   m_Name: SFX_Event_Channel
-  m_EditorClassIdentifier: Assembly-CSharp::SFX_Event_Channel
+  m_EditorClassIdentifier: 

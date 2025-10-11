@@ -54,7 +54,6 @@ public class AudioManager : MonoBehaviour
     const float kMin_Lin = 0.0001f;
 
     static float Linear_To_Db(float x) => (x <= 0.0001f) ? -80.0f : Mathf.Log10(x) * 20.0f;
-    static float Db_To_Linear(float dB) => dB <= -79.9f ? 0.0f : Mathf.Pow(10.0f, dB / 20.0f);
 
     private void OnEnable()
     {
@@ -104,12 +103,9 @@ public class AudioManager : MonoBehaviour
 
         Ensure_Mixer_Ref();
 
-        //if (start_Snapshot) start_Snapshot.TransitionTo(0.0f);
-        var m = Read01("AM_Master_Lin", default_Master);
-        var b = Read01("AM_Bgm_Lin", default_Bgm);
-        var s = Read01("AM_Sfx_Lin", default_Sfx);
+        AudioSettings_Store.Apply_To_Mixer(mixer, master_Param, bgm_Param, sfx_Param);
 
-        Apply_Volumes01(m,  b, s, save: false);
+        AudioSettings_Store.OnChanged += Apply_From_Store;
     }
 
     float Read01(string key, float def01)
@@ -126,6 +122,11 @@ public class AudioManager : MonoBehaviour
         PlayerPrefs.DeleteKey("AM_Bgm_Lin");
         PlayerPrefs.DeleteKey("AM_Sfx_Lin");
         Apply_Volumes01(default_Master, default_Bgm, default_Sfx);
+    }
+
+    private void OnDestroy()
+    {
+        AudioSettings_Store.OnChanged -= Apply_From_Store;
     }
 
     // ------------------------------------------------------------
@@ -416,11 +417,23 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void UI_OnMaster_Changed(float v01) => Apply_Volumes01(v01, GetBgm01(), GetSfx01());
-    public void UI_OnBgm_Changed(float v01) => Apply_Volumes01(GetMaster01(), v01, GetSfx01());
-    public void UI_OnSfx_Changed(float v01) => Apply_Volumes01(GetMaster01(), GetBgm01(), v01);
+    private void Apply_From_Store(float m, float b, float s)
+    {
+        if (!mixer) return;
+        mixer.SetFloat(master_Param, AudioSettings_Store.Lin_To_Db(m));
+        mixer.SetFloat(bgm_Param, AudioSettings_Store.Lin_To_Db(b));
+        mixer.SetFloat(sfx_Param, AudioSettings_Store.Lin_To_Db(s));
+    }
+
+    public void UI_OnMaster_Changed(float v01)
+        => AudioSettings_Store.Set(v01, AudioSettings_Store.Bgm, AudioSettings_Store.Sfx);
+    public void UI_OnBgm_Changed(float v01)
+        => AudioSettings_Store.Set(AudioSettings_Store.Master, v01, AudioSettings_Store.Sfx);
+    public void UI_OnSfx_Changed(float v01)
+        => AudioSettings_Store.Set(AudioSettings_Store.Master, AudioSettings_Store.Bgm, v01);
 
     public void UI_OnMasterChanged_0_10(float v10) => UI_OnMaster_Changed(v10 * 0.1f);
     public void UI_OnBgmChanged_0_10(float v10) => UI_OnBgm_Changed(v10 * 0.1f);
     public void UI_OnSfxChanged_0_10(float v10) => UI_OnSfx_Changed(v10 * 0.1f);
+
 }
