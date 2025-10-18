@@ -100,6 +100,11 @@ public class Input_Data_Manager : MonoBehaviour
         Set_Texts();
     }
 
+    public void Set_Warning_Off()
+    {
+        Warning_Down.SetActive(false);
+        Warning_Up.SetActive(false);
+    }
 
     public void CheckWarningVisibility()
     {
@@ -220,6 +225,12 @@ public class Input_Data_Manager : MonoBehaviour
             StartRebinding(Action_Index, Binding_Index);
         }
     }
+
+    public void Btn_Key_Waiting(GameObject target_Button)
+    {
+        target_Button.GetComponent<Text>().text = "입력 대기중";
+    }
+
     public void StartRebinding(int i_key_count, int bindingIndex)
     {
         var action = Player_Input_List[i_key_count].action;

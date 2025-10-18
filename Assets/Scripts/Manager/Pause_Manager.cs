@@ -74,6 +74,7 @@ public class Pause_Manager : MonoBehaviour
     {
         Pause_Can.gameObject.SetActive(false);
         Setting_Can.gameObject.SetActive(true);
+        input_Data_Manager.Set_Warning_Off();
     }
 
     public void Btn_Setting_Out()

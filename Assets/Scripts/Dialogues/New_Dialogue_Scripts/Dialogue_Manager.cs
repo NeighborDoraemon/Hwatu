@@ -7,6 +7,7 @@ using System.Linq;
 using UnityEngine.UI;
 using Unity.VisualScripting;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.InputSystem;
 
 public class Dialogue_Manager : MonoBehaviour
 {
@@ -30,6 +31,7 @@ public class Dialogue_Manager : MonoBehaviour
     [SerializeField] private GameObject UI_Canvas;
     [SerializeField] private PlayerCharacter_Controller p_Controller;
     [SerializeField] private RawImage Portrait_Image;
+    [SerializeField] private Text Obj_Interaction_Announce;
 
     [Header("Choose Object")]
     [SerializeField] private GameObject Chose_Cursor_01;
@@ -38,6 +40,10 @@ public class Dialogue_Manager : MonoBehaviour
     [SerializeField] private GameObject Chose_Text_02;
     [SerializeField] private GameObject Chose_Btn_01;
     [SerializeField] private GameObject Chose_Btn_02;
+
+    [Header("Key Actions")]
+    [SerializeField] private InputActionReference input_Interaction;
+
 
     private bool is_First_Chosing = true;   //커서의 위치 true = 1번, false = 2번
 
@@ -295,8 +301,16 @@ public class Dialogue_Manager : MonoBehaviour
         {
             called_Portrait.Enqueue(delta);
         }
-        Debug.Log("Speaker Count : " + called_Speaker.Count);
-        Debug.Log("Portrait Count : " + called_Portrait.Count);
+
+        if(Obj_Interaction_Announce != null)
+        {
+            string interactionText = input_Interaction.action.bindings[0].ToDisplayString();
+            Obj_Interaction_Announce.text = "[" + interactionText + "] " + "계속";
+        }
+
+
+        //Debug.Log("Speaker Count : " + called_Speaker.Count);
+        //Debug.Log("Portrait Count : " + called_Portrait.Count);
 
         Print_Next_Dialogue();
     }
