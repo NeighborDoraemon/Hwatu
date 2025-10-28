@@ -107,13 +107,10 @@ public class WideSword : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
             Wide_Animator.SetTrigger("is_Attacking");
             if (BR_Facing_Left.Value) //Attack Left
             {
-                //Debug.Log(Attack_Time);
-                WideSword_Attack(-1);
                 is_Attack_Complete = true;
             }
             else //Attack Right
             {
-                WideSword_Attack(1);
                 is_Attack_Complete = true;
             }
         }
@@ -132,7 +129,7 @@ public class WideSword : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
         }
     }
 
-    private void WideSword_Attack(int Alpha) //Left = -1, Right = 1;
+    public void WideSword_Attack() //Left = -1, Right = 1;
     {
         if (BR_Not_Attacking.Value)
         {

@@ -103,7 +103,6 @@ public class ShortSword : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
         {
             ShortSword_Animator.SetTrigger("Trigger_Attack");
 
-            ShortSword_Attack();
             is_Attack_Complete = true;
         }
 
@@ -122,7 +121,7 @@ public class ShortSword : Enemy_Parent, Enemy_Interface, Enemy_Stun_Interface
         }
     }
 
-    private void ShortSword_Attack()
+    public void ShortSword_Attack()
     {
         if(BR_Not_Attacking.Value)
         {

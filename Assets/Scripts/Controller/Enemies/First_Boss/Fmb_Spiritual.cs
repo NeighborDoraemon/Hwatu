@@ -102,6 +102,7 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
             //{
             //    groggy_Wall.GetComponent<Fmb_Groggy_Wall>().Force_Destroy();
             //}
+            StopAllCoroutines();
 
             Dialogue_Manager.instance.Start_Dialogue(After_Boss);
             return;

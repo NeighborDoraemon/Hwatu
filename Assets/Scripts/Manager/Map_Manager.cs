@@ -223,14 +223,10 @@ public class Map_Manager : MonoBehaviour, ISaveable
             {
                 if (IsOnPortal && Enemy_Generator.Is_Room_Clear == true) //맵 클리어시에만 이동 가능하도록 변경
                 {
-                    if (!is_Card_Set)
-                    {
-                        Get_Random_Cards();
+                    Get_Random_Cards();
 
-                        match_manager.Give_Map_Cards(map_Card_01, map_Card_02);
-                        match_manager.Match_Reset();
-                        //match_manager.Start_Match();
-                    }
+                    match_manager.Give_Map_Cards(map_Card_01, map_Card_02);
+                    match_manager.Match_Reset();
 
                     if (Obj_Player.GetComponent<PlayerCharacter_Card_Manager>().Has_Four_And_Nine())
                     {
@@ -246,7 +242,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
                         new_Fade.Fade_In(() =>
                         {
                             player_Input.SwitchCurrentActionMap("Player");
-                            if (!is_Market_Now && !is_Next_Event)
+                            if (!is_Market_Now && !is_Next_Event && mv_Current_Map != Map_Start && mv_Current_Map != Map_Tutorial)
                             {
                                 match_manager.Start_Match();
                             }
@@ -309,6 +305,8 @@ public class Map_Manager : MonoBehaviour, ISaveable
                 Obj_e_Generator.Set_Next();
                 Obj_e_Generator.New_Enemy_Spawn(mv_Current_Map);
             }
+
+            Get_Random_Cards();
         }
         else // Move by Portal
         {
@@ -469,7 +467,18 @@ public class Map_Manager : MonoBehaviour, ISaveable
         int rand;
 
         GameObject player_card_01 = Obj_Player.GetComponent<PlayerCharacter_Controller>().card_Inventory[0];
+        if(player_card_01 == null)
+        {
+            Debug.LogError("Player Card 01 is null");
+            return;
+        }
         GameObject player_card_02 = Obj_Player.GetComponent<PlayerCharacter_Controller>().card_Inventory[1];
+        if (player_card_02 == null)
+        {
+            Debug.LogError("Player Card 02 is null");
+            return;
+        }
+
         int player_card_Value_01 = player_card_01.GetComponent<Card>().cardValue.Month;
         int player_card_Value_02 = player_card_02.GetComponent<Card>().cardValue.Month;
 
