@@ -1385,9 +1385,16 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
                 AnimationClip cur_Clip = clipInfo[0].clip;
                 int total_Frames = Mathf.RoundToInt(cur_Clip.length * cur_Clip.frameRate);
 
-                float norm_Time = state_Info.normalizedTime % 1.0f;
-                if (!cur_Clip.isLooping)
+                float norm_Time = state_Info.normalizedTime;
+
+                if (cur_Clip.isLooping)
+                {
+                    norm_Time = norm_Time % 1.0f;
+                }
+                else
+                {
                     norm_Time = Mathf.Clamp01(norm_Time);
+                }
 
                 int cur_Frame = Mathf.FloorToInt(norm_Time * total_Frames);
                 cur_Frame = Mathf.Clamp(cur_Frame, 0, total_Frames - 1);
@@ -1649,14 +1656,17 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
         if (Is_Last_Attack())
         {
             End_Attack();
+            return;
         }
-        else if (Is_Cooldown_Complete() || Can_Combo_Attack())
+
+        if (Is_Cooldown_Complete() || Can_Combo_Attack())
         {
             Perform_Attack();
         }
         else if (Is_Combo_Complete())
         {
             End_Attack();
+            return;
         }
 
         //Debug.Log($"Frame {Time.frameCount}: canAttack={canAttack}, last_Attack_Time={last_Attack_Time}");
@@ -1680,6 +1690,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             if (Is_Last_Attack())
             {
                 End_Attack();
+                return;
             }
         }
         else if (can_JumpAtk && !isGrounded)
