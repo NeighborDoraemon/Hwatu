@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using TMPro.Examples;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Match_Up_Manager : MonoBehaviour
 {
@@ -177,6 +178,9 @@ public class Match_Up_Manager : MonoBehaviour
 
     [SerializeField] private List<Sprite> Map_Card_Sprites = new List<Sprite>();
 
+    [SerializeField] private GameObject Minimap_Card_01;
+    [SerializeField] private GameObject Minimap_Card_02;
+
     [Header("Others")]
     [SerializeField] private Weapon_Manager weapon_Manager;
 
@@ -202,7 +206,7 @@ public class Match_Up_Manager : MonoBehaviour
 
     public void Give_Map_Cards(int card_01, int card_02)
     {
-        Debug.Log("Map_Card Recieved");
+        Debug.Log("Card_01" + card_01 + "Card_02" + card_02);
 
         Tuple<int, int> key = card_01 > card_02 ? Tuple.Create(card_02, card_01) : Tuple.Create(card_01, card_02);
 
@@ -212,25 +216,42 @@ public class Match_Up_Manager : MonoBehaviour
             if (card_01 == 13) //광
             {
                 Map_Card_Image_01.sprite = Map_Card_Sprites[11];
+                Minimap_Card_01.GetComponent<Image>().sprite = Map_Card_Sprites[11];
             }
             else if (card_01 == 18) //광
             {
                 Map_Card_Image_01.sprite = Map_Card_Sprites[12];
+                Minimap_Card_01.GetComponent<Image>().sprite = Map_Card_Sprites[12];
+            }
+            else
+            {
+                Map_Card_Image_01.sprite = Map_Card_Sprites[card_01 - 1];
+                Minimap_Card_01.GetComponent<Image>().sprite = Map_Card_Sprites[card_01 - 1];
             }
 
             if (card_02 == 13) //광
             {
                 Map_Card_Image_02.sprite = Map_Card_Sprites[11];
+                Minimap_Card_02.GetComponent<Image>().sprite = Map_Card_Sprites[11];
             }
             else if (card_02 == 18) //광
             {
                 Map_Card_Image_02.sprite = Map_Card_Sprites[12];
+                Minimap_Card_02.GetComponent<Image>().sprite = Map_Card_Sprites[12];
+            }
+            else
+            {
+                Map_Card_Image_02.sprite = Map_Card_Sprites[card_02 - 1];
+                Minimap_Card_02.GetComponent<Image>().sprite = Map_Card_Sprites[card_02 - 1];
             }
         }
         else
         {
             Map_Card_Image_01.sprite = Map_Card_Sprites[card_01 - 1];
             Map_Card_Image_02.sprite = Map_Card_Sprites[card_02 - 1];
+
+            Minimap_Card_01.GetComponent<Image>().sprite = Map_Card_Sprites[card_01 - 1];
+            Minimap_Card_02.GetComponent<Image>().sprite = Map_Card_Sprites[card_02 - 1];
         }
 
         Map_Card_Text.text = Compute_Weapon(card_01, card_02).comb_Name;
@@ -321,7 +342,7 @@ public class Match_Up_Manager : MonoBehaviour
         Debug.Log("Map Match: " + map_match.ToString());
         Debug.Log("Player Match: " + player_match.ToString());
 
-        //Print_Map_Card();
+        Print_Map_Card();
     }
 
     private void Match_Normal()
@@ -347,7 +368,7 @@ public class Match_Up_Manager : MonoBehaviour
         {
             if (is_damage_up && !is_damage_down)
             {
-                p_controller.damage_Mul -= 0.5f;
+                p_controller.damage_Mul -= 0.3f;
                 is_damage_up = false;
             }
             else if (!is_damage_up && is_damage_down)
@@ -364,7 +385,7 @@ public class Match_Up_Manager : MonoBehaviour
         Debug.Log("Player's Match is Higher!");
         if (p_controller.card_Match_Dmg_Inc)
         {
-            p_controller.damage_Mul += 0.5f;
+            p_controller.damage_Mul += 0.3f;
         }
         else
         {
@@ -388,7 +409,7 @@ public class Match_Up_Manager : MonoBehaviour
         {
             if (p_controller.card_Match_Dmg_Inc)
             {
-                p_controller.damage_Mul -= 0.5f;
+                p_controller.damage_Mul -= 0.3f;
             }
             else
             {
@@ -416,7 +437,7 @@ public class Match_Up_Manager : MonoBehaviour
                 }
             case 1:
                 {
-                    Match_Text.text = "상성 승리!\n데미지가 1.5배 증가합니다";
+                    Match_Text.text = "상성 승리!\n데미지가 1.3배 증가합니다";
                     StartCoroutine(Fade_Sprite(Match_Text, 1.0f, 1.0f, 0.0f));
                     break;
                 }

@@ -1971,7 +1971,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
     
     void OnInventory_Pressed(InputAction.CallbackContext context)
     {
-        if (is_StatUI_Visible)
+        if (is_StatUI_Visible || Current_Player_State != Player_State.Normal || Current_Event_State == Event_State.Bird_Hunting)
         {
             return;
         }
@@ -1981,7 +1981,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
     }
     void OnInventory_Released(InputAction.CallbackContext context)
     {
-        if (!Can_Close_Inventory())
+        if (!Can_Close_Inventory() || Current_Event_State == Event_State.Bird_Hunting)
             return;
 
         HideInventory();
@@ -2724,5 +2724,15 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
     public void Player_Vector_Stop()
     {
         movement = Vector2.zero;
+    }
+
+    public void custom_Give_Card()
+    {
+        if (card_Inventory[0] == null || card_Inventory[1] == null)
+        {
+            Debug.Log("카드가 없음");
+            return;
+        }
+        match_manager.Give_Player_Cards(card_Inventory[0], card_Inventory[1]);
     }
 }

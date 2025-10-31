@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
-using UnityEngine.UIElements;
 using System.Linq;
-using UnityEngine.UI;
+using System.Text;
 using Unity.VisualScripting;
-using UnityEngine.InputSystem.XR;
+using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class Dialogue_Manager : MonoBehaviour
 {
@@ -66,7 +67,7 @@ public class Dialogue_Manager : MonoBehaviour
     {
         //Dialogue_Pharsing();
         StartCoroutine(Dialogue_Pharsing());
-        Item_Pharsing();
+        //Item_Pharsing();
     }
 
     // Update is called once per frame
@@ -75,73 +76,30 @@ public class Dialogue_Manager : MonoBehaviour
         
     }
 
-    //private void Dialogue_Pharsing()
-    //{
-    //    int? Lastkey = null;
-    //    string path = Path.Combine(Application.streamingAssetsPath, "Hwatu_Dialogue" + ".csv"); // 파일 이름 넣기
+    private Encoding DetectEncoding(string path)
+    {
+        byte[] bom = new byte[4];
+        using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+        {
+            fs.Read(bom, 0, 4);
+        }
 
-
-    //    if (!File.Exists(path))
-    //    {
-    //        Debug.LogError("Path File Missing!");
-    //        return;
-    //    }
-    //    string[] Lines = File.ReadAllLines(path);
-
-    //    for (int i = 1; i < Lines.Length; i++)
-    //    {
-    //        Dialogue_Data Temp_Data = new Dialogue_Data();
-
-    //        string[] data = Lines[i].Split(',');
-
-    //        if (!int.TryParse(data[0], out int Keyvalue))
-    //        {
-    //            Debug.LogError("Event Number Conversion Error!");
-    //            return;
-    //        }
-
-    //        if (Lastkey == Keyvalue) //키가 존재하니 바로 문장 추가
-    //        {
-    //            if (Dialogue_Dict.ContainsKey(Keyvalue))
-    //            {
-    //                Dialogue_Dict[Keyvalue].Character_Name.Add(data[1]);
-    //                Dialogue_Dict[Keyvalue].Scripts.Add(ReplaceSpecialChars(data[2]));
-
-    //                Dialogue_Dict[Keyvalue].Speaker.Add(data[4]);
-    //                Dialogue_Dict[Keyvalue].Portrait.Add(data[5]);
-    //            }
-    //            else
-    //            {
-    //                Debug.LogError("Dictionary Error!");
-    //                return;
-    //            }
-    //        }
-    //        else
-    //        {
-    //            if (!Dialogue_Dict.ContainsKey(Keyvalue))   //키가 없으니 마지막키에 키값넣고, 데이터넣기
-    //            {
-    //                Lastkey = Keyvalue;
-    //                Temp_Data.Event_Num = Keyvalue;
-    //                Temp_Data.Character_Name.Add(data[1]);
-    //                Temp_Data.Scripts.Add(ReplaceSpecialChars(data[2]));
-
-    //                bool.TryParse(data[3], out Temp_Data.is_Choice);    //bool 데이터 파싱 성공시 데이터 입력. 실패시 false 입력
-
-    //                Temp_Data.Speaker.Add(data[4]);
-    //                Temp_Data.Portrait.Add(data[5]);
-
-    //                Dialogue_Dict.Add(Keyvalue, Temp_Data);
-    //            }
-    //        }
-    //    }
-    //}
+        if (bom[0] == 0xEF && bom[1] == 0xBB && bom[2] == 0xBF)
+            return Encoding.UTF8;           // UTF-8 with BOM
+        else if (bom[0] == 0xFF && bom[1] == 0xFE)
+            return Encoding.Unicode;        // UTF-16 LE
+        else if (bom[0] == 0xFE && bom[1] == 0xFF)
+            return Encoding.BigEndianUnicode; // UTF-16 BE
+        else
+            return Encoding.UTF8;           // 기본: UTF-8 (BOM 없음)
+    }
 
     private IEnumerator Dialogue_Pharsing()
     {
         int? Lastkey = null;
         string path = Path.Combine(Application.streamingAssetsPath, "Hwatu_Dialogue.csv");
 
-        string[] Lines;
+        //string[] Lines;
 
 #if UNITY_ANDROID
         UnityEngine.Networking.UnityWebRequest www = UnityEngine.Networking.UnityWebRequest.Get(path);
@@ -160,8 +118,9 @@ public class Dialogue_Manager : MonoBehaviour
         Debug.LogError("Path File Missing!");
         yield break;
     }
-
-    Lines = File.ReadAllLines(path);
+        Encoding encoding = DetectEncoding(path);
+        string[] Lines = File.ReadAllLines(path, encoding);
+        //Lines = File.ReadAllLines(path);
 #endif
 
         for (int i = 1; i < Lines.Length; i++)
@@ -213,66 +172,66 @@ public class Dialogue_Manager : MonoBehaviour
 
         Debug.Log("Dialogue CSV Parsing Complete. Loaded Keys: " + Dialogue_Dict.Count);
     }
-    private void Item_Pharsing()
-    {
-        int? Lastkey = null;
-        string path = Path.Combine(Application.streamingAssetsPath, "Hwatu_Item_Table" + ".csv"); // 파일 이름 넣기
+    //private void Item_Pharsing()
+    //{
+    //    int? Lastkey = null;
+    //    string path = Path.Combine(Application.streamingAssetsPath, "Hwatu_Item_Table" + ".csv"); // 파일 이름 넣기
 
 
-        if (!File.Exists(path))
-        {
-            Debug.LogError("Path File Missing!");
-            return;
-        }
-        string[] Lines = File.ReadAllLines(path);
+    //    if (!File.Exists(path))
+    //    {
+    //        Debug.LogError("Path File Missing!");
+    //        return;
+    //    }
+    //    string[] Lines = File.ReadAllLines(path);
 
-        for (int i = 1; i < Lines.Length; i++)
-        {
-            Item_Data Temp_Data = new Item_Data();
+    //    for (int i = 1; i < Lines.Length; i++)
+    //    {
+    //        Item_Data Temp_Data = new Item_Data();
 
-            string[] data = Lines[i].Split(',');
+    //        string[] data = Lines[i].Split(',');
 
-            if (!int.TryParse(data[0], out int Keyvalue))
-            {
-                Debug.LogError("Item Index Error!");
-                return;
-            }
+    //        if (!int.TryParse(data[0], out int Keyvalue))
+    //        {
+    //            Debug.LogError("Item Index Error!");
+    //            return;
+    //        }
 
-            if (Lastkey == Keyvalue) //키가 존재하니 추가하지 않음 (아이템은 중복 없음)
-            {
-                //if (Item_Dict.ContainsKey(Keyvalue))
-                //{
-                //    Item_Dict[Keyvalue].Item.Add(data[1]);
-                //    Item_Dict[Keyvalue].Scripts.Add(ReplaceSpecialChars(data[2]));
-                //}
-                //else
-                {
-                    Debug.LogError("Dictionary Error!");
-                    return;
-                }
-            }
-            else
-            {
-                if (!Dialogue_Dict.ContainsKey(Keyvalue))   //키가 없으니 마지막키에 키값넣고, 데이터넣기
-                {
-                    Lastkey = Keyvalue;
-                    Temp_Data.Item_Num = Keyvalue;
-                    Temp_Data.Item_Name = data[1];
-                    Temp_Data.Item_Dialogue = ReplaceSpecialChars(data[2]);
-                    Temp_Data.Item_Effect_Script = ReplaceSpecialChars(data[3]);
+    //        if (Lastkey == Keyvalue) //키가 존재하니 추가하지 않음 (아이템은 중복 없음)
+    //        {
+    //            //if (Item_Dict.ContainsKey(Keyvalue))
+    //            //{
+    //            //    Item_Dict[Keyvalue].Item.Add(data[1]);
+    //            //    Item_Dict[Keyvalue].Scripts.Add(ReplaceSpecialChars(data[2]));
+    //            //}
+    //            //else
+    //            {
+    //                Debug.LogError("Dictionary Error!");
+    //                return;
+    //            }
+    //        }
+    //        else
+    //        {
+    //            if (!Dialogue_Dict.ContainsKey(Keyvalue))   //키가 없으니 마지막키에 키값넣고, 데이터넣기
+    //            {
+    //                Lastkey = Keyvalue;
+    //                Temp_Data.Item_Num = Keyvalue;
+    //                Temp_Data.Item_Name = data[1];
+    //                Temp_Data.Item_Dialogue = ReplaceSpecialChars(data[2]);
+    //                Temp_Data.Item_Effect_Script = ReplaceSpecialChars(data[3]);
 
-                    //bool.TryParse(data[3], out Temp_Data.is_Choice);
+    //                //bool.TryParse(data[3], out Temp_Data.is_Choice);
 
-                    Item_Dict.Add(Keyvalue, Temp_Data);
-                }
-            }
-        }
-    }
+    //                Item_Dict.Add(Keyvalue, Temp_Data);
+    //            }
+    //        }
+    //    }
+    //}
 
-    public Item_Data Get_Item_Data(int Index)
-    {
-        return Item_Dict[Index];
-    }
+    //public Item_Data Get_Item_Data(int Index)
+    //{
+    //    return Item_Dict[Index];
+    //}
 
     private void Call_Dialogue(int Key)
     {

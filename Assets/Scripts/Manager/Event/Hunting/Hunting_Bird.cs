@@ -37,6 +37,11 @@ public class Hunting_Bird : MonoBehaviour
 
         Set_Position(this.gameObject.transform.position);
         Set_Area();
+
+        if(!is_Facing_Left)
+        {
+            this.GetComponent<SpriteRenderer>().flipX = true;
+        }
     }
 
     // Update is called once per frame
@@ -45,6 +50,7 @@ public class Hunting_Bird : MonoBehaviour
         if ((this.transform.position.x >= Max_Position && !is_Facing_Left) || (this.transform.position.x <= Min_Position && is_Facing_Left))
         {
             is_Facing_Left = !is_Facing_Left;
+            this.GetComponent<SpriteRenderer>().flipX = !this.GetComponent<SpriteRenderer>().flipX;
         }
         Bird_Move();
     }

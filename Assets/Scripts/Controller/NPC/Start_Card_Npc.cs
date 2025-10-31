@@ -55,7 +55,7 @@ public class Start_Card_Npc : MonoBehaviour, Npc_Interface
                 }
             }
         }
-
+        player.custom_Give_Card();
         give_Card = true;
     }
 

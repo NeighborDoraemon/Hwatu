@@ -17,7 +17,7 @@ public class Hunting_Projectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.transform.position += transform.up * speed * Time.deltaTime;
+        this.transform.position += transform.right * speed * Time.deltaTime;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -30,7 +30,7 @@ public class Hunting_Projectile : MonoBehaviour
 
     public void Start_Rotate(float rotation)
     {
-        this.transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotation);
+        this.transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotation + 90);
         //Direction = transform.up;
     }
 

@@ -1,27 +1,31 @@
-Event_Num,Name,Dialogue,Choice,Speaker,Portrait
+﻿Event_Num,Name,Dialogue,Choice,Speaker,Portrait
 1001,서운령,최건우 네가 흑기단의 본거지에 가는거라면 그만두라고 말하고싶어.,FALSE,Start_Card,Normal
 1001,최건우,스승님의 원수를 두고 분노를 삭혀라 그말입니까?,,Player,Angry
 1001,서운령,그렇다고 하고싶지만^ 내가 뭐라고 말해도 넌 스승님의 복수를 하러가겠지.,,Start_Card,Normal
 1001,서운령,그렇다면 이 화투패를 가져가. 스승님이 마지막까지 품에 숨겨두신 신기야.,,Start_Card,Normal
 1001,최건우,이걸... 제가 사용해도 되는겁니까?,,Player,Normal
 1001,서운령,내가 사용하기보다^ 네가 사용하는게 더 좋을것같아서 그러는거야,,Start_Card,Normal
-1002,서운령,마음같아선 나도 함께가고 싶지만... 한쪽팔이 이 꼴이라 널 방해하기만 할거같네,FALSE,Start_Card,Normal
-1002,서운령,아무쪼록 조심해. 흑기단의 전력은 상당하니까 말이야.,,Start_Card,Normal
+1001,서운령,흑기단도 복제 신기를 이용할테니 주의해서 사용해.,,Start_Card,Normal
+1002,최건우,복제 신기를 주의하라는게 무슨 소리입니까?,FALSE,Player,Normal
+1002,서운령,흑기단은 신기들을 인위적으로 복제해서 사용해. 그걸 복제 신기라 하는거지.,,Start_Card,Normal
+1002,최건우,인위적으로.. 말입니까?,,Player,Normal
+1002,서운령,복제 신기들은 불안정해서 얼마 안보일테지만^ 화투패는 이야기가 달라.,,Start_Card,Normal
+1002,서운령,네가 화투패를 이용하는 한^ 그들이 복제한 화투패와 영향을 주고받게 될거야.,,Start_Card,Normal
 1003,최건우,이 돌탑은 뭡니까?,FALSE,Player,Normal
 1003,서운령,아~ 그 돌탑은 '기원의 탑'이야.,,Start_Card,Normal
 1003,서운령,강한 염원이나 원한이 서려있는 물건을 제단에 바치면 특별한 힘을 선사해준다고 해.,,Start_Card,Normal
 1003,최건우,강력한 염원이나 원한...,,Player,Normal
 1003,서운령,이 근처에서 구할만한건 흑기단의 깃발이나 증표정도야.,,Start_Card,Normal
-1004,강휘연,음. 자네가 그 소문의 도사인가?,FALSE,Market_Npc,
+1004,강휘연,음. 자네가 그 소문의 도사인가?,FALSE,Market_Npc,Normal
 1004,최건우,소문? 무슨 소문입니까?,,Player,Normal
-1004,강휘연,그야 누군가가 흑기단 본거지를 헤집어놓고 있다는 소문이지.,,Market_Npc,
+1004,강휘연,그야 누군가가 흑기단 본거지를 헤집어놓고 있다는 소문이지.,,Market_Npc,Normal
 1004,최건우,그런 소문이라면 제 이야기가 맞을겁니다.,,Player,Normal
-1004,강휘연,역시 맞았군. 자네에게는 내가 모아둔 신기를 판매해주지.,,Market_Npc,
-1004,강휘연,부디 이 신기들을 가져가서 흑기단을 멈춰주게나,,Market_Npc,
-1005,강휘연,음? 가격때문에 이야기 하고싶은건가?,FALSE,Market_Npc,
-1005,강휘연,흑기단에게 대적하는 도사에게 돈을 받는건 미안하게 생각한다네,,Market_Npc,
-1005,강휘연,하지만 내가 신기를 구해오는 과정에서도 돈이 꽤나 들어서 말이야...,,Market_Npc,
-1005,강휘연,그래도 최대한 싸게 판매하는거니 흑기단 녀석들 주머니에서 돈좀 많이 가져와주게.,,Market_Npc,
+1004,강휘연,역시 맞았군. 자네에게는 내가 모아둔 신기를 판매해주지.,,Market_Npc,Normal
+1004,강휘연,부디 이 신기들을 가져가서 흑기단을 멈춰주게나,,Market_Npc,Normal
+1005,강휘연,음? 가격때문에 이야기 하고싶은건가?,FALSE,Market_Npc,Normal
+1005,강휘연,흑기단에게 대적하는 도사에게 돈을 받는건 미안하게 생각한다네,,Market_Npc,Normal
+1005,강휘연,하지만 내가 신기를 구해오는 과정에서도 돈이 꽤나 들어서 말이야...,,Market_Npc,Normal
+1005,강휘연,그래도 최대한 싸게 판매하는거니 흑기단 녀석들 주머니에서 돈좀 많이 가져와주게.,,Market_Npc,Normal
 1201,최건우,당신은... 흑기단 잔당은 아닌거같은데 여기서 뭐하시는겁니까?,TRUE,Player,Normal
 1201,사냥꾼,으잉? 너는 또 뭐하는 놈이냐? 여기가 내 사냥터인거 몰라?,,Event_Hunter,Normal
 1201,사냥꾼,요즘 신입들은 영역개념도 없이 돌아다니는거냐?,,Event_Hunter,Normal
