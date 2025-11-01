@@ -14,6 +14,6 @@ public class Weapon_Preview_UI : MonoBehaviour
         weapon_Icon.sprite = weapon.weapon_Icon;
         comb_Name_Text.text = weapon.comb_Name;
         weapon_Name_Text.text= weapon.weapon_Name;
-        
+        desc_Text.text = weapon.description;
     }
 }

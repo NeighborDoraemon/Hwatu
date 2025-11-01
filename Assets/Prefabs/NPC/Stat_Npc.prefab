@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1341524441306778730}
   - component: {fileID: 1581937890357157610}
   - component: {fileID: 6480143507178845284}
+  - component: {fileID: 3967231786551988633}
   m_Layer: 0
   m_Name: Exit_Btn
   m_TagString: Untagged
@@ -133,6 +134,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &3967231786551988633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 419561592353833604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ecd0225828eb08448dee48d45741822, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kind: 4
 --- !u!1 &780058144811749953
 GameObject:
   m_ObjectHideFlags: 0
@@ -888,6 +902,7 @@ GameObject:
   - component: {fileID: 3299213566575037765}
   - component: {fileID: 6421782169715340818}
   - component: {fileID: 2177018948540765525}
+  - component: {fileID: 8000365862520167646}
   m_Layer: 0
   m_Name: Inhance_Button
   m_TagString: Untagged
@@ -1009,6 +1024,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8000365862520167646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2599931317442223648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ecd0225828eb08448dee48d45741822, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kind: 2
 --- !u!1 &2784936186453559060
 GameObject:
   m_ObjectHideFlags: 0
@@ -2363,6 +2391,7 @@ GameObject:
   - component: {fileID: 1375539306795162119}
   - component: {fileID: 4848746730023757872}
   - component: {fileID: 3780847545148669093}
+  - component: {fileID: 4296943647254471624}
   m_Layer: 0
   m_Name: Inhance_Button
   m_TagString: Untagged
@@ -2484,6 +2513,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4296943647254471624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4958538036547932379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ecd0225828eb08448dee48d45741822, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kind: 1
 --- !u!1 &5283686254342173515
 GameObject:
   m_ObjectHideFlags: 0
@@ -3021,6 +3063,7 @@ GameObject:
   - component: {fileID: 2363142777466203465}
   - component: {fileID: 4470508291569639101}
   - component: {fileID: 21178652676015610}
+  - component: {fileID: 8396740006234661513}
   m_Layer: 0
   m_Name: Inhance_Button
   m_TagString: Untagged
@@ -3142,6 +3185,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8396740006234661513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7137610534364524637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ecd0225828eb08448dee48d45741822, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kind: 0
 --- !u!1 &7179856251427189866
 GameObject:
   m_ObjectHideFlags: 0
@@ -3229,6 +3285,7 @@ GameObject:
   - component: {fileID: 6187241722567532458}
   - component: {fileID: 3866117250083389888}
   - component: {fileID: 8729321092563957641}
+  - component: {fileID: 703359956430914548}
   m_Layer: 0
   m_Name: Inhance_Button
   m_TagString: Untagged
@@ -3350,6 +3407,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &703359956430914548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7257074130895372891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ecd0225828eb08448dee48d45741822, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kind: 3
 --- !u!1 &7545994417236539447
 GameObject:
   m_ObjectHideFlags: 0
@@ -3949,8 +4019,8 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 1920
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 1
-  m_MatchWidthOrHeight: 0
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0.8
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -4131,11 +4201,57 @@ MonoBehaviour:
   - {fileID: 5255340349293710013}
   - {fileID: 561436956609948925}
   - {fileID: 3389451655048865651}
+  stat_Desc_Text: {fileID: 2583823603599052896}
   health_Inc_Value: 10
   atkDmg_Inc_Value: 1
   moveSpeed_Inc_Value: 1
   critRate_Inc_Value: 0.1
   critDmg_Inc_Value: 0.1
+  token_Cost: 1
+  attack_Profile:
+    title: 
+    cur_Desc_Per_Phase:
+    - "\uC77C\uB2E8\t"
+    - "\uC774\uB2E8"
+    - "\uC0BC"
+    next_Desc_Per_Phase:
+    - "\uC774\uB2E8"
+    - "\uC0BC\uB2E8"
+    - 
+    token_Cost_Per_Phase: 010000000100000001000000
+  health_Profile:
+    title: 
+    cur_Desc_Per_Phase:
+    - 
+    - 
+    - 
+    next_Desc_Per_Phase:
+    - 
+    - 
+    - 
+    token_Cost_Per_Phase: 010000000100000001000000
+  atkSpeed_Profile:
+    title: 
+    cur_Desc_Per_Phase:
+    - 
+    - 
+    - 
+    next_Desc_Per_Phase:
+    - 
+    - 
+    - 
+    token_Cost_Per_Phase: 010000000100000001000000
+  moveSpeed_Profile:
+    title: 
+    cur_Desc_Per_Phase:
+    - 
+    - 
+    - 
+    next_Desc_Per_Phase:
+    - 
+    - 
+    - 
+    token_Cost_Per_Phase: 010000000100000001000000
   Interaction_start: 1003
 --- !u!1 &8890217715318556428
 GameObject:

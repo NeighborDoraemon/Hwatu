@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: 1_3_GDD_Weapon
   m_EditorClassIdentifier: 
   weapon_Name: "\uC30D\uC218\uB3C4"
+  weapon_Type: 0
   weapon_Icon: {fileID: 21300000, guid: c4cd98e419298084a99c09b0988bb03b, type: 3}
   comb_Name: "1 3 \uAD11\uB561"
+  description: "\uACF5\uC911\uC73C\uB85C \uB6F0\uC5B4\uC62C\uB77C \uC801\uC744 \uB0B4\uB9AC\uCE60
+    \uC218 \uC788\uC73C\uBA70 \uAC80\uAE30\uB97C \uC3D8\uC544\uB0BC \uC218 \uC788\uC2B5\uB2C8\uB2E4."
   attack_Damage: 13
   attack_Cooldown: 1.5
   max_Attack_Count: 1
@@ -35,5 +38,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7d9b0597344b9a947900f4226a217dbe, type: 2}
   - {fileID: 11400000, guid: eb4f020f1f598b5498c6e98a85b6d443, type: 2}
   effect_Data: {fileID: 11400000, guid: 834030ff6aea48049b0f5996484108b5, type: 2}
+  skill_Effect_Data: {fileID: 0}
   attack_Strategy: {fileID: 11400000, guid: d28f9cf7d1909fc4bae07bbdb562bcd6, type: 2}
   is_HoldAttack_Enabled: 0
+  skill_SE: {fileID: 0}

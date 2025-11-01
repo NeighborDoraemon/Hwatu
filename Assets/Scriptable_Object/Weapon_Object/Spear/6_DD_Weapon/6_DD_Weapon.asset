@@ -16,6 +16,8 @@ MonoBehaviour:
   weapon_Type: 4
   weapon_Icon: {fileID: 1333245113, guid: 63c87ee70ad7b4a4892b538b310f3aad, type: 3}
   comb_Name: "6 \uB561"
+  description: "\uBE44\uACA9\uC9C4\uCC9C\uB8B0\uB97C \uD1B5\uD574 \uD3EC\uBB3C\uC120\uC744
+    \uADF8\uB9AC\uB294 \uB300\uD3EC\uC54C\uC744 \uBC1C\uC0AC\uD569\uB2C8\uB2E4."
   attack_Damage: 8
   attack_Cooldown: 2
   max_Attack_Count: 1

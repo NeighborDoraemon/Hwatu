@@ -61,11 +61,11 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
     public Transform effect_Anchor;
     public bool is_Facing_Right = true;
     public Animator weapon_Animator;
+    public LayerMask enemy_LayerMask;
     private Weapon_Collision_Handler weapon_Handler;
     private bool is_AtkCoroutine_Running = false;
     private float last_Combo_End_Time = -1.0f;
     [SerializeField] private float combo_Input_Lock = 0.05f;
-    [SerializeField] private LayerMask enemy_LayerMask;
 
     [Header("Audio/Sound")]
     [SerializeField] private PlayerChar_Audio_Proxy audio_Proxy;
@@ -1698,7 +1698,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             animator.SetBool("Can_JumpAtk", true);
             attack_Strategy.Attack(this, cur_Weapon_Data);
 
-            audio_Proxy.Play_Attack();
+            //audio_Proxy.Play_Attack();
 
             can_JumpAtk = false;
             StartCoroutine(Reset_JumpAtk_Param_Next_Frame());

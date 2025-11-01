@@ -134,6 +134,33 @@ public class PlayerChar_Inventory_Manager : PlayerCharacter_Card_Manager
         }
     }
 
+    public void Clear_All_Items()
+    {
+        PlayerCharacter_Controller player = GetComponent<PlayerCharacter_Controller>();
+        if (player == null) return;
+        
+        foreach (var item in player_Inventory)
+        {
+            if (item != null && item.itemEffect != null)
+            {
+                if (active_Effects.ContainsKey(item.itemEffect))
+                {
+                    active_Effects[item.itemEffect]--;
+
+                    if (active_Effects[item.itemEffect] <= 0)
+                    {
+                        active_Effects.Remove(item.itemEffect);
+                        item.itemEffect.RemoveEffect(player);
+                    }
+                }
+            }
+        }
+
+        player_Inventory.Clear();
+        active_Effects.Clear();
+        Update_Inventory();
+    }
+
     public void Update_Inventory()
     {
         for (int i = 0; i < item_Slots.Count; i++)

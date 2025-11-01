@@ -16,7 +16,7 @@ MonoBehaviour:
   item_Description: "\uBCF4\uC720 \uC2DC, \uC801\uC744 \uCC98\uCE58\uD560 \uB54C\uB9C8\uB2E4
     \uCCB4\uB825\uC744 \uC18C\uB7C9 \uD68C\uBCF5\uD569\uB2C8\uB2E4."
   item_Icon: {fileID: 7482667652216324306, guid: bd702dbf9f587554cb53d2010b881b9b, type: 3}
-  item_Price: 0
+  item_Price: 1000
   itemEffect: {fileID: 11400000, guid: 53b42dfc673f6af4e838035913dfb3d5, type: 2}
   isConsumable: 0
   item_Rarity: 3

@@ -1,9 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
+
+public enum Stat_Kind { Attack, Health, AttackSpeed, MoveSpeed, Exit }
+
+[System.Serializable]
+public class Stat_Desc_Profile
+{
+    public string title;
+
+    [TextArea] public string[] cur_Desc_Per_Phase = new string[3];
+    [TextArea] public string[] next_Desc_Per_Phase = new string[3];
+
+    public int[] token_Cost_Per_Phase = new int[3] { 1, 1, 1 };
+}
 
 public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
 {
@@ -14,6 +29,7 @@ public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
     [SerializeField] private Canvas Stat_Manage_Can;
     [SerializeField] private Transform stat_Window_Panel;
     [SerializeField] private Image[] stat_Buttons;
+    [SerializeField] private TextMeshProUGUI stat_Desc_Text;
 
     [Header("Stat Value")]
     public int health_Inc_Value = 10;
@@ -24,6 +40,12 @@ public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
 
     [Header("Upgrade Token")]
     [SerializeField] private int token_Cost = 1;
+
+    [Header("Description Text")]
+    [SerializeField] private Stat_Desc_Profile attack_Profile;
+    [SerializeField] private Stat_Desc_Profile health_Profile;
+    [SerializeField] private Stat_Desc_Profile atkSpeed_Profile;
+    [SerializeField] private Stat_Desc_Profile moveSpeed_Profile;
 
     [Header("Dialogue Index")]
     [SerializeField] private int Interaction_start;
@@ -65,6 +87,7 @@ public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
         Time.timeScale = 0.0f;
         cur_Index = 0;
         Update_Select_Border();
+        Update_Stat_Description(GetKind_By_Index(cur_Index));
     }
 
     public void Exit_UI()
@@ -87,6 +110,12 @@ public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
         Time.timeScale = 1.0f;
     }
 
+    private Stat_Kind GetKind_By_Index(int index)
+    {
+        var binder = stat_Buttons[index]?.GetComponent<Stat_Button_Binder>();
+        return binder ? binder.kind : Stat_Kind.Exit;
+    }
+
     public void Navigate_Stats(Vector2 input_Dir)
     {
         if (!is_StatUI_Open) return;
@@ -103,6 +132,7 @@ public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
             cur_Index = 0;
 
         Update_Select_Border();
+        Update_Stat_Description(GetKind_By_Index(cur_Index));
     }
 
     public void On_Stat_Hover(int index)
@@ -115,12 +145,15 @@ public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
         cur_Index = index;
         Transform next = stat_Buttons[cur_Index].transform.Find("Select_Border");
         if (next != null) { next.gameObject.SetActive(true); }
+
+        Update_Stat_Description(GetKind_By_Index(cur_Index));
     }
 
     public void Select_Stat_By_Index(int index)
     {
         cur_Index = index;
         Confirm_Selection();
+        Update_Stat_Description(GetKind_By_Index(cur_Index));
     }
 
     public void Confirm_Selection()
@@ -195,6 +228,67 @@ public class Stat_Npc_Controller : MonoBehaviour, Npc_Interface
             else if (img.name.StartsWith("Third_Image"))
                 img.gameObject.SetActive(phase >= 3);
         }
+    }
+
+    private Stat_Desc_Profile Get_Profile(Stat_Kind kind) => kind switch
+    {
+        Stat_Kind.Attack => attack_Profile,
+        Stat_Kind.Health => health_Profile,
+        Stat_Kind.AttackSpeed => atkSpeed_Profile,
+        Stat_Kind.MoveSpeed => moveSpeed_Profile,
+        _ => null
+    };
+
+    private int Get_Cur_Phase(Stat_Kind kind)
+    {
+        return kind switch
+        {
+            Stat_Kind.Attack => player?.cur_AttackInc_Phase ?? 0,
+            Stat_Kind.Health => player?.cur_HealthInc_Phase ?? 0,
+            Stat_Kind.AttackSpeed => player?.cur_AttackCoolTimeInc_Phase ?? 0,
+            Stat_Kind.MoveSpeed => player?.cur_MoveSpeedInc_Phase ?? 0,
+            _ => 0
+        };
+    }
+
+    private void Update_Stat_Description(Stat_Kind kind)
+    {
+        if (!stat_Desc_Text) return;
+        if (kind == Stat_Kind.Exit) { stat_Desc_Text.text = "강화를 종료합니다."; return; }
+
+        var prof = Get_Profile(kind);
+        if (prof == null || player == null) { stat_Desc_Text.text = ""; return; }
+
+        int cur = Mathf.Clamp(Get_Cur_Phase(kind), 0, 3);
+        int next = cur + 1;
+
+        bool isMax = cur >= 3;
+        string cur_Line = cur >= 1 && cur <= 3 && !string.IsNullOrEmpty(SafeGet(prof.cur_Desc_Per_Phase, cur - 1))
+            ? $"현재 효과: {prof.cur_Desc_Per_Phase[cur - 1]}"
+            : "";
+
+        string next_Line = isMax
+            ? "다음 효과: 최대 단계입니다."
+            : $"다음효과(단계 {next}): {SafeGet(prof.next_Desc_Per_Phase, next - 1)}";
+
+        //int need_Token = !isMax ? SafeGet(prof.token_Cost_Per_Phase, next-1, defalutValue: token_Cost) : 0;
+        //string cost_Line = isMax ? "" : $"필요 재화: 깃발 {need_Token}개";
+
+        stat_Desc_Text.text =
+            $"<b>{prof.title}</b>\n" +
+            $"현재 단계: {cur}/3\n" +
+            $"{cur_Line}\n{next_Line}";
+    }
+
+    private static string SafeGet(string[] arr, int idx)
+    {
+        if (arr == null || idx < 0 || idx >= arr.Length) return "";
+        return arr[idx] ?? "";
+    }
+    private static int SafeGet(int[] arr, int idx, int defalutValue = 1)
+    {
+        if (arr == null || idx < 0 || idx >= arr.Length) return defalutValue;
+        return arr[idx];
     }
 
     private void Update_Select_Border()

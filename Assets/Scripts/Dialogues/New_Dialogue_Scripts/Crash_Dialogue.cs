@@ -52,6 +52,7 @@ public class Crash_Dialogue : MonoBehaviour, Npc_Interface
         if (take_Card)
         {
             p_Controller.Recall_All_Cards();
+            p_Controller.Clear_All_Items();
             return;
         }
     }
