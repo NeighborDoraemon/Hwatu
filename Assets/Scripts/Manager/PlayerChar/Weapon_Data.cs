@@ -10,6 +10,7 @@ public class Weapon_Data : ScriptableObject
     public WeaponType weapon_Type;                                              // 무기 종류
     public Sprite weapon_Icon;                                                  // 무기 아이콘
     public string comb_Name;                                                    // 카드 조합의 이름
+    public string description;                                                  // 무기 설명 텍스트
     public int attack_Damage;                                                   // 무기 데미지
     public float attack_Cooldown;                                               // 공격 간 딜레이 타임
     public int max_Attack_Count;                                                // 최대 공격 가능 횟수

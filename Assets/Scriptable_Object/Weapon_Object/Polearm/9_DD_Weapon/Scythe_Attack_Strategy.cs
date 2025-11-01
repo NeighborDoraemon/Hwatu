@@ -95,8 +95,8 @@ public class Scythe_Attack_Strategy : ScriptableObject, IAttack_Strategy
                     Enemy_Basic enemy = enemyCollider.GetComponent<Enemy_Basic>();
                     if (enemy != null)
                     {
-                        enemy.TakeDamage(player.cur_Weapon_Data.skill_Damage);
-                        Debug.Log("Enemy hit by Scythe skill attack, Damage : " + player.cur_Weapon_Data.skill_Damage);
+                        enemy.TakeDamage(player.Calculate_Skill_Damage());
+                        Debug.Log("Enemy hit by Scythe skill attack, Damage : " + player.Calculate_Skill_Damage());
 
                         if (enemy.IR_Health.Value <= 0)
                         {

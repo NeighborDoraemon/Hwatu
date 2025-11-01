@@ -16,6 +16,8 @@ MonoBehaviour:
   weapon_Type: 2
   weapon_Icon: {fileID: -174970297, guid: 7dece734fd83f71459228b6dacb392d9, type: 3}
   comb_Name: "2 \uB561"
+  description: "\uC870\uCD1D\uC73C\uB85C \uAC15\uB825\uD55C \uC0AC\uACA9\uC744 \uAC00\uD569\uB2C8\uB2E4.
+    \uC0AC\uACA9 \uD6C4 \uC7AC\uC7A5\uC804 \uC2DC\uAC04\uC744 \uAC00\uC9D1\uB2C8\uB2E4."
   attack_Damage: 15
   attack_Cooldown: 2
   max_Attack_Count: 1
@@ -28,6 +30,11 @@ MonoBehaviour:
   animation_Pos_Data_List:
   - {fileID: 11400000, guid: 0f8f4114c1d88554b83899b10e373b5b, type: 2}
   - {fileID: 11400000, guid: 9768058c7a98539438af63aed8fa4cce, type: 2}
+  - {fileID: 11400000, guid: 85b3a7a5627093342b42936735f0d674, type: 2}
+  - {fileID: 11400000, guid: 96bf7121838b2f84994c3367c6187ca2, type: 2}
+  - {fileID: 11400000, guid: 4616b875421e97c429fb4c61604f6a03, type: 2}
+  - {fileID: 11400000, guid: 8d6b66ea7811a284d8d72f39862e7370, type: 2}
+  - {fileID: 11400000, guid: 8fbeb27ee1c98864b9a8f500fddfb4a8, type: 2}
   effect_Data: {fileID: 11400000, guid: 0dd1f1221b20f904dafc48d078b8ad1d, type: 2}
   skill_Effect_Data: {fileID: 0}
   attack_Strategy: {fileID: 11400000, guid: 554f2286881dede4d8d470aadf728fc2, type: 2}

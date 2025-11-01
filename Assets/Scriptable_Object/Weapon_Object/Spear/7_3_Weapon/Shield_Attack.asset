@@ -14,12 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isParrying: 0
   parry_Duration: 0.5
+  reset_Skill_OnParry: 1
   ground_Layer:
     serializedVersion: 2
     m_Bits: 64
   fallSpeed: 5
   accel_Delay: 0.1
   accel_Rate: 20
+  hitbox_Radius: 0.6
+  hitbox_Offset: {x: 0.2, y: -0.2}
   shield_Pj_Prefab: {fileID: 4150010414422937313, guid: 5e4868f4edcff5d4790d6c56afdfb28c, type: 3}
   projectile_Speed: 15
   return_Speed: 20

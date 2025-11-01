@@ -16,7 +16,7 @@ MonoBehaviour:
   item_Description: "\uBAA8\uB4E0 \uACF5\uACA9\uB825 20&\uC99D\uAC00, \uBC1B\uB294
     \uD53C\uD574 20%\uC99D\uAC00"
   item_Icon: {fileID: 7482667652216324306, guid: bd702dbf9f587554cb53d2010b881b9b, type: 3}
-  item_Price: 0
+  item_Price: 1000
   itemEffect: {fileID: 11400000, guid: ee6d6d65b486dfb45ab8f5e34099d045, type: 2}
   isConsumable: 0
   item_Rarity: 4

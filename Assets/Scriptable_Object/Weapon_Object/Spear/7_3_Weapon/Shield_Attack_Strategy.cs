@@ -20,6 +20,11 @@ public class Shield_Attack_Strategy : ScriptableObject, IAttack_Strategy
     public float accel_Delay = 0.1f;
     public float accel_Rate = 20.0f;
 
+    [Header("Jump Attack Hit Settings")]
+    public float hitbox_Radius = 0.6f;
+    public Vector2 hitbox_Offset = new Vector2(0.2f, 0.0f);
+    private readonly HashSet<Collider2D> jumpHit_Enemies = new HashSet<Collider2D>();
+
     [Header("Shield Skill Settings")]
     public GameObject shield_Pj_Prefab;
     public float projectile_Speed = 15.0f;
@@ -72,12 +77,12 @@ public class Shield_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     private IEnumerator Jump_Attack(PlayerCharacter_Controller player)
     {
-        //player.animator.SetTrigger("Attack");
         player.jumpCount = player.maxJumpCount;
 
         float tp_Fall_Speed = fallSpeed;
-
         float elapsed = 0.0f;
+
+        jumpHit_Enemies.Clear();
 
         player.is_Knock_Back = true;
         while (!player.isGrounded)
@@ -90,10 +95,34 @@ public class Shield_Attack_Strategy : ScriptableObject, IAttack_Strategy
             }
 
             player.rb.velocity = new Vector2(player.rb.velocity.x, -tp_Fall_Speed);
+            TryHit_Enemies_DuringFall(player);
+
             yield return null;
         }
 
         player.is_Knock_Back = false;
+    }
+
+    private void TryHit_Enemies_DuringFall(PlayerCharacter_Controller player)
+    {
+        Vector2 center = (Vector2)player.transform.position + hitbox_Offset;
+        Collider2D[] hits = Physics2D.OverlapCircleAll(center, hitbox_Radius, player.enemy_LayerMask);
+
+        if (hits == null || hits.Length == 0) return;
+
+        foreach (var col in hits)
+        {
+            if (col == null) continue;
+            if (jumpHit_Enemies.Contains(col)) continue;
+
+            Enemy_Basic enemy = col.GetComponent<Enemy_Basic>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(player.Calculate_Damage());
+            }
+
+            jumpHit_Enemies.Add(col);
+        }
     }
 
     private IEnumerator Shield_Layer_Change()
