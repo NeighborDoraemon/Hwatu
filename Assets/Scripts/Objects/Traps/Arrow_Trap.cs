@@ -60,6 +60,7 @@ public class Arrow_Trap : MonoBehaviour
                 else
                 {
                     arrow_prefab.GetComponent<Rigidbody2D>().velocity = new Vector2(1.0f * arrow_speed, 0.0f);
+                    arrow_prefab.GetComponent<SpriteRenderer>().flipX = true;
                 }
             }
         }
