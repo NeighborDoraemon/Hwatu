@@ -1992,7 +1992,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
     }
     void OnInventory_Released(InputAction.CallbackContext context)
     {
-        if (!Can_Close_Inventory() || Current_Event_State == Event_State.Bird_Hunting)
+        if (!Can_Close_Inventory() || Current_Event_State == Event_State.Bird_Hunting || is_StatUI_Visible)
             return;
 
         HideInventory();
