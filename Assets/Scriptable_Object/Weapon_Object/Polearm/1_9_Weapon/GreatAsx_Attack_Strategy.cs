@@ -57,6 +57,7 @@ public class GreatAsx_Attack_Strategy : ScriptableObject, IAttack_Strategy
 
     public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
+        player.animator.SetTrigger("Skill");
         player.StartCoroutine(Skill_Coroutine(player));
 
         return true;

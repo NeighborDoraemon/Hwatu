@@ -13,10 +13,15 @@ public class DoubleHandsSword_Attack_Strategy : ScriptableObject, IAttack_Strate
     public GameObject skill_Projectile_Prefab;
     public float projectile_Speed = 10.0f;
 
+    [Header("Jump Attack Settings")]
     public LayerMask ground_Layer;
     public float fallSpeed = 5.0f;
     public float accel_Delay = 0.3f;
     public float accel_Rate = 5.0f;
+
+    [Header("Ground Proximity Check")]
+    public float ground_Check_Distance = 0.08f;
+    public float ground_Box_Shrink = 0.98f;
 
     public void Initialize(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {
@@ -48,6 +53,16 @@ public class DoubleHandsSword_Attack_Strategy : ScriptableObject, IAttack_Strate
             if (!player.can_JumpAtk)
                 return;
             
+            if (Is_Touching_Or_TooClose_ToGround(player))
+            {
+                player.animator.SetTrigger("Attack");
+                player.isAttacking = true;
+                return;
+            }
+
+            if (!player.can_JumpAtk)
+                return;
+
             player.isAttacking = true;
             player.StartCoroutine(JumpAttack(player));
             return;
@@ -86,10 +101,25 @@ public class DoubleHandsSword_Attack_Strategy : ScriptableObject, IAttack_Strate
         player.can_JumpAtk = true;
     }
 
-    public void Shoot(PlayerCharacter_Controller player, Transform fire_Point)
+    private bool Is_Touching_Or_TooClose_ToGround(PlayerCharacter_Controller player)
     {
+        var col = player.GetComponent<Collider2D>();
+        if (col == null) return false;
+        
+        Bounds b = col.bounds;
 
+        Vector2 boxSize = new Vector2(b.size.x * ground_Box_Shrink, b.size.y * ground_Box_Shrink);
+        RaycastHit2D hit = Physics2D.BoxCast(b.center, boxSize, 0.0f, Vector2.down, ground_Check_Distance, ground_Layer);
+        if (hit.collider != null)
+            return true;
+
+        Vector2 overlap_Center = new Vector2(b.center.x, b.min.y - 0.0005f);
+        Vector2 overlap_Size = new Vector2(b.size.x * ground_Box_Shrink, 0.02f);
+        Collider2D overlap = Physics2D.OverlapBox(overlap_Center, overlap_Size, 0.0f, ground_Layer);
+        return overlap != null;
     }
+
+    public void Shoot(PlayerCharacter_Controller player, Transform fire_Point) { }
 
     public bool Skill(PlayerCharacter_Controller player, Weapon_Data weapon_Data)
     {

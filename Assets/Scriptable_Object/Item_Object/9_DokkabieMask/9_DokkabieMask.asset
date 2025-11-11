@@ -13,11 +13,8 @@ MonoBehaviour:
   m_Name: 9_DokkabieMask
   m_EditorClassIdentifier: 
   itemName: "\uB3C4\uAE68\uBE44 \uAC00\uBA74"
-  item_Description: "\uC801 \uD0C0\uACA9 \uC2DC \uAC8C\uC774\uC9C0 \uC99D\uAC00,
-    \uAC00\uB4DD \uCC30 \uC2DC \uAD11\uD3ED\uD654 \uD65C\uC131\uD654, 30 \uCD08\uAC04
-    \uB370\uBBF8\uC9C0 50% \uC99D\uAC00, \uD53C\uACA9\uB370\uBBF8\uC9C0 50% \uC99D\uAC00,
-    \uACF5\uACA9 \uCFE8\uD0C0\uC784 30% \uAC10\uC18C, \uC774\uB3D9\uC18D\uB3C4 20%
-    \uC99D\uAC00. \uAD11\uD3ED\uD654 \uD6C4 1 \uBD84\uAC04 \uAD11\uD3ED\uD654 \uBD88\uAC00\uB2A5"
+  item_Description: "\uC801 \uD0C0\uACA9 \uC2DC \uAE30\uC6B4\uC774 \uBAA8\uC774\uBA70
+    \uAC00\uB4DD\uCC30 \uC2DC \uAD11\uD3ED\uD654 \uC0C1\uD0DC\uC5D0 \uB3CC\uC785"
   item_Icon: {fileID: 21300000, guid: 7fecda89fb9c2e447a0ffffbaf4b5da6, type: 3}
   item_Price: 400
   itemEffect: {fileID: 11400000, guid: f6f63c64713415c4c87d3ad21c057efe, type: 2}
