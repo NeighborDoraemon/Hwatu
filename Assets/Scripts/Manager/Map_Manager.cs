@@ -304,9 +304,11 @@ public class Map_Manager : MonoBehaviour, ISaveable
                 Debug.Log("Enemy Spawn Called");
                 Obj_e_Generator.Set_Next();
                 Obj_e_Generator.New_Enemy_Spawn(mv_Current_Map);
+
+                Invoke("Custom_Mapcard_Call", 0.5f);
             }
 
-            Get_Random_Cards();
+            //Custom_Mapcard_Call();
         }
         else // Move by Portal
         {
@@ -551,5 +553,30 @@ public class Map_Manager : MonoBehaviour, ISaveable
             data.is_Tutorial_Cleared = false;
         });
         Save_Manager.Instance.SaveAll();
+    }
+
+    public void Custom_Mapcard_Call()
+    {
+        Get_Random_Cards();
+
+        match_manager.Give_Map_Cards(map_Card_01, map_Card_02);
+        match_manager.Match_Reset();
+
+        if (!is_Market_Now && !is_Next_Event && mv_Current_Map != Map_Start && mv_Current_Map != Map_Tutorial)
+        {
+            match_manager.Start_Match();
+        }
+    }
+
+    public bool Map_Check()
+    {
+        if (!is_Market_Now && !is_Next_Event && mv_Current_Map != Map_Start && mv_Current_Map != Map_Tutorial)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

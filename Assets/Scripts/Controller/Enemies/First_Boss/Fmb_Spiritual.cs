@@ -58,6 +58,11 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
             Txt_Purify.GetComponent<Text>().text = "수락";
             Txt_Kill.GetComponent<Text>().text = "거절";
 
+            
+            Boss_Name_Text.GetComponent<Text>().text = "문지기 & 완득이";
+            Boss_Health_Bar.GetComponent<Image>().fillAmount = 1.0f;
+            Boss_Canvas.SetActive(false);
+
             Destroy(Fmb_Parent);
         }
         else
@@ -66,6 +71,10 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
             {
                 is_Started = true;  // Start Boss Fight
                 player.State_Change(PlayerCharacter_Controller.Player_State.Normal);
+                
+                Boss_Canvas.SetActive(true);
+                Boss_Health_Bar.GetComponent<Image>().fillAmount = 1.0f;
+                Boss_Name_Text.GetComponent<Text>().text = "오염된 산신령";
             }
             else
             {
@@ -103,7 +112,7 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
             //    groggy_Wall.GetComponent<Fmb_Groggy_Wall>().Force_Destroy();
             //}
             StopAllCoroutines();
-
+            Now_State = Attack_State.Nothing;
             Dialogue_Manager.instance.Start_Dialogue(After_Boss);
             return;
         }
@@ -148,6 +157,7 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
     [SerializeField] private GameObject Obj_Warning;
     [SerializeField] private GameObject Obj_Groggy_Damage_Box;
     [SerializeField] private GameObject Obj_Groggy_Wall;
+    [SerializeField] private GameObject Obj_Groggy_Position;
     [SerializeField] private List<GameObject> Rock_Position = new List<GameObject>();
     [SerializeField] private GameObject Fmb_Parent;
     [SerializeField] private Enemy_Generator obj_e_Generator;
@@ -167,6 +177,9 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
 
     [SerializeField] private GameObject Txt_Purify;
     [SerializeField] private GameObject Txt_Kill;
+
+    [SerializeField] private GameObject Boss_Health_Bar;
+    [SerializeField] private GameObject Boss_Name_Text;
 
     [Header("Dialogue Index")]
     [SerializeField] private int Interaction_Start;
@@ -209,11 +222,13 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
 
     private bool is_Purified = false;
 
+    private Image health_bar;
     // Start is called before the first frame update
     void Start()
     {
         Set_Health_Cal();
 
+        health_bar = Boss_Health_Bar.GetComponent<Image>();
         //obj_Manager.Spawn_Item_From_MiniBoss_Purification(this.transform.position, player);
         //obj_Manager.Spawn_Item_From_MiniBoss_Purification(this.transform.position + new Vector3(1.0f, 0.0f, 0.0f), player);
     }
@@ -232,6 +247,7 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
     {
         if (is_Started)
         {
+            health_bar.fillAmount = (float)IR_Health.Value / Max_Health;
             f_Pattern_Time += Time.deltaTime;
 
             Health_Calculate();
@@ -326,7 +342,7 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
                     }
                 case Attack_State.Groggy_Wall:
                     {
-                        groggy_Wall = Instantiate(Obj_Groggy_Wall, gameObject.transform.position, Quaternion.identity);
+                        groggy_Wall = Instantiate(Obj_Groggy_Wall, Obj_Groggy_Position.transform.position, Quaternion.identity);
                         groggy_Wall.GetComponent<Fmb_Groggy_Wall>().Initialize(10.0f, 8.0f, this.gameObject);
 
                         is_Once_Attacked = true;

@@ -81,17 +81,17 @@ public class Dialogue_Manager : MonoBehaviour
         byte[] bom = new byte[4];
         using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
         {
-            fs.Read(bom, 0, 4);
+            fs.Read(bom, 0, 3);
         }
 
         if (bom[0] == 0xEF && bom[1] == 0xBB && bom[2] == 0xBF)
-            return Encoding.UTF8;           // UTF-8 with BOM
-        else if (bom[0] == 0xFF && bom[1] == 0xFE)
-            return Encoding.Unicode;        // UTF-16 LE
-        else if (bom[0] == 0xFE && bom[1] == 0xFF)
-            return Encoding.BigEndianUnicode; // UTF-16 BE
+        {
+            return Encoding.UTF8;
+        }
         else
-            return Encoding.UTF8;           // 기본: UTF-8 (BOM 없음)
+        {
+            return Encoding.UTF8;
+        }
     }
 
     private IEnumerator Dialogue_Pharsing()

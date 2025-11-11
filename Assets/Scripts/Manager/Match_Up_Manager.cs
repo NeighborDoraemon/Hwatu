@@ -183,6 +183,7 @@ public class Match_Up_Manager : MonoBehaviour
 
     [Header("Others")]
     [SerializeField] private Weapon_Manager weapon_Manager;
+    [SerializeField] private Map_Manager map_Manager;
 
     private bool is_damage_up = false;
     private bool is_damage_down = false;
@@ -342,7 +343,10 @@ public class Match_Up_Manager : MonoBehaviour
         Debug.Log("Map Match: " + map_match.ToString());
         Debug.Log("Player Match: " + player_match.ToString());
 
-        Print_Map_Card();
+        if (map_Manager.Map_Check())
+        {
+            Print_Map_Card();
+        }
     }
 
     private void Match_Normal()
