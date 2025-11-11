@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tint: {r: 1, g: 0.89811766, b: 0.25943398, a: 1}
   max_Bounces: 3
-  search_Radius: 6
+  search_Radius: 3
   enemyLayer:
     serializedVersion: 2
     m_Bits: 16896

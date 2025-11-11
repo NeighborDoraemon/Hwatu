@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: 24_Bullet
   m_EditorClassIdentifier: 
   itemName: "\uBD80\uC2DD\uB41C \uCD1D\uC54C"
-  item_Description: "\uCD1D\uB958\uC758 \uBB34\uAE30 \uD22C\uC0AC\uCCB4\uC5D0 \uCD9C\uD608\uC774
-    \uBD80\uC5EC\uB429\uB2C8\uB2E4."
+  item_Description: "\uC870\uCD1D\uACFC \uC138\uCD1D\uD1B5\uC758 \uD22C\uC0AC\uCCB4\uC5D0
+    \uB3C5\uC131\uC744 \uBD80\uC5EC\uD569\uB2C8\uB2E4"
   item_Icon: {fileID: 21300000, guid: e20dc9d25cd4ded42bef8311bead91aa, type: 3}
   item_Price: 350
   itemEffect: {fileID: 11400000, guid: 2e13bb64672f4a845887ecde3d3a0e0b, type: 2}

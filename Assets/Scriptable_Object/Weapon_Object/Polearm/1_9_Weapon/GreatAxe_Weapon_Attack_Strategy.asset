@@ -17,6 +17,6 @@ MonoBehaviour:
     m_Bits: 16896
   spin_Box_Size: {x: 1.5, y: 2}
   spin_Box_Offset: {x: 0, y: 0}
-  smash_Delay: 0.5
+  smash_Delay: 0.35
   smash_Offset: 0.7
   smash_Box_Size: {x: 1, y: 0.5}
