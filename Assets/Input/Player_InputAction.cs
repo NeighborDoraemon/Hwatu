@@ -340,6 +340,318 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
             ""id"": ""ae00a073-3f96-4574-bb6c-53fa7fcdc2ea"",
             ""actions"": [],
             ""bindings"": []
+        },
+        {
+            ""name"": ""Default"",
+            ""id"": ""7d4a2026-ae53-43db-9ed0-cfb1b78022e6"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""17c46e4b-f311-4346-9590-916ec0e4f991"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""5bf0cbe1-69a2-43d5-b24b-8e2fd0ec2993"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Teleportation"",
+                    ""type"": ""Button"",
+                    ""id"": ""29eb6f30-ddc4-46df-9907-d89162b4985d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""b8350d58-3206-4e26-8cd3-f3e68e64d0be"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill"",
+                    ""type"": ""Button"",
+                    ""id"": ""4c59dec1-74b8-41aa-b568-eb52f632d929"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""InterAction"",
+                    ""type"": ""Button"",
+                    ""id"": ""8c6afd87-614c-4c4a-8713-3f56c9d809e4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpawnChest"",
+                    ""type"": ""Button"",
+                    ""id"": ""8299a181-abb9-429e-bf16-4a5842d7b5d8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DownJump"",
+                    ""type"": ""Button"",
+                    ""id"": ""9b5322ab-ead3-4ef0-a376-40b6959bfe6e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Game_Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""eaa648ef-0b4b-43f0-9913-18784243cec0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Inventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""6d3094dc-4cc9-4a3e-bd98-1a7ee7ae470e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Change_FirstCard"",
+                    ""type"": ""Button"",
+                    ""id"": ""d8a2bbfb-2727-46f6-9132-7b479deb8ba0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Change_SecondCard"",
+                    ""type"": ""Button"",
+                    ""id"": ""bb835f83-6d5c-4689-8c43-c61ab07c8848"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UpDown"",
+                    ""type"": ""Value"",
+                    ""id"": ""5e87a051-92c2-4a47-a74e-b4fdf932daf4"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""Side Move"",
+                    ""id"": ""ff73b923-bea4-44e6-85e9-87318af0ecb1"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""2bc9e5bb-f39c-4408-ae7b-0d46f2ae9bcc"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""ee030c3a-d8d3-47a0-aa86-d81be62cb336"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""88b677da-d03b-4739-85a6-70f50116e5a2"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fb5b987c-c846-40ad-8d4b-b13e51fb3fc4"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bd291c59-21db-43af-9b12-dc774a35f8de"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Skill"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d69d8c08-dac2-4dc7-a2dc-462d1c1cfd1a"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InterAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""87bf1283-62dc-4e79-afd7-6bd7bc8caff2"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Teleportation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dd71b421-1d25-4d3f-a0d7-f82cbb6c754a"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpawnChest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fd319a07-78d9-41f4-a3d2-bbc3f73b6c92"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DownJump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f1ea6dcb-7e67-4292-a42e-40860c5691c8"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Game_Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c3324224-1d01-4959-8253-b2c600962e64"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3f384d2a-9a6b-4718-8ecd-088b93e9b9e8"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change_FirstCard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3cf70937-e936-4f16-ad59-2267e5b703db"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change_SecondCard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""UpDown"",
+                    ""id"": ""65895b1b-b903-472a-82a1-a9b858b0d7fa"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UpDown"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""84ca7250-8bbc-45c7-ba33-790a844fc361"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UpDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""e099c628-a9f1-4047-a455-1bf1d5522cce"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UpDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -361,6 +673,21 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         m_Player_UpDown = m_Player.FindAction("UpDown", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
+        // Default
+        m_Default = asset.FindActionMap("Default", throwIfNotFound: true);
+        m_Default_Move = m_Default.FindAction("Move", throwIfNotFound: true);
+        m_Default_Jump = m_Default.FindAction("Jump", throwIfNotFound: true);
+        m_Default_Teleportation = m_Default.FindAction("Teleportation", throwIfNotFound: true);
+        m_Default_Attack = m_Default.FindAction("Attack", throwIfNotFound: true);
+        m_Default_Skill = m_Default.FindAction("Skill", throwIfNotFound: true);
+        m_Default_InterAction = m_Default.FindAction("InterAction", throwIfNotFound: true);
+        m_Default_SpawnChest = m_Default.FindAction("SpawnChest", throwIfNotFound: true);
+        m_Default_DownJump = m_Default.FindAction("DownJump", throwIfNotFound: true);
+        m_Default_Game_Pause = m_Default.FindAction("Game_Pause", throwIfNotFound: true);
+        m_Default_Inventory = m_Default.FindAction("Inventory", throwIfNotFound: true);
+        m_Default_Change_FirstCard = m_Default.FindAction("Change_FirstCard", throwIfNotFound: true);
+        m_Default_Change_SecondCard = m_Default.FindAction("Change_SecondCard", throwIfNotFound: true);
+        m_Default_UpDown = m_Default.FindAction("UpDown", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -598,6 +925,148 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
         }
     }
     public MenuActions @Menu => new MenuActions(this);
+
+    // Default
+    private readonly InputActionMap m_Default;
+    private List<IDefaultActions> m_DefaultActionsCallbackInterfaces = new List<IDefaultActions>();
+    private readonly InputAction m_Default_Move;
+    private readonly InputAction m_Default_Jump;
+    private readonly InputAction m_Default_Teleportation;
+    private readonly InputAction m_Default_Attack;
+    private readonly InputAction m_Default_Skill;
+    private readonly InputAction m_Default_InterAction;
+    private readonly InputAction m_Default_SpawnChest;
+    private readonly InputAction m_Default_DownJump;
+    private readonly InputAction m_Default_Game_Pause;
+    private readonly InputAction m_Default_Inventory;
+    private readonly InputAction m_Default_Change_FirstCard;
+    private readonly InputAction m_Default_Change_SecondCard;
+    private readonly InputAction m_Default_UpDown;
+    public struct DefaultActions
+    {
+        private @Player_InputActions m_Wrapper;
+        public DefaultActions(@Player_InputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Default_Move;
+        public InputAction @Jump => m_Wrapper.m_Default_Jump;
+        public InputAction @Teleportation => m_Wrapper.m_Default_Teleportation;
+        public InputAction @Attack => m_Wrapper.m_Default_Attack;
+        public InputAction @Skill => m_Wrapper.m_Default_Skill;
+        public InputAction @InterAction => m_Wrapper.m_Default_InterAction;
+        public InputAction @SpawnChest => m_Wrapper.m_Default_SpawnChest;
+        public InputAction @DownJump => m_Wrapper.m_Default_DownJump;
+        public InputAction @Game_Pause => m_Wrapper.m_Default_Game_Pause;
+        public InputAction @Inventory => m_Wrapper.m_Default_Inventory;
+        public InputAction @Change_FirstCard => m_Wrapper.m_Default_Change_FirstCard;
+        public InputAction @Change_SecondCard => m_Wrapper.m_Default_Change_SecondCard;
+        public InputAction @UpDown => m_Wrapper.m_Default_UpDown;
+        public InputActionMap Get() { return m_Wrapper.m_Default; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DefaultActions set) { return set.Get(); }
+        public void AddCallbacks(IDefaultActions instance)
+        {
+            if (instance == null || m_Wrapper.m_DefaultActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_DefaultActionsCallbackInterfaces.Add(instance);
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
+            @Teleportation.started += instance.OnTeleportation;
+            @Teleportation.performed += instance.OnTeleportation;
+            @Teleportation.canceled += instance.OnTeleportation;
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
+            @Skill.started += instance.OnSkill;
+            @Skill.performed += instance.OnSkill;
+            @Skill.canceled += instance.OnSkill;
+            @InterAction.started += instance.OnInterAction;
+            @InterAction.performed += instance.OnInterAction;
+            @InterAction.canceled += instance.OnInterAction;
+            @SpawnChest.started += instance.OnSpawnChest;
+            @SpawnChest.performed += instance.OnSpawnChest;
+            @SpawnChest.canceled += instance.OnSpawnChest;
+            @DownJump.started += instance.OnDownJump;
+            @DownJump.performed += instance.OnDownJump;
+            @DownJump.canceled += instance.OnDownJump;
+            @Game_Pause.started += instance.OnGame_Pause;
+            @Game_Pause.performed += instance.OnGame_Pause;
+            @Game_Pause.canceled += instance.OnGame_Pause;
+            @Inventory.started += instance.OnInventory;
+            @Inventory.performed += instance.OnInventory;
+            @Inventory.canceled += instance.OnInventory;
+            @Change_FirstCard.started += instance.OnChange_FirstCard;
+            @Change_FirstCard.performed += instance.OnChange_FirstCard;
+            @Change_FirstCard.canceled += instance.OnChange_FirstCard;
+            @Change_SecondCard.started += instance.OnChange_SecondCard;
+            @Change_SecondCard.performed += instance.OnChange_SecondCard;
+            @Change_SecondCard.canceled += instance.OnChange_SecondCard;
+            @UpDown.started += instance.OnUpDown;
+            @UpDown.performed += instance.OnUpDown;
+            @UpDown.canceled += instance.OnUpDown;
+        }
+
+        private void UnregisterCallbacks(IDefaultActions instance)
+        {
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
+            @Teleportation.started -= instance.OnTeleportation;
+            @Teleportation.performed -= instance.OnTeleportation;
+            @Teleportation.canceled -= instance.OnTeleportation;
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
+            @Skill.started -= instance.OnSkill;
+            @Skill.performed -= instance.OnSkill;
+            @Skill.canceled -= instance.OnSkill;
+            @InterAction.started -= instance.OnInterAction;
+            @InterAction.performed -= instance.OnInterAction;
+            @InterAction.canceled -= instance.OnInterAction;
+            @SpawnChest.started -= instance.OnSpawnChest;
+            @SpawnChest.performed -= instance.OnSpawnChest;
+            @SpawnChest.canceled -= instance.OnSpawnChest;
+            @DownJump.started -= instance.OnDownJump;
+            @DownJump.performed -= instance.OnDownJump;
+            @DownJump.canceled -= instance.OnDownJump;
+            @Game_Pause.started -= instance.OnGame_Pause;
+            @Game_Pause.performed -= instance.OnGame_Pause;
+            @Game_Pause.canceled -= instance.OnGame_Pause;
+            @Inventory.started -= instance.OnInventory;
+            @Inventory.performed -= instance.OnInventory;
+            @Inventory.canceled -= instance.OnInventory;
+            @Change_FirstCard.started -= instance.OnChange_FirstCard;
+            @Change_FirstCard.performed -= instance.OnChange_FirstCard;
+            @Change_FirstCard.canceled -= instance.OnChange_FirstCard;
+            @Change_SecondCard.started -= instance.OnChange_SecondCard;
+            @Change_SecondCard.performed -= instance.OnChange_SecondCard;
+            @Change_SecondCard.canceled -= instance.OnChange_SecondCard;
+            @UpDown.started -= instance.OnUpDown;
+            @UpDown.performed -= instance.OnUpDown;
+            @UpDown.canceled -= instance.OnUpDown;
+        }
+
+        public void RemoveCallbacks(IDefaultActions instance)
+        {
+            if (m_Wrapper.m_DefaultActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IDefaultActions instance)
+        {
+            foreach (var item in m_Wrapper.m_DefaultActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_DefaultActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public DefaultActions @Default => new DefaultActions(this);
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -616,5 +1085,21 @@ public partial class @Player_InputActions: IInputActionCollection2, IDisposable
     }
     public interface IMenuActions
     {
+    }
+    public interface IDefaultActions
+    {
+        void OnMove(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
+        void OnTeleportation(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
+        void OnSkill(InputAction.CallbackContext context);
+        void OnInterAction(InputAction.CallbackContext context);
+        void OnSpawnChest(InputAction.CallbackContext context);
+        void OnDownJump(InputAction.CallbackContext context);
+        void OnGame_Pause(InputAction.CallbackContext context);
+        void OnInventory(InputAction.CallbackContext context);
+        void OnChange_FirstCard(InputAction.CallbackContext context);
+        void OnChange_SecondCard(InputAction.CallbackContext context);
+        void OnUpDown(InputAction.CallbackContext context);
     }
 }

@@ -48,6 +48,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
     [SerializeField] private New_Fade_Controller new_Fade;
     [SerializeField] private Object_Manager obj_manager;
     [SerializeField] private Start_Card_Npc start_Card_Npc;
+    [SerializeField] private Input_Data_Manager input_Data_Manager;
 
     [SerializeField]
     private Camera_Manager camera_Manager;
@@ -551,8 +552,11 @@ public class Map_Manager : MonoBehaviour, ISaveable
         Save_Manager.Instance.Modify(data =>
         {
             data.is_Tutorial_Cleared = false;
+            data.is_Map_Saved = false;
+            data.is_Inventory_Saved = false;
         });
         Save_Manager.Instance.SaveAll();
+        input_Data_Manager.Copy_Keys_From_Default();
     }
 
     public void Custom_Mapcard_Call()

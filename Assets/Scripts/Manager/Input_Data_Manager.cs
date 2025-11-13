@@ -549,4 +549,16 @@ public class Input_Data_Manager : MonoBehaviour
         bgm_Slider.value = b * k;
         sfx_Slider.value = s * k;
     }
+
+    public void Copy_Keys_From_Default()
+    {
+        PlayerPrefs.DeleteKey(RebindsKey);
+        player_Input.actions.RemoveAllBindingOverrides();
+        Set_Texts();
+        Change_Key_Objects();
+        foreach (GameObject Warnings in Key_Warning_Objects)
+        {
+            Warnings.SetActive(false);
+        }
+    }
 }
