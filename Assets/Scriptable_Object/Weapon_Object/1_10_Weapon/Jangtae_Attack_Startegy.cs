@@ -133,10 +133,7 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
 
         player.can_Card_Change = false;
         player.rb.AddForce(new Vector2(0, player.jumpPower), ForceMode2D.Impulse);
-        //if (player.isGrounded)
-        //{
-            
-        //}
+        
 
         yield return new WaitForSeconds(delay);
 
@@ -197,6 +194,7 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
         {
             cur_Jangtae.AddComponent<Jangtae>();
         }
+        cur_Jangtae.GetComponent<Jangtae>().Destroy_Self();
 
         Vector2 roll_Direction = player.is_Facing_Right ? Vector2.right : Vector2.left;
         jangtae_Rb.velocity = roll_Direction * roll_Speed;
@@ -221,4 +219,5 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
         isRiding = false;
         player.can_Card_Change = true;
     }
+
 }
