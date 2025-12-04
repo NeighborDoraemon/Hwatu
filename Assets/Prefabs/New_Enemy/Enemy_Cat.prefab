@@ -957,6 +957,7 @@ MonoBehaviour:
   Max_Money_Drop: 20
   Effect_Animator: {fileID: 3539790844764883178}
   Sp_Renderer: {fileID: 1830270884806486098}
+  Damage_Text: {fileID: 0}
   Second_Phase_Script: {fileID: 0}
   is_No_Counted: 0
 --- !u!95 &6126026124314954924

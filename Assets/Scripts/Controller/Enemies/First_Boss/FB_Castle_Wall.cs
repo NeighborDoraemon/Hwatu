@@ -401,6 +401,7 @@ public class FB_Castle_Wall : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
             else
             {
                 Dialogue_Manager.instance.Start_Dialogue(Second_Phase_Start);
+                //this.gameObject.GetComponent<Enemy_Basic>().Set_Once();
             }
         }
     }
@@ -419,6 +420,7 @@ public class FB_Castle_Wall : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
             if (is_Second_Phase)
             {
                 Obj_FB_Peasent.GetComponent<FB_Peasent>().Start_Pattern();
+                this.gameObject.GetComponent<Enemy_Basic>().Set_Once();
             }
             is_Started = true;
             player.State_Change(PlayerCharacter_Controller.Player_State.Normal);

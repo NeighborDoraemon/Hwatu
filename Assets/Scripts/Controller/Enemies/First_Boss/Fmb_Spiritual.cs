@@ -23,6 +23,7 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
     {
         if (is_Ending_Text_Shown)
         {
+            is_Started = false;
             player.State_Change(PlayerCharacter_Controller.Player_State.Normal);
             StopAllCoroutines();
 
@@ -95,6 +96,9 @@ public class Fmb_Spiritual : MonoBehaviour, Npc_Interface, Enemy_Second_Phase
         {
             //Txt_Purify.GetComponent<TextMeshProUGUI>().text = "Á¤È­";
             //Txt_Kill.GetComponent<TextMeshProUGUI>().text = "¼Ò¸ê";
+
+            is_Started = false;
+            Boss_Canvas.SetActive(false);
 
             Txt_Purify.GetComponent<Text>().text = "Á¤È­";
             Txt_Kill.GetComponent<Text>().text = "¼Ò¸ê";

@@ -130,6 +130,7 @@ public class Pause_Manager : MonoBehaviour
         });
         map_Manager.Token_Call();
         Save_Manager.Instance.SaveAll();
+        Enemy_Generator.Is_Room_Clear = true;
         new_Fade.Scene_Fade_Out("MainScene");
     }
 
@@ -153,6 +154,7 @@ public class Pause_Manager : MonoBehaviour
         });
         map_Manager.Token_Call();
         Save_Manager.Instance.SaveAll();
+        Enemy_Generator.Is_Room_Clear = true;
         new_Fade.Scene_Fade_Out("MainScene");
     }
 
@@ -169,6 +171,7 @@ public class Pause_Manager : MonoBehaviour
         });
         map_Manager.Token_Call();
         Save_Manager.Instance.SaveAll();
+        Enemy_Generator.Is_Room_Clear = true;
         new_Fade.Scene_Fade_Out("Start_Scene");
     }
 }

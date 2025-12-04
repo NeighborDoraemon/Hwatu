@@ -174,7 +174,7 @@ public class Jangtae_Attack_Startegy : ScriptableObject, IAttack_Strategy
         is_Mounting_In_Progress = false;
     }
 
-    private void Start_Rolling(PlayerCharacter_Controller player)
+    public void Start_Rolling(PlayerCharacter_Controller player)
     {
         if (cur_Jangtae == null) return;
 

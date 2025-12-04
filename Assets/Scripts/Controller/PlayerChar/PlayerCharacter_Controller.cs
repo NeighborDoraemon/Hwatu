@@ -135,6 +135,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
     
     [Header("Map_Manager")]
     [SerializeField] private Map_Manager map_Manager;
+    private GameObject Crashed_Portal;
     public bool use_Portal = false;
     
     //platform & Collider
@@ -168,6 +169,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
     //for Escape
     [HideInInspector] public bool is_Key_Setting = false;
     [SerializeField] private Canvas Key_Setting_Can;
+    private bool is_Pause = false;
 
     public enum Player_State
     {
@@ -911,7 +913,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             if (ctx.phase != InputActionPhase.Started || is_Player_Dead)
                 return;
 
-            map_Manager.Use_Portal(false);
+            if (Crashed_Portal != null)
+            {
+                map_Manager.Use_Portal(false, Crashed_Portal);
+            }
             Handle_Npc_Interaction();
             Handle_Item_Interaction();
         }
@@ -955,7 +960,10 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
     {
         if (Current_Player_State == Player_State.Normal)
         {
-            map_Manager.Use_Portal(false);
+            if (Crashed_Portal != null)
+            {
+                map_Manager.Use_Portal(false, Crashed_Portal);
+            }
             Handle_Npc_Interaction();
             Handle_Item_Interaction();
         }
@@ -1982,7 +1990,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
     
     void OnInventory_Pressed(InputAction.CallbackContext context)
     {
-        if (is_StatUI_Visible || Current_Player_State != Player_State.Normal || Current_Event_State == Event_State.Bird_Hunting)
+        if (is_StatUI_Visible || Current_Player_State != Player_State.Normal || Current_Event_State == Event_State.Bird_Hunting || is_Pause)
         {
             return;
         }
@@ -1997,7 +2005,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             is_StatUI_Visible ||
             Current_Player_State == Player_State.Dialogue || 
             Current_Player_State == Player_State.Dialogue_Choice || 
-            Current_Player_State == Player_State.Player_Dead)
+            Current_Player_State == Player_State.Player_Dead || 
+            is_Pause)
         { 
             return; 
         }
@@ -2219,6 +2228,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
                     if(!pause_Manager.is_Help_Activated() && !Key_Setting_Can.gameObject.activeSelf)
                     {
                         pause_Manager.Pause_Stop();
+                        is_Pause = false;
                     }
                     else
                     {
@@ -2235,6 +2245,7 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
                 else if (Time.timeScale == 1.0f)
                 {
                     pause_Manager.Pause_Start();
+                    is_Pause = true;
                     //Time.timeScale = 0.0f;
                 }
             }
@@ -2363,6 +2374,8 @@ public class PlayerCharacter_Controller : PlayerChar_Inventory_Manager, ISaveabl
             map_Manager.IsOnPortal = true;
             use_Portal = true;
             Add_Interactable(other);
+            Crashed_Portal = other.gameObject;
+            Debug.Log("Portal Checked");
         }
 
         if (other.CompareTag("CM_Boundary"))

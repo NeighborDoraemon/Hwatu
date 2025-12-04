@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: "\uC0B0\uC2E0\uB839\uC758 \uB369\uAD74 \uBD80\uC801"
   item_Description: "\uC21C\uAC04\uC774\uB3D9 \uC0AC\uC6A9 \uC2DC, \uC9C0\uB098\uC628
-    \uAC70\uB9AC\uC5D0 \uB369\uAD74\uC744 \uC18C\uD658\uD569\uB2C8\uB2E4"
+    \uAC70\uB9AC\uC5D0 \uD53C\uD574\uB97C \uC90D\uB2C8\uB2E4."
   item_Icon: {fileID: 7482667652216324306, guid: bd702dbf9f587554cb53d2010b881b9b, type: 3}
   item_Price: 1000
   itemEffect: {fileID: 11400000, guid: 677e8231e0484024db17ef194ff3a2c0, type: 2}

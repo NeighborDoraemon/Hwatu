@@ -217,7 +217,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
         Obj_e_Generator.Room_Clear_Setter();
     }
 
-    public void Use_Portal(bool instrument)
+    public void Use_Portal(bool instrument, GameObject target)
     {
         {
             if (Obj_Player.GetComponent<PlayerCharacter_Card_Manager>().card_Inventory[1] != null)  //시작시 카드가 최소 2장이 있어야 이동 가능하게 변경
@@ -251,6 +251,13 @@ public class Map_Manager : MonoBehaviour, ISaveable
                         });
                     });
                     Object_Manager.instance.Destroy_All_Cards_And_Items();
+                }
+                else
+                {
+                    if (IsOnPortal)
+                    {
+                        target.GetComponent<Portal_Text>().Print_Text();
+                    }
                 }
             }
         }
@@ -343,9 +350,9 @@ public class Map_Manager : MonoBehaviour, ISaveable
                 is_Boss_Stage = true;
                 StartCoroutine(Wait_For_Boss());
             }
-            else if (New_map_Index_List.Count <= 6 && New_map_Index_List.Count >= 4)
+            else if (New_map_Index_List.Count <= 3 && New_map_Index_List.Count >= 1)
             {
-                if (New_map_Index_List.Count == 4)
+                if (New_map_Index_List.Count == 2)
                 {
                     if (!is_Fmb_Cleared)
                     {
@@ -425,7 +432,7 @@ public class Map_Manager : MonoBehaviour, ISaveable
         New_map_Index_List.Clear();
         List<int> random_Queue = new List<int>();
 
-        for (int i = 0; i < Map_Data.Count; i++)
+        for (int i = 0; i < Map_Data.Count - 3; i++)
         {
             random_Queue.Add(i);
         }

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MBT;
+using TMPro;
+using Unity.VisualScripting;
 
 public class Enemy_Basic : MonoBehaviour, Enemy_Interface
 {
@@ -22,6 +24,7 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
     [SerializeField] private Animator Effect_Animator;
     [SerializeField] private SpriteRenderer Sp_Renderer;
     private Coroutine colorCoroutine;
+    [SerializeField] private TextMeshPro Damage_Text;
 
     [Header("Others")]
     [SerializeField] private MonoBehaviour Second_Phase_Script;
@@ -40,6 +43,8 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
     private Enemy_Generator Ene_Generator;
 
     private bool is_Dead = false;
+
+    [HideInInspector] public bool For_Boss_Once = true;
 
     [HideInInspector]
     public void Player_Initialize(PlayerCharacter_Controller player)
@@ -70,7 +75,11 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
         }
         else
         {
-            Damage_Effect();
+            if (IR_Health.Value > 0)
+            {
+                Damage_Effect();
+                ShowDamage(damage);
+            }
         }
 
 
@@ -94,10 +103,11 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
         }
         else if(IR_Health.Value <= 0 && is_Boos_Object)
         {
-            if (Second_Phase_Script != null)
+            if (Second_Phase_Script != null && For_Boss_Once)
             {
                 Second_Phase_Controller = Second_Phase_Script as Enemy_Second_Phase;
                 Second_Phase_Controller.Call_Second_Phase();
+                For_Boss_Once = false;
             }
         }
 
@@ -207,5 +217,95 @@ public class Enemy_Basic : MonoBehaviour, Enemy_Interface
     public Enemy_Generator Give_Enemy_Generator()
     {
                return Ene_Generator;
+    }
+
+    public void ShowDamage(int Damage)
+    {
+        if (Damage_Text != null)
+        {
+            //if(this.gameObject.transform.rotation.y >= 90)
+            //{
+            //    Damage_Text.gameObject.GetComponent<RectTransform>().rotation = new Quaternion(0.0f, 180.0f, 0.0f, 0.0f);
+            //}
+            //else
+            //{
+            //    Damage_Text.gameObject.GetComponent<RectTransform>().rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
+            //}
+                Damage_Text.text = Damage.ToString();
+            Color color = Damage_Text.color;
+
+            StartCoroutine(Fade_Sprite(Damage_Text, 1.0f, 0.5f, 0.0f));
+            StartCoroutine(Fade_Sprite(Damage_Text, 0.0f, 0.5f, 0.5f));
+        }
+    }
+
+    //private IEnumerator FadeOut()
+    //{
+    //    while (Text.color.a > 0.0f)
+    //    {
+    //        Text.color.a -= Time.deltaTime * 0.5f;
+    //        yield return null;
+    //    }
+    //}
+
+    private IEnumerator Fade_Sprite(TextMeshPro sprite, float targetAlpha, float duration, float delay)
+    {
+        Vector3 vec3 = Damage_Text.gameObject.GetComponent<RectTransform>().localScale;
+        yield return new WaitForSeconds(delay);
+
+        Color color = sprite.color;
+        float startAlpha = color.a; // 현재 알파값을 시작점으로 저장
+
+        for (float t = 0.0f; t < duration; t += Time.deltaTime)
+        {
+            if (this.gameObject.transform.rotation.y > 0)
+            {
+                if (vec3.x > 0)
+                {
+                    vec3.x = vec3.x * -1.0f;
+                }
+                Damage_Text.gameObject.GetComponent<RectTransform>().localScale = vec3;
+            }
+            else
+            {
+                if (vec3.x < 0)
+                {
+                    vec3.x = vec3.x * -1.0f;
+                }
+                Damage_Text.gameObject.GetComponent<RectTransform>().localScale = vec3;
+            }
+
+            float progress = t / duration;
+            float alpha = Mathf.Lerp(startAlpha, targetAlpha, progress);
+
+            color.a = alpha;
+            sprite.color = color;
+
+            //float alpha = Mathf.Lerp(0.0f, targetAlpha, t / duration);
+            //color.a = alpha;
+            //sprite.color = color;
+
+            yield return null;
+        }
+
+        color.a = targetAlpha;
+        sprite.color = color;
+
+        //for (float t = 0.0f; t < duration; t += Time.deltaTime)
+        //{
+        //    float alpha = Mathf.Lerp(targetAlpha, 0.0f, t / duration);
+        //    color.a = alpha;
+        //    sprite.color = color;
+
+        //    yield return null;
+        //}
+
+        //color.a = 0.0f;
+        //sprite.color = color;
+    }
+
+    public void Set_Once()
+    {
+        For_Boss_Once = true;
     }
 }

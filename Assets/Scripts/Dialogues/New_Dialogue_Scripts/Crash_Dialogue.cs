@@ -35,7 +35,7 @@ public class Crash_Dialogue : MonoBehaviour, Npc_Interface
                 return;
             }
 
-            int spawnCount = 2;
+            int spawnCount = 3;
 
             for (int i = 0; i < spawnCount; i++)
             {
@@ -51,10 +51,16 @@ public class Crash_Dialogue : MonoBehaviour, Npc_Interface
 
         if (take_Card)
         {
+            if (p_Controller.attack_Strategy is Jangtae_Attack_Startegy jt && jt.isRiding)
+            {
+                jt.Start_Rolling(p_Controller);
+            }
             p_Controller.Recall_All_Cards();
             p_Controller.Clear_All_Items();
             return;
         }
+
+        
     }
 
     public void Npc_Interaction_Start()

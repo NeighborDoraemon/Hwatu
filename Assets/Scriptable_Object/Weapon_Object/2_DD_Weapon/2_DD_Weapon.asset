@@ -19,7 +19,7 @@ MonoBehaviour:
   description: "\uC870\uCD1D\uC73C\uB85C \uAC15\uB825\uD55C \uC0AC\uACA9\uC744 \uAC00\uD569\uB2C8\uB2E4.
     \uC0AC\uACA9 \uD6C4 \uC7AC\uC7A5\uC804 \uC2DC\uAC04\uC744 \uAC00\uC9D1\uB2C8\uB2E4."
   attack_Damage: 15
-  attack_Cooldown: 2
+  attack_Cooldown: 1
   max_Attack_Count: 1
   skill_Damage: 50
   skill_Cooldown: 60
